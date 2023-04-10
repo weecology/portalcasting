@@ -66,11 +66,11 @@
 #'
 #' @param origin `Date` forecast origin. Default is today's date (set using [`Sys.Date`]).
 #'
-#' @param cast_date `Date` of when the forecasts are occurring. Default is today's date (set using [`Sys.Date`]).
+#' @param forecast_date `Date` of when the forecasts are occurring. Default is today's date (set using [`Sys.Date`]).
 #'
 #' @param timeseries_start `Date` after which historic samples are included in the timeseries fit. Default value is `1995-01-01`, corresponding to moon 217.
 #'
-#' @param lead_time `integer` (or integer `numeric`) value for the number of calendar days forward a cast will cover. \cr 
+#' @param lead_time `integer` (or integer `numeric`) value for the number of calendar days forward a forecast will cover. \cr 
 #'   As of version 0.51.0, default is now `365`, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
 #'
 #' @param max_lag `integer` (or integer `numeric`) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
@@ -129,7 +129,7 @@ directory_settings <- function (files             = directory_files( ),
 #'
 time_settings <- function (timeseries_start = as.Date("1995-01-01"), 
                            origin           = Sys.Date( ),
-                           cast_date        = Sys.Date( ),
+                           forecast_date        = Sys.Date( ),
                            lead_time        = 365,
                            max_lag          = 365,
                            lag_buffer       = 60,
@@ -147,7 +147,7 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
        forecast_end            = as.character(forecast_end),
        forecast_end_buffered   = as.character(forecast_end_buffered),
        origin                  = as.character(origin),
-       cast_date               = as.character(cast_date),
+       forecast_date           = as.character(forecast_date),
        lead_time               = lead_time,
        lead_time_buffer        = lead_time_buffer,
        max_lag                 = max_lag,

@@ -22,7 +22,7 @@ download_climate_forecasts(
 
 \item{resources_sub}{\code{character} value defining the resources subdirectory of the portalcasting directory tree.}
 
-\item{version}{\code{Date}-coercible start of the climate cast. See \code{\link{NMME_urls}} (used as \code{start}).}
+\item{version}{\code{Date}-coercible start of the climate forecast. See \code{\link{NMME_urls}} (used as \code{start}).}
 
 \item{source}{\code{character} indicator of the source for the download. Only \code{"NMME"} presently available.}
 
@@ -44,7 +44,7 @@ Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls
 }
 \examples{
 \dontrun{
-   main1 <- file.path(tempdir(), "standard")
+   main1 <- file.path(tempdir(), "dcf")
    create_dir(main = main1)
    download_climate_forecasts(main = main)
    unlink(main1, recursive = TRUE)

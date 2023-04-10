@@ -7,17 +7,17 @@
 \alias{main_panel}
 \alias{title_panel}
 \alias{subtitle_panel}
-\alias{about_tab}
-\alias{models_tab}
-\alias{rodents_profiles_tab}
-\alias{forecast_tab}
+\alias{about_table}
+\alias{models_table}
+\alias{rodents_profiles_table}
+\alias{forecast_table}
 \alias{forecast_tab_input_selection_checks_row}
 \alias{forecast_tab_input_selection_row}
 \alias{forecast_tab_input_selection_row_species}
 \alias{forecast_tab_input_selection_row_dataset}
 \alias{forecast_tab_input_selection_row_model}
 \alias{forecast_tab_input_selection_row_historic_end_newmoonnumber}
-\alias{evaluation_tab}
+\alias{evaluation_table}
 \alias{evaluation_tab_input_selection_checks_row}
 \alias{evaluation_tab_input_selection_row}
 \alias{evaluation_tab_input_selection_row_species}
@@ -25,7 +25,7 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
-\alias{covariates_tab}
+\alias{covariates_table}
 \alias{data_sources_section}
 \alias{portal_project_href}
 \alias{portal_data_href}
@@ -45,13 +45,13 @@ title_panel()
 
 subtitle_panel()
 
-about_tab(global = global_list())
+about_table(global = global_list())
 
-models_tab(global = global_list())
+models_table(global = global_list())
 
-rodents_profiles_tab(global = global_list())
+rodents_profiles_table(global = global_list())
 
-forecast_tab(global = global_list())
+forecast_table(global = global_list())
 
 forecast_tab_input_selection_checks_row()
 
@@ -67,7 +67,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber(
   global = global_list()
 )
 
-evaluation_tab(global = global_list())
+evaluation_table(global = global_list())
 
 evaluation_tab_input_selection_checks_row()
 
@@ -85,7 +85,7 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
 
-covariates_tab(global = global_list())
+covariates_table(global = global_list())
 
 data_sources_section()
 
@@ -136,8 +136,8 @@ The UI is hierarchical built as:
 \item \code{forecast_tab_input_selection_row_historic_end_newmoonnumber}
 }
 \item \code{forecast_tab_input_selection_checks_row}  # commented out, but available for checking reactive inputs in dev
-\item \code{plot_cast_ts}
-\item \code{plot_cast_point}
+\item \code{plot_forecast_ts}
+\item \code{plot_forecast_point}
 }
 \item \code{evaluation_tab}
 \itemize{
@@ -150,8 +150,8 @@ The UI is hierarchical built as:
 \item \code{evaluation_tab_input_selection_row_newmoonnumber}
 }
 \item \code{evaluation_tab_input_selection_checks_row}  # commented out, but available for checking reactive inputs in dev
-\item \code{plot_cast_point}
-\item \code{plot_casts_cov_RMSE}
+\item \code{plot_forecast_point}
+\item \code{plot_forecasts_cov_RMSE}
 }
 \item \code{about_tab}
 \itemize{

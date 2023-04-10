@@ -46,3 +46,27 @@ Each of the specific \verb{new_dataset_< >} functions wraps an \code{\link{updat
 \details{
 Having been created using \code{\link{new_dataset_controls}}, the new dataset's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \code{\link[=setup_dir]{setup_<>}} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_dataset}}.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "new_dataset_controls")
+   setup_dir(main = main1)
+
+   dataset_controls_template( )
+
+   new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
+                                        args     = new_dataset_args(name     = "newdata", 
+                                                                    filename = "rodents_newdata.csv"))
+
+   added <- add_new_dataset(main                 = main1, 
+                            new_dataset_controls = new_controls)
+
+   portalcast(main     = main, 
+              models   = "AutoArima", 
+              datasets = "newdata", 
+              species  = c("DM", "PP", "total"))
+
+
+   unlink(main1, recursive = TRUE)
+ }
+
+}

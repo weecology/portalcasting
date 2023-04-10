@@ -22,7 +22,7 @@ global_list(main = ".")
 }
 \examples{
 \dontrun{
-   main1 <- file.path(tempdir(), "standard")
+   main1 <- file.path(tempdir(), "app")
    setup_dir(main = main1)
 
    run_app(main = main1)

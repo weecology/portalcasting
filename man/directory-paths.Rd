@@ -119,6 +119,7 @@ Wrapper functions for specific subdirectories and files include:
 \dontrun{
    main1 <- file.path(tempdir(), "standard")
    create_dir(main = main1)
+
    paths(main = main1)
    rodents_datasets_paths(main = main1)
    rodents_dataset_path(main = main1)
@@ -131,11 +132,13 @@ Wrapper functions for specific subdirectories and files include:
    covariates_path(main = main1)
    metadata_path(main = main1)
    models_controls_path(main = main1)
+
    models_rmd_path(main = main1)
    models_html_path(main = main1)
    about_md_path(main = main1)
    rodents_profiles_html_path(main = main1)
    rodents_profiles_csv_path(main = main1)
+
    app_path(main = main1)
    data_path(main = main1)
    forecasts_path(main = main1)

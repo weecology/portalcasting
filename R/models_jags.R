@@ -136,8 +136,8 @@ runjags_data <- function (data_names,
                           covariates) {
 
   true_count_lead <- metadata$time$lead_time_newmoons
-  cast_count      <- rep(NA, true_count_lead)
-  count           <- c(abundance, cast_count)
+  forecast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, forecast_count)
   N               <- length(count)
   log_mean_count  <- log(mean(abundance, na.rm = TRUE))
   log_max_count   <- log(max(abundance, na.rm = TRUE))
@@ -147,7 +147,7 @@ runjags_data <- function (data_names,
   ordii_one_newmoon        <- scale(covariates$ordii[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 1)])[ , 1]
 
   list(true_count_lead          = true_count_lead,
-       cast_count               = cast_count,
+       forecast_count               = forecast_count,
        count                    = count,
        N                        = N,
        log_mean_count           = log_mean_count,

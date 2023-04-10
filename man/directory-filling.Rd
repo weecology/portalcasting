@@ -51,37 +51,25 @@ fill_models(main = ".", models = prefab_models(), new_models_controls = NULL)
 }
 \description{
 Fill the directory with components including:
-\itemize{
-\item Resources (\code{\link{fill_resources}})
-\itemize{
-\item raw data (\code{\link[portalr:download_observations]{download_observations}})
-\item directory archive (\code{\link{download_archive}})
-\item climate forecasts (\code{\link{download_climate_forecasts}})
-}
-\item Output
-\itemize{
-\item forecasts (\code{\link{fill_forecasts}})
-\item model fits (\code{\link{fill_fits}})
-}
-\item Data (\code{\link{fill_data}})
-\itemize{
-\item rodent datasets (\code{\link{prepare_rodents}})
-\item temporal (lunar) data (\code{\link{prepare_newmoons}})
-\item covariates (\code{\link{prepare_covariates}})
-\item metadata (\code{\link{prepare_metadata}})
-}
-\item Models (\code{\link{fill_models}})
-\itemize{
-\item models controls (\code{\link{write_models_controls}})
-\item models scripts (if needed) (\code{\link{write_models_scripts}})
-}
-\item Web Application (\code{\link{fill_app}})
-\itemize{
-\item transfers app files from package to main
-\item renders (\code{\link[rmarkdown:render]{render}}) and sources (\code{\link[base:source]{source}}) files into HTML. \cr \cr
+* Resources (\code{\link{fill_resources}})
+* raw data (\code{\link[portalr:download_observations]{download_observations}})
+* directory archive (\code{\link{download_archive}})
+* climate forecasts (\code{\link{download_climate_forecasts}})
+* Output
+* forecasts (\code{\link{fill_forecasts}})
+* model fits (\code{\link{fill_fits}})
+* Data (\code{\link{fill_data}})
+* rodent datasets (\code{\link{prepare_rodents}})
+* temporal (lunar) data (\code{\link{prepare_newmoons}})
+* covariates (\code{\link{prepare_covariates}})
+* metadata (\code{\link{prepare_metadata}})
+* Models (\code{\link{fill_models}})
+* models controls (\code{\link{write_models_controls}})
+* models scripts (if needed) (\code{\link{write_models_scripts}})
+* Web Application (\code{\link{fill_app}})
+* transfers app files from package to main
+* renders (\code{\link[rmarkdown:render]{render}}) and sources (\code{\link[base:source]{source}}) files into HTML. \cr \cr
 Additionally, new models and datasets can be added to the directory at filling using the optional arguments \code{new_models_controls} and \code{new_datasets_controls}, but the model or dataset must still be listed in its respective main argument, as well.
-}
-}
 }
 \examples{
 \dontrun{

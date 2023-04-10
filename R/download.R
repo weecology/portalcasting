@@ -11,7 +11,7 @@
 #'
 #' @param data `character` vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (`c("tasmin", "tasmean", "tasmax", "pr")`).
 #'
-#' @param version `Date`-coercible start of the climate cast. See [`NMME_urls`] (used as `start`).
+#' @param version `Date`-coercible start of the climate forecast. See [`NMME_urls`] (used as `start`).
 #'
 #' @param timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`options`][base::options].
 #'
@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'    main1 <- file.path(tempdir(), "standard")
+#'    main1 <- file.path(tempdir(), "dcf")
 #'    create_dir(main = main1)
 #'    download_climate_forecasts(main = main)
 #'    unlink(main1, recursive = TRUE)
@@ -105,7 +105,7 @@ download_climate_forecasts <- function (main          = ".",
 #'
 #' @description Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and `Details` for links. 
 #'
-#' @param start,end `Date` for the start and end of the cast.
+#' @param start,end `Date` for the start and end of the forecast.
 #'
 #' @param model `character` value of the model to use, one of `"ENSMEAN"`, (Multi-Model Mean), `"CMC1"` (CMC1-CanCM3), `"CMC2"` (CMC2-CanCM4), `"CFCSv2"` (NCEP-CFSv2), `"GFDL"` (GFDL-CM2.1), `"GFDL-FLOR"` (GFDL-FLOR), or `"NCAR"` (NCAR-CCSM4). Presently can only take one value.
 #'
@@ -218,7 +218,7 @@ NMME_urls <- function (start = Sys.Date(),
 #'
 #' @examples
 #' \dontrun{
-#'    main1 <- file.path(tempdir(), "standard")
+#'    main1 <- file.path(tempdir(), "archive")
 #'    create_dir(main = main1)
 #'    download_archive(main = main)
 #'    unlink(main1, recursive = TRUE)

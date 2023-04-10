@@ -8,7 +8,7 @@ AutoArima:
     fun: auto.arima
     args: 
       "y": abundance
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -39,7 +39,7 @@ sAutoArima:
     args: 
       "y": abundance
       xreg: as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -71,7 +71,7 @@ ESSS:
     args: 
       "y": abundance
       allow.multiplicative.trend: TRUE
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -103,7 +103,7 @@ NaiveArima:
     args: 
       "y":  abundance
       order: c(0, 1, 0)
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -135,7 +135,7 @@ sNaiveArima:
       "y":  abundance
       xreg: as.matrix(covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")])
       order: c(0, 1, 0)
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -170,7 +170,7 @@ nbGARCH:
                   past_mean = 13)
       distr: "'nbinom'"
       link:  "'log'"
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -206,7 +206,7 @@ nbsGARCH:
       distr: "'nbinom'"
       link:  "'log'"
       xreg: covariates[covariates$newmoonnumber %in% metadata$time$historic_newmoonnumbers, c("cos2pifoy", "sin2pifoy")] 
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -242,7 +242,7 @@ pGARCH:
                   past_mean = 13)
       distr: "'poisson'"
       link:  "'log'"
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -277,7 +277,7 @@ psGARCH:
                   past_mean = 13)
       distr: "'poisson'"
       link:  "'log'"
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -327,7 +327,7 @@ pevGARCH:
       covariates: covariates
       metadata: metadata
       quiet: "!settings$verbose"
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit
@@ -369,7 +369,7 @@ jags_RW:
         mu:    rnorm(1, mean = data$log_mean_count, sd = 0.1)
         sigma: runif(1, min = 0.01, max = 0.5)
     model_file: jags_RW.txt
-  cast:
+  forecast:
     fun: forecast
     args: 
       object:   model_fit
@@ -408,7 +408,7 @@ jags_logistic:
         r:     rnorm(1, 0, 0.01)
         log_K: rnorm(1, data$log_max_count, 0.01)
     model_file: jags_logistic.txt
-  cast:
+  forecast:
     fun: forecast
     args: 
       object:   model_fit
@@ -449,7 +449,7 @@ jags_logistic_covariates:
         log_K_int:   rnorm(1, data$log_max_count, 0.01)
         log_K_slope: rnorm(1, 0, 0.01)
     model_file: jags_logistic_covariates.txt
-  cast:
+  forecast:
     fun: forecast
     args: 
       object:   model_fit
@@ -489,7 +489,7 @@ jags_logistic_competition:
         log_K_int:   rnorm(1, data$log_max_count, 0.01)
         log_K_slope: rnorm(1, 0, 0.01)
     model_file: jags_logistic_competition.txt
-  cast:
+  forecast:
     fun: forecast
     args: 
       object:   model_fit
@@ -531,7 +531,7 @@ jags_logistic_competition_covariates:
         log_K_slope_DO:   rnorm(1, 0, 0.01)
         log_K_slope_NDVI: rnorm(1, 0, 0.01)
     model_file: jags_logistic_competition_covariates.txt
-  cast:
+  forecast:
     fun: forecast
     args: 
       object:   model_fit

@@ -32,7 +32,7 @@ Unlike previous versions of **portalcasting**, starting with v0.9.0, there are v
 
 The forecasting pipeline will work with basically any univariate model fitting function that will run in R, and produce an object that is then capable of being processed by the forecasting function to forecast the model's predictions, so long as they can be processed via `process_model_output()`, which only requires `mean`, `lower`, and `upper` elements. The vast majority of the information saved about the forecasts is located in the metadata files and controls lists, resulting in the model itself not needing to produce much specific output to be valid.
 
-Models can be based on either pre-existing functions (e.g., the `AutoArima` model uses `auto.arima` from the **forecasting** package) or specialized functions (such as those designed for the `runjags` models in **portalcasting**, which are collated into `fit_runjags`). Each model-dataset-species combination is run in `cast()` wrapped in a `tryCatch()` call, which softens any errors in implementation. The `cast()` call runs a `do.call` implementation of the fit and cast functions from the model controls list and then passes the output of the two functions to `process_model_output`.
+Models can be based on either pre-existing functions (e.g., the `AutoArima` model uses `auto.arima` from the **forecasting** package) or specialized functions (such as those designed for the `runjags` models in **portalcasting**, which are collated into `fit_runjags`). Each model-dataset-species combination is run in `cast()` wrapped in a `tryCatch()` call, which softens any errors in implementation. The `cast()` call runs a `do.call` implementation of the fit and forecast functions from the model controls list and then passes the output of the two functions to `process_model_output`.
 
 ## Set up the directory
 
@@ -86,7 +86,7 @@ Because the `arima` function already has a defined `forecast` method, we do not 
 
 
 ```{r}
-new_model_cast()
+new_model_forecast()
 ```
 
 ### Datasets

@@ -12,7 +12,7 @@ model_name:
   fit:
     fun: 
     args: 
-  cast:
+  forecast:
     fun: forecast
     args: 
       object: model_fit

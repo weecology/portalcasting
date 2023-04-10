@@ -4,35 +4,35 @@ main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
-test_that(desc = "read_cast_tab reads in a cast tab", {
+test_that(desc = "read_forecast_table reads in a forecast tab", {
 
 
   skip_on_cran() 
 
-  expect_is(read_cast_tab(main = main2, forecast_id = NULL), "data.frame")
-  expect_error(read_cast_tab(main = main2, forecast_id = 1e10))
-  expect_error(read_cast_tab(main = main2, forecast_id = "1.1"))
+  expect_is(read_forecast_table(main = main2, forecast_id = NULL), "data.frame")
+  expect_error(read_forecast_table(main = main2, forecast_id = 1e10))
+  expect_error(read_forecast_table(main = main2, forecast_id = "1.1"))
 
 })
 
-test_that(desc = "read_cast_tabs reads in multiple cast tabs", {
+test_that(desc = "read_forecast_tables reads in multiple forecast tabs", {
 
 
   skip_on_cran() 
 
-  expect_is(read_cast_tabs(main = main3, forecast_ids = NULL), "data.frame")
-  expect_is(read_cast_tabs(main = main3, forecast_ids = c("1.01", "1.02")), "data.frame")
+  expect_is(read_forecast_tabs(main = main3, forecast_ids = NULL), "data.frame")
+  expect_is(read_forecast_tabs(main = main3, forecast_ids = c("1.01", "1.02")), "data.frame")
 
 })
 
 
-test_that(desc = "read_cast_metadata reads in the metadata", {
+test_that(desc = "read_forecast_metadata reads in the metadata", {
 
 
   skip_on_cran() 
 
-  expect_is(read_cast_metadata(main = main3, forecast_id = NULL), "list")
-  expect_error(read_cast_metadata(main = main3, forecast_id = 1e10))
+  expect_is(read_forecast_metadata(main = main3, forecast_id = NULL), "list")
+  expect_error(read_forecast_metadata(main = main3, forecast_id = 1e10))
 
 })
 
@@ -48,25 +48,25 @@ test_that(desc = "read_model_fit reads in model fits", {
 })
 
 
-test_that(desc = "add_obs_to_cast_tab functions add properly", {
+test_that(desc = "add_obs_to_forecast_table functions add properly", {
 
 
   skip_on_cran() 
 
-   cast_tab <- read_cast_tab(main = main3, forecast_id = "1.01")
-   expect_is(add_obs_to_cast_tab(main = main3, cast_tab = cast_tab), 
+   forecast_table <- read_forecast_table(main = main3, forecast_id = "1.01")
+   expect_is(add_obs_to_forecast_table(main = main3, forecast_table = forecast_table), 
              "data.frame")
 
 
 })
 
 
-test_that(desc = "read_model_cast reads in model casts", {
+test_that(desc = "read_model_forecast reads in model forecasts", {
 
 
   skip_on_cran() 
 
-  ok <- read_model_cast(main = main3, forecast_id = NULL)
-  expect_error(read_model_cast(main = main3, forecast_id = 1e10))
+  ok <- read_model_forecast(main = main3, forecast_id = NULL)
+  expect_error(read_model_forecast(main = main3, forecast_id = 1e10))
 
 })

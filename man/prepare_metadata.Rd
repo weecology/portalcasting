@@ -18,7 +18,7 @@ prepare_metadata(
 \item{new_datasets_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
 }
 \value{
-\code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
+\code{list} of forecasting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 }
 \description{
 Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.

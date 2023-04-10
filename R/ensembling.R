@@ -1,21 +1,21 @@
 #' @title Combine (Ensemble) Casts
 #'
-#' @description Combine multiple casts' output into a single ensemble. Presently, only a general average ensemble is available.
+#' @description Combine multiple forecasts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
-#' @details A pre-loaded table of casts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The casts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant casts from the stated `forecast_groups` will be included. 
+#' @details A pre-loaded table of forecasts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
+#'  The forecasts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant forecasts from the stated `forecast_groups` will be included. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param method `character` value of the name of the ensemble method to use. Presently, only `"unwtavg"` (unweighted average) is allowed.
 #'
-#' @param forecast_groups `integer` (or integer `numeric`) value of the cast group to combine with an ensemble. If `NULL` (default), the most recent cast group is ensembled. 
+#' @param forecast_groups `integer` (or integer `numeric`) value of the forecast group to combine with an ensemble. If `NULL` (default), the most recent forecast group is ensembled. 
 #'
-#' @param forecast_ids `integer` (or integer `numeric`) values representing the casts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the casts metadata file (`forecasts_metadata.csv`) for summary information.
+#' @param forecast_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param cast_tab Optional `data.frame` of cast table outputs. If not input, will be loaded.
+#' @param forecast_table Optional `data.frame` of forecast table outputs. If not input, will be loaded.
 #'
 #' @param models `character` value(s) of the name of the model to include. Default value is `NULL`, which equates to no selection with respect to `model`. `NULL` translates to all `models` in the table.
 #'
@@ -23,15 +23,15 @@
 #'
 #' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][portalr::forecasting_species].
 #'
-#' @return `data.frame` of ensembled casts.
+#' @return `data.frame` of ensembled forecasts.
 #' 
 #' @export
 #'
-ensemble_casts <- function (main                       = ".", 
+ensemble_forecasts <- function (main                       = ".", 
                             method                     = "unwtavg", 
                             forecast_groups                = NULL, 
                             forecast_ids                   = NULL, 
-                            cast_tab                   = NULL, 
+                            forecast_table                   = NULL, 
                             historic_end_newmoonnumber = NULL, 
                             models                     = NULL, 
                             dataset                    = NULL, 
@@ -39,9 +39,9 @@ ensemble_casts <- function (main                       = ".",
 
   settings <- read_directory_settings(main = main)
 
-  if (is.null(cast_tab)) {
+  if (is.null(forecast_table)) {
 
-    cast_choices <- select_forecasts(main                        = main, 
+    forecast_choices <- select_forecasts(main                        = main, 
                                  forecast_ids                    = forecast_ids, 
                                  forecast_groups                 = forecast_groups, 
                                  models                      = models, 
@@ -49,45 +49,45 @@ ensemble_casts <- function (main                       = ".",
                                  historic_end_newmoonnumbers = historic_end_newmoonnumber, 
                                  datasets                    = dataset)
 
-    if (NROW(cast_choices) == 0) {
+    if (NROW(forecast_choices) == 0) {
 
-      stop("no casts available for request")
+      stop("no forecasts available for request")
 
     } else {
 
-      cast_tab <- read_cast_tabs(main     = main, 
-                                 forecast_ids = cast_choices$forecast_id)
-      cast_tab <- add_obs_to_cast_tab(main     = main,  
-                                      cast_tab = cast_tab)
-      cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-      cast_tab$error   <- cast_tab$estimate - cast_tab$obs
+      forecast_table <- read_forecast_tabs(main     = main, 
+                                 forecast_ids = forecast_choices$forecast_id)
+      forecast_table <- add_obs_to_forecast_table(main     = main,  
+                                      forecast_table = forecast_table)
+      forecast_table$covered <- forecast_table$obs >= forecast_table$lower_pi & forecast_table$obs <= forecast_table$upper_pi 
+      forecast_table$error   <- forecast_table$estimate - forecast_table$obs
 
     }
 
   }
 
-  forecast_ids                      <- ifnull(forecast_ids, unique(cast_tab$forecast_id))
-  models                        <- ifnull(models, unique(cast_tab$model)[1])
-  dataset                       <- ifnull(dataset, unique(cast_tab$dataset)[1])
-  species                       <- ifnull(species, unique(cast_tab$species)[1]) 
-  historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(cast_tab$historic_end_newmoonnumber)[1]) 
-  forecast_id_in                    <- cast_tab$forecast_id %in% forecast_ids
-  model_in                      <- cast_tab$model %in% models
-  dataset_in                    <- cast_tab$dataset == dataset
-  species_in                    <- cast_tab$species %in% species
-  historic_end_newmoonnumber_in <- cast_tab$historic_end_newmoonnumber %in% historic_end_newmoonnumber
+  forecast_ids                      <- ifnull(forecast_ids, unique(forecast_table$forecast_id))
+  models                        <- ifnull(models, unique(forecast_table$model)[1])
+  dataset                       <- ifnull(dataset, unique(forecast_table$dataset)[1])
+  species                       <- ifnull(species, unique(forecast_table$species)[1]) 
+  historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(forecast_table$historic_end_newmoonnumber)[1]) 
+  forecast_id_in                    <- forecast_table$forecast_id %in% forecast_ids
+  model_in                      <- forecast_table$model %in% models
+  dataset_in                    <- forecast_table$dataset == dataset
+  species_in                    <- forecast_table$species %in% species
+  historic_end_newmoonnumber_in <- forecast_table$historic_end_newmoonnumber %in% historic_end_newmoonnumber
   all_in                        <- forecast_id_in & model_in & dataset_in & species_in & historic_end_newmoonnumber_in
 
   if (sum(all_in) == 0) {
 
-    stop("no casts available for requested plot")
+    stop("no forecasts available for requested plot")
 
   }
 
-  cast_tab    <- cast_tab[all_in, ]
+  forecast_table    <- forecast_tab[all_in, ]
   nspecies    <- length(species)
 
-  moons       <- unique(cast_tab$newmoonnumber)
+  moons       <- unique(forecast_table$newmoonnumber)
   
   nmoons      <- length(moons)
   nmodels     <- length(models)
@@ -110,16 +110,16 @@ ensemble_casts <- function (main                       = ".",
 
     for (j in 1:nmoons) {
 
-      species_in <- cast_tab$species %in% species[i]
-      moon_in    <- cast_tab$newmoonnumber %in% moons[j]
+      species_in <- forecast_table$species %in% species[i]
+      moon_in    <- forecast_table$newmoonnumber %in% moons[j]
 
       all_in     <- species_in & moon_in
-      pcast_tab  <- cast_tab[all_in, ]
-      estimates  <- na.omit(pcast_tab$estimate)
+      pcast_table  <- forecast_tab[all_in, ]
+      estimates  <- na.omit(pcast_table$estimate)
 
       if (length(estimates) > 0) {
 
-        mvars             <- ((na.omit(pcast_tab$upper_pi) - na.omit(pcast_tab$estimate)) / (na.omit(pcast_tab$confidence_level))) ^2
+        mvars             <- ((na.omit(pcast_table$upper_pi) - na.omit(pcast_table$estimate)) / (na.omit(pcast_table$confidence_level))) ^2
         estimate[counter] <- sum(estimates * weight)
         wt_ss             <- sum(weight * (estimates - estimate[counter]) ^ 2)
 
@@ -133,16 +133,16 @@ ensemble_casts <- function (main                       = ".",
 
         }
 
-        CL  <- unique(na.omit(pcast_tab$confidence_level))
+        CL  <- unique(na.omit(pcast_table$confidence_level))
 
         u_pi[counter]        <- estimate[counter] + sqrt(mvar[counter] * CL)
         l_pi[counter]        <- estimate[counter] - sqrt(mvar[counter] * CL)
-        obs[counter]         <- unique(pcast_tab$obs)
+        obs[counter]         <- unique(pcast_table$obs)
         error[counter]       <- estimate[counter] - obs[counter]
         
-        end_moon_id[counter] <- unique(pcast_tab$historic_end_newmoonnumber)
+        end_moon_id[counter] <- unique(pcast_table$historic_end_newmoonnumber)
 
-        eforecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(pcast_tab$forecast_id))))
+        eforecast_id[counter]    <- as.numeric(paste0(9999, min(as.numeric(pcast_table$forecast_id))))
         moon_id[counter]     <- moons[j]
         species_id[counter]  <- species[i]
         covered[counter]     <- estimate[counter] >= l_pi[counter] &
@@ -156,9 +156,9 @@ ensemble_casts <- function (main                       = ".",
   ensemble_name <- paste0("ensemble_", method)
 
   data.frame(origin                     = Sys.Date(),
-             cast_date                  = Sys.Date(),
-             cast_month                 = as.numeric(format(Sys.Date(), "%m")),
-             cast_year                  = as.numeric(format(Sys.Date(), "%Y")),
+             forecast_date                  = Sys.Date(),
+             forecast_month                 = as.numeric(format(Sys.Date(), "%m")),
+             forecast_year                  = as.numeric(format(Sys.Date(), "%Y")),
              currency                   = "abundance",
              model                      = ensemble_name, 
              newmoonnumber              = moon_id, 

@@ -61,7 +61,8 @@ read_climate_forecasts(main = ".")
 \item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
 }
 \value{
-\code{write_data} \code{x} as input, \code{\link[base:invisible]{invisible}}-ly.
+\code{write_data}: \code{x} as input, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{read_data}:  data requested, typically as a \code{data.frame} or \code{list}.
 }
 \description{
 Generalized data input-output functionality with specifics for common files. \cr \cr
@@ -71,9 +72,11 @@ Generalized data input-output functionality with specifics for common files. \cr
 \examples{
  
  \dontrun{
-   main1 <- file.path(tempdir(), "standard")
+   main1 <- file.path(tempdir(), "io")
    setup_dir(main = main1)
+
    write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+
    read_data(main = main1)
    read_rodents(main = main1)
    read_rodents_dataset(main = main1)
@@ -81,6 +84,7 @@ Generalized data input-output functionality with specifics for common files. \cr
    read_climate_forecasts(main = main1)
    read_newmoons(main = main1)
    read_metadata(main = main1)
+
    unlink(main1, force = TRUE, recursive = TRUE)
  }
 

@@ -1,28 +1,29 @@
 #'
 #' @examples
-#' \donttest{ 
 #' \dontrun{
-#'    main1 <- file.path(tempdir(), "standard")
+#'    main1 <- file.path(tempdir(), "new_dataset_controls")
 #'    setup_dir(main = main1)
+#'
+#'    dataset_controls_template( )
+#'
+#'    new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
+#'                                         args     = new_dataset_args(name     = "newdata", 
+#'                                                                     filename = "rodents_newdata.csv"))
+#'
+#'    added <- add_new_dataset(main                 = main1, 
+#'                             new_dataset_controls = new_controls)
+#'
+#'    portalcast(main     = main, 
+#'               models   = "AutoArima", 
+#'               datasets = "newdata", 
+#'               species  = c("DM", "PP", "total"))
+#'
 #'
 #'    unlink(main1, recursive = TRUE)
 #'  }
 #'
 
-#'
-#' @examples
-#' \donttest{ 
-#' \dontrun{
-#'    main1 <- file.path(tempdir(), "production")
-#'    setup_sandbox(main = main1)
-#'
-#'    global <- global_list(main = main1)
-#'    available_newmoonnumbers(global, event_name = "initial_evaluation_tab")
-#'
-#'    unlink(main1, recursive = TRUE)
-#'  }}
-#'
+new_controls <- new__controls(metadata = new__metadata(name = ""),
+                                     )
 
-devtools::document()
-
-
+added <- add_new_dataset(main = main, new__controls = new_controls)

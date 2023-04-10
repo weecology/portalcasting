@@ -304,7 +304,7 @@ read_directory_settings <- function (main = ".") {
   settings$time$forecast_end            <- as.Date(settings$time$forecast_end)
   settings$time$forecast_end_buffered   <- as.Date(settings$time$forecast_end_buffered)
   settings$time$origin                  <- as.Date(settings$time$origin)
-  settings$time$cast_date               <- as.Date(settings$time$cast_date)
+  settings$time$forecast_date           <- as.Date(settings$time$forecast_date)
 
   settings
 }
@@ -385,6 +385,7 @@ update_directory_configuration <- function (main = ".") {
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
 #'    create_dir(main = main1)
+#'
 #'    paths(main = main1)
 #'    rodents_datasets_paths(main = main1)
 #'    rodents_dataset_path(main = main1)
@@ -397,11 +398,13 @@ update_directory_configuration <- function (main = ".") {
 #'    covariates_path(main = main1)
 #'    metadata_path(main = main1)
 #'    models_controls_path(main = main1)
+#'
 #'    models_rmd_path(main = main1)
 #'    models_html_path(main = main1)
 #'    about_md_path(main = main1)
 #'    rodents_profiles_html_path(main = main1)
 #'    rodents_profiles_csv_path(main = main1)
+#'
 #'    app_path(main = main1)
 #'    data_path(main = main1)
 #'    forecasts_path(main = main1)

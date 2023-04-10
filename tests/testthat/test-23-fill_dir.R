@@ -41,7 +41,7 @@ test_that(desc = "fill_fits fills the fits folder",
 })
 
 
-test_that(desc = "fill_casts fills the casts folder",
+test_that(desc = "fill_forecasts fills the forecasts folder",
           code = {
 
 

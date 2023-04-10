@@ -16,7 +16,7 @@ NMME_urls(
 )
 }
 \arguments{
-\item{start, end}{\code{Date} for the start and end of the cast.}
+\item{start, end}{\code{Date} for the start and end of the forecast.}
 
 \item{model}{\code{character} value of the model to use, one of \code{"ENSMEAN"}, (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1), \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). Presently can only take one value.}
 

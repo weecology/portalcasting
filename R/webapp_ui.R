@@ -18,8 +18,8 @@
 #'           * `forecast_tab_input_selection_row_model`
 #'           * `forecast_tab_input_selection_row_historic_end_newmoonnumber`
 #'         * `forecast_tab_input_selection_checks_row`  # commented out, but available for checking reactive inputs in dev 
-#'         * `plot_cast_ts`
-#'         * `plot_cast_point`
+#'         * `plot_forecast_ts`
+#'         * `plot_forecast_point`
 #'       * `evaluation_tab`
 #'         * `evaluation_tab_input_selection_row`
 #'           * `evaluation_tab_input_selection_row_species`
@@ -28,8 +28,8 @@
 #'           * `evaluation_tab_input_selection_row_historic_end_newmoonnumber`
 #'           * `evaluation_tab_input_selection_row_newmoonnumber`
 #'         * `evaluation_tab_input_selection_checks_row`  # commented out, but available for checking reactive inputs in dev 
-#'         * `plot_cast_point`
-#'         * `plot_casts_cov_RMSE`
+#'         * `plot_forecast_point`
+#'         * `plot_forecasts_cov_RMSE`
 #'       * `about_tab`
 #'         * `htmltools::includeMarkdown`
 #'       * `models_tab`
@@ -84,12 +84,12 @@ app_theme <- function ( ) {
 #
 main_panel <- function (global = global_list( )) {
 
-  mainPanel(tabsetPanel(forecast_tab(global = global),
-                        evaluation_tab(global = global),
-                        about_tab(global = global),
-                        models_tab(global = global),
-                        rodents_profiles_tab(global = global),
-                        covariates_tab(global = global)))
+  mainPanel(tabsetPanel(forecast_table(global = global),
+                        evaluation_table(global = global),
+                        about_table(global = global),
+                        models_table(global = global),
+                        rodents_profiles_table(global = global),
+                        covariates_table(global = global)))
 
 
 }
@@ -119,7 +119,7 @@ subtitle_panel <- function ( ) {
 #'
 #' @export
 #'
-about_tab <- function (global = global_list( )) {
+about_table <- function (global = global_list( )) {
 
   tabPanel(title = "About",
            includeMarkdown(global$about_md_path)) 
@@ -130,7 +130,7 @@ about_tab <- function (global = global_list( )) {
 #'
 #' @export
 #'
-models_tab <- function (global = global_list( )) {
+models_table <- function (global = global_list( )) {
 
   tabPanel(title = "Models",
            includeHTML(global$models_html_path)) 
@@ -141,7 +141,7 @@ models_tab <- function (global = global_list( )) {
 #'
 #' @export
 #'
-rodents_profiles_tab <- function (global = global_list( )) {
+rodents_profiles_table <- function (global = global_list( )) {
 
   tabPanel(title = "Rodent Profiles",
            includeHTML(global$rodents_profiles_html_path)) 
@@ -152,7 +152,7 @@ rodents_profiles_tab <- function (global = global_list( )) {
 #'
 #' @export
 #
-forecast_tab <- function (global = global_list( )) {
+forecast_table <- function (global = global_list( )) {
 
   if (is.null(global$forecasts_metadata)) {
 
@@ -269,7 +269,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (global 
 #'
 #' @export
 #
-evaluation_tab <- function (global = global_list( )) {
+evaluation_table <- function (global = global_list( )) {
 
   if (is.null(global$forecasts_evaluations)) {
 
@@ -401,7 +401,7 @@ evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_li
 #'
 #' @export
 #'
-covariates_tab <- function (global = global_list( )) {
+covariates_table <- function (global = global_list( )) {
 
   if (is.null(global$covariates)) {
 

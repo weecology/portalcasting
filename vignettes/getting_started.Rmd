@@ -75,18 +75,18 @@ If the user does not specify the models, all of the prefab models are run. Note 
 
 ## Plot the results
 
-Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for casts. The functions for both of these figure types point directly to the cast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). 
+Presently two plotting types are available for visualizing the data and model results: time series and point-in-time plots for forecasts. The functions for both of these figure types point directly to the forecast metadata file that allows for flexible selection of which specific model, data set, and end moon (forecast origin) to use, as well as selection via specific identifiers (when multiple versions of a model are run). 
 
-Time series plots are constructed using `plot_cast_ts`:
+Time series plots are constructed using `plot_forecast_ts`:
 
 ```{r, eval=FALSE}
-plot_cast_ts(main = main, data_set = "controls")
+plot_forecast_ts(main = main, data_set = "controls")
 ```
 
-Point-in-time prediction plots are constructed using `plot_cast_point`, and default to the next step ahead in time:
+Point-in-time prediction plots are constructed using `plot_forecast_point`, and default to the next step ahead in time:
 
 ```{r, eval=FALSE}
-plot_cast_point(main = main, data_set = "controls")
+plot_forecast_point(main = main, data_set = "controls")
 ```
 
 
@@ -114,21 +114,21 @@ read_metadata(main = main)
 read_forecasts_metadata(main = main)
 ```
 
-## Reading in cast output to the R console from the directory
+## Reading in forecast output to the R console from the directory
 
-Presently, four functions are available for interfacing with saved cast output. 
+Presently, four functions are available for interfacing with saved forecast output. 
 
-`select_forecasts` provides a simple interface to the cast metadata file with quick filtering:
+`select_forecasts` provides a simple interface to the forecast metadata file with quick filtering:
 
 ```{r, eval=FALSE}
 select_forecasts(main = main, models = "AutoArima")
 ```
 
-And `read_cast_tab`, `read_model_cast`, and `read_forecasts_metadata` each read in the associated output from a given cast, as indicated by its forecast_id, which is displayed in the output from `select_forecasts`:
+And `read_forecast_tab`, `read_model_forecast`, and `read_forecasts_metadata` each read in the associated output from a given forecast, as indicated by its forecast_id, which is displayed in the output from `select_forecasts`:
 
 ```{r, eval=FALSE}
-read_cast_tab(main = main, forecast_id = "1.1")
-read_model_cast(main = main, forecast_id = "1.1")
-read_cast_metadata(main = main, forecast_id = "1.1")
+read_forecast_table(main = main, forecast_id = "1.1")
+read_model_forecast(main = main, forecast_id = "1.1")
+read_forecast_metadata(main = main, forecast_id = "1.1")
 ```
 

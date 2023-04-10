@@ -28,7 +28,7 @@ directory_settings(
 time_settings(
   timeseries_start = as.Date("1995-01-01"),
   origin = Sys.Date(),
-  cast_date = Sys.Date(),
+  forecast_date = Sys.Date(),
   lead_time = 365,
   max_lag = 365,
   lag_buffer = 60,
@@ -99,9 +99,9 @@ sandbox_settings()
 
 \item{origin}{\code{Date} forecast origin. Default is today's date (set using \code{\link{Sys.Date}}).}
 
-\item{cast_date}{\code{Date} of when the forecasts are occurring. Default is today's date (set using \code{\link{Sys.Date}}).}
+\item{forecast_date}{\code{Date} of when the forecasts are occurring. Default is today's date (set using \code{\link{Sys.Date}}).}
 
-\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a cast will cover. \cr
+\item{lead_time}{\code{integer} (or integer \code{numeric}) value for the number of calendar days forward a forecast will cover. \cr
 As of version 0.51.0, default is now \code{365}, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.}
 
 \item{max_lag}{\code{integer} (or integer \code{numeric}) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr

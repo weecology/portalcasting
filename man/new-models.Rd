@@ -7,7 +7,7 @@
 \alias{new_model_controls}
 \alias{new_model_metadata}
 \alias{new_model_fit}
-\alias{new_model_cast}
+\alias{new_model_forecast}
 \alias{new_model_interpolate}
 \alias{new_model_datasets}
 \alias{new_model_response}
@@ -23,7 +23,7 @@ new_model_metadata(...)
 
 new_model_fit(...)
 
-new_model_cast(...)
+new_model_forecast(...)
 
 new_model_interpolate(...)
 
@@ -43,7 +43,7 @@ new_model_response(...)
 \code{new_model_controls}: \code{list} of named model controls. \cr \cr
 \code{new_model_metadata}: \code{list} of named model metadata elements to the controls \code{list}. \cr \cr
 \code{new_model_fit}: \code{list} of named model fit function and argument elements to the controls \code{list}. \cr \cr
-\code{new_model_cast}: \code{list} of named forecast function and argument elements to the controls \code{list}. \cr \cr
+\code{new_model_forecast}: \code{list} of named forecast function and argument elements to the controls \code{list}. \cr \cr
 \code{new_model_interpolate}: \code{list} of named interpolation requirements elements to the controls \code{list}. \cr \cr
 \code{new_model_datasets}: \code{list} of named dataset elements to the controls \code{list}. \cr \cr
 \code{new_model_response}: \code{list} of named response data description elements to the controls \code{list}. \cr \cr
@@ -55,4 +55,31 @@ Each of the specific \verb{new_model_< >} functions wraps an \code{\link{update_
 }
 \details{
 Having been created using \code{\link{new_model_controls}}, the new model's controls can either be added to the directory at directory creation (via \code{\link{setup_dir}} or related \verb{setup_<>} functions) or update (via \code{\link{update_dir}}) steps or via \code{\link{add_new_model}}.
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "new_model_controls")
+   setup_dir(main = main1)
+
+   model_controls_template( )
+
+   new_controls <- new_model_controls(metadata = new_model_metadata(name       = "newmod", 
+                                                                    print_name = "New Model"),
+                                      fit      = new_model_fit(fun  = "arima", 
+                                                               args = list(x = "abundance")),
+                                      response = new_model_response(link           = "normal", 
+                                                                    type           = "distribution", 
+                                                                    scoring_family = "normal"))
+   added <- add_new_model(main               = main1, 
+                          new_model_controls = new_controls)
+
+   portalcast(main     = main, 
+              models   = "newmod", 
+              datasets = "all", 
+              species  = c("DM", "PP", "total"))
+
+
+   unlink(main1, recursive = TRUE)
+ }
+
 }

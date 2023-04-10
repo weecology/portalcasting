@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'    main1 <- file.path(tempdir(), "standard")
+#'    main1 <- file.path(tempdir(), "app")
 #'    setup_dir(main = main1)
 #'
 #'    run_app(main = main1)
@@ -412,7 +412,7 @@ global_list <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  messageq("Reading in casts metadata and evaluation files ...", quiet = !settings$verbose)
+  messageq("Reading in forecasts metadata and evaluation files ...", quiet = !settings$verbose)
 
   forecasts_metadata    <- read_forecasts_metadata(main = main)
   forecasts_evaluations <- read_forecasts_evaluations(main = main)
@@ -420,7 +420,7 @@ global_list <- function (main = ".") {
 
   if (nrow(forecasts_metadata) == 0) {
 
-    messageq("  No casts metadata available.", quiet = !settings$verbose)
+    messageq("  No forecasts metadata available.", quiet = !settings$verbose)
     forecasts_metadata <- NULL
 
   }

@@ -22,15 +22,18 @@
 #'
 #' @param dataset,datasets `character` representation of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
 #'
-#' @return `write_data` `x` as input, [`invisible`][base::invisible]-ly.
+#' @return `write_data`: `x` as input, [`invisible`][base::invisible]-ly. \cr 
+#'         `read_data`:  data requested, typically as a `data.frame` or `list`.
 #'
 #' @name read write data
 #'
 #' @examples  
 #'  \dontrun{
-#'    main1 <- file.path(tempdir(), "standard")
+#'    main1 <- file.path(tempdir(), "io")
 #'    setup_dir(main = main1)
+#'
 #'    write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+#'
 #'    read_data(main = main1)
 #'    read_rodents(main = main1)
 #'    read_rodents_dataset(main = main1)
@@ -38,6 +41,7 @@
 #'    read_climate_forecasts(main = main1)
 #'    read_newmoons(main = main1)
 #'    read_metadata(main = main1)
+#'
 #'    unlink(main1, force = TRUE, recursive = TRUE)
 #'  }
 #'
@@ -230,12 +234,12 @@ read_climate_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
 
-  dat_list <- mapply(FUN = read_csv_arrow, climate_forecasts_paths(main = main), SIMPLIFY = FALSE)
-  ndatas <- length(dat_list)
-  dat_list <- lapply(dat_list, FUN = as.data.frame)
-  dat_tab <- dat_list[[1]]
-  dat_tab <- dat_tab[ , c(1, ncol(dat_tab))]
-  colnames(dat_tab)[ncol(dat_tab)] <- names(dat_list)[1]
+  dat_list  <- mapply(FUN = read_csv_arrow, climate_forecasts_paths(main = main), SIMPLIFY = FALSE)
+  ndatas    <- length(dat_list)
+  dat_list  <- lapply(dat_list, FUN = as.data.frame)
+  dat_table <- dat_list[[1]]
+  dat_table <- dat_table[ , c(1, ncol(dat_table))]
+  colnames(dat_table)[ncol(dat_table)] <- names(dat_list)[1]
   
   if (ndatas > 1) {
 
@@ -243,36 +247,36 @@ read_climate_forecasts <- function (main = ".") {
 
       dat_tab_i <- dat_list[[i]]
       x         <- dat_tab_i[ , ncol(dat_tab_i)]
-      dat_tab   <- data.frame(dat_tab, x)
-      colnames(dat_tab)[ncol(dat_tab)] <- names(dat_list)[i]
+      dat_table   <- data.frame(dat_table, x)
+      colnames(dat_table)[ncol(dat_table)] <- names(dat_list)[i]
 
     }
 
   }
 
-  colnames(dat_tab)[1] <- "date"
-  dat_tab[ , 1]        <- as.Date(dat_tab[,1])
+  colnames(dat_table)[1] <- "date"
+  dat_table[ , 1]        <- as.Date(dat_table[,1])
 
-  for (i in 2:ncol(dat_tab)) {
+  for (i in 2:ncol(dat_table)) {
 
-    if(grepl("temp", colnames(dat_tab)[i])) {
+    if(grepl("temp", colnames(dat_table)[i])) {
 
-      x             <- dat_tab[ , i]
+      x             <- dat_table[ , i]
       x[x == -9999] <- NA
-      dat_tab[ , i] <- (x - 32) * 5 / 9  
+      dat_table[ , i] <- (x - 32) * 5 / 9  
     
-    } else if (grepl("precip", colnames(dat_tab)[i])) {
+    } else if (grepl("precip", colnames(dat_table)[i])) {
 
-      x             <- dat_tab[ , i]
+      x             <- dat_table[ , i]
       x[x == -9999] <- NA
       x[x < 0]      <- 0
-      dat_tab[ , i] <- x * 25.4
+      dat_table[ , i] <- x * 25.4
 
     }
 
   }
 
-  dat_tab
+  dat_table
 
 }
 

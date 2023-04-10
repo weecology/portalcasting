@@ -5,7 +5,7 @@ main2 <- file.path(tempdir(), "testing2")
 main3 <- file.path(tempdir(), "testing3")
 
 
-test_that(desc = "evaluate_forecasts evaluates casts", {
+test_that(desc = "evaluate_forecasts evaluates forecasts", {
 
   forecast_ids <- select_forecasts(main = main3, species = c("DM", "PP", "total"), models = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH"), datasets = c("all", "controls"))$forecast_id
   nids <- length(forecast_ids)
@@ -18,12 +18,12 @@ test_that(desc = "evaluate_forecasts evaluates casts", {
 })
 
 
-test_that(desc = "evaluate_cast evaluates cast", {
+test_that(desc = "evaluate_forecast evaluates forecast", {
 
   forecast_ids <- select_forecasts(main = main3)$forecast_id
   forecast_id <- forecast_ids[length(forecast_ids)]
 
-  expect_is(evaluate_cast(main = main3, forecast_id = forecast_id), "data.frame")
-  expect_error(evaluate_cast(main = main3, forecast_id = 1e100))
+  expect_is(evaluate_forecast(main = main3, forecast_id = forecast_id), "data.frame")
+  expect_error(evaluate_forecast(main = main3, forecast_id = 1e100))
 
 })

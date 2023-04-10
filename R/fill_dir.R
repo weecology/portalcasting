@@ -1,25 +1,25 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
 #' @description Fill the directory with components including: 
-#'   * Resources ([`fill_resources`]) 
-#'     * raw data ([`download_observations`][portalr::download_observations])
-#'     * directory archive ([`download_archive`])
-#'     * climate forecasts ([`download_climate_forecasts`])
-#'   * Output 
-#'     * forecasts ([`fill_forecasts`])
-#'     * model fits ([`fill_fits`])
-#'   * Data ([`fill_data`])  
-#'     * rodent datasets ([`prepare_rodents`])
-#'     * temporal (lunar) data ([`prepare_newmoons`])
-#'     * covariates ([`prepare_covariates`])
-#'     * metadata ([`prepare_metadata`])
-#'   * Models ([`fill_models`]) 
-#'     * models controls ([`write_models_controls`])
-#'     * models scripts (if needed) ([`write_models_scripts`])
-#'   * Web Application ([`fill_app`]) 
-#'     * transfers app files from package to main
-#'     * renders ([`render`][rmarkdown::render]) and sources ([`source`][base::source]) files into HTML. \cr \cr
-#'   Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_models_controls` and `new_datasets_controls`, but the model or dataset must still be listed in its respective main argument, as well.
+#'              * Resources ([`fill_resources`]) 
+#'                * raw data ([`download_observations`][portalr::download_observations])
+#'                * directory archive ([`download_archive`])
+#'                * climate forecasts ([`download_climate_forecasts`])
+#'              * Output 
+#'                * forecasts ([`fill_forecasts`])
+#'                * model fits ([`fill_fits`])
+#'              * Data ([`fill_data`])  
+#'                * rodent datasets ([`prepare_rodents`])
+#'                * temporal (lunar) data ([`prepare_newmoons`])
+#'                * covariates ([`prepare_covariates`])
+#'                * metadata ([`prepare_metadata`])
+#'              * Models ([`fill_models`]) 
+#'                * models controls ([`write_models_controls`])
+#'                * models scripts (if needed) ([`write_models_scripts`])
+#'              * Web Application ([`fill_app`]) 
+#'                * transfers app files from package to main
+#'                * renders ([`render`][rmarkdown::render]) and sources ([`source`][base::source]) files into HTML. \cr \cr
+#'              Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_models_controls` and `new_datasets_controls`, but the model or dataset must still be listed in its respective main argument, as well.
 #'             
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
@@ -232,7 +232,7 @@ fill_forecasts <- function (main = ".") {
 
   }
 
-  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
+  messageq(paste0(" Located ", length(files), " forecast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
   messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 

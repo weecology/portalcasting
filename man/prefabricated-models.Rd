@@ -4,7 +4,7 @@
 \alias{prefabricated models}
 \alias{prefab_models_controls}
 \alias{prefab_models}
-\title{Provide the Names or Controls for the Prefab Models}
+\title{Provide the Names or Controls for the Prefabricated Models}
 \usage{
 prefab_models_controls()
 
@@ -16,4 +16,9 @@ prefab_models()
 }
 \description{
 Create a \code{character} vector of the names of the pre-fabricated (prefab) models or a \code{list} of their controls.
+}
+\examples{
+  prefab_models_controls( )
+  prefab_models( )
+
 }

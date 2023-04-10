@@ -1,14 +1,15 @@
 #' @title Evaluate Forecasts
 #'
 #' @description Evaluate forecasts in the directory, based on id(s). \cr \cr
-#'   Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS).
+#'              Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS). \cr
+#'              `read_forecasts_evaluations` read in the forecasts evaluations file. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the casts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
+#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the forecasts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
 #'  `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
 #'
-#' @return A `data.frame` of all cast evaluations at the observation (newmoon) level, [`invisible`][base::invisible]-ly..
+#' @return A `data.frame` of all forecast evaluations at the observation (newmoon) level, as requested, [`invisible`][base::invisible]-ly.
 #'
 #' @name evaluate forecasts
 #'
@@ -19,13 +20,13 @@ evaluate_forecasts <- function (main        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  casts_to_evaluate <- select_forecasts(main     = main, 
+  forecasts_to_evaluate <- select_forecasts(main     = main, 
                                         forecast_ids = forecast_ids)
 
-  forecast_ids  <- casts_to_evaluate$forecast_id
+  forecast_ids  <- forecasts_to_evaluate$forecast_id
   nforecast_ids <- length(forecast_ids)
 
-  if (NROW(casts_to_evaluate) == 0) {
+  if (NROW(forecasts_to_evaluate) == 0) {
 
     stop("no forecasts available for request")
 
@@ -43,16 +44,16 @@ evaluate_forecasts <- function (main        = ".",
 
     }
 
-    casts_left_to_evaluate  <- unique(existing_evaluations$forecast_id[!existing_evaluations$cast_evaluation_complete & 
+    forecasts_left_to_evaluate  <- unique(existing_evaluations$forecast_id[!existing_evaluations$cast_evaluation_complete & 
                                                                        existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
   
   } else {
 
-    casts_left_to_evaluate  <- forecast_ids
+    forecasts_left_to_evaluate  <- forecast_ids
 
   }
 
-  selected_forecast_ids <- forecast_ids[forecast_ids %in% casts_left_to_evaluate]
+  selected_forecast_ids <- forecast_ids[forecast_ids %in% forecasts_left_to_evaluate]
 
   if (length(selected_forecast_ids) == 0) {
 
@@ -68,7 +69,7 @@ evaluate_forecasts <- function (main        = ".",
 
   for (i in 1:nselected_forecast_ids) {
 
-    out[[i]] <- tryCatch(evaluate_cast(main    = main,
+    out[[i]] <- tryCatch(evaluate_forecast(main    = main,
                                        forecast_id = selected_forecast_ids[i]),
                          error = function(x) {NA})
 
@@ -111,29 +112,29 @@ evaluate_forecasts <- function (main        = ".",
 #'
 #' @export
 #'
-evaluate_cast <- function (main     = ".", 
+evaluate_forecast <- function (main     = ".", 
                            forecast_id  = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   return_if_null(x = forecast_id)
 
-  cast_tab <- read_cast_tab(main           = main, 
+  forecast_table <- read_forecast_table(main           = main, 
                             forecast_id        = forecast_id)
-  cast_meta <- read_cast_metadata(main     = main, 
+  forecast_meta <- read_forecast_metadata(main     = main, 
                                   forecast_id  = forecast_id)
-  cast_tab <- add_obs_to_cast_tab(main     = main,  
-                                  cast_tab = cast_tab)
-  model_cast  <- read_model_cast(main         = main, 
+  forecast_table <- add_obs_to_forecast_table(main     = main,  
+                                  forecast_table = forecast_table)
+  model_forecast  <- read_model_forecast(main         = main, 
                                  forecast_id      = forecast_id)
 
-  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-  cast_tab$error   <- cast_tab$estimate - cast_tab$obs
-  cast_tab$logs    <- NA
-  cast_tab$crps    <- NA
-  cast_tab$cast_evaluation_complete <- FALSE
+  forecast_table$covered <- forecast_table$obs >= forecast_table$lower_pi & forecast_table$obs <= forecast_table$upper_pi 
+  forecast_table$error   <- forecast_table$estimate - forecast_table$obs
+  forecast_table$logs    <- NA
+  forecast_table$crps    <- NA
+  forecast_table$cast_evaluation_complete <- FALSE
 
-  scoring_family <- switch(cast_meta$model,
+  scoring_family <- switch(forecast_meta$model,
                            "AutoArima"                            = "normal",
                            "NaiveArima"                           = "normal",
                            "ESSS"                                 = "normal",
@@ -153,51 +154,51 @@ evaluate_cast <- function (main     = ".",
   rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
-  can_score <- !is.na(cast_tab$obs)
+  can_score <- !is.na(forecast_table$obs)
 
   if (!any(can_score)) {
 
-    if (all(cast_tab$newmoonnumber <= last_census_newmoonnumber)) {
+    if (all(forecast_table$newmoonnumber <= last_census_newmoonnumber)) {
 
-      cast_tab$cast_evaluation_complete <- TRUE
+      forecast_table$cast_evaluation_complete <- TRUE
 
     }
 
-    return(cast_tab)
+    return(forecast_table)
 
   }
 
   if (scoring_family == "normal") {
 
-    cast_obs  <- cast_tab$obs[can_score]
+    forecast_obs  <- forecast_table$obs[can_score]
 
-    cast_mean   <- cast_tab$estimate[can_score]
-    cast_sd   <- pmax(1e-5, (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96, na.rm = TRUE)
+    forecast_mean   <- forecast_table$estimate[can_score]
+    forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
 
 
-    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+    forecast_table$logs[can_score] <- logs(y      = forecast_obs,
                                      family = scoring_family,
-                                     mean   = cast_mean,
-                                     sd     = cast_sd)
-    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+                                     mean   = forecast_mean,
+                                     sd     = forecast_sd)
+    forecast_table$crps[can_score] <- crps(y      = forecast_obs,
                                      family = scoring_family,
-                                     mean   = cast_mean,
-                                     sd     = cast_sd)
+                                     mean   = forecast_mean,
+                                     sd     = forecast_sd)
 
   } else if (scoring_family == "poisson") {
 
 
-    cast_obs  <- cast_tab$obs[can_score]
+    forecast_obs  <- forecast_table$obs[can_score]
 
-    cast_lambda  <- pmax(1e-5, cast_tab$estimate[can_score])
+    forecast_lambda  <- pmax(1e-5, forecast_table$estimate[can_score])
 
 
-    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+    forecast_table$logs[can_score] <- logs(y      = forecast_obs,
                                      family = scoring_family,
-                                     lambda = cast_lambda)
-    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+                                     lambda = forecast_lambda)
+    forecast_table$crps[can_score] <- crps(y      = forecast_obs,
                                      family = scoring_family,
-                                     lambda = cast_lambda)
+                                     lambda = forecast_lambda)
 
   } else if (scoring_family == "nbinom") {
 
@@ -209,93 +210,46 @@ evaluate_cast <- function (main     = ".",
     #  var  = mu + mu^2 / size
     #  size = mu^2 / (var - mu)
 
-    cast_obs  <- cast_tab$obs[can_score]
+    forecast_obs  <- forecast_table$obs[can_score]
 
-    cast_mu   <- pmax(1e-5, cast_tab$estimate[can_score])
-    cast_sd   <- pmax(1e-5, (cast_tab$upper_pi[can_score] - cast_tab$estimate[can_score]) / 1.96, na.rm = TRUE)
-    cast_var  <- (cast_sd) ^ 2
-    cast_size <- pmax(1e-4, (cast_mu ^ 2) / (cast_var - cast_mu), na.rm = TRUE)
+    forecast_mu   <- pmax(1e-5, forecast_table$estimate[can_score])
+    forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
+    forecast_var  <- (forecast_sd) ^ 2
+    forecast_size <- pmax(1e-4, (forecast_mu ^ 2) / (forecast_var - forecast_mu), na.rm = TRUE)
 
-    cast_tab$logs[can_score] <- logs(y      = cast_obs,
+    forecast_table$logs[can_score] <- logs(y      = forecast_obs,
                                      family = scoring_family,
-                                     mu     = cast_mu,
-                                     size   = cast_size)
+                                     mu     = forecast_mu,
+                                     size   = forecast_size)
 
-    cast_tab$crps[can_score] <- crps(y      = cast_obs,
+    forecast_table$crps[can_score] <- crps(y      = forecast_obs,
                                      family = scoring_family,
-                                     mu     = cast_mu,
-                                     size   = cast_size)
+                                     mu     = forecast_mu,
+                                     size   = forecast_size)
 
   } else if (scoring_family == "sample") {
 
-    cast_obs    <- cast_tab$obs[can_score]
-    cast_sample <- t(model_cast$sample[ , can_score])
+    forecast_obs    <- forecast_table$obs[can_score]
+    forecast_sample <- t(model_forecast$sample[ , can_score])
 
-    cast_tab$logs[can_score] <- logs_sample(y   = cast_obs,
-                                            dat = cast_sample)
+    forecast_table$logs[can_score] <- logs_sample(y   = forecast_obs,
+                                            dat = forecast_sample)
 
-    cast_tab$crps[can_score] <- crps_sample(y   = cast_obs,
-                                            dat = cast_sample)
+    forecast_table$crps[can_score] <- crps_sample(y   = forecast_obs,
+                                            dat = forecast_sample)
 
   }
 
-  species                           <- ifelse(cast_tab$species[1] == "NA", "NA.", cast_tab$species[1])
-  rodents_table                     <- read_rodents_dataset(main = main, dataset = cast_tab$dataset[1])                          
+  species                           <- ifelse(forecast_table$species[1] == "NA", "NA.", forecast_table$species[1])
+  rodents_table                     <- read_rodents_dataset(main = main, dataset = forecast_table$dataset[1])                          
   last_census_newmoonnumber         <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
-  cast_tab$cast_evaluation_complete <- cast_tab$forecast_end_newmoonnumber <= last_census_newmoonnumber
-  cast_tab 
+  forecast_table$cast_evaluation_complete <- forecast_table$forecast_end_newmoonnumber <= last_census_newmoonnumber
+  forecast_table 
 
 }
 
-
-#' @title Add Observations to a Cast Tab
-#' 
-#' @description Appends a column of observations to a cast's cast tab. 
 #'
-#' @details If a model interpolated a data set, `add_obs_to_cast_tab` adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
-#'
-#' @param main `character` value of the name of the main component of the directory tree.
-#' 
-#' @param cast_tab A `data.frame` of a cast's output. See [`read_cast_tab`].
-#'
-#' @return `data.frame` of `cast_tab` with an additional column. 
-#'
-#' @name add to cast tab
-#'
-NULL
-
-
-#' @rdname add-to-cast-tab
-#'
-#' @export
-#'
-add_obs_to_cast_tab <- function (main     = ".", 
-                                 cast_tab = NULL) {
-
-  return_if_null(cast_tab)
-
-  dataset <- gsub("dm_", "", cast_tab$dataset[1])
-  species <- cast_tab$species[1]
-
-  cast_tab$obs   <- NA
-
-  obs <- read_rodents_dataset(main     = main, 
-                            dataset  = dataset)
-
-  cast_tab$obs <- obs[match(cast_tab$newmoonnumber, obs$newmoonnumber), species]
-
-  cast_tab 
-
-}
-
-  
-#' @title Read in the Forecasts Evaluations File
-#'
-#' @description Read in the forecasts evaluations file. 
-#'
-#' @param main `character` value of the name of the main component of the directory tree.
-#'
-#' @return Evaluations requested.
+#' @rdname evaluate-forecasts
 #'
 #' @export
 #'

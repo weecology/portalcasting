@@ -7,8 +7,6 @@
 #'
 #' @return `list` of the object, its class, the packages it is sourced from / through, and the versions of those packages.
 #'
-#' @export
-#'
 #' @name package_version_finder
 #'
 #' @examples
@@ -110,8 +108,6 @@ round_na.interp <- function (x,
 #' @return `character` value of the extension (`file_ext`).
 #'
 #' @name file_ext
-#'
-#' @export
 #' 
 #' @examples
 #'    file_ext("home/folders.with.dots/stuff/ok.csv")
@@ -248,10 +244,10 @@ update_list <- function (list = list(),
 #'
 #' @return `numeric` value(s) of the fraction of the year.
 #'
+#' @name foy
+#'
 #' @examples
 #'   Sys.Date( ); foy(Sys.Date())
-#'
-#' @name foy
 #'
 NULL
 

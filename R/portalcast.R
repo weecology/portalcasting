@@ -2,7 +2,7 @@
 #'
 #' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
 #'  `portalcast` wraps around `cast` to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
-#'  `cast` runs a single cast of a single model on one species of one dataset. \cr \cr
+#'  `cast` runs a single forecast of a single model on one species of one dataset. \cr \cr
 #'  `make_model_combinations` translates model controls into a `data.frame` of model, dataset, and species columns, with a row for each combination. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
@@ -43,7 +43,7 @@ portalcast <- function (main     = ".",
 
   for (i in 1:nmodel_combinations) {
 
-    out[[i]] <- tryCatch(expr = cast(main    = main,
+    out[[i]] <- tryCatch(expr = forecast(main    = main,
                                      model   = model_combinations$model[i],
                                      dataset = model_combinations$dataset[i],
                                      species = model_combinations$species[i]),
@@ -108,17 +108,17 @@ cast <- function (main     = ".",
                         args = fit_args)
 
 
-  cast_args  <- named_null_list(element_names = names(model_controls$cast$args))
-  for (i in 1:length(cast_args)) {
-    cast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+  forecast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+  for (i in 1:length(forecast_args)) {
+    forecast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
   }
 
-  model_cast <- do.call(what = model_controls$cast$fun,
-                        args = cast_args)
+  model_forecast <- do.call(what = model_controls$cast$fun,
+                        args = forecast_args)
 
   process_model_output(main       = main,
                        model_fit  = model_fit,
-                       model_cast = model_cast,
+                       model_forecast = model_forecast,
                        model      = model,
                        dataset    = dataset,
                        species    = species) 

@@ -8,7 +8,7 @@
 #'
 #' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return `list` of casting metadata, which is also saved out as a YAML file (`.yaml`) if desired.
+#' @return `list` of forecasting metadata, which is also saved out as a YAML file (`.yaml`) if desired.
 #' 
 #' @export
 #'
@@ -37,8 +37,8 @@ prepare_metadata <- function (main                 = ".",
   forecast_years               <- format(forecast_dates, "%Y")
   lead_time_newmoons           <- length(forecast_newmoonnumbers)
 
-  cast_meta  <- read_forecasts_metadata(main = main)
-  forecast_group <- max(c(0, cast_meta$forecast_group), na.rm = TRUE) + 1
+  forecast_meta  <- read_forecasts_metadata(main = main)
+  forecast_group <- max(c(0, forecast_meta$forecast_group), na.rm = TRUE) + 1
 
 
   out <- list(time                    = list(timeseries_start             = as.character(settings$time$timeseries_start),
@@ -48,7 +48,7 @@ prepare_metadata <- function (main                 = ".",
                                              lead_time                    = settings$time$lead_time,
                                              max_lag                      = settings$time$max_lag,
                                              lag_buffer                   = settings$time$lag_buffer,
-                                             cast_date                    = as.character(settings$time$cast_date),
+                                             forecast_date                = as.character(settings$time$forecast_date),
                                              origin                       = as.character(settings$time$origin),
                                              historic_start_newmoonnumber = historic_start_newmoonnumber,
                                              historic_end_newmoonnumber   = historic_end_newmoonnumber,

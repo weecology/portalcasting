@@ -76,7 +76,7 @@ test_that(desc = "new_model_<> functions update the list", {
   expect_equal(mc$fun, "lm")
   expect_equal(mc$args, list(y = "abundance"))
   
-  mc <- new_model_cast(fun = "predict")
+  mc <- new_model_forecast(fun = "predict")
   expect_is(mc, "list")
   expect_equal(mc$fun, "predict")
 

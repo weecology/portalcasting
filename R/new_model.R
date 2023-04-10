@@ -15,13 +15,39 @@
 #'         `new_model_controls`: `list` of named model controls. \cr \cr
 #'         `new_model_metadata`: `list` of named model metadata elements to the controls `list`. \cr \cr
 #'         `new_model_fit`: `list` of named model fit function and argument elements to the controls `list`. \cr \cr
-#'         `new_model_cast`: `list` of named forecast function and argument elements to the controls `list`. \cr \cr
+#'         `new_model_forecast`: `list` of named forecast function and argument elements to the controls `list`. \cr \cr
 #'         `new_model_interpolate`: `list` of named interpolation requirements elements to the controls `list`. \cr \cr
 #'         `new_model_datasets`: `list` of named dataset elements to the controls `list`. \cr \cr
 #'         `new_model_response`: `list` of named response data description elements to the controls `list`. \cr \cr
 #'         `add_new_model`: model controls `list` for the new model, [`invisible`][base::invisible]-ly.
 #'
 #' @name new models
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "new_model_controls")
+#'    setup_dir(main = main1)
+#'
+#'    model_controls_template( )
+#'
+#'    new_controls <- new_model_controls(metadata = new_model_metadata(name       = "newmod", 
+#'                                                                     print_name = "New Model"),
+#'                                       fit      = new_model_fit(fun  = "arima", 
+#'                                                                args = list(x = "abundance")),
+#'                                       response = new_model_response(link           = "normal", 
+#'                                                                     type           = "distribution", 
+#'                                                                     scoring_family = "normal"))
+#'    added <- add_new_model(main               = main1, 
+#'                           new_model_controls = new_controls)
+#'
+#'    portalcast(main     = main, 
+#'               models   = "newmod", 
+#'               datasets = "all", 
+#'               species  = c("DM", "PP", "total"))
+#'
+#'
+#'    unlink(main1, recursive = TRUE)
+#'  }
 #'
 NULL
 
@@ -118,9 +144,9 @@ new_model_fit <- function (...) {
 #'
 #' @export
 #'
-new_model_cast <- function (...) {
+new_model_forecast <- function (...) {
 
-  update_list(list = model_controls_template( )$cast,
+  update_list(list = model_controls_template( )$forecast,
               ...  = ...)
 
 }

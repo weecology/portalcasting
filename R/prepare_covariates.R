@@ -23,10 +23,10 @@ prepare_covariates <- function (main = ".") {
   ndvi_data    <- ndvi(level      = "daily", 
                        path       = resources_path(main = main))
 
-  climate_forecasts <- read_climate_forecasts(main = main)
-  newmoons          <- read_newmoons(main          = main)
+  climate_forecasts <- read_climate_forecasts(main   = main)
+  newmoons          <- read_newmoons(main            = main)
   control_rodents   <- read_rodents_dataset(main     = main,
-                                          dataset  = "controls")
+                                            dataset  = "controls")
 
   # truncate to historic values to facilitate hindcasting --- not yet quite properly integrated because we don't use the old nmme
 
@@ -73,24 +73,24 @@ prepare_covariates <- function (main = ".") {
   meantemp_model <- auto.arima(weather_together$meantemp[in_fit], xreg = xreg_fit)
   precip_model   <- auto.arima(weather_together$precipitation[in_fit], xreg = xreg_fit)
 
-  in_cast        <- is.na(weather_together$source)
-  date_cast      <- weather_together$date[in_cast]
-  foy_cast       <- foy(date_cast)
-  cos_cast       <- cos(2 * pi * foy_cast)
-  sin_cast       <- sin(2 * pi * foy_cast)
-  xreg_cast      <- data.frame(cos_seas = cos_cast, sin_seas = sin_cast)
-  xreg_cast      <- as.matrix(xreg_cast)
+  in_forecast        <- is.na(weather_together$source)
+  date_forecast      <- weather_together$date[in_forecast]
+  foy_forecast       <- foy(date_forecast)
+  cos_forecast       <- cos(2 * pi * foy_forecast)
+  sin_forecast       <- sin(2 * pi * foy_forecast)
+  xreg_forecast      <- data.frame(cos_seas = cos_forecast, sin_seas = sin_forecast)
+  xreg_forecast      <- as.matrix(xreg_forecast)
 
-  mintemp_forecast  <- forecast(mintemp_model, xreg = xreg_cast)$mean
-  maxtemp_forecast  <- forecast(maxtemp_model, xreg = xreg_cast)$mean
-  meantemp_forecast <- forecast(meantemp_model, xreg = xreg_cast)$mean
-  precip_forecast   <- pmax(0, forecast(precip_model, xreg = xreg_cast)$mean)
+  mintemp_forecast  <- forecast(mintemp_model, xreg = xreg_forecast)$mean
+  maxtemp_forecast  <- forecast(maxtemp_model, xreg = xreg_forecast)$mean
+  meantemp_forecast <- forecast(meantemp_model, xreg = xreg_forecast)$mean
+  precip_forecast   <- pmax(0, forecast(precip_model, xreg = xreg_forecast)$mean)
  
-  weather_together$mintemp[in_cast]       <- mintemp_forecast
-  weather_together$maxtemp[in_cast]       <- maxtemp_forecast
-  weather_together$meantemp[in_cast]      <- meantemp_forecast
-  weather_together$precipitation[in_cast] <- precip_forecast
-  weather_together$source[in_cast]        <- "seasonal_autoarima_forecast"
+  weather_together$mintemp[in_forecast]       <- mintemp_forecast
+  weather_together$maxtemp[in_forecast]       <- maxtemp_forecast
+  weather_together$meantemp[in_forecast]      <- meantemp_forecast
+  weather_together$precipitation[in_forecast] <- precip_forecast
+  weather_together$source[in_forecast]        <- "seasonal_autoarima_forecast"
 
   newmoons$newmoondate   <- as.Date(newmoons$newmoondate)
 

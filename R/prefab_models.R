@@ -1,4 +1,4 @@
-#' @title Provide the Names or Controls for the Prefab Models
+#' @title Provide the Names or Controls for the Prefabricated Models
 #'
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) models or a `list` of their controls.
 #'
@@ -6,6 +6,10 @@
 #'         `prefab_models_controls`: `list` of model controls.
 #'
 #' @name prefabricated models
+#'
+#' @examples
+#'   prefab_models_controls( )
+#'   prefab_models( )
 #'
 NULL
 

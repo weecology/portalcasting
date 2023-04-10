@@ -1,15 +1,19 @@
-#' @title Provide the Names or Controls for the Prefab Rodent Datasets
+#' @title Provide the Names or Controls for the Prefabricated Rodent Datasets
 #'
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
 #'
 #' @return `prefab_datasets`: `character` vector of dataset names. \cr \cr
 #'         `prefab_datasets_controls`: `list` vector of dataset controls. 
 #'
-#' @name prefabricated_datasets
+#' @name prefabricated rodents datasets
+#'
+#' @examples
+#'   prefab_datasets_controls( )
+#'   prefab_datasets( )
 #'
 NULL
 
-#' @rdname prefabricated_datasets
+#' @rdname prefabricated-rodents-datasets
 #'
 #' @export
 #'
@@ -20,7 +24,7 @@ prefab_datasets <- function( ){
 }
 
 
-#' @rdname prefabricated_datasets
+#' @rdname prefabricated-rodents-datasets
 #'
 #' @export
 #'
