@@ -68,12 +68,12 @@ process_model_output <- function (main      = ".",
   model_controls <- read_models_controls(main = main)[[model]]
 
   forecast_metadata <- update_list(metadata, 
-                               forecast_id          = next_id,
-                               model            = model,
-                               dataset          = dataset,
-                               species          = species,
-                               model_controls   = model_controls[[model]],
-                               dataset_controls = metadata$datasets_controls[[dataset]])
+                                   forecast_id      = next_id,
+                                   model            = model,
+                                   dataset          = dataset,
+                                   species          = species,
+                                   model_controls   = model_controls[[model]],
+                                   dataset_controls = metadata$datasets_controls[[dataset]])
 
   forecast_table <- data.frame(lead_time_newmoons                 = 1:metadata$time$lead_time_newmoons,
                                max_lag                            = metadata$time$max_lag,

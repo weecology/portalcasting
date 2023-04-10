@@ -42,3 +42,18 @@ Forecast Portal rodent populations using the data and models in a portalcasting 
 \code{cast} runs a single forecast of a single model on one species of one dataset. \cr \cr
 \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "portalcast")
+   setup_dir(main = main1)
+
+   plot_covariates(main = main1)
+
+   make_model_combinations(main = main1)
+   portalcast(main = main1, models = "AutoArima")
+   cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+
+   unlink(main1, recursive = TRUE)
+}
+
+}
