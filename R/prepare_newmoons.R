@@ -13,8 +13,27 @@
 #'
 #' @name prepare newmoons
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "newmoons")
+#'
+#'    create_dir(main = main1)
+#'    fill_resources(main = main1)
+#'    fill_forecasts(main = main1)
+#'    fill_fits(main = main1)
+#'    fill_models(main = main1)
+#'
+#'    prepare_newmoons(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+#' @rdname prepare-newmoons
+#'
 #' @export
-#' 
+#'
 prepare_newmoons <- function (main = ".") {
   
   settings <- read_directory_settings(main = main)

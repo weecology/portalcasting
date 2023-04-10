@@ -93,12 +93,12 @@ runjags_controls(
 \item{silent_jags}{\code{logical} value for quieting the output from the runjags function, including the underlying JAGS output.}
 }
 \value{
-\code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags:run.jags]{run.jags}}. \cr \cr
-\code{runjags_data}: A \code{list} of model-specific data for use in \code{\link[runjags:run.jags]{run.jags}}. \cr \cr
-\code{runjags_monitor}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags:run.jags]{run.jags}}.  \cr \cr
-\code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags:run.jags]{run.jags}}.  \cr \cr
-\code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags:run.jags]{run.jags}}. \cr \cr
-\code{runjags_controls}: A \code{list} of controls. \cr \cr
+\code{fit_runjags}: An object of class \code{"runjags"} of model components. See \code{\link[runjags:run.jags]{run.jags}}. \cr
+\code{runjags_data}: A \code{list} of model-specific data for use in \code{\link[runjags:run.jags]{run.jags}}. \cr
+\code{runjags_monitor}: A \code{vector} of model-specific \code{character} values of parameters to track in \code{\link[runjags:run.jags]{run.jags}}.  \cr
+\code{runjags_model}: A single \code{character} value of the JAGS model block for \code{\link[runjags:run.jags]{run.jags}}.  \cr
+\code{runjags_inits}: A \code{function} that takes the argument \code{data} to produce chain-specific initial values for \code{\link[runjags:run.jags]{run.jags}}. \cr
+\code{runjags_controls}: A \code{list} of controls. \cr
 \code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
 }
 \description{
@@ -106,7 +106,57 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \c
 \code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags:run.jags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
 \code{runjags_data}, \code{runjags_monitor}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr
 \code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr
-\code{runjags_controls}: Combines the \code{\link[runjags:run.jags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions. \cr
+\code{runjags_controls}: Combines the \code{\link[runjags:run.jags]{run.jags}} control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions.
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "runjags")
+
+   setup_dir(main = main1)
+   dataset <- "all"
+   species <- "DM"
+   model   <- "runjags_RW"
+ 
+   abundance      <- prepare_abundance(main    = main1,
+                                       dataset = dataset,
+                                       species = species,
+                                       model   = model)
+   model_controls <- models_controls(main       = main1,
+                                     models     = model)[[model]]
+   metadata       <- read_metadata(main        = main1)
+   newmoons       <- read_newmoons(main        = main1)                                        
+   covariates     <- read_covariates(main      = main1)
+   control_runjags <- runjags_controls( )
+   data_names      <- c("count", "N", "log_mean_count")
+
+   runjags_model(model = model)
+
+   runjags_monitors(monitors = c("mu", "sigma"),
+                    metadata = metadata)
+
+   data <- runjags_data(data_names = data_names,
+                        abundance  = abundance,
+                        metadata   = metadata,
+                        covariates = covariates)
+
+   runjags_inits(inits = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+                              sigma = runit(1, min  = 0.01, max = 0.5)))
+
+   fit_runjags <- function (abundance       = abundance, 
+                            metadata        = metadata,, 
+                            covariates      = covariates, 
+                            monitors        = c("mu", "sigma"), 
+                            inits           = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+                                                   sigma = runit(1, min  = 0.01, max = 0.5)), 
+                            model           = model,
+                            data_names      = data_names,
+                            control_runjags = control_runjags)
+ 
+   forecast(fit_runjags, h = metadata$lead_time_newmoons, level = metadata$confidence_level, nsamples = metadata$nsamples)
+
+   unlink(main1, recursive = TRUE)
+}
+
 }
 \references{
 Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}.

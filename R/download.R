@@ -1,7 +1,12 @@
 
 #' @title Download Climate Forecasts
 #'
-#' @description Downloads climate forecasts, presently only from NMME (see [`NMME_urls`]) into the `<main>/<resources>` sub.
+#' @description Downloads climate forecasts, presently only from the North American Multi-Model Ensemble (NMME), into the `<main>/<resources>` sub. \cr
+#'              `download_climate_forecasts` downloads the files from the pre-defined URLs. \cr
+#'              `NMME_urls` generates the URL for a specific request to the NMME API based on parameters. See arguments for specifics and `Details` for links.
+#'
+#'
+#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set. 
 #'
 #' @param main `character` value defining the main component of the portalcasting directory tree. 
 #'
@@ -9,7 +14,15 @@
 #'
 #' @param source `character` indicator of the source for the download. Only `"NMME"` presently available.
 #'
-#' @param data `character` vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (`c("tasmin", "tasmean", "tasmax", "pr")`).
+#' @param start,end `Date` for the start and end of the forecast.
+#'
+#' @param model `character` value of the model to use, one of `"ENSMEAN"`, (Multi-Model Mean), `"CMC1"` (CMC1-CanCM3), `"CMC2"` (CMC2-CanCM4), `"CFCSv2"` (NCEP-CFSv2), `"GFDL"` (GFDL-CM2.1), `"GFDL-FLOR"` (GFDL-FLOR), or `"NCAR"` (NCAR-CCSM4). Presently can only take one value.
+#'
+#' @param lat,lon `numeric` latitude and longitude values used to downscale the model. Presently can only take one value for each.
+#'
+#' @param freq `character` value of the frequency of the data, can be `"daily"` or `"XmonthAverage"`, where `"X"` is a number between `1` and `7`. Presently can only take one value.
+#'
+#' @param data `character` value of the type of data, one of `"tasmin"` (minimum temperature), `"tasmean"` (mean temperature), `"tasmax"` (maximum temperature), `"pr"` (precipitation), `"dps"` (dew point), `"rsds"` (shortwave radiation; sun intensity), `"was"` (wind speed).
 #'
 #' @param version `Date`-coercible start of the climate forecast. See [`NMME_urls`] (used as `start`).
 #'
@@ -21,11 +34,14 @@
 #'
 #' @param verbose `logical` indicator if detailed messages should be generated.
 #'
-#' @return `NULL`, [`invisible`][base::invisible]-ly.
+#' @return `download_climate_forecasts: `NULL`, [`invisible`][base::invisible]-ly. \cr
+#'         `NMME_urls`: amed `character` vector of URLs, or `NULL` if `data`, `freq`, or `model` is `NULL`.
 #'
 #' @name download climate forecasts
 #'
 #' @examples
+#'    NMME_urls( )
+#'
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "dcf")
 #'    create_dir(main = main1)
@@ -101,32 +117,9 @@ download_climate_forecasts <- function (main          = ".",
 
 }
 
-#' @title URLs for the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts
-#'
-#' @description Generate the URL for a specific request to the NMME API based on parameters. See arguments for specifics and `Details` for links. 
-#'
-#' @param start,end `Date` for the start and end of the forecast.
-#'
-#' @param model `character` value of the model to use, one of `"ENSMEAN"`, (Multi-Model Mean), `"CMC1"` (CMC1-CanCM3), `"CMC2"` (CMC2-CanCM4), `"CFCSv2"` (NCEP-CFSv2), `"GFDL"` (GFDL-CM2.1), `"GFDL-FLOR"` (GFDL-FLOR), or `"NCAR"` (NCAR-CCSM4). Presently can only take one value.
-#'
-#' @param lat,lon `numeric` latitude and longitude values used to downscale the model. Presently can only take one value for each.
-#'
-#' @param freq `character` value of the frequency of the data, can be `"daily"` or `"XmonthAverage"`, where `"X"` is a number between `1` and `7`. Presently can only take one value.
-#'
-#' @param data `character` value of the type of data, one of `"tasmin"` (minimum temperature), `"tasmean"` (mean temperature), `"tasmax"` (maximum temperature), `"pr"` (precipitation), `"dps"` (dew point), `"rsds"` (shortwave radiation; sun intensity), `"was"` (wind speed).
-#'
-#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set. 
-#'
-#' @return Named `character` vector of URLs, or `NULL` if `data`, `freq`, or `model` is `NULL`.
-#'
-#' @name NMME urls
-#'
-#' @examples
-#'    NMME_urls( )
-#'
 NULL
 
-#' @rdname NMME-urls
+#' @rdname download-climate-forecasts
 #'
 #' @export
 #'

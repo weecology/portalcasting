@@ -1,6 +1,6 @@
-#' @title Read and Write Model Control Lists
+#' @title Prepare Portalcasting Models
 #'
-#' @description Input/output functions for model control lists, according to the [`directory_settings`].
+#' @description Add model controls and scripts to the portalcasting directory and read in controls and model names.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -14,31 +14,28 @@
 #'         `read_models_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr \cr
 #'         `write_models_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
 #'         `write_models_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
-#' 
-#' @name read and write model controls
 #'
-#' @export
+#' @name prepare models
 #'
-read_models_controls <- function (main = ".") {
-
-  settings <- read_directory_settings(main = main)
-  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
-
-}
-
-
-#' @rdname read-and-write-model-controls
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "models")
 #'
-#' @export
+#'    create_dir(main = main1)
+#'    fill_resources(main = main1)
+#'    fill_forecasts(main = main1)
+#'    fill_fits(main = main1)
 #'
-models_controls <- function (main     = ".",
-                             models   = prefab_models( )) {
+#'    controls <- write_models_controls(main = main1)
+#'    write_models_scripts(main     = main1, 
+#'                       controls = controls)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
 
-  read_models_controls(main = main)[models]
-
-}
-
-#' @rdname read-and-write-model-controls
+#' @rdname prepare-models
 #'
 #' @export
 #'
@@ -78,7 +75,7 @@ write_models_controls <- function (main                = ".",
 
 
 
-#' @rdname read-and-write-model-controls
+#' @rdname prepare-models
 #'
 #' @export
 #'
@@ -112,5 +109,28 @@ write_models_scripts <- function (main     = ".",
   }
 
   invisible( )
+
+}
+
+#' @name prepare-models
+#'
+#' @export
+#'
+read_models_controls <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
+
+}
+
+
+#' @rdname prepare-models
+#'
+#' @export
+#'
+models_controls <- function (main     = ".",
+                             models   = prefab_models( )) {
+
+  read_models_controls(main = main)[models]
 
 }

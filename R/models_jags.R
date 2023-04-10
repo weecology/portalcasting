@@ -2,10 +2,10 @@
 #' @title Create and Run a runjags Portalcasting Model 
 #'
 #' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
-#'   `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`run.jags`][runjags::run.jags] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
-#'   `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
-#'   `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 
-#'   `runjags_controls`: Combines the [`run.jags`][runjags::run.jags] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions. \cr
+#'              `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`run.jags`][runjags::run.jags] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
+#'              `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
+#'              `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 
+#'              `runjags_controls`: Combines the [`run.jags`][runjags::run.jags] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions. 
 #'
 #' @param abundance Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
 #'
@@ -53,14 +53,13 @@
 #'
 #' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
 #'
-#' @return 
-#'   `fit_runjags`: An object of class `"runjags"` of model components. See [`run.jags`][runjags::run.jags]. \cr \cr
-#'   `runjags_data`: A `list` of model-specific data for use in [`run.jags`][runjags::run.jags]. \cr \cr
-#'   `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`run.jags`][runjags::run.jags].  \cr \cr
-#'   `runjags_model`: A single `character` value of the JAGS model block for [`run.jags`][runjags::run.jags].  \cr \cr
-#'   `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`run.jags`][runjags::run.jags]. \cr \cr
-#'   `runjags_controls`: A `list` of controls. \cr \cr
-#'   `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
+#' @return `fit_runjags`: An object of class `"runjags"` of model components. See [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_data`: A `list` of model-specific data for use in [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`run.jags`][runjags::run.jags].  \cr
+#'         `runjags_model`: A single `character` value of the JAGS model block for [`run.jags`][runjags::run.jags].  \cr 
+#'         `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_controls`: A `list` of controls. \cr 
+#'         `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
 #' 
 #' @references 
 #'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. [URL](https://www.jstatsoft.org/article/view/v071i09). 
@@ -69,8 +68,56 @@
 #'
 #' @name runjags models
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "runjags")
+#'
+#'    setup_dir(main = main1)
+#'    dataset <- "all"
+#'    species <- "DM"
+#'    model   <- "runjags_RW"
+#'  
+#'    abundance      <- prepare_abundance(main    = main1,
+#'                                        dataset = dataset,
+#'                                        species = species,
+#'                                        model   = model)
+#'    model_controls <- models_controls(main       = main1,
+#'                                      models     = model)[[model]]
+#'    metadata       <- read_metadata(main        = main1)
+#'    newmoons       <- read_newmoons(main        = main1)                                        
+#'    covariates     <- read_covariates(main      = main1)
+#'    control_runjags <- runjags_controls( )
+#'    data_names      <- c("count", "N", "log_mean_count")
+#'
+#'    runjags_model(model = model)
+#'
+#'    runjags_monitors(monitors = c("mu", "sigma"),
+#'                     metadata = metadata)
+#'
+#'    data <- runjags_data(data_names = data_names,
+#'                         abundance  = abundance,
+#'                         metadata   = metadata,
+#'                         covariates = covariates)
+#'
+#'    runjags_inits(inits = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+#'                               sigma = runit(1, min  = 0.01, max = 0.5)))
+#'
+#'    fit_runjags <- function (abundance       = abundance, 
+#'                             metadata        = metadata,, 
+#'                             covariates      = covariates, 
+#'                             monitors        = c("mu", "sigma"), 
+#'                             inits           = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+#'                                                    sigma = runit(1, min  = 0.01, max = 0.5)), 
+#'                             model           = model,
+#'                             data_names      = data_names,
+#'                             control_runjags = control_runjags)
+#'  
+#'    forecast(fit_runjags, h = metadata$lead_time_newmoons, level = metadata$confidence_level, nsamples = metadata$nsamples)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
 NULL
-
 
 #' @rdname runjags-models
 #'

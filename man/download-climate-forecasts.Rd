@@ -3,6 +3,7 @@
 \name{download climate forecasts}
 \alias{download climate forecasts}
 \alias{download_climate_forecasts}
+\alias{NMME_urls}
 \title{Download Climate Forecasts}
 \usage{
 download_climate_forecasts(
@@ -16,6 +17,16 @@ download_climate_forecasts(
   force = FALSE,
   timeout = getOption("timeout")
 )
+
+NMME_urls(
+  start = Sys.Date(),
+  end = as.Date("2050-01-01"),
+  model = "ENSMEAN",
+  lat = 31.9555,
+  lon = -109.0744,
+  freq = "daily",
+  data = c("tasmin", "tasmean", "tasmax", "pr")
+)
 }
 \arguments{
 \item{main}{\code{character} value defining the main component of the portalcasting directory tree.}
@@ -26,7 +37,7 @@ download_climate_forecasts(
 
 \item{source}{\code{character} indicator of the source for the download. Only \code{"NMME"} presently available.}
 
-\item{data}{\code{character} vector of the data to be collected. Currently min, mean, and max temperatures and precipitation (\code{c("tasmin", "tasmean", "tasmax", "pr")}).}
+\item{data}{\code{character} value of the type of data, one of \code{"tasmin"} (minimum temperature), \code{"tasmean"} (mean temperature), \code{"tasmax"} (maximum temperature), \code{"pr"} (precipitation), \code{"dps"} (dew point), \code{"rsds"} (shortwave radiation; sun intensity), \code{"was"} (wind speed).}
 
 \item{quiet}{\code{logical} indicator if progress messages should be quieted.}
 
@@ -35,14 +46,29 @@ download_climate_forecasts(
 \item{force}{\code{logical} indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as \code{FALSE}).}
 
 \item{timeout}{Positive \code{integer} or integer \code{numeric} seconds for timeout on downloads. Temporarily overrides the \code{"timeout"} option in \code{\link[base:options]{options}}.}
+
+\item{start, end}{\code{Date} for the start and end of the forecast.}
+
+\item{model}{\code{character} value of the model to use, one of \code{"ENSMEAN"}, (Multi-Model Mean), \code{"CMC1"} (CMC1-CanCM3), \code{"CMC2"} (CMC2-CanCM4), \code{"CFCSv2"} (NCEP-CFSv2), \code{"GFDL"} (GFDL-CM2.1), \code{"GFDL-FLOR"} (GFDL-FLOR), or \code{"NCAR"} (NCAR-CCSM4). Presently can only take one value.}
+
+\item{lat, lon}{\code{numeric} latitude and longitude values used to downscale the model. Presently can only take one value for each.}
+
+\item{freq}{\code{character} value of the frequency of the data, can be \code{"daily"} or \code{"XmonthAverage"}, where \code{"X"} is a number between \code{1} and \code{7}. Presently can only take one value.}
 }
 \value{
-\code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
+\verb{download_climate_forecasts: }NULL\verb{, [}invisible\verb{][base::invisible]-ly. \\cr }NMME_urls\verb{: amed }character\verb{vector of URLs, or}NULL\code{if}data\verb{, }freq\verb{, or }model\code{is}NULL`.
 }
 \description{
-Downloads climate forecasts, presently only from NMME (see \code{\link{NMME_urls}}) into the \verb{<main>/<resources>} sub.
+Downloads climate forecasts, presently only from the North American Multi-Model Ensemble (NMME), into the \verb{<main>/<resources>} sub. \cr
+\code{download_climate_forecasts} downloads the files from the pre-defined URLs. \cr
+\code{NMME_urls} generates the URL for a specific request to the NMME API based on parameters. See arguments for specifics and \code{Details} for links.
+}
+\details{
+The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set.
 }
 \examples{
+   NMME_urls( )
+
 \dontrun{
    main1 <- file.path(tempdir(), "dcf")
    create_dir(main = main1)

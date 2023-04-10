@@ -24,14 +24,34 @@
 #' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][portalr::forecasting_species].
 #'
 #' @return `data.frame` of ensembled forecasts.
-#' 
+#'
+#' @name ensemble
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "ensemble")
+#'    setup_production(main = main1)
+#'
+#'    forecast_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
+#'
+#'    ensemble_forecasts(main         = main1, 
+#'                       forecast_ids = forecast_ids)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+
+#' @rdname ensemble
+#'
 #' @export
 #'
-ensemble_forecasts <- function (main                       = ".", 
+ensemble_forecasts <- function (main                   = ".", 
                             method                     = "unwtavg", 
-                            forecast_groups                = NULL, 
-                            forecast_ids                   = NULL, 
-                            forecast_table                   = NULL, 
+                            forecast_groups            = NULL, 
+                            forecast_ids               = NULL, 
+                            forecast_table             = NULL, 
                             historic_end_newmoonnumber = NULL, 
                             models                     = NULL, 
                             dataset                    = NULL, 
@@ -55,9 +75,9 @@ ensemble_forecasts <- function (main                       = ".",
 
     } else {
 
-      forecast_table <- read_forecast_tabs(main     = main, 
-                                 forecast_ids = forecast_choices$forecast_id)
-      forecast_table <- add_obs_to_forecast_table(main     = main,  
+      forecast_table <- read_forecast_tables(main     = main, 
+                                             forecast_ids = forecast_choices$forecast_id)
+      forecast_table <- add_observations_to_forecast_table(main     = main,  
                                       forecast_table = forecast_table)
       forecast_table$covered <- forecast_table$obs >= forecast_table$lower_pi & forecast_table$obs <= forecast_table$upper_pi 
       forecast_table$error   <- forecast_table$estimate - forecast_table$obs

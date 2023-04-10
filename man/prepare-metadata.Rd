@@ -22,7 +22,7 @@ prepare_metadata(
 \code{list} of forecasting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
 }
 \description{
-Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
+Sets up the metadata list used for forecasting, in particular the matching of time period across the datasets, according to the \code{\link{directory_settings}}.
 }
 \examples{
 \dontrun{

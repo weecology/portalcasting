@@ -13,15 +13,42 @@
 #'
 #' @name evaluate forecasts
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "evaluations")
+#'    setup_dir(main = main1)
+#'
+#'    plot_covariates(main = main1)
+#'
+#'    make_model_combinations(main = main1)
+#'    portalcast(main = main1, models = "AutoArima")
+#'    cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+#' 
+#'    evaluate_forecasts(main = main1)
+#'
+#'    ids <- forecasts_to_evaluate <- select_forecasts(main         = main, 
+#'                                                     forecast_ids = forecast_ids)
+#'    evaluate_forecast(main = main1, forecast_id = ids[1])
+#'
+#'    read_forecast_evaluations(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+#'
+#' @rdname evaluate-forecasts
+#'
 #' @export
 #'
-evaluate_forecasts <- function (main        = ".", 
+evaluate_forecasts <- function (main         = ".", 
                                 forecast_ids = NULL) {
 
   settings <- read_directory_settings(main = main)
 
-  forecasts_to_evaluate <- select_forecasts(main     = main, 
-                                        forecast_ids = forecast_ids)
+  forecasts_to_evaluate <- select_forecasts(main         = main, 
+                                            forecast_ids = forecast_ids)
 
   forecast_ids  <- forecasts_to_evaluate$forecast_id
   nforecast_ids <- length(forecast_ids)
@@ -112,8 +139,8 @@ evaluate_forecasts <- function (main        = ".",
 #'
 #' @export
 #'
-evaluate_forecast <- function (main     = ".", 
-                           forecast_id  = NULL) {
+evaluate_forecast <- function (main        = ".", 
+                               forecast_id = NULL) {
 
   settings <- read_directory_settings(main = main)
 
@@ -270,6 +297,8 @@ read_forecasts_evaluations <- function (main = "."){
 
     if ("species" %in% colnames(out)) {
       out <- na_conformer(out)
+    } else {
+      out$species <- NULL
     }
 
   }

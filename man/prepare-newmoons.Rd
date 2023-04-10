@@ -24,3 +24,19 @@ Some version of a newmoons \code{data.frame}. \cr \cr
 Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule.
 \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "newmoons")
+
+   create_dir(main = main1)
+   fill_resources(main = main1)
+   fill_forecasts(main = main1)
+   fill_fits(main = main1)
+   fill_models(main = main1)
+
+   prepare_newmoons(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}
+
+}

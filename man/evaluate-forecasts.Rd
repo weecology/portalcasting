@@ -27,3 +27,26 @@ Evaluate forecasts in the directory, based on id(s). \cr \cr
 Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS). \cr
 \code{read_forecasts_evaluations} read in the forecasts evaluations file.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "evaluations")
+   setup_dir(main = main1)
+
+   plot_covariates(main = main1)
+
+   make_model_combinations(main = main1)
+   portalcast(main = main1, models = "AutoArima")
+   cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+
+   evaluate_forecasts(main = main1)
+
+   ids <- forecasts_to_evaluate <- select_forecasts(main         = main, 
+                                                    forecast_ids = forecast_ids)
+   evaluate_forecast(main = main1, forecast_id = ids[1])
+
+   read_forecast_evaluations(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}
+
+}

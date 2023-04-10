@@ -24,8 +24,6 @@
 #'    main1 <- file.path(tempdir(), "portalcast")
 #'    setup_dir(main = main1)
 #'
-#'    plot_covariates(main = main1)
-#'
 #'    make_model_combinations(main = main1)
 #'    portalcast(main = main1, models = "AutoArima")
 #'    cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")

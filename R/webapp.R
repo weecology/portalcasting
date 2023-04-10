@@ -416,8 +416,9 @@ global_list <- function (main = ".") {
 
   forecasts_metadata    <- read_forecasts_metadata(main = main)
   forecasts_evaluations <- read_forecasts_evaluations(main = main)
-  forecasts_evaluations <- forecasts_evaluations[!is.na(forecasts_evaluations$obs), ]
-
+  if (nrow(forecasts_evaluations) > 0) {
+    forecasts_evaluations <- forecasts_evaluations[!is.na(forecasts_evaluations$obs), ]
+  }
   if (nrow(forecasts_metadata) == 0) {
 
     messageq("  No forecasts metadata available.", quiet = !settings$verbose)

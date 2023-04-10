@@ -9,9 +9,9 @@ test_that(desc = "read_forecast_table reads in a forecast tab", {
 
   skip_on_cran() 
 
-  expect_is(read_forecast_table(main = main2, forecast_id = NULL), "data.frame")
-  expect_error(read_forecast_table(main = main2, forecast_id = 1e10))
-  expect_error(read_forecast_table(main = main2, forecast_id = "1.1"))
+  expect_is(read_forecast_table(main = main3, forecast_id = NULL), "data.frame")
+  expect_error(read_forecast_table(main = main3, forecast_id = 1e10))
+  expect_error(read_forecast_table(main = main3, forecast_id = "1.1"))
 
 })
 
@@ -54,7 +54,7 @@ test_that(desc = "add_obs_to_forecast_table functions add properly", {
   skip_on_cran() 
 
    forecast_table <- read_forecast_table(main = main3, forecast_id = "1.01")
-   expect_is(add_obs_to_forecast_table(main = main3, forecast_table = forecast_table), 
+   expect_is(add_observations_to_forecast_table(main = main3, forecast_table = forecast_table), 
              "data.frame")
 
 

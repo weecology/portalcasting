@@ -1,6 +1,6 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets, according to the [`directory_settings`].
+#' @description Sets up the metadata list used for forecasting, in particular the matching of time period across the datasets, according to the [`directory_settings`].
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'

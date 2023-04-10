@@ -33,15 +33,15 @@ test_that(desc = "plot_forecast_point", {
 })
 
 
-test_that(desc = "plot_forecasts_err_lead", {
+test_that(desc = "plot_forecasts_error_lead", {
 
 
   skip_on_cran() 
 
-  expect_silent(plot_forecasts_err_lead(main = main3, species = c("PP"), models = c("AutoArima")))
-  expect_silent(plot_forecasts_err_lead(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
+  expect_silent(plot_forecasts_error_lead(main = main3, species = c("PP"), models = c("AutoArima")))
+  expect_silent(plot_forecasts_error_lead(main = main3, species = c("total", "DM"), models = c("AutoArima", "ESSS")))
 
-  expect_error(plot_forecasts_err_lead(main = main3, forecast_id = 1e10))
+  expect_error(plot_forecasts_error_lead(main = main3, forecast_id = 1e10))
 
 })
 

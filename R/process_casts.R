@@ -42,6 +42,62 @@
 #'
 #' @name process forecast output
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "forecast_output")
+#'
+#'    setup_dir(main = main1)
+#'    dataset <- "all"
+#'    species <- "DM"
+#'    model   <- "AutoArima"
+#'  
+#'    abundance      <- prepare_abundance(main    = main1,
+#'                                        dataset = dataset,
+#'                                        species = species,
+#'                                        model   = model)
+#'    model_controls <- models_controls(main       = main1,
+#'                                      models     = model)[[model]]
+#'    metadata       <- read_metadata(main        = main1)
+#'    newmoons       <- read_newmoons(main        = main1)                                        
+#'    covariates     <- read_covariates(main      = main1)
+#'  
+#'    fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+#'    for (i in 1:length(fit_args)) {
+#'      fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+#'    }
+#'    model_fit  <- do.call(what = model_controls$fit$fun,
+#'                          args = fit_args)
+#'  
+#'  
+#'    forecast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+#'    for (i in 1:length(forecast_args)) {
+#'      forecast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+#'    }
+#'  
+#'    model_forecast <- do.call(what = model_controls$cast$fun,
+#'                          args = forecast_args)
+#'  
+#'    process_model_output(main           = main1,
+#'                         model_fit      = model_fit,
+#'                         model_forecast = model_forecast,
+#'                         model          = model,
+#'                         dataset        = dataset,
+#'                         species        = species) 
+#'
+#'    cast_table     <- read_forecast_table(main = main1)
+#'    cast_table2    <- add_observations_to_forecast_table(main = main1,
+#'                                                         forecast_table = cast_table)
+#'    cast_tables    <- read_forecast_tables(main = main1)
+#'    cast_metadata  <- read_forecast_metadata(main = main1)
+#'    cast_fit       <- read_model_fit(main = main1)
+#'    cast_forecast  <- read_model_forecast(main = main1)
+#'
+#'    casts_metadata <- read_forecasts_metadata(main = main1)
+#'    select_forecasts(main = main)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
 NULL
 
 #' @rdname process-forecast-output
@@ -181,7 +237,7 @@ read_forecast_table <- function (main        = ".",
 
   }
 
-  lpath <- paste0("forecast_id_", forecast_id, "_forecast_tab.csv")
+  lpath <- paste0("forecast_id_", forecast_id, "_forecast_table.csv")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
@@ -226,13 +282,13 @@ read_forecast_tables <- function (main         = ".",
       forecast_tab_i <- read_forecast_table(main        = main,
                                             forecast_id = forecast_ids[i])
 
-      forecast_table <- rbind(forecast_tab, forecast_tab_i)
+      forecast_table <- rbind(forecast_table, forecast_tab_i)
 
     }
 
   }
 
-  forecast_tab
+  forecast_table
 
 }
 

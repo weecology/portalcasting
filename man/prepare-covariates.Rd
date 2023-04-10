@@ -16,3 +16,21 @@ prepare_covariates(main = ".")
 \description{
 Prepare and combine the historical and forecast covariate data for a model run, according to the \code{\link{directory_settings}}.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "covariates")
+
+   create_dir(main = main1)
+   fill_resources(main = main1)
+   fill_forecasts(main = main1)
+   fill_fits(main = main1)
+   fill_models(main = main1)
+
+   prepare_newmoons(main   = main1)
+   prepare_rodents(main    = main1) 
+   prepare_covariates(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}
+
+}

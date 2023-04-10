@@ -25,23 +25,23 @@ castle()
 
 \item{appendLF}{\code{logical} indicator if messages given as a \code{character} string should have a newline appended. See \code{\link[base:message]{message}}.}
 
-\item{char}{\code{character} value to repeated ``reps` times to form the break line.}
+\item{char}{\code{character} value to repeated \code{reps} times to form the break line.}
 
 \item{reps}{\code{integer}-conformable value for number of times \code{char} is replicated.}
 
 \item{nlines}{\code{integer}-conformable value for the number of \code{\link{break_line}}s to include. Defaults to \code{2} lines.}
 }
 \value{
-\code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{break_line}: The \code{character} of the line to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}. \cr \cr
-\code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}. \cr \cr
-\code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base:message]{message}} or \code{\link{messageq}}.
+\code{messageq}: A message is given, and \code{NULL} returned, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{break_line}: The \code{character} of the line to be passed to \code{\link[base:message]{message}} via \code{\link{messageq}}. \cr
+\code{break_lines}: The \code{character} of the lines to be passed to \code{\link[base:message]{message}} via \code{\link{messageq}}.  \cr
+\code{castle}: The \code{character} of the sandcastle to be passed to \code{\link[base:message]{message}} via \code{\link{messageq}}.
 }
 \description{
-Create messages for use in the portalcasting pipeline.
-\code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base:message]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr \cr
-\code{break_line}: Creates a horizontal line of characters ending with a newline call for messages. \cr \cr
-\code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr \cr
+Create messages for use in the portalcasting pipeline. \cr \cr
+\code{messageq}: Optionally generate a message based on a logical input. Uses a wrapper on \code{\link[base:message]{message}} that, given the input to \code{quiet}, generates the message(s) in \code{...} or not. \cr
+\code{break_line}: Creates a horizontal line of characters ending with a newline call for messages. \cr
+\code{break_lines}: Creates a set of horizontal line of characters ending with a newline call for messages. \cr
 \code{castle}: Creates a text drawing of a sandcastle of characters for messages.
 }
 \examples{

@@ -73,8 +73,8 @@ Additionally, new models and datasets can be added to the directory at filling u
 }
 \examples{
 \dontrun{
-   main1 <- file.path(tempdir(), "standard")
-   main2 <- file.path(tempdir(), "production")
+   main1 <- file.path(tempdir(), "fill_standard")
+   main2 <- file.path(tempdir(), "fill_production")
 
    create_dir(main = main1)
    fill_dir(main = main1)
