@@ -1,168 +1,20 @@
-#' @title Prepare Rodents Data for the a Portalcasting Model
+
+#' @title Prepare Rodents Data for Forecasting
 #'
-#' @description Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
+#' @description `prepare_dataset` is the workhorse function for creating portalcasting rodent datasets using existing functions. \cr 
+#'              Wraps around [`portalr::summarize_rodent_data`] to produce a `data.frame` associated with a set of data specifications. Inputs are ready for implementation via [`prepare_rodents`].
+#'              `prepare_rodents` creates specified `datasets` using their associated function (typically `prepare_dataset`) and arguments, according to the [`directory_settings`]. \cr 
+#'              `prepare_abundance` creates a model-ready vector of abundances for fitting and casting, according to the model's requirements and time settings.
 #'
-#' @param main `character` value of the name of the main component of the directory tree. 
+#' @param name `character` name to be given to the dataset.
 #'
-#' @param dataset `character` value of name of rodent dataset to include.
-#'
-#' @param species `character` value of name of rodent species within the dataset.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param model `character` value of the model name.
 #'
-#' @return `numeric` vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
-#'  
-#' @name prepare rodents
-#'
-#' @export
-#'
-prepare_abundance <- function (main    = ".", 
-                               dataset = NULL,
-                               species = NULL,
-                               model   = NULL) {
-
-  return_if_null(x = dataset)
-  return_if_null(x = model)
-  return_if_null(x = species)
-
-  settings <- read_directory_settings(main = main)
-
-  model_controls <- models_controls(main   = main, 
-                                    models = model)[[model]]
-  metadata        <- read_metadata(main         = main)
-  rodents_table   <- read_rodents_dataset(main    = main, 
-                                          dataset = dataset)
-
-  moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
-  species_in    <- colnames(rodents_table) == species
-  out           <- rodents_table[moon_in, species_in]
-
-
-  if (model_controls$interpolate$needed) {
-
-   out <- do.call(what = model_controls$interpolate$fun,
-                  args = update_list(list(x = out), model_controls$interpolate$args))
-
-  } 
-
-  out 
-}
-
-
-
-
-#' @title Read and Write Rodent Datasets Control Lists
-#'
-#' @description Input/Output functions for dataset control lists.
-#'
-#' @param main `character` value of the name of the main component of the directory tree. 
-#'
-#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
-#'
-#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
-#'
-#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
-#'  
-#' @name read and write rodent dataset controls
-#'
-#' @export
-#'
-read_datasets_controls <- function (main = ".") {
-
-  settings <- read_directory_settings(main = main)
-  read_yaml(file.path(main, settings$subdirectories$data, settings$files$datasets_controls))
-
-}
-
-#' @rdname read-and-write-rodent-dataset-controls
-#'
-#' @export
-#'
-datasets_controls <- function (main     = ".",
-                               datasets = prefab_datasets( )) {
-
-  read_datasets_controls(main = main)[datasets]
-
-}
-
-#' @rdname read-and-write-rodent-dataset-controls
-#'
-#' @export
-#'
-write_datasets_controls <- function (main                  = ".",
-                                     new_datasets_controls = NULL,
-                                     datasets              = prefab_datasets( )) {
-
-  settings <- read_directory_settings(main = main)
-
-  messageq("Writing dataset controls ...", quiet = settings$quiet)
-
-  datasets_controls <- c(prefab_datasets_controls( ), new_datasets_controls)[datasets]
-
-  write_yaml(x    = datasets_controls,
-             file = rodents_datasets_controls_path(main = main))
-
-  messageq(" ... complete.\n", quiet = settings$quiet)
-
-  invisible(datasets_controls)
-
-}
-
-
-#' @title Prepare Rodents Data for the Portalcasting Repository
-#'
-#' @description Create specified `datasets` using their associated function and arguments, according to the [`directory_settings`].
-#'
-#' @param main `character` value of the name of the main component of the directory tree. 
-#'
-#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
+#' @param dataset,datasets `character` value(s) of name(s) of rodent dataset(s) to include.
 #'
 #' @param new_datasets_controls Optional `list` of controls for new datasets. See [`datasets_controls`].
-#'
-#' @return `list` of prepared `datasets`.
-#'  
-#' @name prepare rodents
-#'
-#' @export
-#'
-prepare_rodents <- function (main                  = ".",
-                             datasets              = prefab_datasets( ),
-                             new_datasets_controls = NULL) {
-
-  return_if_null(x = datasets)
-  settings <- read_directory_settings(main = main)
-
-  datasets_controls_list <- write_datasets_controls(main                  = main, 
-                                                    datasets              = datasets, 
-                                                    new_datasets_controls = new_datasets_controls)
-
-  messageq("  - rodents", quiet = settings$quiet)
-
-  out <- named_null_list(element_names = datasets)
-
-  for (i in 1:length(datasets_controls_list)) {
-
-    out[[i]] <- do.call(what = datasets_controls_list[[i]]$fun, 
-                        args = update_list(list = datasets_controls_list[[i]]$args, 
-                                           main = main))
-  
-  }
-
-  invisible(out)
-
-}
-
-
-
-#' @title Prepare Rodents Data Tables for Forecasting
-#'
-#' @description Workhorse function for creating portalcasting rodent datasets using existing functions. \cr \cr
-#'              Wraps around [`portalr::summarize_rodent_data`] to produce a `data.frame` associated with a set of data specifications. \cr \cr
-#'              Ready for implementation via [`prepare_rodents`].
-#'
-#' @param name `character` name of the data set.
-#'
-#' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param species `character`-valued vector of species names to include. 
 #'
@@ -204,9 +56,100 @@ prepare_rodents <- function (main                  = ".",
 #'
 #' @param filename `character` value of the file for saving the output.
 #'
-#' @return `data.frame` for the specified data set.
+#' @return `prepare_dataset`: `data.frame` for the specified dataset. \cr
+#'         `prepare_rodents`: `list` of `data.frame`s for the specified datasets. \cr
+#'         `prepare_abundance`: `numeric` vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls. \cr
 #'
-#' @name prepare rodent dataset
+#' @name prepare rodents
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "rodents")
+#'
+#'    create_dir(main = main1)
+#'    fill_resources(main = main2)
+#'    fill_forecasts(main = main2)
+#'    fill_fits(main = main2)
+#'    fill_models(main = main2)
+#'
+#'    prepare_newmoons(main   = main)
+#'    prepare_rodents(main    = main) 
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+
+#' @rdname prepare-rodents
+#'
+#' @export
+#'
+prepare_abundance <- function (main    = ".", 
+                               dataset = NULL,
+                               species = NULL,
+                               model   = NULL) {
+
+  return_if_null(x = dataset)
+  return_if_null(x = model)
+  return_if_null(x = species)
+
+  settings <- read_directory_settings(main = main)
+
+  model_controls <- models_controls(main   = main, 
+                                    models = model)[[model]]
+  metadata        <- read_metadata(main         = main)
+  rodents_table   <- read_rodents_dataset(main    = main, 
+                                          dataset = dataset)
+
+  moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
+  species_in    <- colnames(rodents_table) == species
+  out           <- rodents_table[moon_in, species_in]
+
+
+  if (model_controls$interpolate$needed) {
+
+   out <- do.call(what = model_controls$interpolate$fun,
+                  args = update_list(list(x = out), model_controls$interpolate$args))
+
+  } 
+
+  out 
+}
+
+#' @rdname prepare-rodents
+#'
+#' @export
+#'
+prepare_rodents <- function (main                  = ".",
+                             datasets              = prefab_datasets( ),
+                             new_datasets_controls = NULL) {
+
+  return_if_null(x = datasets)
+  settings <- read_directory_settings(main = main)
+
+  datasets_controls_list <- write_datasets_controls(main                  = main, 
+                                                    datasets              = datasets, 
+                                                    new_datasets_controls = new_datasets_controls)
+
+  messageq("  - rodents", quiet = settings$quiet)
+
+  out <- named_null_list(element_names = datasets)
+
+  for (i in 1:length(datasets_controls_list)) {
+
+    out[[i]] <- do.call(what = datasets_controls_list[[i]]$fun, 
+                        args = update_list(list = datasets_controls_list[[i]]$args, 
+                                           main = main))
+  
+  }
+
+  invisible(out)
+
+}
+
+
+#' @rdname prepare-rodents
 #'
 #' @export
 #'
@@ -324,5 +267,62 @@ prepare_dataset <- function(name       = "all",
 }
 
 
+
+#' @title Read and Write Rodent Datasets Control Lists
+#'
+#' @description Input/Output functions for dataset control lists.
+#'
+#' @param main `character` value of the name of the main component of the directory tree. 
+#'
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
+#'
+#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
+#'
+#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
+#'  
+#' @name read and write rodent dataset controls
+#'
+#' @export
+#'
+read_datasets_controls <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+  read_yaml(file.path(main, settings$subdirectories$data, settings$files$datasets_controls))
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+datasets_controls <- function (main     = ".",
+                               datasets = prefab_datasets( )) {
+
+  read_datasets_controls(main = main)[datasets]
+
+}
+
+#' @rdname read-and-write-rodent-dataset-controls
+#'
+#' @export
+#'
+write_datasets_controls <- function (main                  = ".",
+                                     new_datasets_controls = NULL,
+                                     datasets              = prefab_datasets( )) {
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("Writing dataset controls ...", quiet = settings$quiet)
+
+  datasets_controls <- c(prefab_datasets_controls( ), new_datasets_controls)[datasets]
+
+  write_yaml(x    = datasets_controls,
+             file = rodents_datasets_controls_path(main = main))
+
+  messageq(" ... complete.\n", quiet = settings$quiet)
+
+  invisible(datasets_controls)
+
+}
 
 

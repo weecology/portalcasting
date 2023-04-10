@@ -4,7 +4,8 @@
 \alias{prepare rodents}
 \alias{prepare_abundance}
 \alias{prepare_rodents}
-\title{Prepare Rodents Data for the a Portalcasting Model}
+\alias{prepare_dataset}
+\title{Prepare Rodents Data for Forecasting}
 \usage{
 prepare_abundance(main = ".", dataset = NULL, species = NULL, model = NULL)
 
@@ -13,27 +14,107 @@ prepare_rodents(
   datasets = prefab_datasets(),
   new_datasets_controls = NULL
 )
+
+prepare_dataset(
+  name = "all",
+  main = ".",
+  filename = "rodents_all.csv",
+  clean = FALSE,
+  level = "Site",
+  type = "Rodents",
+  plots = "all",
+  unknowns = FALSE,
+  shape = "crosstab",
+  time = "newmoon",
+  output = "abundance",
+  fillweight = FALSE,
+  treatment = NULL,
+  na_drop = FALSE,
+  zero_drop = FALSE,
+  min_traps = 1,
+  min_plots = 24,
+  effort = TRUE,
+  species = forecasting_species(),
+  total = TRUE,
+  save = TRUE
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{dataset}{\code{character} value of name of rodent dataset to include.}
+\item{dataset, datasets}{\code{character} value(s) of name(s) of rodent dataset(s) to include.}
 
-\item{species}{\code{character} value of name of rodent species within the dataset.}
+\item{species}{\code{character}-valued vector of species names to include.}
 
 \item{model}{\code{character} value of the model name.}
 
-\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to include.}
-
 \item{new_datasets_controls}{Optional \code{list} of controls for new datasets. See \code{\link{datasets_controls}}.}
+
+\item{name}{\code{character} name to be given to the dataset.}
+
+\item{filename}{\code{character} value of the file for saving the output.}
+
+\item{clean}{\code{logical} indicator of if only the rodent data that passed QA/QC (\code{clean = TRUE}) or if all data (\code{clean = FALSE}) should be loaded.}
+
+\item{level}{\code{character} indicating the type of summary: \code{"Plot"}, \code{"Treatment"}, or \code{"Site"}. Pipes directly to \code{\link[portalr:summarize_rodent_data]{portalr::summarize_rodent_data}}.}
+
+\item{type}{\code{character} value of the rodent data set type, according to pre-existing definitions. An alternative toggle to \code{species}. \cr \cr
+Either all species (\code{type = "Rodents"}) or only granivoes (\code{type = "Granivores"}).}
+
+\item{plots}{Specification of subset of plots. Can be a vector of \code{numeric} plots indicators or specific sets indicated by \code{character} values: \code{"all"} plots or \code{"Longterm"} plots (plots that have had the same treatment for the entire time series).}
+
+\item{unknowns}{\code{logical} indicator to either remove all individuals not identified to species (\code{unknowns = FALSE}) or sum them in an additional column (\code{unknowns = TRUE}.}
+
+\item{shape}{\code{character} value indicating a "crosstab" or "flat" output.}
+
+\item{time}{\code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
+The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling.}
+
+\item{output}{\code{character} indicating the type of data: \code{"abundance"}, \code{"biomass"}, or \code{"energy"}.}
+
+\item{fillweight}{\code{logical} specifier of whether to fill in unknown weights with other records from that individual or species, where possible.}
+
+\item{treatment}{\code{character} indicating the specific treatment(s) to trim to if \code{level = "Treatment"}: \code{"control"}, \code{"exclosure"}, \code{"removal"}, or \code{"spectabs"}}
+
+\item{na_drop}{\code{logical} indicator of if \code{NA} values (representing insufficient sampling) should be dropped.}
+
+\item{zero_drop}{\code{logical} indicator of if \code{0} values (representing sufficient sampling but no detection) should be dropped.}
+
+\item{min_traps}{\code{integer} (or integer \code{numeric}) of the minimum number of traps collected for a plot to be used.}
+
+\item{min_plots}{\code{integer} (or integer \code{numeric}) of the minimum number of plots surveyed for a survey to be used.}
+
+\item{effort}{\code{logical} indicator of if the effort columns should be included in the output.}
+
+\item{total}{\code{logical} value indicating if a total (sum across species should be added or not. Only available if more than one species is included.}
+
+\item{save}{\code{logical} indicator controlling if the output should be saved out.}
 }
 \value{
-\code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls.
-
-\code{list} of prepared \code{datasets}.
+\code{prepare_dataset}: \code{data.frame} for the specified dataset. \cr
+\code{prepare_rodents}: \code{list} of \code{data.frame}s for the specified datasets. \cr
+\code{prepare_abundance}: \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls. \cr
 }
 \description{
-Create vector of historic abundances for a rodent species in a dataset for a model's forecasting.
+\code{prepare_dataset} is the workhorse function for creating portalcasting rodent datasets using existing functions. \cr
+Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. Inputs are ready for implementation via \code{\link{prepare_rodents}}.
+\code{prepare_rodents} creates specified \code{datasets} using their associated function (typically \code{prepare_dataset}) and arguments, according to the \code{\link{directory_settings}}. \cr
+\code{prepare_abundance} creates a model-ready vector of abundances for fitting and casting, according to the model's requirements and time settings.
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "rodents")
 
-Create specified \code{datasets} using their associated function and arguments, according to the \code{\link{directory_settings}}.
+   create_dir(main = main1)
+   fill_resources(main = main2)
+   fill_forecasts(main = main2)
+   fill_fits(main = main2)
+   fill_models(main = main2)
+
+   prepare_newmoons(main   = main)
+   prepare_rodents(main    = main) 
+
+   unlink(main1, recursive = TRUE)
+}
+
 }

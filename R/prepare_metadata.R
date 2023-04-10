@@ -9,7 +9,31 @@
 #' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
 #' @return `list` of forecasting metadata, which is also saved out as a YAML file (`.yaml`) if desired.
-#' 
+#'
+#' @name prepare metadata
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "metadata")
+#'
+#'    create_dir(main = main1)
+#'    fill_resources(main = main2)
+#'    fill_forecasts(main = main2)
+#'    fill_fits(main = main2)
+#'    fill_models(main = main2)
+#'
+#'    prepare_newmoons(main   = main)
+#'    prepare_rodents(main    = main) 
+#'    prepare_covariates(main = main)
+#'    prepare_metadata(main   = main)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+#' @rdname prepare-metadata
+#'
 #' @export
 #'
 prepare_metadata <- function (main                 = ".",
