@@ -1,10 +1,10 @@
 rm(list=ls())
 devtools::document()
 devtools::load_all()
-main <- "~/prod"
+main <- "~/production_test"
 setup_production(main = main, verbose = TRUE)
 portalcast(main = main)
-evaluate_casts(main = main)
+evaluate_forecasts(main = main)
 
 shiny::runApp()
 

@@ -61,7 +61,7 @@ portalcast <- function (main     = ".",
 
   for (i in 1:nmodel_combinations) {
 
-    out[[i]] <- tryCatch(expr = forecast(main    = main,
+    out[[i]] <- tryCatch(expr = cast(main    = main,
                                      model   = model_combinations$model[i],
                                      dataset = model_combinations$dataset[i],
                                      species = model_combinations$species[i]),
@@ -126,13 +126,13 @@ cast <- function (main     = ".",
                         args = fit_args)
 
 
-  forecast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+  forecast_args  <- named_null_list(element_names = names(model_controls$forecast$args))
   for (i in 1:length(forecast_args)) {
-    forecast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+    forecast_args[[i]] <- eval(parse(text = model_controls$forecast$args[i]))
   }
 
-  model_forecast <- do.call(what = model_controls$cast$fun,
-                        args = forecast_args)
+  model_forecast <- do.call(what = model_controls$forecast$fun,
+                            args = forecast_args)
 
   process_model_output(main           = main,
                        model_fit      = model_fit,

@@ -57,8 +57,8 @@
 #'                                        dataset = dataset,
 #'                                        species = species,
 #'                                        model   = model)
-#'    model_controls <- models_controls(main       = main1,
-#'                                      models     = model)[[model]]
+#'    model_controls <- models_controls(main      = main1,
+#'                                      models    = model)[[model]]
 #'    metadata       <- read_metadata(main        = main1)
 #'    newmoons       <- read_newmoons(main        = main1)                                        
 #'    covariates     <- read_covariates(main      = main1)
@@ -193,7 +193,7 @@ process_model_output <- function (main      = ".",
     forecast_table_path     <- file.path(main, settings$subdirectories$forecasts, forecast_table_filename)
 
     row.names(forecast_table) <- NULL
-    write_csv_arrow(x         = forecast_tab,
+    write_csv_arrow(x         = forecast_table,
                     file      = forecast_table_path)
 
     row.names(forecasts_metadata) <- NULL
