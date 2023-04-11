@@ -21,14 +21,22 @@
 #'    plot_covariates(main = main1)
 #'
 #'    make_model_combinations(main = main1)
-#'    portalcast(main = main1, models = "AutoArima")
-#'    cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+#'
+#'    portalcast(main   = main1, 
+#'               models = "AutoArima")
+#'
+#'    cast(main    = main1,
+#'         model   = "AutoArima", 
+#'         dataset = "controls", 
+#'         species = "DM")
 #' 
 #'    evaluate_forecasts(main = main1)
 #'
 #'    ids <- forecasts_to_evaluate <- select_forecasts(main         = main, 
 #'                                                     forecast_ids = forecast_ids)
-#'    evaluate_forecast(main = main1, forecast_id = ids[1])
+#'         
+#'    evaluate_forecast(main        = main1, 
+#'                      forecast_id = ids[1])
 #'
 #'    read_forecast_evaluations(main = main1)
 #'
@@ -205,13 +213,13 @@ evaluate_forecast <- function (main        = ".",
 
 
     forecast_table$logs[can_score] <- logs(y      = forecast_obs,
-                                     family = scoring_family,
-                                     mean   = forecast_mean,
-                                     sd     = forecast_sd)
+                                           family = scoring_family,
+                                           mean   = forecast_mean,
+                                           sd     = forecast_sd)
     forecast_table$crps[can_score] <- crps(y      = forecast_obs,
-                                     family = scoring_family,
-                                     mean   = forecast_mean,
-                                     sd     = forecast_sd)
+                                           family = scoring_family,
+                                           mean   = forecast_mean,
+                                           sd     = forecast_sd)
 
   } else if (scoring_family == "poisson") {
 
@@ -222,11 +230,11 @@ evaluate_forecast <- function (main        = ".",
 
 
     forecast_table$logs[can_score] <- logs(y      = forecast_obs,
-                                     family = scoring_family,
-                                     lambda = forecast_lambda)
+                                           family = scoring_family,
+                                           lambda = forecast_lambda)
     forecast_table$crps[can_score] <- crps(y      = forecast_obs,
-                                     family = scoring_family,
-                                     lambda = forecast_lambda)
+                                           family = scoring_family,
+                                           lambda = forecast_lambda)
 
   } else if (scoring_family == "nbinom") {
 
@@ -246,14 +254,14 @@ evaluate_forecast <- function (main        = ".",
     forecast_size <- pmax(1e-4, (forecast_mu ^ 2) / (forecast_var - forecast_mu), na.rm = TRUE)
 
     forecast_table$logs[can_score] <- logs(y      = forecast_obs,
-                                     family = scoring_family,
-                                     mu     = forecast_mu,
-                                     size   = forecast_size)
+                                           family = scoring_family,
+                                           mu     = forecast_mu,
+                                           size   = forecast_size)
 
     forecast_table$crps[can_score] <- crps(y      = forecast_obs,
-                                     family = scoring_family,
-                                     mu     = forecast_mu,
-                                     size   = forecast_size)
+                                           family = scoring_family,
+                                           mu     = forecast_mu,
+                                           size   = forecast_size)
 
   } else if (scoring_family == "sample") {
 
@@ -261,10 +269,10 @@ evaluate_forecast <- function (main        = ".",
     forecast_sample <- t(model_forecast$sample[ , can_score])
 
     forecast_table$logs[can_score] <- logs_sample(y   = forecast_obs,
-                                            dat = forecast_sample)
+                                                  dat = forecast_sample)
 
     forecast_table$crps[can_score] <- crps_sample(y   = forecast_obs,
-                                            dat = forecast_sample)
+                                                  dat = forecast_sample)
 
   }
 

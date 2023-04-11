@@ -494,7 +494,7 @@ available_datasets <- function (global = global_list( ),
 
   } else {
 
-    availale <- NULL
+    available <- NULL
 
   }
 
