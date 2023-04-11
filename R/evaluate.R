@@ -84,8 +84,9 @@ evaluate_forecasts <- function (main         = ".",
 
   if (length(selected_forecast_ids) == 0) {
 
-    message(" No forecasts need evaluation.", quiet = FALSE)
+    message(" No forecasts need evaluation.", quiet = settings$quiet)
     return(existing_evaluations)
+
   }
 
   nselected_forecast_ids <- length(selected_forecast_ids)
@@ -96,8 +97,8 @@ evaluate_forecasts <- function (main         = ".",
 
   for (i in 1:nselected_forecast_ids) {
 
-    out[[i]] <- tryCatch(evaluate_forecast(main    = main,
-                                       forecast_id = selected_forecast_ids[i]),
+    out[[i]] <- tryCatch(evaluate_forecast(main        = main,
+                                           forecast_id = selected_forecast_ids[i]),
                          error = function(x) {NA})
 
   }
@@ -150,15 +151,15 @@ evaluate_forecast <- function (main        = ".",
                             forecast_id        = forecast_id)
   forecast_meta <- read_forecast_metadata(main     = main, 
                                   forecast_id  = forecast_id)
-  forecast_table <- add_obs_to_forecast_table(main     = main,  
+  forecast_table <- add_observations_to_forecast_table(main     = main,  
                                   forecast_table = forecast_table)
   model_forecast  <- read_model_forecast(main         = main, 
                                  forecast_id      = forecast_id)
 
-  forecast_table$covered <- forecast_table$obs >= forecast_table$lower_pi & forecast_table$obs <= forecast_table$upper_pi 
-  forecast_table$error   <- forecast_table$estimate - forecast_table$obs
-  forecast_table$logs    <- NA
-  forecast_table$crps    <- NA
+  forecast_table$covered                  <- forecast_table$observation >= forecast_table$lower_pi & forecast_table$observation <= forecast_table$upper_pi 
+  forecast_table$error                    <- forecast_table$estimate - forecast_table$observation 
+  forecast_table$logs                     <- NA
+  forecast_table$crps                     <- NA
   forecast_table$cast_evaluation_complete <- FALSE
 
   scoring_family <- switch(forecast_meta$model,
@@ -197,7 +198,7 @@ evaluate_forecast <- function (main        = ".",
 
   if (scoring_family == "normal") {
 
-    forecast_obs  <- forecast_table$obs[can_score]
+    forecast_obs  <- forecast_table$observation[can_score]
 
     forecast_mean   <- forecast_table$estimate[can_score]
     forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
@@ -215,7 +216,7 @@ evaluate_forecast <- function (main        = ".",
   } else if (scoring_family == "poisson") {
 
 
-    forecast_obs  <- forecast_table$obs[can_score]
+    forecast_obs  <- forecast_table$observation[can_score]
 
     forecast_lambda  <- pmax(1e-5, forecast_table$estimate[can_score])
 
@@ -237,7 +238,7 @@ evaluate_forecast <- function (main        = ".",
     #  var  = mu + mu^2 / size
     #  size = mu^2 / (var - mu)
 
-    forecast_obs  <- forecast_table$obs[can_score]
+    forecast_obs  <- forecast_table$observation[can_score]
 
     forecast_mu   <- pmax(1e-5, forecast_table$estimate[can_score])
     forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
@@ -256,7 +257,7 @@ evaluate_forecast <- function (main        = ".",
 
   } else if (scoring_family == "sample") {
 
-    forecast_obs    <- forecast_table$obs[can_score]
+    forecast_obs    <- forecast_table$observation[can_score]
     forecast_sample <- t(model_forecast$sample[ , can_score])
 
     forecast_table$logs[can_score] <- logs_sample(y   = forecast_obs,
