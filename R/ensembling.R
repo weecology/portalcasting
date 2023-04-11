@@ -79,8 +79,8 @@ ensemble_forecasts <- function (main                   = ".",
                                              forecast_ids = forecast_choices$forecast_id)
       forecast_table <- add_observations_to_forecast_table(main     = main,  
                                       forecast_table = forecast_table)
-      forecast_table$covered <- forecast_table$obs >= forecast_table$lower_pi & forecast_table$obs <= forecast_table$upper_pi 
-      forecast_table$error   <- forecast_table$estimate - forecast_table$obs
+      forecast_table$covered <- forecast_table$observations >= forecast_table$lower_pi & forecast_table$observations <= forecast_table$upper_pi 
+      forecast_table$error   <- forecast_table$estimate - forecast_table$observations
 
     }
 
@@ -157,7 +157,7 @@ ensemble_forecasts <- function (main                   = ".",
 
         u_pi[counter]        <- estimate[counter] + sqrt(mvar[counter] * CL)
         l_pi[counter]        <- estimate[counter] - sqrt(mvar[counter] * CL)
-        obs[counter]         <- unique(pcast_table$obs)
+        obs[counter]         <- unique(pcast_table$observations)
         error[counter]       <- estimate[counter] - obs[counter]
         
         end_moon_id[counter] <- unique(pcast_table$historic_end_newmoonnumber)

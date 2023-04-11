@@ -73,6 +73,9 @@ plot_covariates(main = ".", to_plot = "ndvi")
 
 \item{forecast_group}{\code{integer} (or integer \code{numeric}) value of the forecast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{forecast_group}.}
 
+\item{historic_start_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
+Does not influence the fit of the models, just the presentation.}
+
 \item{to_plot}{\code{character} of the covariate to plot, restricted to column names in the covariates table (see \code{\link{read_covariates}}).}
 }
 \value{

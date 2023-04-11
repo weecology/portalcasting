@@ -72,7 +72,7 @@ update_forecasts_folder <- function (main = ".") {
 
           model_forecasts <- NULL
           load(cpath_RData)
-          forecast_forecasts <- model_casts
+          forecast_forecasts <- model_forecasts
 
       } else {
 

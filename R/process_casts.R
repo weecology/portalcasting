@@ -17,6 +17,8 @@
 #'        `datasets` can be NULL, one value, or more than one values, `dataset` can only be NULL or one value.
 #'
 #' @param species `character` value of the species codes (or `"total"` for the total across species) to include. Default value is `NULL`, which equates to no selection with respect to `species`.
+#' 
+#' @param forecast_table A `data.frame` of a cast's output. See [`read_forecast_table`].
 #'
 #' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon numbers of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
