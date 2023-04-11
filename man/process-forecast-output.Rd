@@ -105,8 +105,8 @@ Four model-specific output components are saved and returned:
                                        dataset = dataset,
                                        species = species,
                                        model   = model)
-   model_controls <- models_controls(main       = main1,
-                                     models     = model)[[model]]
+   model_controls <- models_controls(main      = main1,
+                                     models    = model)[[model]]
    metadata       <- read_metadata(main        = main1)
    newmoons       <- read_newmoons(main        = main1)                                        
    covariates     <- read_covariates(main      = main1)

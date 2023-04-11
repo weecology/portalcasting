@@ -90,11 +90,27 @@ update_forecasts_folder <- function (main = ".") {
 
         forecast_tab_j                              <- forecast_table[forecast_table$species == unique(forecast_table$species)[j], ]
         forecast_id_j                               <- paste0(forecast_tab_j$cast_id[1], ".", ifelse(nchar(j) == 1, paste0(0, j), js[j]))
-        forecast_tab_j$old_forecast_id              <- forecast_tab_j$cast_id
+        forecast_tab_j$old_cast_id                  <- forecast_tab_j$cast_id
         forecast_tab_j$forecast_id                  <- forecast_id_j
+        forecast_tab_j$cast_id                      <- NULL
+
         forecast_tab_j$origin                       <- NA
         forecast_tab_j$newmoonnumber                <- forecast_tab_j$moon
         forecast_tab_j$moon                         <- NULL
+
+        forecast_tab_j$forecast_date                <- forecast_tab_j$cast_date
+        forecast_tab_j$cast_date                    <- NULL
+
+        forecast_tab_j$forecast_month               <- forecast_tab_j$cast_month
+        forecast_tab_j$cast_month                   <- NULL
+
+        forecast_tab_j$forecast_year                <- forecast_tab_j$cast_year
+        forecast_tab_j$cast_year                    <- NULL
+
+        forecast_tab_j$forecast_group               <- forecast_tab_j$cast_group
+        forecast_tab_j$cast_group                   <- NULL
+
+
 
         forecast_tab_j$historic_start_newmoonnumber <- forecast_tab_j$start_moon
         forecast_tab_j$historic_end_newmoonnumber   <- forecast_tab_j$end_moon
