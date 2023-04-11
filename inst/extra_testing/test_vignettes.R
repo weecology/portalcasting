@@ -3,6 +3,7 @@
 #   as a result, there is no formal check on the code, which means it could break without notifications
 #
 
+options(knitr.purl.inline = TRUE)
 
 Rmd  <- list.files(file.path("vignettes"), full.names = TRUE)
 Rmd  <- Rmd[grepl("\\.Rmd", Rmd)]
