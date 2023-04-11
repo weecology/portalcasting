@@ -70,9 +70,9 @@ update_forecasts_folder <- function (main = ".") {
 
       } else if (file.exists(cpath_RData)) {
 
-          model_forecasts <- NULL
+          model_casts <- NULL
           load(cpath_RData)
-          forecast_forecasts <- model_forecasts
+          forecast_forecasts <- model_casts
 
       } else {
 
