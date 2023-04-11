@@ -312,7 +312,7 @@ add_observations_to_forecast_table <- function (main           = ".",
   obs <- read_rodents_dataset(main     = main, 
                               dataset  = dataset)
 
-  forecast_table$observaiton <- obs[match(forecast_table$newmoonnumber, obs$newmoonnumber), species]
+  forecast_table$observation <- obs[match(forecast_table$newmoonnumber, obs$newmoonnumber), species]
 
   forecast_table 
 

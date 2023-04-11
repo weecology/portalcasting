@@ -47,27 +47,27 @@ NULL
 #'
 #' @export
 #'
-ensemble_forecasts <- function (main                   = ".", 
-                            method                     = "unwtavg", 
-                            forecast_groups            = NULL, 
-                            forecast_ids               = NULL, 
-                            forecast_table             = NULL, 
-                            historic_end_newmoonnumber = NULL, 
-                            models                     = NULL, 
-                            dataset                    = NULL, 
-                            species                    = NULL) {
+ensemble_forecasts <- function (main                       = ".", 
+                                method                     = "unwtavg", 
+                                forecast_groups            = NULL, 
+                                forecast_ids               = NULL, 
+                                forecast_table             = NULL, 
+                                historic_end_newmoonnumber = NULL, 
+                                models                     = NULL, 
+                                dataset                    = NULL, 
+                                species                    = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   if (is.null(forecast_table)) {
 
     forecast_choices <- select_forecasts(main                        = main, 
-                                 forecast_ids                    = forecast_ids, 
-                                 forecast_groups                 = forecast_groups, 
-                                 models                      = models, 
-                                 species                     = species, 
-                                 historic_end_newmoonnumbers = historic_end_newmoonnumber, 
-                                 datasets                    = dataset)
+                                         forecast_ids                = forecast_ids, 
+                                         forecast_groups             = forecast_groups, 
+                                         models                      = models, 
+                                         species                     = species, 
+                                         historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                                         datasets                    = dataset)
 
     if (NROW(forecast_choices) == 0) {
 
@@ -77,21 +77,21 @@ ensemble_forecasts <- function (main                   = ".",
 
       forecast_table <- read_forecast_tables(main     = main, 
                                              forecast_ids = forecast_choices$forecast_id)
-      forecast_table <- add_observations_to_forecast_table(main     = main,  
-                                      forecast_table = forecast_table)
-      forecast_table$covered <- forecast_table$observations >= forecast_table$lower_pi & forecast_table$observations <= forecast_table$upper_pi 
-      forecast_table$error   <- forecast_table$estimate - forecast_table$observations
+      forecast_table <- add_observations_to_forecast_table(main           = main,  
+                                                           forecast_table = forecast_table)
+      forecast_table$covered <- forecast_table$observation >= forecast_table$lower_pi & forecast_table$observation <= forecast_table$upper_pi 
+      forecast_table$error   <- forecast_table$estimate - forecast_table$observation
 
     }
 
   }
 
-  forecast_ids                      <- ifnull(forecast_ids, unique(forecast_table$forecast_id))
+  forecast_ids                  <- ifnull(forecast_ids, unique(forecast_table$forecast_id))
   models                        <- ifnull(models, unique(forecast_table$model)[1])
   dataset                       <- ifnull(dataset, unique(forecast_table$dataset)[1])
   species                       <- ifnull(species, unique(forecast_table$species)[1]) 
   historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(forecast_table$historic_end_newmoonnumber)[1]) 
-  forecast_id_in                    <- forecast_table$forecast_id %in% forecast_ids
+  forecast_id_in                <- forecast_table$forecast_id %in% forecast_ids
   model_in                      <- forecast_table$model %in% models
   dataset_in                    <- forecast_table$dataset == dataset
   species_in                    <- forecast_table$species %in% species
@@ -157,7 +157,7 @@ ensemble_forecasts <- function (main                   = ".",
 
         u_pi[counter]        <- estimate[counter] + sqrt(mvar[counter] * CL)
         l_pi[counter]        <- estimate[counter] - sqrt(mvar[counter] * CL)
-        obs[counter]         <- unique(pcast_table$observations)
+        obs[counter]         <- unique(pcast_table$observation)
         error[counter]       <- estimate[counter] - obs[counter]
         
         end_moon_id[counter] <- unique(pcast_table$historic_end_newmoonnumber)

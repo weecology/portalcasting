@@ -308,22 +308,22 @@ plot_forecasts_error_lead <- function (main                        = ".",
 #' @export
 #'
 plot_forecasts_cov_RMSE <- function (main                        = ".", 
-                                 forecast_ids                = NULL, 
-                                 historic_end_newmoonnumbers = NULL, 
-                                 models                      = NULL, 
-                                 datasets                    = NULL, 
-                                 species                     = NULL) {
+                                     forecast_ids                = NULL, 
+                                     historic_end_newmoonnumbers = NULL, 
+                                     models                      = NULL, 
+                                     datasets                    = NULL, 
+                                     species                     = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   evals    <- read_forecasts_evaluations(main = main)
 
   forecasts_meta <- select_forecasts(main                        = main, 
-                                 forecast_ids                = forecast_ids,
-                                 historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
-                                 models                      = models, 
-                                 datasets                    = datasets, 
-                                 species                     = species)
+                                     forecast_ids                = forecast_ids,
+                                     historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
+                                     models                      = models, 
+                                     datasets                    = datasets, 
+                                     species                     = species)
 
 
   datasets                      <- unique(forecasts_meta$dataset)[unique(forecasts_meta$dataset) %in% unique(evals$dataset)]
