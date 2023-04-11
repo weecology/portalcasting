@@ -32,14 +32,14 @@ make_model_combinations(
 \item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr:rodent_species]{rodent_species}}.}
 }
 \value{
-\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base:invisible]{invisible}}-ly. \cr  \cr
-\code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr \cr
+\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
 \code{make_model_combinations}: \code{data.frame} of the model combinations.
 }
 \description{
 Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
-\code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
-\code{cast} runs a single forecast of a single model on one species of one dataset. \cr \cr
+\code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr
+\code{cast} runs a single forecast of a single model on one species of one dataset. \cr
 \code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
 }
 \examples{

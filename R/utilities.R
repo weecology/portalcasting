@@ -1,7 +1,7 @@
 #' @title Find an Object's Host Package and Version Information
 #'
 #' @description Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
-#'   If the object is sourced through multiple packages, each package and its version are included.
+#'              If the object is sourced through multiple packages, each package and its version are included.
 #'
 #' @param what An R object.
 #'
@@ -93,7 +93,6 @@ round_na.interp <- function (x,
        ... = xr)
 
 }
-
 
 
 #' @title Determine a File's Extension 
@@ -247,7 +246,8 @@ update_list <- function (list = list(),
 #' @name foy
 #'
 #' @examples
-#'   Sys.Date( ); foy(Sys.Date())
+#'    Sys.Date( )
+#'    foy(Sys.Date())
 #'
 NULL
 
@@ -267,7 +267,6 @@ foy <- function (dates = NULL) {
   round(jday / nyejday, 3)
 
 }
-
 
 
 

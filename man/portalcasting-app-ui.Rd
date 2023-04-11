@@ -112,9 +112,9 @@ write_models_tab_html(main = ".")
 A UI definition, component shiny tags, or bootswatch theme.
 }
 \description{
-\code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{fluidPage}} on the UI components. \cr \cr
-\code{write_rodent_profiles_tab_html} and \code{write_model_tab_html} build and write-out static html files for the rodent profiles and models tabs during \code{\link{fill_app}}. \cr \cr
-The \verb{<_>_href} functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr \cr
+\code{portal_forecast_ui} constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running \code{\link[shiny:fluidPage]{fluidPage}} on the UI components. \cr
+\code{write_rodent_profiles_tab_html} and \code{write_model_tab_html} build and write-out static html files for the rodent profiles and models tabs during \code{\link{fill_app}}. \cr
+The \verb{<_>_href} functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr
 See \code{Details} for hierarchy of functions.
 }
 \details{

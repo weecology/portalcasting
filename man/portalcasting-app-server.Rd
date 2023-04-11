@@ -17,13 +17,13 @@ initial_reactive_values(global = global_list())
 
 initial_output(main = ".", rv, output)
 
-event_reaction(main, global, event_name, rv, input, output, session)
+event_reaction(main, global, event, rv, input, output, session)
 
-update_reactive_values(event_name, rv, input)
+update_reactive_values(event, rv, input)
 
-update_output(main, event_name, rv, input, output)
+update_output(main, event, rv, input, output)
 
-update_input(global, event_name, rv, input, session)
+update_input(global, event, rv, input, session)
 }
 \arguments{
 \item{input}{\code{input} \code{list} for the UI.}
@@ -38,17 +38,17 @@ update_input(global, event_name, rv, input, session)
 
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
 
-\item{event_name}{\code{character} value of the server event. \cr
+\item{event}{\code{character} value of the server event. \cr
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 }
 \value{
-\code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr \cr
-\code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr \cr
-\code{initial_output}: an \code{output} \code{list}. \cr \cr
-\code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se. \cr \cr
-\code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr \cr
-\code{update_output}: an \code{output} \code{list}. \cr \cr
-\code{update_input}: updates the \code{input} \code{list}, but does not return it. \cr \cr
+\code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr
+\code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr
+\code{initial_output}: an \code{output} \code{list}. \cr
+\code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se. \cr
+\code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr
+\code{update_output}: an \code{output} \code{list}. \cr
+\code{update_input}: updates the \code{input} \code{list}, but does not return it.
 }
 \description{
 Generate the Server Code for the Web App

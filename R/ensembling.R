@@ -3,7 +3,7 @@
 #' @description Combine multiple forecasts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
 #' @details A pre-loaded table of forecasts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'  The forecasts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant forecasts from the stated `forecast_groups` will be included. 
+#'          The forecasts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant forecasts from the stated `forecast_groups` will be included. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'

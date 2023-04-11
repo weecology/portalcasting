@@ -1,6 +1,9 @@
 #' @title Create a Directory Settings List
 #'
-#' @description Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
+#' @description Compose parts of and complete directory settings controls lists. \cr \cr
+#'              Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and `directory_files`, `directory_subdirectories`, and `directory_settings` gather them into a set of lists for pipeline functionality. \cr
+#'              `directory_resources` dictates the `source` and `version` (and any other specialized arguments) for each of the raw resources collected for the directory. \cr
+#'              `time_settings` collates the temporal aspects of the data, and can be used to set up alternate forecast timelines for specialized projects and sandboxing. 
 #'
 #' @param files `list` of `character` names of standard files, see [`directory_files`].
 #'
@@ -89,6 +92,14 @@
 #' @return Named `list` of settings for the directory (for `directory_settings`) or `list` of settings components (for `directory_files`, `directory_subdirectories`, and `directory_resources`).
 #'
 #' @name directory settings
+#'
+#' @examples
+#'    directory_settings( )
+#'    directory_files( )
+#'    directory_subdirectories( )
+#'    directory_resources( )
+#'    time_settings( )
+#'
 #'
 NULL
 

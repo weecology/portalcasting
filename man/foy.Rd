@@ -16,6 +16,7 @@ foy(dates = NULL)
 Based on the year in which the date occurred, determine the fraction of the year (foy) for the date (in relation to New Year's Eve in that year).
 }
 \examples{
-  Sys.Date( ); foy(Sys.Date())
+   Sys.Date( )
+   foy(Sys.Date())
 
 }

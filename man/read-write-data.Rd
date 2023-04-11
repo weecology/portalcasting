@@ -66,7 +66,7 @@ read_climate_forecasts(main = ".")
 }
 \description{
 Generalized data input-output functionality with specifics for common files. \cr \cr
-\code{write_data} saves inputted data out to a data file if requested and returns it to the console, \code{\link[base:invisible]{invisible}}-ly. Currently available for \code{yaml}, \code{csv}, and \code{json} file extensions. \cr \cr
+\code{write_data} saves inputted data out to a data file if requested and returns it to the console, \code{\link[base:invisible]{invisible}}-ly. Currently available for \code{yaml}, \code{csv}, and \code{json} file extensions. \cr
 \code{read_data} reads in a specified data file. Specific functions available include \code{read_rodents}, \code{read_rodents_dataset}, \code{read_covariates}, \code{read_climate_forecasts}, \code{read_newmoons}, and \code{read_metadata}.
 }
 \examples{

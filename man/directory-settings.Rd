@@ -159,5 +159,17 @@ Default value of \code{30} corresponds to one additional lunar month.}
 Named \code{list} of settings for the directory (for \code{directory_settings}) or \code{list} of settings components (for \code{directory_files}, \code{directory_subdirectories}, and \code{directory_resources}).
 }
 \description{
-Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and this function gathers them into a list for pipeline functionality.
+Compose parts of and complete directory settings controls lists. \cr \cr
+Most users will not want or need to change the directory folders and file names, but it is helpful to have them be flexible for certain circumstances, and \code{directory_files}, \code{directory_subdirectories}, and \code{directory_settings} gather them into a set of lists for pipeline functionality. \cr
+\code{directory_resources} dictates the \code{source} and \code{version} (and any other specialized arguments) for each of the raw resources collected for the directory. \cr
+\code{time_settings} collates the temporal aspects of the data, and can be used to set up alternate forecast timelines for specialized projects and sandboxing.
+}
+\examples{
+   directory_settings( )
+   directory_files( )
+   directory_subdirectories( )
+   directory_resources( )
+   time_settings( )
+
+
 }

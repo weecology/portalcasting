@@ -10,9 +10,9 @@
 #'
 #' @param controls `list` of controls for the models. 
 #'
-#' @return `model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
-#'         `read_models_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr \cr
-#'         `write_models_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr \cr
+#' @return `model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr 
+#'         `read_models_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr 
+#'         `write_models_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr 
 #'         `write_models_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
 #'
 #' @name prepare models

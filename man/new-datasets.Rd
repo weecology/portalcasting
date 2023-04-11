@@ -32,11 +32,11 @@ new_dataset_args(...)
 \item{fun}{\code{character} value of the generation function.}
 }
 \value{
-\code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr \cr
-\code{new_dataset_controls}: \code{list} of named dataset controls. \cr \cr
-\code{new_dataset_metadata}: \code{list} of named dataset metadata elements to the controls \code{list}. \cr \cr
-\code{new_dataset_fun}: \code{character} of dataset generation function. \cr \cr
-\code{new_dataset_args}: named \code{list} of argument elements to the generating function. \cr \cr
+\code{dataset_controls_template}: \code{list} of named dataset controls elements, many as \code{NULL}. \cr
+\code{new_dataset_controls}: \code{list} of named dataset controls. \cr
+\code{new_dataset_metadata}: \code{list} of named dataset metadata elements to the controls \code{list}. \cr
+\code{new_dataset_fun}: \code{character} of dataset generation function. \cr
+\code{new_dataset_args}: named \code{list} of argument elements to the generating function. \cr
 \code{add_new_dataset}: dataset controls \code{list} for the new dataset, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{

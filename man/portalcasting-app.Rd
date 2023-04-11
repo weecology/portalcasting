@@ -14,7 +14,8 @@ global_list(main = ".")
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 }
 \value{
-\code{global_list}: a \code{list} of values that will be globally available in the app.
+\code{global_list}: a \code{list} of values that will be globally available in the app. \cr
+\code{run_app} runs the app itself.
 }
 \description{
 \code{run_app} constructs and launches a local version of the web application by running \code{\link[shiny:runApp]{shiny::runApp}} pointed to the \code{app} subdirectory in the local \code{portalcasting} package folder. \cr \cr
@@ -24,6 +25,8 @@ global_list(main = ".")
 \dontrun{
    main1 <- file.path(tempdir(), "app")
    setup_dir(main = main1)
+
+   global_list(main = main1)
 
    run_app(main = main1)
 

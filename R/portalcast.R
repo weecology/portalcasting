@@ -1,8 +1,8 @@
 #' @title Forecast Portal Rodents Models
 #'
 #' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
-#'              `portalcast` wraps around `cast` to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr \cr
-#'              `cast` runs a single forecast of a single model on one species of one dataset. \cr \cr
+#'              `portalcast` wraps around `cast` to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr 
+#'              `cast` runs a single forecast of a single model on one species of one dataset. \cr 
 #'              `make_model_combinations` translates model controls into a `data.frame` of model, dataset, and species columns, with a row for each combination. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
@@ -13,8 +13,8 @@
 #'
 #' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`rodent_species`][portalr::rodent_species].
 #'
-#' @return `portalcast`: `data.frame` of model combinations with a `logical` column added for fit success, [`invisible`][base::invisible]-ly. \cr  \cr
-#'         `cast`: `list` of model outputs from [`process_model_output`]. \cr \cr
+#' @return `portalcast`: `data.frame` of model combinations with a `logical` column added for fit success, [`invisible`][base::invisible]-ly. \cr
+#'         `cast`: `list` of model outputs from [`process_model_output`]. \cr 
 #'         `make_model_combinations`: `data.frame` of the model combinations.
 #'
 #' @name portalcast

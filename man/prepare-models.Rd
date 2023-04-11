@@ -31,9 +31,9 @@ models_controls(main = ".", models = prefab_models())
 \item{controls}{\code{list} of controls for the models.}
 }
 \value{
-\code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{read_models_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
-\code{write_models_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr \cr
+\code{model_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{read_models_controls}: \code{list} of all \code{models}' control \code{list}s, from the file defined in \code{\link{directory_settings}}, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{write_models_controls}: \code{list} of \code{models}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly. \cr
 \code{write_models_scripts}: \code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{

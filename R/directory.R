@@ -1,6 +1,7 @@
 #' @title Create the Structure of a Directory and Fill It with Content or Update an Existing Directory
 #'
-#' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. 
+#' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. \cr 
+#'              Options for pre-defined setups include `setup_sandbox` for quick and flexible builds and `setup_production` for robust, rigid builds, as defined in [`directory_settings`].
 #'
 #' @param quiet `logical` indicator if progress messages should be quieted.
 #'

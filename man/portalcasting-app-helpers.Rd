@@ -14,38 +14,70 @@
 \alias{selected_model}
 \title{Helper Functions for the Portalcasting App}
 \usage{
-available_newmoonnumbers(global = global_list(), event_name, rv = NULL)
+available_newmoonnumbers(
+  global = global_list(),
+  event = "initial_evaluation_tab",
+  rv = NULL
+)
 
-selected_newmoonnumber(global = global_list(), event_name, rv = NULL)
+selected_newmoonnumber(
+  global = global_list(),
+  event = "initial_evaluation_tab",
+  rv = NULL
+)
 
 available_historic_end_newmoonnumbers(
   global = global_list(),
-  event_name,
+  event = "initial_forecast_tab",
   rv = NULL
 )
 
 selected_historic_end_newmoonnumber(
   global = global_list(),
-  event_name,
+  event = "initial_forecast_tab",
   rv = NULL
 )
 
-available_species(global = global_list(), event_name, rv = NULL)
+available_species(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 
-selected_species(global = global_list(), event_name, rv = NULL)
+selected_species(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 
-available_datasets(global = global_list(), event_name, rv = NULL)
+available_datasets(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 
-selected_dataset(global = global_list(), event_name, rv = NULL)
+selected_dataset(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 
-available_models(global = global_list(), event_name, rv = NULL)
+available_models(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 
-selected_model(global = global_list(), event_name, rv = NULL)
+selected_model(
+  global = global_list(),
+  event = "initial_forecast_tab",
+  rv = NULL
+)
 }
 \arguments{
 \item{global}{A \code{list} of global values for the app.}
 
-\item{event_name}{\code{character} value of the server event. \cr
+\item{event}{\code{character} value of the server event. \cr
 Options include \code{"initial_forecast_tab"}, \code{"initial_evaluation_tab"}, \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, \code{"evaluation_tab_historic_end_newmoonnumber"}, and \code{"evaluation_tab_newmoonnumber"})}
 
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
@@ -54,5 +86,56 @@ Options include \code{"initial_forecast_tab"}, \code{"initial_evaluation_tab"}, 
 \code{character} or \code{integer}, depending upon the function.
 }
 \description{
-Construct vectors of available choices and make selections.
+Construct vectors of available choices and make selections, with respect to species, dataset, model, and moons.
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "app_helpers")
+   setup_dir(main = main1)
+
+   gl <- global_list(main = main1)
+
+   rv <- list(forecast_tab_species                      = gl$initial_forecast_tab_selected_species,
+              forecast_tab_dataset                      = gl$initial_forecast_tab_selected_dataset,
+              forecast_tab_model                        = gl$initial_forecast_tab_selected_model,
+              forecast_tab_historic_end_newmoonnumber   = gl$initial_forecast_tab_selected_historic_end_newmoonnumber,
+              evaluation_tab_species                    = gl$initial_evaluation_tab_selected_species,
+              evaluation_tab_dataset                    = gl$initial_evaluation_tab_selected_dataset,
+              evaluation_tab_model                      = gl$initial_evaluation_tab_selected_model,
+              evaluation_tab_historic_end_newmoonnumber = gl$initial_evaluation_tab_selected_historic_end_newmoonnumber,
+              evaluation_tab_newmoonnumber              = gl$initial_evaluation_tab_selected_newmoonnumber)
+
+   available_models(global = gl, 
+                    event  = "initial_forecast_tab")
+   selected_model(global   = gl, 
+                  event    = "initial_forecast_tab", 
+                  rv         = rv1)
+
+   available_datasets(global = gl, 
+                      event  = "initial_forecast_tab")
+   selected_dataset(global   = gl, 
+                    event    = "initial_forecast_tab", 
+                    rv       = rv1)
+
+   available_species(global  = gl, 
+                     event   = "initial_forecast_tab")
+   selected_species(global   = gl, 
+                    event    = "initial_forecast_tab", 
+                    rv       = rv1)
+
+   available_historic_end_newmoonnumbers(global = gl, 
+                                         event  = "initial_forecast_tab")
+   selected_historic_end_newmoonnumber(global   = gl, 
+                                       event    = "initial_forecast_tab", 
+                                       rv       = rv1)
+
+   available_newmoonnumbers(global = gl, 
+                            event  = "initial_evaluation_tab")
+   selected_newmoonnumber(global   = gl, 
+                          event    = "initial_evaluation_tab", 
+                          rv       = rv1)
+
+   unlink(main1, recursive = TRUE)
+ }
+
 }

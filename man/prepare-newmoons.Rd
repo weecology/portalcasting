@@ -16,12 +16,12 @@ add_forecast_newmoons(main = ".", newmoons = NULL)
 \item{newmoons}{\code{data.frame} of newmoon data.}
 }
 \value{
-Some version of a newmoons \code{data.frame}. \cr \cr
-\code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr \cr
+Some version of a newmoons \code{data.frame}. \cr
+\code{prepare_newmoons}: fully appended and formatted \code{data.frame} (also saved out if \code{settings$save = TRUE}). \cr
 \code{add_forecast_newmoons}: fully appended and formatted \code{data.frame}.
 }
 \description{
-Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule.
+Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. \cr
 \code{add_forecast_newmoons} adds future newmoon dates to the newmoon table from \code{prepare_newmoons} associated with the forecast.
 }
 \examples{

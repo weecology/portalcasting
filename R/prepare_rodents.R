@@ -1,7 +1,7 @@
 #' @title Prepare Rodents Data for Forecasting
 #'
 #' @description `prepare_dataset` is the workhorse function for creating portalcasting rodent datasets using existing functions. \cr 
-#'              Wraps around [`portalr::summarize_rodent_data`] to produce a `data.frame` associated with a set of data specifications. Inputs are ready for implementation via [`prepare_rodents`].
+#'              Wraps around [`portalr::summarize_rodent_data`] to produce a `data.frame` associated with a set of data specifications. Inputs are ready for implementation via [`prepare_rodents`]. \cr
 #'              `prepare_rodents` creates specified `datasets` using their associated function (typically `prepare_dataset`) and arguments, according to the [`directory_settings`]. \cr 
 #'              `prepare_abundance` creates a model-ready vector of abundances for fitting and casting, according to the model's requirements and time settings.
 #'
@@ -42,7 +42,7 @@
 #'
 #' @param unknowns `logical` indicator to either remove all individuals not identified to species (`unknowns = FALSE`) or sum them in an additional column (`unknowns = TRUE`.
 #'
-#' @param time `character` value specifying the format of the time index in the output. Options are `"period"` (sequential Portal surveys), `"newmoon"` (lunar cycle numbering), and `"date"` (calendar date). \cr \cr
+#' @param time `character` value specifying the format of the time index in the output. Options are `"period"` (sequential Portal surveys), `"newmoon"` (lunar cycle numbering), and `"date"` (calendar date). \cr 
 #'             The default `time = "newmoon"` produces an equispaced observation timestep, a common format format for discrete-time modeling. 
 #'
 #' @param na_drop `logical` indicator of if `NA` values (representing insufficient sampling) should be dropped. 
@@ -58,6 +58,7 @@
 #' @return `prepare_dataset`: `data.frame` for the specified dataset. \cr
 #'         `prepare_rodents`: `list` of `data.frame`s for the specified datasets. \cr
 #'         `prepare_abundance`: `numeric` vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls. \cr
+#'         `read_datasets_controls`, `write_datasets_controls`, `datasets_controls`: `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
 #'
 #' @name prepare rodents
 #'
@@ -73,6 +74,10 @@
 #'
 #'    prepare_newmoons(main   = main1)
 #'    prepare_rodents(main    = main1) 
+#'
+#'    write_dataset_controls(main = main1)
+#'    read_dataset_controls(main = main1)
+#'    dataset_controls(main = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }
@@ -97,8 +102,8 @@ prepare_abundance <- function (main    = ".",
 
   model_controls <- models_controls(main   = main, 
                                     models = model)[[model]]
-  metadata        <- read_metadata(main         = main)
-  rodents_table   <- read_rodents_dataset(main    = main, 
+  metadata       <- read_metadata(main         = main)
+  rodents_table  <- read_rodents_dataset(main    = main, 
                                           dataset = dataset)
 
   moon_in       <- rodents_table$newmoonnumber %in% metadata$time$historic_newmoonnumbers
@@ -267,19 +272,7 @@ prepare_dataset <- function(name       = "all",
 
 
 
-#' @title Read and Write Rodent Datasets Control Lists
-#'
-#' @description Input/Output functions for dataset control lists.
-#'
-#' @param main `character` value of the name of the main component of the directory tree. 
-#'
-#' @param datasets `character` vector of name(s) of rodent dataset(s) to include.
-#'
-#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
-#'
-#' @return `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
-#'  
-#' @name read and write rodent dataset controls
+#' @rdname prepare-rodents
 #'
 #' @export
 #'
@@ -290,7 +283,8 @@ read_datasets_controls <- function (main = ".") {
 
 }
 
-#' @rdname read-and-write-rodent-dataset-controls
+
+#' @rdname prepare-rodents
 #'
 #' @export
 #'
@@ -301,7 +295,8 @@ datasets_controls <- function (main     = ".",
 
 }
 
-#' @rdname read-and-write-rodent-dataset-controls
+
+#' @rdname prepare-rodents
 #'
 #' @export
 #'

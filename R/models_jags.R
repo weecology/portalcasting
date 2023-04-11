@@ -1,7 +1,7 @@
 
 #' @title Create and Run a runjags Portalcasting Model 
 #'
-#' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
+#' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr 
 #'              `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`run.jags`][runjags::run.jags] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
 #'              `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
 #'              `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 

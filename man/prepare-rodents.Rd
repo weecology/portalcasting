@@ -5,6 +5,9 @@
 \alias{prepare_abundance}
 \alias{prepare_rodents}
 \alias{prepare_dataset}
+\alias{read_datasets_controls}
+\alias{datasets_controls}
+\alias{write_datasets_controls}
 \title{Prepare Rodents Data for Forecasting}
 \usage{
 prepare_abundance(main = ".", dataset = NULL, species = NULL, model = NULL)
@@ -38,6 +41,16 @@ prepare_dataset(
   total = TRUE,
   save = TRUE
 )
+
+read_datasets_controls(main = ".")
+
+datasets_controls(main = ".", datasets = prefab_datasets())
+
+write_datasets_controls(
+  main = ".",
+  new_datasets_controls = NULL,
+  datasets = prefab_datasets()
+)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
@@ -67,7 +80,7 @@ Either all species (\code{type = "Rodents"}) or only granivoes (\code{type = "Gr
 
 \item{shape}{\code{character} value indicating a "crosstab" or "flat" output.}
 
-\item{time}{\code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr \cr
+\item{time}{\code{character} value specifying the format of the time index in the output. Options are \code{"period"} (sequential Portal surveys), \code{"newmoon"} (lunar cycle numbering), and \code{"date"} (calendar date). \cr
 The default \code{time = "newmoon"} produces an equispaced observation timestep, a common format format for discrete-time modeling.}
 
 \item{output}{\code{character} indicating the type of data: \code{"abundance"}, \code{"biomass"}, or \code{"energy"}.}
@@ -94,10 +107,11 @@ The default \code{time = "newmoon"} produces an equispaced observation timestep,
 \code{prepare_dataset}: \code{data.frame} for the specified dataset. \cr
 \code{prepare_rodents}: \code{list} of \code{data.frame}s for the specified datasets. \cr
 \code{prepare_abundance}: \code{numeric} vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls. \cr
+\code{read_datasets_controls}, \code{write_datasets_controls}, \code{datasets_controls}: \code{list} of \code{datasets}' control \code{list}s, \code{\link[base:invisible]{invisible}}-ly for \code{write_datasets_controls}.
 }
 \description{
 \code{prepare_dataset} is the workhorse function for creating portalcasting rodent datasets using existing functions. \cr
-Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. Inputs are ready for implementation via \code{\link{prepare_rodents}}.
+Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_rodent_data}} to produce a \code{data.frame} associated with a set of data specifications. Inputs are ready for implementation via \code{\link{prepare_rodents}}. \cr
 \code{prepare_rodents} creates specified \code{datasets} using their associated function (typically \code{prepare_dataset}) and arguments, according to the \code{\link{directory_settings}}. \cr
 \code{prepare_abundance} creates a model-ready vector of abundances for fitting and casting, according to the model's requirements and time settings.
 }
@@ -113,6 +127,10 @@ Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_roden
 
    prepare_newmoons(main   = main1)
    prepare_rodents(main    = main1) 
+
+   write_dataset_controls(main = main1)
+   read_dataset_controls(main = main1)
+   dataset_controls(main = main1)
 
    unlink(main1, recursive = TRUE)
 }

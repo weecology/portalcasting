@@ -2,7 +2,7 @@
 #'
 #' @description Create a `character` vector of the names of the pre-fabricated (prefab) models or a `list` of their controls.
 #'
-#' @return `prefab_models`: `character` vector of model names. \cr \cr
+#' @return `prefab_models`: `character` vector of model names. \cr 
 #'         `prefab_models_controls`: `list` of model controls.
 #'
 #' @name prefabricated models

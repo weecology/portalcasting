@@ -7,7 +7,7 @@
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the forecasts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
-#'  `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
+#'        `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
 #'
 #' @return A `data.frame` of all forecast evaluations at the observation (newmoon) level, as requested, [`invisible`][base::invisible]-ly.
 #'

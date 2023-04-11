@@ -13,11 +13,11 @@
 #'
 #' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @return `dataset_controls_template`: `list` of named dataset controls elements, many as `NULL`. \cr \cr 
-#'         `new_dataset_controls`: `list` of named dataset controls. \cr \cr
-#'         `new_dataset_metadata`: `list` of named dataset metadata elements to the controls `list`. \cr \cr
-#'         `new_dataset_fun`: `character` of dataset generation function. \cr \cr
-#'         `new_dataset_args`: named `list` of argument elements to the generating function. \cr \cr
+#' @return `dataset_controls_template`: `list` of named dataset controls elements, many as `NULL`. \cr  
+#'         `new_dataset_controls`: `list` of named dataset controls. \cr 
+#'         `new_dataset_metadata`: `list` of named dataset metadata elements to the controls `list`. \cr 
+#'         `new_dataset_fun`: `character` of dataset generation function. \cr 
+#'         `new_dataset_args`: named `list` of argument elements to the generating function. \cr 
 #'         `add_new_dataset`: dataset controls `list` for the new dataset, [`invisible`][base::invisible]-ly.
 #'
 #' @name new datasets

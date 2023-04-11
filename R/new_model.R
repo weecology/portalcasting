@@ -11,14 +11,14 @@
 #'
 #' @param new_model_controls `list` of controls for any new models (not in the prefab models) listed in `models` that are to be added to the control list and file.
 #'
-#' @return `model_controls_template`: `list` of named model controls elements, many as `NULL`. \cr \cr
-#'         `new_model_controls`: `list` of named model controls. \cr \cr
-#'         `new_model_metadata`: `list` of named model metadata elements to the controls `list`. \cr \cr
-#'         `new_model_fit`: `list` of named model fit function and argument elements to the controls `list`. \cr \cr
-#'         `new_model_forecast`: `list` of named forecast function and argument elements to the controls `list`. \cr \cr
-#'         `new_model_interpolate`: `list` of named interpolation requirements elements to the controls `list`. \cr \cr
-#'         `new_model_datasets`: `list` of named dataset elements to the controls `list`. \cr \cr
-#'         `new_model_response`: `list` of named response data description elements to the controls `list`. \cr \cr
+#' @return `model_controls_template`: `list` of named model controls elements, many as `NULL`. \cr 
+#'         `new_model_controls`: `list` of named model controls. \cr 
+#'         `new_model_metadata`: `list` of named model metadata elements to the controls `list`. \cr 
+#'         `new_model_fit`: `list` of named model fit function and argument elements to the controls `list`. \cr 
+#'         `new_model_forecast`: `list` of named forecast function and argument elements to the controls `list`. \cr 
+#'         `new_model_interpolate`: `list` of named interpolation requirements elements to the controls `list`. \cr 
+#'         `new_model_datasets`: `list` of named dataset elements to the controls `list`. \cr 
+#'         `new_model_response`: `list` of named response data description elements to the controls `list`. \cr 
 #'         `add_new_model`: model controls `list` for the new model, [`invisible`][base::invisible]-ly.
 #'
 #' @name new models

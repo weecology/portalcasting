@@ -1,9 +1,9 @@
 
 #' @title Generate the User Interface for the Web App
 #' 
-#' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr \cr
-#'              `write_rodent_profiles_tab_html` and `write_model_tab_html` build and write-out static html files for the rodent profiles and models tabs during [`fill_app`]. \cr \cr
-#'              The `<_>_href` functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr \cr
+#' @description `portal_forecast_ui` constructs the user interface (UI) for the web application by updating the static pages (models and rodent profiles) then running [`fluidPage`][shiny::fluidPage] on the UI components. \cr
+#'              `write_rodent_profiles_tab_html` and `write_model_tab_html` build and write-out static html files for the rodent profiles and models tabs during [`fill_app`]. \cr
+#'              The `<_>_href` functions provide simplified calls to hyperlinked texts that are repeatedly used. \cr 
 #'              See `Details` for hierarchy of functions. 
 #'
 #' @details The UI is hierarchical built as:

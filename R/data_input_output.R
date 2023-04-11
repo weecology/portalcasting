@@ -1,7 +1,7 @@
 #' @title Read from and Write to a Data File 
 #'
 #' @description Generalized data input-output functionality with specifics for common files. \cr \cr 
-#'              `write_data` saves inputted data out to a data file if requested and returns it to the console, [`invisible`][base::invisible]-ly. Currently available for `yaml`, `csv`, and `json` file extensions. \cr \cr
+#'              `write_data` saves inputted data out to a data file if requested and returns it to the console, [`invisible`][base::invisible]-ly. Currently available for `yaml`, `csv`, and `json` file extensions. \cr 
 #'              `read_data` reads in a specified data file. Specific functions available include `read_rodents`, `read_rodents_dataset`, `read_covariates`, `read_climate_forecasts`, `read_newmoons`, and `read_metadata`. 
 #'
 #' @param x Data, such as a `data.frame` or `list`, to be written out.

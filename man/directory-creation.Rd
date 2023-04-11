@@ -79,7 +79,8 @@ setup_sandbox(
 The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
-Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content.
+Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. \cr
+Options for pre-defined setups include \code{setup_sandbox} for quick and flexible builds and \code{setup_production} for robust, rigid builds, as defined in \code{\link{directory_settings}}.
 }
 \examples{
 \dontrun{

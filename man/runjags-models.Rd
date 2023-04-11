@@ -102,7 +102,7 @@ runjags_controls(
 \code{forecast.runjags}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"level"}.
 }
 \description{
-Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr \cr
+Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
 \code{fit_runjags}: Wraps up the runjags model object preparation functions with the model running (\code{\link[runjags:run.jags]{run.jags}} function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
 \code{runjags_data}, \code{runjags_monitor}, \code{runjags_model}, \code{runjags_inits}: Produce the model-specific components as named. \cr
 \code{forecast.runjags}: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a \code{"forecast"}-class object. \cr

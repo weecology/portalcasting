@@ -48,13 +48,58 @@ meta_tsglm(
 \item{...}{Additional parameters passed into \code{predict}.}
 }
 \value{
-\code{meta_tsglm}: An object of class \code{"tsglm"} with additional elements defining the submodel and lag. \cr \cr
+\code{meta_tsglm}: An object of class \code{"tsglm"} with additional elements defining the submodel and lag. \cr
 \code{forecast.tsglm}: \code{list} with \code{"forecast"}-class with named elements including \code{"mean"}, \code{"lower"}, \code{"upper"}, and \code{"newxreg"} (if provided for prediction) as well as the other elements returned by \code{predict}.
 }
 \description{
-Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
-\code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount:tsglm]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr \cr
+Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr
+\code{meta_tsglm}: Combines the model running with the covariate preparation functions for a multi-model \code{\link[tscount:tsglm]{tsglm}} (from the tscount (Liboschik et al. 2017) package) model. \cr
 \code{forecast.tsglm}: A wrapper around the \code{predict} function for tsglm objects that produces a \code{"forecast"}-class object.
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "metatsglm")
+
+   setup_dir(main = main1)
+   dataset <- "all"
+   species <- "DM"
+   model   <- "pevGARCH"
+ 
+   abundance      <- prepare_abundance(main    = main1,
+                                       dataset = dataset,
+                                       species = species,
+                                       model   = model)
+   model_controls <- models_controls(main       = main1,
+                                     models     = model)[[model]]
+   metadata       <- read_metadata(main        = main1)
+   newmoons       <- read_newmoons(main        = main1)                                        
+   covariates     <- read_covariates(main      = main1)
+   model          <- list(past_obs = 1, past_mean = 13)
+   distr          <- "poisson"
+   link           <- "log"
+   lag            <- 6
+   submodels      <- list(c("mintemp", "ndvi"),
+                          c("maxtemp"),
+                          c("meantemp"),
+                          c("precipitation"),
+                          c(NULL))
+
+   fit_tsglm      <- meta_tsglm(ts         = abundance, 
+                                model      = model, 
+                                distr      = distr, 
+                                link       = link, 
+                                lag        = lag, 
+                                submodels  = submodels, 
+                                covariates = covariates, 
+                                metadata   = metadata, 
+                                quiet      = FALSE)
+   newxreg <- covariates[covariates$newmoonnumber \%in\% (metadata$time$forecast_newmoonnumbers - lag), unlist(fit_tsglm$submodel)]
+
+   forecast(fit_tsglm, h = metadata$lead_time_newmoons, level = metadata$confidence_level, newxreg = newxreg))
+
+   unlink(main1, recursive = TRUE)
+}
+
 }
 \references{
 Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}.

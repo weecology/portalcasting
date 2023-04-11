@@ -1,14 +1,14 @@
 #' @title Prepare Lunar Data for the Portalcasting Repository
 #'
-#' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. 
+#' @description Get time information (calendar dates, census periods, and newmoon numbers) associated with trapping events (achieved and missed) based on a lunar survey schedule. \cr 
 #'              `add_forecast_newmoons` adds future newmoon dates to the newmoon table from `prepare_newmoons` associated with the forecast.
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
 #' @param newmoons `data.frame` of newmoon data.
 #'
-#' @return Some version of a newmoons `data.frame`. \cr \cr
-#'         `prepare_newmoons`: fully appended and formatted `data.frame` (also saved out if `settings$save = TRUE`). \cr \cr
+#' @return Some version of a newmoons `data.frame`. \cr
+#'         `prepare_newmoons`: fully appended and formatted `data.frame` (also saved out if `settings$save = TRUE`). \cr 
 #'         `add_forecast_newmoons`: fully appended and formatted `data.frame`. 
 #'
 #' @name prepare newmoons

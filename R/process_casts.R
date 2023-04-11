@@ -152,7 +152,7 @@ process_model_output <- function (main      = ".",
                                forecast_end_newmoonnumber         = metadata$time$forecast_end_newmoonnumber,
                                confidence_level                   = metadata$confidence_level,
                                forecast_group                     = metadata$forecast_group,
-                               old_forecast_id                    = NA,
+                               old_cast_id                        = NA,
                                forecast_id                        = forecast_metadata$forecast_id)
 
   pkg_version   <- metadata$directory_configuration$setup$core_package_version
@@ -187,12 +187,12 @@ process_model_output <- function (main      = ".",
                file = forecast_metadata_path)
 
 
-    forecast_tab_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_forecast_tab.csv") 
-    forecast_tab_path     <- file.path(main, settings$subdirectories$forecasts, forecast_tab_filename)
+    forecast_table_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_forecast_table.csv") 
+    forecast_table_path     <- file.path(main, settings$subdirectories$forecasts, forecast_table_filename)
 
     row.names(forecast_table) <- NULL
     write_csv_arrow(x         = forecast_tab,
-                    file      = forecast_tab_path)
+                    file      = forecast_table_path)
 
     row.names(forecasts_metadata) <- NULL
     write_csv_arrow(x         = forecasts_metadata, 
@@ -215,7 +215,7 @@ process_model_output <- function (main      = ".",
   }
 
   list(forecast_metadata   = forecast_metadata, 
-       forecast_table      = forecast_tab, 
+       forecast_table      = forecast_table, 
        model_fit           = model_fit, 
        model_forecast      = model_forecast)
 
@@ -279,10 +279,10 @@ read_forecast_tables <- function (main         = ".",
 
     for (i in 2:ncasts) {
 
-      forecast_tab_i <- read_forecast_table(main        = main,
-                                            forecast_id = forecast_ids[i])
+      forecast_table_i <- read_forecast_table(main        = main,
+                                              forecast_id = forecast_ids[i])
 
-      forecast_table <- rbind(forecast_table, forecast_tab_i)
+      forecast_table <- rbind(forecast_table, forecast_table_i)
 
     }
 
@@ -487,7 +487,7 @@ read_forecasts_metadata <- function (main = ".") {
     messageq("  **creating forecast metadata file**", quiet = settings$quiet)
 
     out <- data.frame(forecast_id                  = NA,
-                      old_forecast_id              = NA,
+                      old_cast_id                  = NA,
                       forecast_group               = 0,
                       forecast_date                = NA,
                       origin                       = NA,

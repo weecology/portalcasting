@@ -117,7 +117,7 @@ update_forecasts_folder <- function (main = ".") {
           forecast_forecasts_j      <- update_list(as.list(forecast_forecasts[unique(forecast_table$species)[j], ]), model = forecast_meta$models, dataset = forecast_meta$datasets, species = unique(forecast_table$species)[j], old_forecast_id = forecasts_metadata$forecast_id[i], forecast_id = forecast_id_j)
         } 
 
-        lpath <- paste0("forecast_id_", forecast_id_j, "_forecast_tab.csv")
+        lpath <- paste0("forecast_id_", forecast_id_j, "_forecast_table.csv")
         cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
         row.names(forecast_tab_j) <- NULL
         write_csv_arrow(x = forecast_tab_j, file = cpath)

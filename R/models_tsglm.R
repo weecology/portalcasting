@@ -1,7 +1,7 @@
 #' @title Create, Run, and Forecast Multi-model Inference TSGLM Model Runs
 #'
-#' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr \cr
-#'              `meta_tsglm`: Combines the model running with the covariate preparation functions for a multi-model [`tsglm`][tscount::tsglm] (from the tscount (Liboschik et al. 2017) package) model. \cr \cr 
+#' @description Using the tscount (Liboschik et al. 2017) package to forecast time series of counts. \cr 
+#'              `meta_tsglm`: Combines the model running with the covariate preparation functions for a multi-model [`tsglm`][tscount::tsglm] (from the tscount (Liboschik et al. 2017) package) model. \cr  
 #'              `forecast.tsglm`: A wrapper around the `predict` function for tsglm objects that produces a `"forecast"`-class object.
 #'
 #' @param ts Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
@@ -30,13 +30,57 @@
 #'
 #' @param ... Additional parameters passed into `predict`. 
 #'
-#' @return `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag. \cr \cr 
+#' @return `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag. \cr  
 #'         `forecast.tsglm`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"newxreg"` (if provided for prediction) as well as the other elements returned by `predict`.
 #'
 #' @references 
 #'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. [URL](https://doi.org/10.18637/jss.v082.i05).
 #'
 #' @name tsglm models
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "metatsglm")
+#'
+#'    setup_dir(main = main1)
+#'    dataset <- "all"
+#'    species <- "DM"
+#'    model   <- "pevGARCH"
+#'  
+#'    abundance      <- prepare_abundance(main    = main1,
+#'                                        dataset = dataset,
+#'                                        species = species,
+#'                                        model   = model)
+#'    model_controls <- models_controls(main       = main1,
+#'                                      models     = model)[[model]]
+#'    metadata       <- read_metadata(main        = main1)
+#'    newmoons       <- read_newmoons(main        = main1)                                        
+#'    covariates     <- read_covariates(main      = main1)
+#'    model          <- list(past_obs = 1, past_mean = 13)
+#'    distr          <- "poisson"
+#'    link           <- "log"
+#'    lag            <- 6
+#'    submodels      <- list(c("mintemp", "ndvi"),
+#'                           c("maxtemp"),
+#'                           c("meantemp"),
+#'                           c("precipitation"),
+#'                           c(NULL))
+#'
+#'    fit_tsglm      <- meta_tsglm(ts         = abundance, 
+#'                                 model      = model, 
+#'                                 distr      = distr, 
+#'                                 link       = link, 
+#'                                 lag        = lag, 
+#'                                 submodels  = submodels, 
+#'                                 covariates = covariates, 
+#'                                 metadata   = metadata, 
+#'                                 quiet      = FALSE)
+#'    newxreg <- covariates[covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag), unlist(fit_tsglm$submodel)]
+#'
+#'    forecast(fit_tsglm, h = metadata$lead_time_newmoons, level = metadata$confidence_level, newxreg = newxreg))
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
 #'
 NULL
 

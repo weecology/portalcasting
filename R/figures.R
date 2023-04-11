@@ -642,11 +642,11 @@ plot_forecast_ts <- function (main                         = ".",
   settings <- read_directory_settings(main = main)
 
   forecasts_meta <- select_forecasts(main                        = main, 
-                                 forecast_ids                = forecast_id,
-                                 historic_end_newmoonnumbers = historic_end_newmoonnumber, 
-                                 models                      = model, 
-                                 datasets                    = dataset, 
-                                 species                     = species)
+                                     forecast_ids                = forecast_id,
+                                     historic_end_newmoonnumbers = historic_end_newmoonnumber, 
+                                     models                      = model, 
+                                     datasets                    = dataset, 
+                                     species                     = species)
 
   if (NROW(forecasts_meta) > 1) {
 
@@ -661,20 +661,20 @@ plot_forecast_ts <- function (main                         = ".",
 
   }
 
-  dataset <- forecasts_meta$dataset
-  species <- forecasts_meta$species
-  model   <- forecasts_meta$model
+  dataset     <- forecasts_meta$dataset
+  species     <- forecasts_meta$species
+  model       <- forecasts_meta$model
   forecast_id <- forecasts_meta$forecast_id
 
   historic_start_newmoonnumber <- forecasts_meta$historic_start_newmoonnumber
   historic_end_newmoonnumber   <- forecasts_meta$historic_end_newmoonnumber
 
   obs     <- read_rodents_dataset(main     = main, 
-                                dataset  = dataset)
+                                  dataset  = dataset)
 
 
-  preds <- read_forecast_table(main     = main, 
-                         forecast_id  = forecast_id)
+  preds <- read_forecast_table(main        = main, 
+                               forecast_id = forecast_id)
 
 
 
