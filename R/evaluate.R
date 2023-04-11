@@ -298,9 +298,7 @@ read_forecasts_evaluations <- function (main = "."){
 
     if ("species" %in% colnames(out)) {
       out <- na_conformer(out)
-    } else {
-      out$species <- NULL
-    }
+    } 
 
   }
 
