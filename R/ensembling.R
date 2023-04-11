@@ -104,7 +104,7 @@ ensemble_forecasts <- function (main                   = ".",
 
   }
 
-  forecast_table    <- forecast_tab[all_in, ]
+  forecast_table    <- forecast_table[all_in, ]
   nspecies    <- length(species)
 
   moons       <- unique(forecast_table$newmoonnumber)
@@ -134,7 +134,7 @@ ensemble_forecasts <- function (main                   = ".",
       moon_in    <- forecast_table$newmoonnumber %in% moons[j]
 
       all_in     <- species_in & moon_in
-      pcast_table  <- forecast_tab[all_in, ]
+      pcast_table  <- forecast_table[all_in, ]
       estimates  <- na.omit(pcast_table$estimate)
 
       if (length(estimates) > 0) {
