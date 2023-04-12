@@ -9,7 +9,7 @@ on:
     branches:
       - main
 
-name: R-CMD-check-release
+name: R-CMD-checks
 
 jobs:
   R-CMD-check:
