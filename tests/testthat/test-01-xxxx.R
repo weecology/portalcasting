@@ -44,4 +44,4 @@ GET("http://google.com/")
 
 
 
-sessioninfo::session_info(info = "external")
+message(paste(names(sessioninfo::session_info(info = "external")$external), collapse = " "))

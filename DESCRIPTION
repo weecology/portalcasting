@@ -53,7 +53,7 @@ Suggests:
   testthat
 Remotes:
   weecology/portalr#288
-SystemRequirements: JAGS 4.x.y (https://mcmc-jags.sourceforge.net); libcurl: libcurl-devel (rpm) or libcurl4-openssl-dev (deb)
+SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
