@@ -1,5 +1,4 @@
-# R package build checking
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# R package release checking
 
 on:
   push:
@@ -9,38 +8,19 @@ on:
     branches:
       - main
 
-name: R-CMD-check
+name: R-CMD-check-release
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,  r: 'release'}
-          - {os: ubuntu-latest,  r: 'oldrel-1'}
-
+    runs-on: ubuntu-20.04
     env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
       R_DEFAULT_INTERNET_TIMEOUT: 300
-
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      CRAN_REPO: https://packagemanager.rstudio.com/all/__linux__/focal/latest
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: r-lib/actions/setup-pandoc@v2
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-pandoc@v1
       
       - name: Install system dependencies
         run: |
@@ -49,15 +29,13 @@ jobs:
           sudo apt-get install gsl-bin libgsl0-dev
           sudo apt-get install libcurl4-openssl-dev
           sudo apt-get install jags
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
-
-      - uses: r-lib/actions/check-r-package@v2
-
-
-
-
-
+      - name: Install package dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck"), repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
+          remotes::install_deps(dependencies = TRUE, repos = c("CRAN" = Sys.getenv("CRAN_REPO")))
+        shell: Rscript {0}
+      - name: Check
+        run: |
+          options(crayon.enabled = TRUE)
+          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}
