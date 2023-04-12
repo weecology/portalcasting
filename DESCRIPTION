@@ -40,7 +40,7 @@ Imports:
   markdown,
   portalr,
   rmarkdown,
-rjags,
+  rjags,
   runjags,
   scoringRules,
   shiny,
