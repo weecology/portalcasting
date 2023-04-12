@@ -51,6 +51,7 @@ Suggests:
   testthat
 Remotes:
   weecology/portalr#288
+SystemRequirements: JAGS >= 4.3.0 (https://mcmc-jags.sourceforge.io/)
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
