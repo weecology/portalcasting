@@ -41,3 +41,7 @@ df <- read_csv_arrow(tf)
 
 library(httr)
 GET("http://google.com/")
+
+
+
+sessioninfo::session_info(info = "external")
