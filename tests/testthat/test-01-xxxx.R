@@ -30,3 +30,11 @@ inits2 <- list(m=0.1, c=10, precision=1,
 # Run the model and produce plots
 results <- run.jags(model=model, monitor=c("m", "c", "precision"),
 data=data, n.chains=2, method="rjags", inits=list(inits1,inits2))
+
+
+library(arrow)
+
+tf <- tempfile()
+on.exit(unlink(tf))
+write.csv(mtcars, file = tf)
+df <- read_csv_arrow(tf)
