@@ -38,3 +38,6 @@ tf <- tempfile()
 on.exit(unlink(tf))
 write.csv(mtcars, file = tf)
 df <- read_csv_arrow(tf)
+
+library(httr)
+GET("http://google.com/")
