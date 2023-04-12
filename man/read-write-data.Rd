@@ -75,7 +75,9 @@ Generalized data input-output functionality with specifics for common files. \cr
    main1 <- file.path(tempdir(), "io")
    setup_dir(main = main1)
 
-   write_data(main = main1, x = data.frame(rnorm(10)), filename = "xx.csv")
+   write_data(main     = main1, 
+              x        = data.frame(rnorm(10)), 
+              filename = "xx.csv")
 
    read_data(main = main1)
    read_rodents(main = main1)

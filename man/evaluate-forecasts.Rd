@@ -35,14 +35,22 @@ Current metrics include raw error (which can be used to calculate root mean squa
    plot_covariates(main = main1)
 
    make_model_combinations(main = main1)
-   portalcast(main = main1, models = "AutoArima")
-   cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+
+   portalcast(main   = main1, 
+              models = "AutoArima")
+
+   cast(main    = main1,
+        model   = "AutoArima", 
+        dataset = "controls", 
+        species = "DM")
 
    evaluate_forecasts(main = main1)
 
    ids <- forecasts_to_evaluate <- select_forecasts(main         = main, 
                                                     forecast_ids = forecast_ids)
-   evaluate_forecast(main = main1, forecast_id = ids[1])
+        
+   evaluate_forecast(main        = main1, 
+                     forecast_id = ids[1])
 
    read_forecast_evaluations(main = main1)
 

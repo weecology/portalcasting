@@ -111,25 +111,18 @@ evaluate_forecasts <- function (main         = ".",
 
   }
 
-  out_flat <- data.frame(out[[1]])
+  nrows_out <- sapply(out, NROW)
+  row_1     <- cumsum(c(1, nrows_out[1:(nselected_forecast_ids - 1)]))
+  row_2     <- cumsum(nrows_out) 
 
-  if (nselected_forecast_ids > 1) {
+  out_flat  <- data.frame(matrix(NA, nrow = row_2[length(row_2)], ncol = ncol(out[[1]])) )
+  colnames(out_flat) <- colnames(out[[1]])
 
-    for (i in 2:nselected_forecast_ids) { 
+  for (i in 1:nselected_forecast_ids) { 
 
-     if (all(is.na(out[[i]]))) {
-       next
-     }
-
-      out_flat <- rbind(out_flat, 
-                        data.frame(out[[i]]))
-      
-    }
+    out_flat[row_1[i]:row_2[i], ] <- out[[i]]
 
   }
-
-  out_flat <- rbind(existing_evaluations[!(existing_evaluations$forecast_id %in% selected_forecast_ids), ],
-                    out_flat)
 
   messageq("... done.\n", quiet = settings$quiet)
 
