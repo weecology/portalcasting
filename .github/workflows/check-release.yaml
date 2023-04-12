@@ -12,7 +12,17 @@ name: R-CMD-check-release
 
 jobs:
   R-CMD-check:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.config.os }}
+    name: ${{ matrix.config.os }} 
+
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: ubuntu-20.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+
     env:
       R_DEFAULT_INTERNET_TIMEOUT: 300
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
