@@ -43,6 +43,7 @@ Imports:
   rjags,
   runjags,
   scoringRules,
+  sessioninfo,
   shiny,
   stats,
   viridis,
