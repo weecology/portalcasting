@@ -82,7 +82,7 @@ resources_path(main = ".")
 \code{list} of directory paths or specific \code{character} paths.
 }
 \description{
-Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on \code{\link{directory_settings}}. \cr \cr
+Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on \code{\link{directory_settings}}. \cr
 \code{paths} produces the full path \code{list}, whose contents can then also be accessed with specialized functions, see \code{Details}.
 }
 \details{
@@ -121,16 +121,22 @@ Wrapper functions for specific subdirectories and files include:
    create_dir(main = main1)
 
    paths(main = main1)
+
+   newmoons_path(main = main1)
+
    rodents_datasets_paths(main = main1)
    rodents_dataset_path(main = main1)
    rodents_datasets_controls(main = main1)
+
+   covariates_path(main = main1)
    climate_forecasts_paths(main = main1)
+
+   metadata_path(main = main1)
+
    forecasts_metadata_path(main = main1)
    forecasts_evaluations_path(main = main1)
    forecasts_results_path(main = main1)
-   newmoons_path(main = main1)
-   covariates_path(main = main1)
-   metadata_path(main = main1)
+
    models_controls_path(main = main1)
 
    models_rmd_path(main = main1)

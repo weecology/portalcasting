@@ -30,7 +30,7 @@ fit_runjags(
   control_runjags = runjags_controls()
 )
 
-\method{forecast}{runjags}(object, h, level, nsamples, seed = NULL)
+\method{forecast}{runjags}(object, h, level, nsamples, seed = NULL, ...)
 
 runjags_controls(
   nchains = 4,
@@ -71,6 +71,8 @@ runjags_controls(
 \item{nsamples}{\code{integer} (or integer \code{numeric}) number of samples used to summarizing model output of sample-based estimates.}
 
 \item{seed}{A single \code{integer}-conformable value or \code{NULL} set in \code{\link{set.seed}}.}
+
+\item{...}{Additional parameters}
 
 \item{nchains}{Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags:run.jags]{run.jags}}.}
 

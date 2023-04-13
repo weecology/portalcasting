@@ -53,6 +53,8 @@
 #'
 #' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
 #'
+#' @param ... Additional parameters 
+#'
 #' @return `fit_runjags`: An object of class `"runjags"` of model components. See [`run.jags`][runjags::run.jags]. \cr
 #'         `runjags_data`: A `list` of model-specific data for use in [`run.jags`][runjags::run.jags]. \cr
 #'         `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`run.jags`][runjags::run.jags].  \cr
@@ -260,7 +262,8 @@ forecast.runjags <- function (object,
                               h, 
                               level,
                               nsamples,
-                              seed = NULL) {
+                              seed = NULL,
+                              ...) {
 
   vals        <- combine.mcmc(mcmc.objects = object$mcmc)
 
