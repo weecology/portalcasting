@@ -6,7 +6,7 @@ test_that("test", {
   
 })
 
-message(rjags::jags.version())
+message( )
 
 test_that("test", {
 

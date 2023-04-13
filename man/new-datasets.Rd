@@ -53,9 +53,11 @@ Having been created using \code{\link{new_dataset_controls}}, the new dataset's 
 
    dataset_controls_template( )
 
+   args <- new_dataset_args(name     = "newdata", 
+                            filename = "rodents_newdata.csv")
+
    new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
-                                        args     = new_dataset_args(name     = "newdata", 
-                                                                    filename = "rodents_newdata.csv"))
+                                        args     = args)
 
    added <- add_new_dataset(main                 = main1, 
                             new_dataset_controls = new_controls)

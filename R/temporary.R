@@ -127,9 +127,9 @@ update_forecasts_folder <- function (main = ".") {
 
         forecast_meta_j            <- update_list(forecast_meta, model = forecast_meta$models, dataset = forecast_meta$datasets, species = unique(forecast_table$species)[j], old_forecast_id = forecasts_metadata$forecast_id[i], forecast_id = forecast_id_j)
 
-        if (class(forecast_forecasts) == "list") {
+        if (inherits(forecast_forecasts) == "list") {
           forecast_forecasts_j      <- update_list(as.list(forecast_forecasts[[j]]), model = forecast_meta$models, dataset = forecast_meta$datasets, species = unique(forecast_table$species)[j], old_forecast_id = forecasts_metadata$forecast_id[i], forecast_id = forecast_id_j)
-        } else if (class(forecast_forecasts) == "data.frame") {
+        } else if (inherits(forecast_forecasts) == "data.frame") {
           forecast_forecasts_j      <- update_list(as.list(forecast_forecasts[unique(forecast_table$species)[j], ]), model = forecast_meta$models, dataset = forecast_meta$datasets, species = unique(forecast_table$species)[j], old_forecast_id = forecasts_metadata$forecast_id[i], forecast_id = forecast_id_j)
         } 
 
