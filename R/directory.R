@@ -347,9 +347,8 @@ update_directory_configuration <- function (main = ".") {
 
 #' @title Create a List of Full Directory Paths
 #' 
-#' @description 
-#'   Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on [`directory_settings`]. \cr \cr
-#'   `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`.
+#' @description Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on [`directory_settings`]. \cr
+#'              `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`.
 #'
 #' @details Wrapper functions for specific subdirectories and files include:   
 #'   * Files
@@ -388,16 +387,22 @@ update_directory_configuration <- function (main = ".") {
 #'    create_dir(main = main1)
 #'
 #'    paths(main = main1)
+#'
+#'    newmoons_path(main = main1)
+#'
 #'    rodents_datasets_paths(main = main1)
 #'    rodents_dataset_path(main = main1)
 #'    rodents_datasets_controls(main = main1)
+#'
+#'    covariates_path(main = main1)
 #'    climate_forecasts_paths(main = main1)
+#'
+#'    metadata_path(main = main1)
+#'
 #'    forecasts_metadata_path(main = main1)
 #'    forecasts_evaluations_path(main = main1)
 #'    forecasts_results_path(main = main1)
-#'    newmoons_path(main = main1)
-#'    covariates_path(main = main1)
-#'    metadata_path(main = main1)
+#'
 #'    models_controls_path(main = main1)
 #'
 #'    models_rmd_path(main = main1)
