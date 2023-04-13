@@ -14,6 +14,7 @@
 #' @importFrom portalr download_observations forecasting_species get_future_newmoons load_datafile na_conformer ndvi return_if_null rodent_species summarize_rodent_data weather
 #' @importFrom rmarkdown knitr_options output_format pandoc_options render
 #' @importFrom runjags combine.mcmc run.jags runjags.options
+#' @importFrom rjags jags.version
 #' @importFrom scoringRules crps crps_nbinom crps_norm crps_pois crps_sample logs logs_sample logs_nbinom logs_norm logs_pois 
 #' @importFrom shiny column fluidPage fluidRow mainPanel observeEvent plotOutput reactiveValues renderPlot renderText runApp selectInput shinyApp tabPanel tabsetPanel textOutput titlePanel updateSelectInput
 #' @importFrom stats AIC as.ts filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd

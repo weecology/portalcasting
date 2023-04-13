@@ -1015,7 +1015,7 @@ changes to inputs throughout the code hierarchy, we include a set of functions
 that default options for all aspects of the codebase.
 * See the [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) for further details.
 
-# [pre-portalcasting](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
+# [portalcasting 0.0.0.1](https://github.com/weecology/portalPredictions/tree/ac032f3938a6695a8e5d27ee380032195b2af396) 
 *2018-11-06*
 
 * This is the last iteration of the code that now exists in portalcasting in
