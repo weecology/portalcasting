@@ -1,4 +1,4 @@
-# R package release checking
+# R package checking
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 
 on:
@@ -9,7 +9,7 @@ on:
     branches:
       - main
 
-name: R-CMD-checks
+name: R-CMD-check
 
 jobs:
   R-CMD-check:
