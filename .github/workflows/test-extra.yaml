@@ -35,4 +35,6 @@ jobs:
           list.files("inst");
           install.packages("devtools");
           devtools::load_all();
+          source(file.path("inst", "test_doc_examples.R"));
+          source(file.path("inst", "test_vignettes.R"));
         shell: Rscript {0}

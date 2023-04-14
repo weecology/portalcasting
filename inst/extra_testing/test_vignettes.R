@@ -28,8 +28,10 @@ for (i in 1:nRmd) {
 
   outted  <- write(cropped, file = R_name)
 
-  times[[i]] <- tryCatch(system.time({source(R_name)}),
-                         error = function(x) {NA})
+  #times[[i]] <- tryCatch(system.time({source(R_name)}),
+  #                       error = function(x) {NA})
+
+print(names(times)[i])
 
 }
 

@@ -63,8 +63,10 @@ for(i in 1:nRd) {
 
   for (j in 1:nlines[i]) {
 
-    times[[i]] <- tryCatch(system.time({eval(parse(text = examples[[i]][j]))}),
-                           error = function(x) {NA})
+ #   times[[i]][[j]] <- tryCatch(system.time({eval(parse(text = examples[[i]][j]))}),
+ #                               error = function(x) {NA})
+
+print(names(times)[i])
 
   }
 
