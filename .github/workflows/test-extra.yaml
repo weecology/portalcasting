@@ -28,12 +28,10 @@ jobs:
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
 
       - name: HERE
         run: |
           list.files();
-          list.files("inst")
+          list.files("inst");
+          devtools::load_all();
         shell: Rscript {0}
