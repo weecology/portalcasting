@@ -102,19 +102,22 @@
 #'                         covariates = covariates)
 #'
 #'    runjags_inits(inits = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
-#'                               sigma = runit(1, min  = 0.01, max = 0.5)))
+#'                               sigma = runif(1, min  = 0.01, max = 0.5)))
 #'
-#'    fit_runjags <- function (abundance       = abundance, 
-#'                             metadata        = metadata,, 
-#'                             covariates      = covariates, 
-#'                             monitors        = c("mu", "sigma"), 
-#'                             inits           = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
-#'                                                    sigma = runit(1, min  = 0.01, max = 0.5)), 
-#'                             model           = model,
-#'                             data_names      = data_names,
-#'                             control_runjags = control_runjags)
+#'    fit <- fit_runjags(abundance       = abundance, 
+#'                       metadata        = metadata,
+#'                       covariates      = covariates, 
+#'                       monitors        = c("mu", "sigma"), 
+#'                       inits           = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+#'                                              sigma = runif(1, min  = 0.01, max = 0.5)), 
+#'                       model           = model,
+#'                       data_names      = data_names,
+#'                       control_runjags = control_runjags)
 #'  
-#'    forecast(fit_runjags, h = metadata$lead_time_newmoons, level = metadata$confidence_level, nsamples = metadata$nsamples)
+#'    forecast(object   = fit_runjags,  
+#'             h        = metadata$lead_time_newmoons,   
+#'             level    = metadata$confidence_level,   
+#'             nsamples = metadata$nsamples)
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }

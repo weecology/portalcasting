@@ -95,15 +95,25 @@ Construct vectors of available choices and make selections, with respect to spec
 
    gl <- global_list(main = main1)
 
-   rv <- list(forecast_tab_species                      = gl$initial_forecast_tab_selected_species,
-              forecast_tab_dataset                      = gl$initial_forecast_tab_selected_dataset,
-              forecast_tab_model                        = gl$initial_forecast_tab_selected_model,
-              forecast_tab_historic_end_newmoonnumber   = gl$initial_forecast_tab_selected_historic_end_newmoonnumber,
-              evaluation_tab_species                    = gl$initial_evaluation_tab_selected_species,
-              evaluation_tab_dataset                    = gl$initial_evaluation_tab_selected_dataset,
-              evaluation_tab_model                      = gl$initial_evaluation_tab_selected_model,
-              evaluation_tab_historic_end_newmoonnumber = gl$initial_evaluation_tab_selected_historic_end_newmoonnumber,
-              evaluation_tab_newmoonnumber              = gl$initial_evaluation_tab_selected_newmoonnumber)
+   ft_species                    <- gl$initial_forecast_tab_selected_species
+   ft_dataset                    <- gl$initial_forecast_tab_selected_species
+   ft_model                      <- gl$initial_forecast_tab_selected_species
+   ft_historic_end_newmoonnumber <- gl$initial_forecast_tab_selected_historic_end_newmoonnumber
+   et_species                    <- gl$initial_forecast_tab_selected_species
+   et_dataset                    <- gl$initial_forecast_tab_selected_species
+   et_model                      <- gl$initial_forecast_tab_selected_species
+   et_historic_end_newmoonnumber <- gl$initial_forecast_tab_selected_historic_end_newmoonnumber
+   et_newmoonnumber              <- gl$initial_forecast_tab_selected_newmoonnumber
+
+   rv <- list(forecast_tab_species                      = ft_species,
+              forecast_tab_dataset                      = ft_dataset,
+              forecast_tab_model                        = ft_model,
+              forecast_tab_historic_end_newmoonnumber   = ft_historic_end_newmoonnumber,
+              evaluation_tab_species                    = et_dataset,
+              evaluation_tab_dataset                    = et_species,
+              evaluation_tab_model                      = et_model,
+              evaluation_tab_historic_end_newmoonnumber = et_historic_end_newmoonnumber,
+              evaluation_tab_newmoonnumber              = et_newmoonnumber)
 
    available_models(global = gl, 
                     event  = "initial_forecast_tab")

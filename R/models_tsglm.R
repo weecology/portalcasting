@@ -75,9 +75,13 @@
 #'                                 covariates = covariates, 
 #'                                 metadata   = metadata, 
 #'                                 quiet      = FALSE)
-#'    newxreg <- covariates[covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag), unlist(fit_tsglm$submodel)]
+#'    newmoons_in <- covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag)
+#'    newxreg     <- covariates[newmoons_in, unlist(fit_tsglm$submodel)]
 #'
-#'    forecast(fit_tsglm, h = metadata$lead_time_newmoons, level = metadata$confidence_level, newxreg = newxreg))
+#'    forecast(object  = fit_tsglm,   
+#'             h       = metadata$lead_time_newmoons,   
+#'             level   = metadata$confidence_level,   
+#'             newxreg = newxreg))
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }
