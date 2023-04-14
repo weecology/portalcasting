@@ -33,5 +33,7 @@ jobs:
           needs: check
 
       - name: HERE
-        run: ls()
+        run: |
+          list.files();
+          list.files("inst")
         shell: Rscript {0}
