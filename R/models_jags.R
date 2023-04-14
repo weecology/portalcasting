@@ -108,8 +108,8 @@
 #'                       metadata        = metadata,
 #'                       covariates      = covariates, 
 #'                       monitors        = c("mu", "sigma"), 
-#'                       inits           = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
-#'                                              sigma = runif(1, min  = 0.01, max = 0.5)), 
+#'                       inits           = list(mu    = rnorm(1, data$log_mean_count, 0.1),
+#'                                              sigma = runif(1, 0.01, 0.5)), 
 #'                       model           = model,
 #'                       data_names      = data_names,
 #'                       control_runjags = control_runjags)
