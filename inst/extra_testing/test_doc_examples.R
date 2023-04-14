@@ -70,4 +70,4 @@ for(i in 1:nRd) {
 
 }
 
-
+print(times)
