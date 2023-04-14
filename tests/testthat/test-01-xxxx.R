@@ -6,7 +6,7 @@ test_that("test", {
   
 })
 
-(runjags::testjags() )
+message(runjags::testjags() )
 
 test_that("test", {
 
