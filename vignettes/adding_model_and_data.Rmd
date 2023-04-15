@@ -156,7 +156,7 @@ new_controls <- new_model_controls(metadata = new_model_metadata(name = "newmod"
 added <- add_new_model(main = main, new_model_controls = new_controls)
 
 
-names(read_model_controls(main = main))
+names(read_models_controls(main = main))
 
 #>  [1] "AutoArima"                            "sAutoArima"                           "ESSS"                                
 #>  [4] "NaiveArima"                           "sNaiveArima"                          "nbGARCH"                             
@@ -195,7 +195,7 @@ Incorporating the model in the establishment of the directory requires adding th
 
 ```{r, eval=FALSE}
 main2 <- "~/sandbox2"
-setup_sandbox(main = main2, new_model_controls = list(newmod = new_controls), models = c(prefab_models(), "newmod"))
+setup_sandbox(main = main2, new_models_controls = list(newmod = new_controls), models = c(prefab_models(), "newmod"))
 ```
 
 
@@ -258,7 +258,7 @@ new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "new
 added <- add_new_dataset(main = main, new_dataset_controls = new_controls)
 
 
-names(read_dataset_controls(main = main))
+names(read_datasets_controls(main = main))
 
 #>  [1] "all"        "controls"   "exclosures" "newdata"
 ```
@@ -269,6 +269,8 @@ Incorporating the dataset in the establishment of the directory requires adding 
 
 ```{r, eval=FALSE}
 main3 <- "~/sandbox3"
-setup_sandbox(main = main3, new_dataset_controls = list(newdata = new_controls), datasets = c(prefab_datasets(), "newdata"))
+setup_sandbox(main                  = main3, 
+              new_datasets_controls = list(newdata = new_controls), 
+              datasets              = c(prefab_datasets(), "newdata"))
 ```
 

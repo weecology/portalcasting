@@ -80,13 +80,13 @@ Presently two plotting types are available for visualizing the data and model re
 Time series plots are constructed using `plot_forecast_ts`:
 
 ```{r, eval=FALSE}
-plot_forecast_ts(main = main, data_set = "controls")
+plot_forecast_ts(main = main, dataset = "controls")
 ```
 
 Point-in-time prediction plots are constructed using `plot_forecast_point`, and default to the next step ahead in time:
 
 ```{r, eval=FALSE}
-plot_forecast_point(main = main, data_set = "controls")
+plot_forecast_point(main = main, dataset = "controls")
 ```
 
 
@@ -98,8 +98,8 @@ A series of `read_<name>` functions are available for simple loading of the data
 
 ```{r, eval=FALSE}
 read_data(main = main, data_name = "rodents")
-read_data(main = main, data_name = "rodents_table", data_set = "all")
-read_data(main = main, data_name = "rodents_table", data_set = "controls")
+read_data(main = main, data_name = "rodents_dataset", dataset = "all")
+read_data(main = main, data_name = "rodents_dataset", dataset = "controls")
 read_data(main = main, data_name = "covariates")
 read_data(main = main, data_name = "climate_forecasts")
 read_data(main = main, data_name = "newmoons")
@@ -127,8 +127,8 @@ select_forecasts(main = main, models = "AutoArima")
 And `read_forecast_tab`, `read_model_forecast`, and `read_forecasts_metadata` each read in the associated output from a given forecast, as indicated by its forecast_id, which is displayed in the output from `select_forecasts`:
 
 ```{r, eval=FALSE}
-read_forecast_table(main = main, forecast_id = "1.1")
-read_model_forecast(main = main, forecast_id = "1.1")
-read_forecast_metadata(main = main, forecast_id = "1.1")
+read_forecast_table(main = main)
+read_model_forecast(main = main)
+read_forecast_metadata(main = main)
 ```
 

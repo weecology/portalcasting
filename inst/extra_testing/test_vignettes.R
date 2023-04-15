@@ -31,9 +31,16 @@ for (rmd in 1:nRmd) {
   outted  <- write(cropped, file = R_name)
 
   times[[rmd]] <- tryCatch(system.time({source(R_name)}),
-                         error = function(x) {NA})
+                           error = function(x) {NA})
 
 }
 
 print(times)
+
+if (any(is.na(times))) {
+
+  nas <- Rmdnames[which(is.na(times))]
+  stop(paste("Vignette ", nas, " errored during build"))
+
+}
 
