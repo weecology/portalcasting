@@ -21,16 +21,7 @@
 #' @importFrom utils download.file find globalVariables packageDescription read.csv sessionInfo tail unzip write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml read_yaml write_yaml
-
-#' @title Functions for Portalcasting (Forecasting Portal Rodents)
 #'
-#' @description Functions for continuous analysis and forecasting of [Portal rodent populations](https://portal.weecology.org/), as implemented in the [Portal Predictions repository](https://www.github.com/weecology/portalPredictions) and displayed on the [Portal Forecast website](https://portal.naturecast.org). \cr
-#'              Functions in `portalcasting` are designed to be portable, allowing users to set up a fully-functional replica repository for development and testing of new models (a.k.a. [**sandboxing**](https://en.wikipedia.org/wiki/Sandbox_(software_development))) in the same directory configurations, codebase, and datasets as the production pipeline. 
+#' @keywords internal
 #'
-#' @name portalcasting
-#'
-#' @docType package
-#'
-#' @keywords package
-#'
-NULL
+"_PACKAGE"
