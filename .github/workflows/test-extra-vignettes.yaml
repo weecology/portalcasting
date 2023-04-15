@@ -29,10 +29,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
-      - name: HERE
+      - name: Test all vignette code
         run: |
-          list.files();
-          list.files("inst");
           install.packages("devtools");
           devtools::load_all();
           source(file.path("inst", "extra_testing", "test_vignettes.R"));
