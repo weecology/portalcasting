@@ -81,7 +81,7 @@
 #'    forecast(object  = fit_tsglm,   
 #'             h       = metadata$lead_time_newmoons,   
 #'             level   = metadata$confidence_level,   
-#'             newxreg = newxreg))
+#'             newxreg = newxreg)
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }

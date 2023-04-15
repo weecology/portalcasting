@@ -95,7 +95,7 @@ As of \verb{portalcasting v0.9.0}, the line and bands in \code{plot_forecast_ts}
 \examples{
 \dontrun{
    main1 <- file.path(tempdir(), "figures")
-   setup_dir(main = main1)
+   setup_production(main = main1)
 
    plot_covariates(main = main1)
 

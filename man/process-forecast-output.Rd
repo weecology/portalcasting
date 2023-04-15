@@ -125,7 +125,7 @@ Four model-specific output components are saved and returned:
    }
  
    model_forecast <- do.call(what = model_controls$cast$fun,
-                         args = forecast_args)
+                             args = forecast_args)
  
    process_model_output(main           = main1,
                         model_fit      = model_fit,
@@ -143,7 +143,7 @@ Four model-specific output components are saved and returned:
    cast_forecast  <- read_model_forecast(main = main1)
 
    casts_metadata <- read_forecasts_metadata(main = main1)
-   select_forecasts(main = main)
+   select_forecasts(main = main1)
 
    unlink(main1, recursive = TRUE)
 }

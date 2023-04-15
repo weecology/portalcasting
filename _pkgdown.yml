@@ -1,11 +1,16 @@
 url: https://weecology.github.io/portalcasting
+
 development:
   mode: auto
+
+template:
+  bootstrap: 5
+
 navbar:
   title: "portalcasting"
   structure:
     left: [home, articles, reference, news]
-    right: [twitter, github] 
+    right: [twitter, github, website] 
   components: 
     articles:
       text: "Vignettes"
@@ -27,6 +32,12 @@ navbar:
     twitter:
       icon: fa-twitter
       href: https://twitter.com/weecology
+      aria-label: Twitter
     github:
       icon: fa-github
       href: https://github.com/weecology
+      aria-label: GitHub
+    website:
+      icon: fa-chart-line
+      href: https://portal.naturecast.org
+      aria-label: Naturecast

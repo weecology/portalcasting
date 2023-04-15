@@ -99,7 +99,7 @@ Using the tscount (Liboschik et al. 2017) package to forecast time series of cou
    forecast(object  = fit_tsglm,   
             h       = metadata$lead_time_newmoons,   
             level   = metadata$confidence_level,   
-            newxreg = newxreg))
+            newxreg = newxreg)
 
    unlink(main1, recursive = TRUE)
 }

@@ -128,9 +128,9 @@ Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_roden
    prepare_newmoons(main   = main1)
    prepare_rodents(main    = main1) 
 
-   write_dataset_controls(main = main1)
-   read_dataset_controls(main = main1)
-   dataset_controls(main = main1)
+   write_datasets_controls(main = main1)
+   read_datasets_controls(main = main1)
+   datasets_controls(main = main1)
 
    unlink(main1, recursive = TRUE)
 }

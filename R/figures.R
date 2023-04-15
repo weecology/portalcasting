@@ -41,7 +41,7 @@
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "figures")
-#'    setup_dir(main = main1)
+#'    setup_production(main = main1)
 #'
 #'    plot_covariates(main = main1)
 #'

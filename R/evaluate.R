@@ -32,7 +32,7 @@
 #' 
 #'    evaluate_forecasts(main = main1)
 #'
-#'    ids <- forecasts_to_evaluate <- select_forecasts(main         = main, 
+#'    ids <- forecasts_to_evaluate <- select_forecasts(main         = main1, 
 #'                                                     forecast_ids = forecast_ids)
 #'         
 #'    evaluate_forecast(main        = main1, 

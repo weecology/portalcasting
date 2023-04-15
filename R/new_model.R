@@ -40,7 +40,7 @@
 #'    added <- add_new_model(main               = main1, 
 #'                           new_model_controls = new_controls)
 #'
-#'    portalcast(main     = main, 
+#'    portalcast(main     = main1, 
 #'               models   = "newmod", 
 #'               datasets = "all", 
 #'               species  = c("DM", "PP", "total"))

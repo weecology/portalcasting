@@ -27,8 +27,10 @@ global_list(main = ".")
    setup_dir(main = main1)
 
    global_list(main = main1)
-
-   run_app(main = main1)
+ 
+   if (interactive( )) {
+     run_app(main = main1)
+   }
 
    unlink(main1, recursive = TRUE)
  }

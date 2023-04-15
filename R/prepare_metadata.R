@@ -17,15 +17,15 @@
 #'    main1 <- file.path(tempdir(), "metadata")
 #'
 #'    create_dir(main = main1)
-#'    fill_resources(main = main2)
-#'    fill_forecasts(main = main2)
-#'    fill_fits(main = main2)
-#'    fill_models(main = main2)
+#'    fill_resources(main = main1)
+#'    fill_forecasts(main = main1)
+#'    fill_fits(main = main1)
+#'    fill_models(main = main1)
 #'
-#'    prepare_newmoons(main   = main)
-#'    prepare_rodents(main    = main) 
-#'    prepare_covariates(main = main)
-#'    prepare_metadata(main   = main)
+#'    prepare_newmoons(main   = main1)
+#'    prepare_rodents(main    = main1) 
+#'    prepare_covariates(main = main1)
+#'    prepare_metadata(main   = main1)
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }

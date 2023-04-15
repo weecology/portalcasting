@@ -6,6 +6,9 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *In Progress*
 
+### Major updates to pkgdown site
+* Shift to bootstrap 5
+
 ### Include CI tests of \dontrun examples and eval=FALSE vignettes
 * Because of the long run time of some of the code, we wrap most documentation examples and vignette code in a way to prevent evaluation in real-time. As a result, much of the documentation code isn't run and therefore would not break builds if it would error. 
 * To address this, we add two scripts in the new inst/extra_testing folder and a github action runner for each.
