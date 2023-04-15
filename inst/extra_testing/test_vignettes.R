@@ -12,15 +12,15 @@ nRmd <- length(Rmd)
 Rmdnames  <- gsub(".Rmd", "", gsub("vignettes/", "", Rmd))
 times     <- named_null_list(Rmdnames)
 
-for (i in 1:nRmd) {
+for (rmd in 1:nRmd) {
 
-  print(Rmdnames[i])
+  print(Rmdnames[rmd])
 
-  temp_name  <- Rmdnames[i]#file.path(tempdir(), Rmdnames[i])
+  temp_name  <- Rmdnames[rmd]#file.path(tempdir(), Rmdnames[rmd])
   txt_name   <- paste0(temp_name, ".txt")
   R_name     <- paste0(temp_name, ".R")
 
-  purled    <-  knitr::purl(Rmd[i], output = txt_name, quiet = TRUE, documentation = 0)
+  purled    <-  knitr::purl(Rmd[rmd], output = txt_name, quiet = TRUE, documentation = 0)
 
   scanned <- scan(purled, what = "character", sep = "\n", quiet = TRUE)
 
@@ -30,7 +30,7 @@ for (i in 1:nRmd) {
 
   outted  <- write(cropped, file = R_name)
 
-  times[[i]] <- tryCatch(system.time({source(R_name)}),
+  times[[rmd]] <- tryCatch(system.time({source(R_name)}),
                          error = function(x) {NA})
 
 }
