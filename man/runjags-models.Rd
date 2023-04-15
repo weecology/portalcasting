@@ -13,7 +13,7 @@
 \usage{
 runjags_inits(inits)
 
-runjags_model(model)
+runjags_model(model_file)
 
 runjags_monitors(monitors, metadata)
 
@@ -25,7 +25,7 @@ fit_runjags(
   covariates,
   monitors,
   inits,
-  model,
+  model_file,
   data_names,
   control_runjags = runjags_controls()
 )
@@ -48,7 +48,7 @@ runjags_controls(
 \arguments{
 \item{inits}{\code{list} of model parameter initializer functions. See \code{\link{prefab_models_controls}}.}
 
-\item{model}{\code{character} value of the model file name. See \code{\link{prefab_models_controls}}.}
+\item{model_file}{\code{character} value of the model file name. See \code{\link{prefab_models_controls}}.}
 
 \item{monitors}{\code{character} vector of parameters to track. Forecasted observations and state variables are tracked automatically.}
 
@@ -115,9 +115,11 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
    main1 <- file.path(tempdir(), "runjags")
 
    setup_dir(main = main1)
-   dataset <- "all"
-   species <- "DM"
-   model   <- "jags_RW"
+   dataset    <- "all"
+   species    <- "DM"
+   model      <- "jags_RW"
+   model_file <- gsub("'", "",
+                      models_controls(main)[[model]]$fit$full_model_file)
  
    abundance      <- prepare_abundance(main    = main1,
                                        dataset = dataset,
@@ -128,7 +130,11 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
    metadata       <- read_metadata(main        = main1)
    newmoons       <- read_newmoons(main        = main1)                                        
    covariates     <- read_covariates(main      = main1)
-   control_runjags <- runjags_controls( )
+   control_runjags <- runjags_controls(nchains = 3, 
+                                       adapt   = 1e3, 
+                                       burnin  = 1e3, 
+                                       sample  = 1e3, 
+                                       thin    = 1)
    data_names      <- c("count", "N", "log_mean_count")
 
    runjags_model(model = model)
@@ -150,11 +156,11 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
                       monitors        = c("mu", "sigma"), 
                       inits           = list(mu    = rnorm(1, data$log_mean_count, 0.1),
                                              sigma = runif(1, 0.01, 0.5)), 
-                      model           = model,
+                      model_file      = model_file,
                       data_names      = data_names,
                       control_runjags = control_runjags)
  
-   forecast(object   = fit_runjags,  
+   forecast(object   = fit,  
             h        = metadata$time$lead_time_newmoons,   
             level    = metadata$confidence_level,   
             nsamples = metadata$nsamples)

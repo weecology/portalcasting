@@ -30,7 +30,7 @@ Authors:
   \item Henry Senyondo (\href{https://orcid.org/0000-0001-7105-5808}{ORCID})
   \item Hao Ye (\href{https://orcid.org/0000-0002-8630-1458}{ORCID})
   \item Ethan P. White (\href{https://orcid.org/0000-0001-6728-7745}{ORCID})
-  \item S.K. Morgan Ernest (\href{https://orcid.org/0000-0002-6026-8530}{ORCID})
+  \item S. K. Morgan Ernest (\href{https://orcid.org/0000-0002-6026-8530}{ORCID})
 }
 
 }

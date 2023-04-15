@@ -104,7 +104,7 @@ plot_forecasts_error_lead <- function (main                        = ".",
   if (nmodels == 1 & nspecies == 1) {
 
     yy <- round(evals_in$error, 3)
-    yrange <- range(c(0, yy), na.rm = TRUE)
+    yrange <- range(c(-1, yy, 1), na.rm = TRUE)
     xrange <- c(max(evals_in$lead_time_newmoons) + 0.25, 0)
 
     oldpar <- par(no.readonly = TRUE)
@@ -165,7 +165,7 @@ plot_forecasts_error_lead <- function (main                        = ".",
 
       species_in <- evals_in$species %in% species[j]
       yy         <- round(evals_in$error[species_in], 3)
-      yrange     <- range(c(0, yy), na.rm = TRUE)
+      yrange     <- range(c(-1, yy, 1), na.rm = TRUE)
 
       for(i in 1:nmodels){
 
@@ -417,7 +417,7 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
     abline(h = 0.95, lwd = 2, lty = 3)
 
     in_i <- which(forecast_species == species[i])
-    ymax <- max(forecast_RMSE[in_i], na.rm = TRUE)
+    ymax <- max(c(0, forecast_RMSE[in_i]), na.rm = TRUE)
     x1 <- 0.5
     x2 <- 1
     y1 <- 0 + (i - 1) * 1 * (1/nspecies)
@@ -446,7 +446,7 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
       rect(j - 0.1, quants[2], j + 0.1, quants[4], col = "white")
       points(c(j - 0.1, j + 0.1), rep(quants[3], 2), type = "l", lwd = 2)
       points(xs, ys2, col = rgb(0.3, 0.3, 0.3, 0.4), pch = 1, cex = 0.5)
-      axis(2, labels = FALSE, tck = 0, at = seq(min(ys) - 2, max(ys) + 2, 0.1))
+      axis(2, labels = FALSE, tck = 0, at = seq(min(c(0, ys)) - 2, max(c(1,ys)) + 2, 0.1))
 
       if (nmodels > 1) {
         axis(1, at = 1:nmodels, labels = models, cex.axis = 1.125, xpd = TRUE)

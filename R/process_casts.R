@@ -71,12 +71,12 @@
 #'                          args = fit_args)
 #'  
 #'  
-#'    forecast_args  <- named_null_list(element_names = names(model_controls$cast$args))
+#'    forecast_args  <- named_null_list(element_names = names(model_controls$forecast$args))
 #'    for (i in 1:length(forecast_args)) {
-#'      forecast_args[[i]] <- eval(parse(text = model_controls$cast$args[i]))
+#'      forecast_args[[i]] <- eval(parse(text = model_controls$forecast$args[i]))
 #'    }
 #'  
-#'    model_forecast <- do.call(what = model_controls$cast$fun,
+#'    model_forecast <- do.call(what = model_controls$forecast$fun,
 #'                              args = forecast_args)
 #'  
 #'    process_model_output(main           = main1,
@@ -91,7 +91,6 @@
 #'                                                         forecast_table = cast_table)
 #'    cast_tables    <- read_forecast_tables(main = main1)
 #'    cast_metadata  <- read_forecast_metadata(main = main1)
-#'    cast_fit       <- read_model_fit(main = main1)
 #'    cast_forecast  <- read_model_forecast(main = main1)
 #'
 #'    casts_metadata <- read_forecasts_metadata(main = main1)

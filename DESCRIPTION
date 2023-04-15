@@ -17,7 +17,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-8630-1458")),
 	person(c("Ethan", "P."), "White", role = c("aut"),
       comment = c(ORCID = "0000-0001-6728-7745")),
-    person(c("S.K.", "Morgan"), "Ernest", role = c("aut"),
+    person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
       comment = c(ORCID = "0000-0002-6026-8530")))
 Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> as well as support for exploring and developing new models in sandbox environments.
 URL: https://weecology.github.io/portalcasting, https://github.com/weecology/portalcasting

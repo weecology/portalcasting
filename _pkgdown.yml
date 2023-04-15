@@ -4,7 +4,34 @@ development:
   mode: auto
 
 template:
-  bootstrap: 5
+  bootstrap: 5         
+
+news:
+  releases:
+  - text: "Version 0.50.0"
+    href: https://github.com/weecology/portalcasting/releases/tag/v0.50.0
+
+home:
+  strip_header: true
+
+authors:
+  Juniper L. Simonis:
+    href: https://www.dapperstats.com/author/dr.-juniper-l.-simonis/
+  Glenda M. Yenni:
+    href: https://www.weecology.org/author/glenda-m.-yenni/
+  Ellen K. Bledsoe:
+    href: https://nature.arizona.edu/ellen-bledsoe
+  Erica M. Christensen:
+    href: https://scholar.google.com/citations?user=_cBpCegAAAAJ&hl=en
+  Henry Senyondo:
+    href: https://www.weecology.org/author/henry-senyondo/
+  Hao Ye:
+    href: https://haoye.us/
+  Ethan P. White:
+    href: https://www.weecology.org/author/ethan-white/
+  S. K. Morgan Ernest:
+    href: https://www.weecology.org/author/morgan-ernest/
+
 
 navbar:
   title: "portalcasting"
@@ -13,7 +40,7 @@ navbar:
     right: [twitter, github, website] 
   components: 
     articles:
-      text: "Vignettes"
+      text: "Articles"
       menu:
        - text: "Current Models"
          href: articles/current_models.html
@@ -23,12 +50,6 @@ navbar:
          href: articles/adding_model_and_data.html
        - text: "Codebase"
          href: articles/codebase.html
-    reference: 
-      text: "Reference"
-      href: reference/index.html
-    news: 
-      text: "News"
-      href: news/index.html
     twitter:
       icon: fa-twitter
       href: https://twitter.com/weecology

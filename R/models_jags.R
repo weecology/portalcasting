@@ -17,7 +17,7 @@
 #'
 #' @param inits `list` of model parameter initializer functions. See [`prefab_models_controls`].
 #'
-#' @param model `character` value of the model file name. See [`prefab_models_controls`].
+#' @param model_file `character` value of the model file name. See [`prefab_models_controls`].
 #'
 #' @param data_names `character` vector of data values to include in the data `list`. See [`prefab_models_controls`].
 #'
@@ -75,9 +75,11 @@
 #'    main1 <- file.path(tempdir(), "runjags")
 #'
 #'    setup_dir(main = main1)
-#'    dataset <- "all"
-#'    species <- "DM"
-#'    model   <- "jags_RW"
+#'    dataset    <- "all"
+#'    species    <- "DM"
+#'    model      <- "jags_RW"
+#'    model_file <- gsub("'", "",
+#'                       models_controls(main)[[model]]$fit$full_model_file)
 #'  
 #'    abundance      <- prepare_abundance(main    = main1,
 #'                                        dataset = dataset,
@@ -88,7 +90,11 @@
 #'    metadata       <- read_metadata(main        = main1)
 #'    newmoons       <- read_newmoons(main        = main1)                                        
 #'    covariates     <- read_covariates(main      = main1)
-#'    control_runjags <- runjags_controls( )
+#'    control_runjags <- runjags_controls(nchains = 3, 
+#'                                        adapt   = 1e3, 
+#'                                        burnin  = 1e3, 
+#'                                        sample  = 1e3, 
+#'                                        thin    = 1)
 #'    data_names      <- c("count", "N", "log_mean_count")
 #'
 #'    runjags_model(model = model)
@@ -110,11 +116,11 @@
 #'                       monitors        = c("mu", "sigma"), 
 #'                       inits           = list(mu    = rnorm(1, data$log_mean_count, 0.1),
 #'                                              sigma = runif(1, 0.01, 0.5)), 
-#'                       model           = model,
+#'                       model_file      = model_file,
 #'                       data_names      = data_names,
 #'                       control_runjags = control_runjags)
 #'  
-#'    forecast(object   = fit_runjags,  
+#'    forecast(object   = fit,  
 #'             h        = metadata$time$lead_time_newmoons,   
 #'             level    = metadata$confidence_level,   
 #'             nsamples = metadata$nsamples)
@@ -157,9 +163,9 @@ runjags_inits <- function (inits) {
 #'
 #' @export
 #'
-runjags_model <- function (model) {
+runjags_model <- function (model_file) {
 
-  scan(file  = model,
+  scan(file  = model_file,
        what  = "character",
        quiet = TRUE)
   
@@ -221,14 +227,14 @@ fit_runjags <- function (abundance,
                          covariates, 
                          monitors, 
                          inits,
-                         model,
+                         model_file,
                          data_names,
                          control_runjags = runjags_controls( )) {
 
   monitor    <- runjags_monitors(monitors = monitors,
                                  metadata = metadata)  
   init       <- runjags_inits(inits       = inits)  
-  jags_model <- runjags_model(model       = model)  
+  jags_model <- runjags_model(model_file  = model_file)  
   data       <- runjags_data(data_names   = data_names,
                              abundance    = abundance,
                              metadata     = metadata,

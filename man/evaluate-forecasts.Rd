@@ -46,12 +46,12 @@ Current metrics include raw error (which can be used to calculate root mean squa
 
    evaluate_forecasts(main = main1)
 
-   ids <- select_forecasts(main = main1)
+   ids <- select_forecasts(main = main1)$forecast_id
         
    evaluate_forecast(main        = main1, 
                      forecast_id = ids[1])
 
-   read_forecast_evaluations(main = main1)
+   read_forecasts_evaluations(main = main1)
 
    unlink(main1, recursive = TRUE)
 }
