@@ -392,7 +392,7 @@ update_directory_configuration <- function (main = ".") {
 #'
 #'    rodents_datasets_paths(main = main1)
 #'    rodents_dataset_path(main = main1)
-#'    rodents_datasets_controls(main = main1)
+#'    rodents_datasets_paths(main = main1)
 #'
 #'    covariates_path(main = main1)
 #'    climate_forecasts_paths(main = main1)

@@ -45,7 +45,7 @@
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "dcf")
 #'    create_dir(main = main1)
-#'    download_climate_forecasts(main = main)
+#'    download_climate_forecasts(main = main1)
 #'    unlink(main1, recursive = TRUE)
 #' }
 #'
@@ -213,7 +213,7 @@ NMME_urls <- function (start = Sys.Date(),
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "archive")
 #'    create_dir(main = main1)
-#'    download_archive(main = main)
+#'    download_archive(main = main1)
 #'    unlink(main1, recursive = TRUE)
 #'  }
 #'

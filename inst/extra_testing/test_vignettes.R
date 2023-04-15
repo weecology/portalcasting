@@ -12,11 +12,14 @@ nRmd <- length(Rmd)
 Rmdnames  <- gsub(".Rmd", "", gsub("vignettes/", "", Rmd))
 times     <- named_null_list(Rmdnames)
 
+dir.create(path = file.path(tempdir(), "vignettes"),
+           showWarnings = FALSE)
+
 for (rmd in 1:nRmd) {
 
   print(Rmdnames[rmd])
 
-  temp_name  <- Rmdnames[rmd]#file.path(tempdir(), Rmdnames[rmd])
+  temp_name  <- file.path(tempdir(), "vignettes", Rmdnames[rmd])
   txt_name   <- paste0(temp_name, ".txt")
   R_name     <- paste0(temp_name, ".R")
 

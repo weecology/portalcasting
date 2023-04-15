@@ -72,7 +72,7 @@ The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the Univ
 \dontrun{
    main1 <- file.path(tempdir(), "dcf")
    create_dir(main = main1)
-   download_climate_forecasts(main = main)
+   download_climate_forecasts(main = main1)
    unlink(main1, recursive = TRUE)
 }
 

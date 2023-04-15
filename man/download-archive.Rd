@@ -49,7 +49,7 @@ There are two calls to \code{\link[base:Sys.sleep]{base::Sys.sleep}} for \code{p
 \dontrun{
    main1 <- file.path(tempdir(), "archive")
    create_dir(main = main1)
-   download_archive(main = main)
+   download_archive(main = main1)
    unlink(main1, recursive = TRUE)
  }
 

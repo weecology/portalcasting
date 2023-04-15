@@ -8,13 +8,19 @@ Rd  <- Rd[-which(Rd == "man/figures")]
 nRd <- length(Rd)
 
 Rdnames <- gsub(".Rd", "", gsub("man/", "", Rd))
-examples <- named_null_list(Rdnames)
 
-for (i in 1:nRd) {
+times <- named_null_list(Rdnames)
+
+dir.create(path = file.path(tempdir(), "examples"),
+           showWarnings = FALSE)
+
+for (rd in 1:nRd) {
+
+  print(Rdnames[rd])
 
   ex <- dr <- dt <- tlb <- slb <- lb <- NULL
 
-  scanned <- scan(Rd[i], what = "character", sep = "\n", quiet = TRUE)
+  scanned <- scan(Rd[rd], what = "character", sep = "\n", quiet = TRUE)
 
   ex <- grep("examples\\{", scanned)
 
@@ -46,36 +52,30 @@ for (i in 1:nRd) {
 
   }
 
-  scanned[c(ex, dr, dt, tlb, slb, lb)] <- paste0("#", scanned[c(ex, dr, dt, tlb, slb, lb)])
+  scanned[c(ex, dr, dt, tlb, slb, lb)] <- paste0("##", scanned[c(ex, dr, dt, tlb, slb, lb)])
 
-  examples_i <- scanned[ex:lb]
+  marked <- scanned[ex:lb]
 
-  examples[[i]] <- examples_i
+  cropped <- marked[!(substr(marked, 1, 2) == "##")]
 
-}
+  temp_name  <- file.path(tempdir(), "examples", Rdnames[rd])
+  R_name     <- paste0(temp_name, ".R")  
 
-times <- named_null_list(Rdnames)
-nlines <- sapply(examples, length)
+  pasted_rd <- paste(cropped, collapse = "\n")
 
-for(i in 1:nRd) {
+  write(x    = pasted_rd,
+        file = R_name)
 
-  times[[i]] <- list()
-
-  print(Rdnames[i])
-
-  if (nlines[i] == 0) {
-
-    next
-
-  }
-
-  for (j in 1:nlines[i]) {
-
-    times[[i]][[j]] <- tryCatch(system.time({eval(parse(text = examples[[i]][j]))}),
-                                error = function(x) {NA})
-
-  }
+  times[[rd]] <- tryCatch(system.time({source(R_name)}),
+                          error = function(x) {NA})  
 
 }
 
 print(times)
+
+if (any(is.na(times))) {
+
+  nas <- Rdnames[which(is.na(times))]
+  stop(paste("Example ", nas, " errored during test"))
+
+}
