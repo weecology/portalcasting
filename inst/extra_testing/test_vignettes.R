@@ -14,6 +14,8 @@ times     <- named_null_list(Rmdnames)
 
 for (i in 1:nRmd) {
 
+  print(Rmdnames[i])
+
   temp_name  <- Rmdnames[i]#file.path(tempdir(), Rmdnames[i])
   txt_name   <- paste0(temp_name, ".txt")
   R_name     <- paste0(temp_name, ".R")

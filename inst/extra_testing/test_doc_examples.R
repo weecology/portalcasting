@@ -61,6 +61,8 @@ for(i in 1:nRd) {
 
   times[[i]] <- list()
 
+  print(Rdnames[i])
+
   for (j in 1:nlines[i]) {
 
     times[[i]][[j]] <- tryCatch(system.time({eval(parse(text = examples[[i]][j]))}),
