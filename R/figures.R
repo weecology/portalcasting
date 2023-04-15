@@ -50,7 +50,9 @@
 #'    plot_forecast_ts(main = main1)
 #'    plot_forecast_point(main = main1)
 #'    plot_forecasts_error_lead(main = main1)
-#'    plot_forecasts_cov_RMSE(main = main1)
+#'    plot_forecasts_cov_RMSE(main    = main1, 
+#'                            models  = "AutoArima", 
+#'                            species = "DM")
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }

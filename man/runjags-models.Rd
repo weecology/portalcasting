@@ -117,7 +117,7 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
    setup_dir(main = main1)
    dataset <- "all"
    species <- "DM"
-   model   <- "runjags_RW"
+   model   <- "jags_RW"
  
    abundance      <- prepare_abundance(main    = main1,
                                        dataset = dataset,
@@ -155,7 +155,7 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
                       control_runjags = control_runjags)
  
    forecast(object   = fit_runjags,  
-            h        = metadata$lead_time_newmoons,   
+            h        = metadata$time$lead_time_newmoons,   
             level    = metadata$confidence_level,   
             nsamples = metadata$nsamples)
 

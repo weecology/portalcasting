@@ -38,12 +38,6 @@
 #'    added <- add_new_dataset(main                 = main1, 
 #'                             new_dataset_controls = new_controls)
 #'
-#'    portalcast(main     = main1, 
-#'               models   = "AutoArima", 
-#'               datasets = "newdata", 
-#'               species  = c("DM", "PP", "total"))
-#'
-#'
 #'    unlink(main1, recursive = TRUE)
 #'  }
 #'
