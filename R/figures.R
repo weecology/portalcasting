@@ -46,6 +46,7 @@
 #'    plot_covariates(main = main1)
 #'
 #'    portalcast(main = main1, models = "AutoArima")
+#'    evaluate_forecasts(main = main1)
 #'
 #'    plot_forecast_ts(main = main1)
 #'    plot_forecast_point(main = main1)

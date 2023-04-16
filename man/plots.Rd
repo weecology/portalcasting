@@ -100,6 +100,7 @@ As of \verb{portalcasting v0.9.0}, the line and bands in \code{plot_forecast_ts}
    plot_covariates(main = main1)
 
    portalcast(main = main1, models = "AutoArima")
+   evaluate_forecasts(main = main1)
 
    plot_forecast_ts(main = main1)
    plot_forecast_point(main = main1)
