@@ -22,9 +22,9 @@ for (rd in 1:nRd) {
 
   scanned <- scan(Rd[rd], what = "character", sep = "\n", quiet = TRUE)
 
-  ref <- grep("references\\{", scanned)
+  ref <- grepl("references\\{", scanned)
 
-  if (ref) {
+  if (any(ref)) {
 
     scanned <- scanned[1:(ref - 1)]
 
