@@ -75,7 +75,7 @@
 #'                                 covariates = covariates, 
 #'                                 metadata   = metadata, 
 #'                                 quiet      = FALSE)
-#'    newmoons_in <- covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag)
+#'    newmoons_in <- match(metadata$time$forecast_newmoonnumbers - lag, covariates$newmoonnumber)
 #'    newxreg     <- covariates[newmoons_in, unlist(fit_tsglm$submodel)]
 #'
 #'    forecast(object  = fit_tsglm,   

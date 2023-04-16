@@ -18,9 +18,17 @@ for (rd in 1:nRd) {
 
   print(Rdnames[rd])
 
-  ex <- dr <- dt <- tlb <- slb <- lb <- NULL
+  rex <- dr <- dt <- tlb <- slb <- lb <- NULL
 
   scanned <- scan(Rd[rd], what = "character", sep = "\n", quiet = TRUE)
+
+  ref <- grep("references\\{", scanned)
+
+  if (ref) {
+
+    scanned <- scanned[1:(ref - 1)]
+
+  }
 
   ex <- grep("examples\\{", scanned)
 
