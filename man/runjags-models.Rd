@@ -119,7 +119,7 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
    species    <- "DM"
    model      <- "jags_RW"
    model_file <- gsub("'", "",
-                      models_controls(main)[[model]]$fit$full_model_file)
+                      models_controls(main1)[[model]]$fit$full_model_file)
  
    abundance      <- prepare_abundance(main    = main1,
                                        dataset = dataset,
@@ -137,7 +137,7 @@ Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr
                                        thin    = 1)
    data_names      <- c("count", "N", "log_mean_count")
 
-   runjags_model(model = model)
+   runjags_model(model_file = model_file)
 
    runjags_monitors(monitors = c("mu", "sigma"),
                     metadata = metadata)

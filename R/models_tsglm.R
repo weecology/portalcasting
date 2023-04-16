@@ -42,7 +42,7 @@
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "metatsglm")
 #'
-#'    setup_production(main = main1)
+#'    setup_dir(main = main1)
 #'    dataset <- "all"
 #'    species <- "DM"
 #'    model   <- "pevGARCH"
