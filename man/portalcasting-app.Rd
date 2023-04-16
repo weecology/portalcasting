@@ -28,7 +28,8 @@ global_list(main = ".")
 
    global_list(main = main1)
  
-   if (interactive( )) {
+
+   if (getShinyOption("shiny.launch.browser")) {
      run_app(main = main1)
    }
 

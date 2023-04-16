@@ -17,7 +17,8 @@
 #'
 #'    global_list(main = main1)
 #'  
-#'    if (interactive( )) {
+#'
+#'    if (getShinyOption("shiny.launch.browser")) {
 #'      run_app(main = main1)
 #'    }
 #'
@@ -32,8 +33,7 @@ NULL
 #'
 run_app <- function(main = ".") {
 
-  runApp(appDir         = app_path(main = main),
-         launch.browser = TRUE)
+  runApp(appDir = app_path(main = main))
 
 }
 

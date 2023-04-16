@@ -74,6 +74,8 @@ for (rd in 1:nRd) {
   write(x    = pasted_rd,
         file = R_name)
 
+  shinyOptions("shiny.launch.browser" = FALSE)
+
   times[[rd]] <- tryCatch(system.time({source(R_name)}),
                           error = function(x) {NA})  
 
