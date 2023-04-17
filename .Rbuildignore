@@ -17,3 +17,4 @@
 ^docker$
 ^\.github$
 ^code_development$
+^pkgdown$
