@@ -44,7 +44,7 @@ Current metrics include raw error (which can be used to calculate root mean squa
         dataset = "controls", 
         species = "DM")
 
-   evaluate_forecasts(main = main1)
+   ## evaluate_forecasts(main = main1) ## extensive runtime for full evaluation from scratch
 
    ids <- select_forecasts(main = main1)$forecast_id
         

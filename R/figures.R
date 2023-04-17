@@ -46,7 +46,16 @@
 #'    plot_covariates(main = main1)
 #'
 #'    portalcast(main = main1, models = "AutoArima")
-#'    evaluate_forecasts(main = main1)
+#'
+#'    ids <- select_forecasts(main     = main3, 
+#'                            species  = c("DM", "PP", "total"),
+#'                            models   = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH", "jags_RW"),
+#'                            datasets = c("all", "controls"))$forecast_id
+#'    nids         <- length(ids)
+#'    nsample_ids  <- 1000
+#'    forecast_ids <- ids[round(seq(1, nids, length.out = nsample_ids))]
+#'    evaluate_forecasts(main         = main3, 
+#'                       forecast_ids = forecast_ids) 
 #'
 #'    plot_forecast_ts(main = main1)
 #'    plot_forecast_point(main = main1)

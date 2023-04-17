@@ -8,7 +8,6 @@
 \alias{about_md_path}
 \alias{rodents_profiles_html_path}
 \alias{rodents_profiles_csv_path}
-\alias{rodents_datasets_paths}
 \alias{rodents_datasets_controls_path}
 \alias{models_controls_path}
 \alias{rodents_dataset_path}
@@ -38,8 +37,6 @@ about_md_path(main = ".")
 rodents_profiles_html_path(main = ".")
 
 rodents_profiles_csv_path(main = ".")
-
-rodents_datasets_paths(main = ".")
 
 rodents_datasets_controls_path(main = ".")
 
@@ -90,7 +87,6 @@ Wrapper functions for specific subdirectories and files include:
 \itemize{
 \item Files
 \itemize{
-\item \code{rodents_datasets_paths}
 \item \code{rodents_dataset_path}
 \item \code{climate_forecasts_paths}
 \item \code{forecasts_metadata_path}
