@@ -352,7 +352,6 @@ update_directory_configuration <- function (main = ".") {
 #'
 #' @details Wrapper functions for specific subdirectories and files include:   
 #'   * Files
-#'     * `rodents_datasets_paths`  
 #'     * `rodents_dataset_path`  
 #'     * `climate_forecasts_paths`  
 #'     * `forecasts_metadata_path`  
@@ -523,16 +522,6 @@ rodents_profiles_html_path <- function (main = ".") {
 rodents_profiles_csv_path <- function (main = ".") {
 
   paths(main = main)$files$rodents_profiles_csv
-
-}
-
-#' @rdname directory-paths
-#'
-#' @export
-#'
-rodents_datasets_paths <- function (main = ".") {
-
-  paths(main = main)$files$rodents_datasets
 
 }
 

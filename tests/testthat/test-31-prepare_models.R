@@ -94,4 +94,9 @@ test_that(desc = "new_model_<> functions update the list", {
 })
 
 
+test_that(desc = "models_path", {
 
+  expect_silent(mp <- models_path(main = main2))
+  expect_is(mp, "character")
+
+})

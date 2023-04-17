@@ -44,6 +44,7 @@ test_that(desc = "read_model_fit reads in model fits", {
 
   #expect_is(read_model_fit(main = main3, forecast_id = NULL), "list")
   expect_error(read_model_fit(main = main3, forecast_id = 1e10))
+  expect_error(read_model_fit(main = main3))
 
 })
 

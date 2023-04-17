@@ -76,6 +76,9 @@ test_that(desc = "global_list makes a list of globals and component functions op
   rv1 <- update_list(rv, forecast_tab_historic_end_newmoonnumber = 1e10)
   expect_is(selected_historic_end_newmoonnumber(global = gl, event = "forecast_tab_historic_end_newmoonnumber", rv = rv1), "integer")
   rv1 <- update_list(rv, evaluation_tab_historic_end_newmoonnumber = 1e10)
+  expect_is(selected_historic_end_newmoonnumber(global = gl, event = "evaluation_tab_historic_end_newmoonnumber", rv = rv1), "integer")
+  expect_is(selected_historic_end_newmoonnumber(global = gl, event = "null_test", rv = rv1), "NULL")
+
   expect_is(selected_species(global = gl, event = "evaluation_tab_species", rv = rv1), "character")
   expect_is(selected_species(global = gl, event = "null_test", rv = rv1), "NULL")
 
