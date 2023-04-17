@@ -268,7 +268,7 @@ download_archive <- function(main          = ".",
                        yes  = which.max(as.Date(pub_date)),
                        no   = which(versions == version))
 
-    if (length(selected) == 0){
+    if (is.na(selected)){
 
       stop("Failed to locate version `", version, "` on Zenodo")
    
