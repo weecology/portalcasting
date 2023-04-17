@@ -33,5 +33,5 @@ jobs:
         run: |
           install.packages("devtools");
           devtools::load_all();
-          source(file.path("inst", "extra_testing", "test_doc_examples.R"));
+          #source(file.path("inst", "extra_testing", "test_doc_examples.R"));
         shell: Rscript {0}

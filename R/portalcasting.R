@@ -26,3 +26,4 @@
 #'
 "_PACKAGE"
 
+utils::globalVariables(c("main", "global"))
