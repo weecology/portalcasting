@@ -73,6 +73,8 @@ add_new_dataset <- function (main                 = "." ,
                              new_dataset_controls = dataset_controls_template(),
                              models               = NULL) {
 
+  return_if_null(x = models)
+
   settings <- read_directory_settings(main = main)
 
   messageq("Updating dataset controls ...", quiet = settings$quiet)
