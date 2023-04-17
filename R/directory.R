@@ -435,7 +435,14 @@ paths <- function (main = ".") {
   climate_forecasts        <- file.path(main, settings$subdirectories$resources, "NMME",  paste0(settings$resources$climate_forecasts$data, ".csv"))
   names(climate_forecasts) <- names(settings$resources$climate_forecasts$data)
 
-  rodent_datasets_controls <- prefab_datasets_controls( ) # NEED TO MAKE FLEXIBLE read_dataset_controls(main = main)
+  if (file.exists(file.path(main, settings$subdirectories$data, settings$files$datasets_controls))) {
+  rodent_datasets_controls <- read_datasets_controls(main = main)
+
+  } else {
+
+    rodent_datasets_controls <- prefab_datasets_controls( )
+
+  }
 
   rodents_datasets         <- file.path(main, settings$subdirectories$data, paste0("rodents_", tolower(names(rodent_datasets_controls)), ".csv")) 
   names(rodents_datasets)  <- names(rodent_datasets_controls)

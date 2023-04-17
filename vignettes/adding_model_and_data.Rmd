@@ -169,7 +169,10 @@ names(read_models_controls(main = main))
 And the model is directly ready to be `portalcast`ed:
 
 ```{r, eval=FALSE}
-portalcast(main = main, models = "newmod", datasets = "all", species = c("DM", "PP", "total"))
+portalcast(main     = main, 
+           models   = "newmod", 
+           datasets = "all", 
+           species  = c("DM", "PP", "total"))
 
 #> ------------------------------------------------------------
 #> Forecasting models...
@@ -195,7 +198,9 @@ Incorporating the model in the establishment of the directory requires adding th
 
 ```{r, eval=FALSE}
 main2 <- "~/sandbox2"
-setup_sandbox(main = main2, new_models_controls = list(newmod = new_controls), models = c(prefab_models(), "newmod"))
+setup_sandbox(main                = main2, 
+              new_models_controls = list(newmod = new_controls), 
+              models              = c(prefab_models(), "newmod"))
 ```
 
 
@@ -244,24 +249,55 @@ These can all be wrapped up together in a call to `new_dataset_controls()` to cr
 
 ```{r}
 new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
-                                     args     = new_dataset_args(name = "newdata", filename = "rodents_newdata.csv"))
+                                     args     = new_dataset_args(name     = "newdata", 
+                                                                 filename = "rodents_newdata.csv"))
 
 ```
 
-Given that the directory is already established, one can use the `add_new_dataset()` function to add the dataset controls to the directory at main, via the controls list:
+Given that the directory is already established, one can use the `add_new_dataset()` function to add the dataset controls to the directory at main, via the controls list, noting which existing models should have the new dataset added to their controls list:
 
 ```{r eval=FALSE}
 
 new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
-                                     args     = new_dataset_args(name = "newdata", filename = "rodents_newdata.csv"))
+                                     args     = new_dataset_args(name     = "newdata", 
+                                                                 filename = "rodents_newdata.csv"))
 
-added <- add_new_dataset(main = main, new_dataset_controls = new_controls)
+added <- add_new_dataset(main                 = main, 
+                         new_dataset_controls = new_controls, 
+                         models               = "AutoArima"))
 
 
 names(read_datasets_controls(main = main))
 
 #>  [1] "all"        "controls"   "exclosures" "newdata"
 ```
+
+And the dataset can then be forecast with:
+
+```{r, eval=FALSE}
+portalcast(main     = main, 
+           models   = "AutoArima", 
+           datasets = "newdata", 
+           species  = c("DM", "PP", "total"))
+
+#> ------------------------------------------------------------
+#> Forecasting models...
+#> ------------------------------------------------------------
+#> This is portalcasting v0.51.0
+#> ------------------------------------------------------------
+#> 
+#>   - AutoArima for newdata DM
+#>     |++++| successful |++++|
+#>   - AutoArima for newdata PP
+#>     |++++| successful |++++|
+#>   - AutoArima for newdata total
+#>     |++++| successful |++++|
+#> ------------------------------------------------------------
+#> ...forecasting complete.
+#> ------------------------------------------------------------
+
+```
+
 
 ### From the `setup` Stage
 

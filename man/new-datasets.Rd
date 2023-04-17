@@ -12,7 +12,11 @@
 \usage{
 dataset_controls_template()
 
-add_new_dataset(main = ".", new_dataset_controls = dataset_controls_template())
+add_new_dataset(
+  main = ".",
+  new_dataset_controls = dataset_controls_template(),
+  models = NULL
+)
 
 new_dataset_controls(...)
 
@@ -26,6 +30,8 @@ new_dataset_args(...)
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
 \item{new_dataset_controls}{\code{list} of controls for any new datasets (not in the prefab datasets) listed in \code{datasets} that are to be added to the control list and file.}
+
+\item{models}{\code{character} vector of the names of the models that are to have their controls updated to include the new dataset.}
 
 \item{...}{Named \code{list} of arguments passed to \code{\link{update_list}}.}
 
@@ -60,7 +66,12 @@ Having been created using \code{\link{new_dataset_controls}}, the new dataset's 
                                         args     = args)
 
    added <- add_new_dataset(main                 = main1, 
-                            new_dataset_controls = new_controls)
+                            new_dataset_controls = new_controls,
+                            models               = "AutoArima")
+ 
+   portalcast(main     = main1, 
+              datasets = "newdata", 
+              models   = "AutoArima")
 
    unlink(main1, recursive = TRUE)
  }

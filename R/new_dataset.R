@@ -13,6 +13,8 @@
 #'
 #' @param new_dataset_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
+#' @param models `character` vector of the names of the models that are to have their controls updated to include the new dataset.
+#'
 #' @return `dataset_controls_template`: `list` of named dataset controls elements, many as `NULL`. \cr  
 #'         `new_dataset_controls`: `list` of named dataset controls. \cr 
 #'         `new_dataset_metadata`: `list` of named dataset metadata elements to the controls `list`. \cr 
@@ -36,7 +38,12 @@
 #'                                         args     = args)
 #'
 #'    added <- add_new_dataset(main                 = main1, 
-#'                             new_dataset_controls = new_controls)
+#'                             new_dataset_controls = new_controls,
+#'                             models               = "AutoArima")
+#'  
+#'    portalcast(main     = main1, 
+#'               datasets = "newdata", 
+#'               models   = "AutoArima")
 #'
 #'    unlink(main1, recursive = TRUE)
 #'  }
@@ -63,24 +70,72 @@ dataset_controls_template <- function( ) {
 #' @export
 #'
 add_new_dataset <- function (main                 = "." ,
-                             new_dataset_controls = dataset_controls_template()) {
+                             new_dataset_controls = dataset_controls_template(),
+                             models               = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   messageq("Updating dataset controls ...", quiet = settings$quiet)
 
-  dataset_controls <- read_datasets_controls(main = main)
+  datasets_controls <- read_datasets_controls(main = main)
 
 
-  nexisting_datasets <- length(dataset_controls)
-  dataset_controls[[nexisting_datasets + 1]] <- new_dataset_controls
+  nexisting_datasets <- length(datasets_controls)
+  datasets_controls[[nexisting_datasets + 1]] <- new_dataset_controls
 
-  ndatasets                        <- length(dataset_controls)
-  names(dataset_controls)[ndatasets] <- new_dataset_controls$metadata$name            
+  ndatasets                           <- length(datasets_controls)
+  names(datasets_controls)[ndatasets] <- new_dataset_controls$metadata$name            
 
-  write_yaml(x    = dataset_controls,
+  write_yaml(x    = datasets_controls,
              file = file.path(main, settings$subdirectories$data, settings$files$datasets_controls))
 
+  messageq(" ... complete.\n", quiet = settings$quiet)
+
+  messageq("Adding dataset file ...", quiet = settings$quiet)
+
+  do.call(what = new_dataset_controls$fun, 
+          args = update_list(list = new_dataset_controls$args, 
+                             main = main))
+  
+  messageq(" ... complete.\n", quiet = settings$quiet)
+
+  messageq("Updating model controls ...", quiet = settings$quiet)
+
+  nmodels <- length(models)
+ 
+  species <- new_dataset_controls$args$species
+  if (new_dataset_controls$args$total) {
+    species <- c(species, "total")
+  }
+
+  models_controls <- read_models_controls(main = main)
+
+  for (i in 1:nmodels) {
+
+    model_controls <- models_controls[[models[i]]]
+
+    model_controls$datasets <- c(model_controls$datasets, tempname = list(list(species = species)))
+
+    names(model_controls$datasets)[length(model_controls$datasets)] <- new_dataset_controls$metadata$name
+
+    models_controls[[models[i]]] <- model_controls
+
+  }
+
+  write_yaml(x    = models_controls, 
+             file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
+  
+  messageq(" ... complete.\n", quiet = settings$quiet)
+ 
+
+  messageq("Updating metadata ...", quiet = settings$quiet)
+
+  metadata <- read_metadata(main = main)
+
+  metadata$datasets_controls <- datasets_controls
+
+  write_yaml(x    = metadata, 
+             file = file.path(main, settings$subdirectories$data, settings$files$metadata))
 
   messageq(" ... complete.\n", quiet = settings$quiet)
 
