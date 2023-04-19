@@ -17,6 +17,8 @@
 #'         `cast`: `list` of model outputs from [`process_model_output`]. \cr 
 #'         `make_model_combinations`: `data.frame` of the model combinations.
 #'
+#' @family core
+#'
 #' @name portalcast
 #'
 #' @examples

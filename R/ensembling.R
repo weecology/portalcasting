@@ -23,6 +23,8 @@
 #'
 #' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][portalr::forecasting_species].
 #'
+#' @family core
+#'
 #' @return `data.frame` of ensembled forecasts.
 #'
 #' @name ensemble

@@ -52,3 +52,14 @@ Create messages for use in the portalcasting pipeline. \cr \cr
    castle( )
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

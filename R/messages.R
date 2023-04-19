@@ -25,6 +25,8 @@
 #'         `break_lines`: The `character` of the lines to be passed to [`message`][base::message] via [`messageq`].  \cr 
 #'         `castle`: The `character` of the sandcastle to be passed to [`message`][base::message] via [`messageq`]. 
 #'
+#' @family utilities
+#'
 #' @name messages
 #'
 #' @examples 

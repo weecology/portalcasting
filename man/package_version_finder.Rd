@@ -20,3 +20,14 @@ If the object is sourced through multiple packages, each package and its version
    package_version_finder( )
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

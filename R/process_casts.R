@@ -44,6 +44,8 @@
 #'
 #' @name process forecast output
 #'
+#' @family core
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "forecast_output")

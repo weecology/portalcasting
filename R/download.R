@@ -6,7 +6,7 @@
 #'              `NMME_urls` generates the URL for a specific request to the NMME API based on parameters. See arguments for specifics and `Details` for links.
 #'
 #'
-#' @details The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set. 
+#' @details The [Northwest Knowledge Network](https://www.northwestknowledge.net/home/) (NKN) at the University of Idaho provides a  [simple API](https://climate.northwestknowledge.net/RangelandForecast/download.php) to download downscaled climate forecasts using the [North American Multi-Model Ensemble](http://www.cpc.ncep.noaa.gov/products/NMME/) (NMME) set. 
 #'
 #' @param main `character` value defining the main component of the portalcasting directory tree. 
 #'
@@ -38,6 +38,8 @@
 #'         `NMME_urls`: amed `character` vector of URLs, or `NULL` if `data`, `freq`, or `model` is `NULL`.
 #'
 #' @name download climate forecasts
+#'
+#' @family downloads
 #'
 #' @examples
 #'    NMME_urls( )
@@ -208,6 +210,8 @@ NMME_urls <- function (start = Sys.Date(),
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
 #' @name download archive
+#'
+#' @family downloads
 #'
 #' @examples
 #' \dontrun{

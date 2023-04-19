@@ -23,3 +23,14 @@ Replaces the focal input with the alternative value if it is \code{NULL}.
    ifnull(FALSE, 123)
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

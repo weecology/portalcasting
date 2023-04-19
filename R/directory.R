@@ -23,6 +23,8 @@
 #'
 #' @name directory creation
 #'
+#' @family orchestration
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
@@ -224,6 +226,9 @@ setup_sandbox <- function (main                  = ".",
 #'
 #' @name directory configuration file
 #'
+#' @family orchestration
+#' @family read-write
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "standard")
@@ -379,6 +384,9 @@ update_directory_configuration <- function (main = ".") {
 #' @return `list` of directory paths or specific `character` paths.
 #'
 #' @name directory paths
+#'
+#' @family paths
+#' @family orchestration
 #'
 #' @examples
 #' \dontrun{

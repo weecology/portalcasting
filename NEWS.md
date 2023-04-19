@@ -192,7 +192,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * Allows download of larger directory archive without timeout 
 
 
-# [portalcasting 0.38.0](https://github.com/weecology/portalcasting/releases/tag/v0.38.0)
+# portalcasting 0.38.0
 *2022-04-21*
 
 ## If there's only one model, don't ensemble
@@ -622,7 +622,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ## Changes for users adding their own models to the prefab set
 * Substantial reduction in effort for users who wish to add models (i.e. anyone who is sandboxing). You can even just plunk your own R script (which could be a single line calling out to an external program if desired) without having to add any model script writing controls, and just add the name of the model to the models argument in `portalcast` and it will run it with everything else.
-* Outlined in the updated [Getting Started](https://weecology.github.io/portalcasting/articles/howto.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignettes.
+* Outlined in the updated [Getting Started](https://weecology.github.io/portalcasting/articles/getting_started.html) and [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html) vignettes.
 * Users adding models to the prefab suite should now permanently add their model's control options to the source code in `model_script_controls` rather than write their own control functions.
 * Users adding models to the prefab suite should permanently add their model's function code to the `prefab_models` script (reusing and adding to the documentation in `prefab_model_functions`), rather than to its own script. 
 * Users should still add their model's name to the source code in `model_names`.
@@ -630,7 +630,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ## Relaxed model requirements
 * Models are no longer forced to use interpolated data.
 * Models are no longer required to output a rigidly formatted data-table. Presently, the requirement is just a list, but soon some specifications will be added to improve reliability.
-* Outlined in the updated [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_a_model_or_data.html) vignette. 
+* Outlined in the updated [Adding a Model/Data](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html) vignette. 
 
 ## More organization via metadata
 * Generalized cast output is now tracked using a unique id in the file name associated with the cast, which is related to a row in a metadata table, newly included here. [addresses](https://github.com/weecology/portalcasting/issues/105) and [addresses](https://github.com/weecology/portalcasting/issues/106) and [addresses](https://github.com/weecology/portalPredictions/issues/316)
@@ -909,7 +909,7 @@ the forecasts for the Controls to be duplicated of the All forecasts.
 
 ## Code testing
 * All of the code is now tested via [`testthat`](https://github.com/weecology/portalcasting/tree/master/tests).
-* Test coverage is tracked via [Codecov](https://codecov.io/gh/weecology/portalcasting).
+* Test coverage is tracked via [Codecov](https://app.codecov.io/gh/weecology/portalcasting).
 * The only functionality not covered in testing on Codecov is associated with
 `download_predictions()`, which intermittently hangs on Travis. Testing is
 available, but requires manual toggling of the `test_location` value to
@@ -953,9 +953,9 @@ class, length, numeric limitations, etc.) to the options functions.
 
 ## Vignettes
 * Three vignettes were added:
-  * [current models vignette](https://weecology.github.io/portalcasting/articles/models.html) was brought from the [forecasting website](https://portal.naturecast.org/models.html).
+  * [current models vignette](https://weecology.github.io/portalcasting/articles/current_models.html) was brought from the [forecasting website](https://portal.naturecast.org).
   * [codebase vignette](https://weecology.github.io/portalcasting/articles/codebase.html) was created from the earlier `README.md` file.
-  * [adding a model vignette](https://weecology.github.io/portalcasting/articles/adding_a_model.html) was constructed based on two pages from the 
+  * [adding a model vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html) was constructed based on two pages from the 
     [Portal Predictions repository](https://github.com/weecology/portalPredictions) wiki
     ([1](https://github.com/weecology/portalPredictions/wiki/Adding-a-new-model) and 
     [2](https://github.com/weecology/portalPredictions/wiki/Forecast-file-format)) and with substantial additional text added.

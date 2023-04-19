@@ -33,6 +33,9 @@
 #'
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
+#' @family orchesration
+#' @family content-prep
+#'
 #' @name directory filling
 #'
 #' @examples

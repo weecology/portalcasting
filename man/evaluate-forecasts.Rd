@@ -57,3 +57,10 @@ Current metrics include raw error (which can be used to calculate root mean squa
 }
 
 }
+\seealso{
+Core forecasting functions:
+\code{\link{ensemble}},
+\code{\link{portalcast}()},
+\code{\link{process forecast output}}
+}
+\concept{core}

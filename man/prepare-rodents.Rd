@@ -136,3 +136,12 @@ Wraps around \code{\link[portalr:summarize_rodent_data]{portalr::summarize_roden
 }
 
 }
+\seealso{
+Content preparation functions:
+\code{\link{directory filling}},
+\code{\link{prepare covariates}},
+\code{\link{prepare metadata}},
+\code{\link{prepare models}},
+\code{\link{prepare newmoons}}
+}
+\concept{content-prep}

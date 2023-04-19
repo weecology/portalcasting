@@ -5,6 +5,8 @@
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
 #' @return `data.frame` of historical and forecasted covariates that is also saved out to `settings$files$covariates` if indicated by `settings$save`.
+#'
+#' @family content-prep
 #'  
 #' @name prepare covariates
 #'

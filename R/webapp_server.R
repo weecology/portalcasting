@@ -24,6 +24,8 @@
 #'         `update_output`: an `output` `list`. \cr
 #'         `update_input`: updates the `input` `list`, but does not return it. 
 #'
+#' @family shinyapp
+#'
 #' @name portalcasting app server
 #'
 NULL

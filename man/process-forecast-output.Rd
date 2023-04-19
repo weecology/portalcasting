@@ -148,3 +148,10 @@ Four model-specific output components are saved and returned:
 }
 
 }
+\seealso{
+Core forecasting functions:
+\code{\link{ensemble}},
+\code{\link{evaluate forecasts}},
+\code{\link{portalcast}()}
+}
+\concept{core}

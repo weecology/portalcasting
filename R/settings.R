@@ -93,6 +93,9 @@
 #'
 #' @name directory settings
 #'
+#' @family orchestration
+#' @family customization
+#'
 #' @examples
 #'    directory_settings( )
 #'    directory_files( )

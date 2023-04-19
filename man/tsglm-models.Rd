@@ -108,3 +108,9 @@ Using the tscount (Liboschik et al. 2017) package to forecast time series of cou
 \references{
 Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. \href{https://doi.org/10.18637/jss.v082.i05}{URL}.
 }
+\seealso{
+Helper functions for prefab models:
+\code{\link{prefabricated models}},
+\code{\link{runjags models}}
+}
+\concept{prefabmodels}

@@ -51,3 +51,14 @@ The directory configuration file is a special file within the directory setup an
 }
 
 }
+\seealso{
+Directory orchestration functions:
+\code{\link{directory creation}},
+\code{\link{directory paths}},
+\code{\link{directory settings}}
+
+File read-write functions:
+\code{\link{read write data}}
+}
+\concept{orchestration}
+\concept{read-write}

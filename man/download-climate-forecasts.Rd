@@ -64,7 +64,7 @@ Downloads climate forecasts, presently only from the North American Multi-Model 
 \code{NMME_urls} generates the URL for a specific request to the NMME API based on parameters. See arguments for specifics and \code{Details} for links.
 }
 \details{
-The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://bit.ly/2tCP8NX}{simple API} to download downscaled climate forecasts using the \href{https://bit.ly/2Mdv8gd}{North American Multi-Model Ensemble} (NMME) set.
+The \href{https://www.northwestknowledge.net/home/}{Northwest Knowledge Network} (NKN) at the University of Idaho provides a  \href{https://climate.northwestknowledge.net/RangelandForecast/download.php}{simple API} to download downscaled climate forecasts using the \href{http://www.cpc.ncep.noaa.gov/products/NMME/}{North American Multi-Model Ensemble} (NMME) set.
 }
 \examples{
    NMME_urls( )
@@ -77,3 +77,8 @@ The \href{https://bit.ly/2MifqjM}{Northwest Knowledge Network} (NKN) at the Univ
 }
 
 }
+\seealso{
+Other downloads: 
+\code{\link{download archive}}
+}
+\concept{downloads}

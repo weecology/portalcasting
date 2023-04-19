@@ -9,6 +9,8 @@
 #'
 #' @name package_version_finder
 #'
+#' @family utilities
+#'
 #' @examples
 #'    package_version_finder( )
 #'
@@ -64,6 +66,8 @@ package_version_finder <- function (what) {
 #'
 #' @return `numeric` series.
 #'
+#' @family utilities
+#'
 #' @name round_na.interp
 #' 
 #' @examples
@@ -108,6 +112,8 @@ round_na.interp <- function (x,
 #'
 #' @name file_ext
 #' 
+#' @family utilities
+#'
 #' @examples
 #'    file_ext("home/folders.with.dots/stuff/ok.csv")
 #'    file_ext(NMME_urls()[[1]])
@@ -138,6 +144,8 @@ file_ext <- function (path, sep_char = ".") {
 #' @return `list` with names `element_names` and values `NULL`.
 #'
 #' @name named_null_list 
+#'
+#' @family utilities
 #'
 #' @examples
 #'    named_null_list(c("a", "b", "c"))
@@ -171,6 +179,8 @@ named_null_list <- function (element_names = NULL) {
 #' @return Updated `list`.
 #'
 #' @name update_list
+#'
+#' @family utilities
 #'
 #' @examples
 #'    orig_list <- list(a = 1, b = 3, c = 4)
@@ -245,6 +255,8 @@ update_list <- function (list = list(),
 #'
 #' @name foy
 #'
+#' @family utilities
+#'
 #' @examples
 #'    Sys.Date( )
 #'    foy(Sys.Date())
@@ -281,6 +293,8 @@ foy <- function (dates = NULL) {
 #' @return `x` if not `NULL`, `alt` otherwise. 
 #' 
 #' @name ifnull
+#'
+#' @family utilities
 #'
 #' @examples
 #'    ifnull(NULL, 123)

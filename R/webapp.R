@@ -10,6 +10,8 @@
 #'
 #' @name portalcasting app
 #'
+#' @family shinyapp
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "app")
@@ -178,6 +180,8 @@ global_list <- function (main = ".") {
 #' @return `character` or `integer`, depending upon the function.
 #'
 #' @name portalcasting app selection helpers
+#'
+#' @family shinyapp
 #'
 #' @examples
 #' \dontrun{

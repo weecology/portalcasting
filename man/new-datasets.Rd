@@ -77,3 +77,8 @@ Having been created using \code{\link{new_dataset_controls}}, the new dataset's 
  }
 
 }
+\seealso{
+Directory customization functions:
+\code{\link{new models}}
+}
+\concept{customize}

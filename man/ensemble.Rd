@@ -60,3 +60,10 @@ The forecasts can be trimmed specifically using the \code{forecast_ids} input, o
 }
 
 }
+\seealso{
+Core forecasting functions:
+\code{\link{evaluate forecasts}},
+\code{\link{portalcast}()},
+\code{\link{process forecast output}}
+}
+\concept{core}

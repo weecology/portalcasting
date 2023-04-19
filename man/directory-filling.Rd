@@ -92,3 +92,13 @@ Additionally, new models and datasets can be added to the directory at filling u
 }
 
 }
+\seealso{
+Content preparation functions:
+\code{\link{prepare covariates}},
+\code{\link{prepare metadata}},
+\code{\link{prepare models}},
+\code{\link{prepare newmoons}},
+\code{\link{prepare rodents}}
+}
+\concept{content-prep}
+\concept{orchesration}

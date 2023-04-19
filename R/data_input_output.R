@@ -25,6 +25,8 @@
 #' @return `write_data`: `x` as input, [`invisible`][base::invisible]-ly. \cr 
 #'         `read_data`:  data requested, typically as a `data.frame` or `list`.
 #'
+#' @family read-write
+#'
 #' @name read write data
 #'
 #' @examples  

@@ -7,6 +7,8 @@
 #'
 #' @name prefabricated models
 #'
+#' @family prefabmodels
+#'
 #' @examples
 #'   prefab_models_controls( )
 #'   prefab_models( )

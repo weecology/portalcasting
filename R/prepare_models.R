@@ -17,6 +17,8 @@
 #'
 #' @name prepare models
 #'
+#' @family content-prep
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "models")

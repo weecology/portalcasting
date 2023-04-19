@@ -20,3 +20,14 @@ Based on the year in which the date occurred, determine the fraction of the year
    foy(Sys.Date())
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

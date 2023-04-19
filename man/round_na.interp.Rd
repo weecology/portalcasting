@@ -34,3 +34,14 @@ Wraps \code{\link{round}} around \code{\link[forecast:na.interp]{forecast::na.in
    round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

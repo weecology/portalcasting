@@ -54,3 +54,8 @@ There are two calls to \code{\link[base:Sys.sleep]{base::Sys.sleep}} for \code{p
  }
 
 }
+\seealso{
+Other downloads: 
+\code{\link{download climate forecasts}}
+}
+\concept{downloads}

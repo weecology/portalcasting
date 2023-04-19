@@ -22,3 +22,9 @@ Create a \code{character} vector of the names of the pre-fabricated (prefab) mod
   prefab_models( )
 
 }
+\seealso{
+Helper functions for prefab models:
+\code{\link{runjags models}},
+\code{\link{tsglm models}}
+}
+\concept{prefabmodels}

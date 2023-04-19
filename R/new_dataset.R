@@ -24,6 +24,8 @@
 #'
 #' @name new datasets
 #'
+#' @family customize
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "new_dataset_controls")

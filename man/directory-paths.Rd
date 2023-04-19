@@ -150,3 +150,11 @@ Wrapper functions for specific subdirectories and files include:
 }
 
 }
+\seealso{
+Directory orchestration functions:
+\code{\link{directory configuration file}},
+\code{\link{directory creation}},
+\code{\link{directory settings}}
+}
+\concept{orchestration}
+\concept{paths}

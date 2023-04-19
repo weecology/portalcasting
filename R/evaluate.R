@@ -13,6 +13,8 @@
 #'
 #' @name evaluate forecasts
 #'
+#' @family core
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "evaluations")

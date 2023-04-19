@@ -33,6 +33,8 @@
 #' @return `meta_tsglm`: An object of class `"tsglm"` with additional elements defining the submodel and lag. \cr  
 #'         `forecast.tsglm`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"newxreg"` (if provided for prediction) as well as the other elements returned by `predict`.
 #'
+#' @family prefabmodels
+#'
 #' @references 
 #'  Liboschik T., K. Fokianos, and R. Fried. 2017. tscount: An R Package for Analysis of Count Time Series Following Generalized Linear Models. Journal of Statistical Software, 82:1-51. [URL](https://doi.org/10.18637/jss.v082.i05).
 #'

@@ -13,7 +13,7 @@ Create a directory, populate it with data, build models, forecast rodent populat
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://weecology.github.io/portalcasting}
+  \item \url{https://weecology.github.io/portalcasting/}
   \item \url{https://github.com/weecology/portalcasting}
   \item Report bugs at \url{https://github.com/weecology/portalcasting/issues}
 }

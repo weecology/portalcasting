@@ -24,3 +24,14 @@ Based on the separating character, determine the file extension.
    file_ext(NMME_urls()[[1]], "=")
 
 }
+\seealso{
+Other utilities: 
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

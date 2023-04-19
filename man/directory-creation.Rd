@@ -100,3 +100,10 @@ Options for pre-defined setups include \code{setup_sandbox} for quick and flexib
 }
 
 }
+\seealso{
+Directory orchestration functions:
+\code{\link{directory configuration file}},
+\code{\link{directory paths}},
+\code{\link{directory settings}}
+}
+\concept{orchestration}

@@ -53,3 +53,10 @@ Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \c
 \description{
 Generate the Server Code for the Web App
 }
+\seealso{
+Other shinyapp: 
+\code{\link{portalcasting app selection helpers}},
+\code{\link{portalcasting app ui}},
+\code{\link{portalcasting app}}
+}
+\concept{shinyapp}

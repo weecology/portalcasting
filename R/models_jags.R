@@ -66,9 +66,11 @@
 #' @references 
 #'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. [URL](https://www.jstatsoft.org/article/view/v071i09). 
 #'  
-#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. [URL](https://bit.ly/33aQ37Y).
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. 
 #'
 #' @name runjags models
+#'
+#' @family prefabmodels
 #'
 #' @examples
 #' \dontrun{

@@ -37,3 +37,10 @@ global_list(main = ".")
  }
 
 }
+\seealso{
+Other shinyapp: 
+\code{\link{portalcasting app selection helpers}},
+\code{\link{portalcasting app server}},
+\code{\link{portalcasting app ui}}
+}
+\concept{shinyapp}

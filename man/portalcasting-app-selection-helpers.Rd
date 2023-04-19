@@ -149,3 +149,10 @@ Construct vectors of available choices and make selections, with respect to spec
  }
 
 }
+\seealso{
+Other shinyapp: 
+\code{\link{portalcasting app server}},
+\code{\link{portalcasting app ui}},
+\code{\link{portalcasting app}}
+}
+\concept{shinyapp}

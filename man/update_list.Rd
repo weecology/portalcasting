@@ -24,3 +24,14 @@ Update a list with new values for elements
    update_list(orig_list, a = 10, b = NULL)
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()}
+}
+\concept{utilities}

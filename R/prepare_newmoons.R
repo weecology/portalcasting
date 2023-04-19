@@ -13,6 +13,8 @@
 #'
 #' @name prepare newmoons
 #'
+#' @family content-prep
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "newmoons")

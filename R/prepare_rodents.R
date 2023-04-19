@@ -60,6 +60,8 @@
 #'         `prepare_abundance`: `numeric` vector of abundance data corresponding to the time articulated in the metadata file. Missing values are interpolated if requested via the model controls. \cr
 #'         `read_datasets_controls`, `write_datasets_controls`, `datasets_controls`: `list` of `datasets`' control `list`s, [`invisible`][base::invisible]-ly for `write_datasets_controls`.
 #'
+#' @family content-prep
+#'
 #' @name prepare rodents
 #'
 #' @examples

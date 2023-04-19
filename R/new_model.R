@@ -23,6 +23,8 @@
 #'
 #' @name new models
 #'
+#' @family customize
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "new_model_controls")

@@ -47,6 +47,8 @@
 #'
 #' @return A UI definition, component shiny tags, or bootswatch theme.
 #'
+#' @family shinyapp
+#'
 #' @name portalcasting app ui
 #'
 NULL

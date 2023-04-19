@@ -12,6 +12,8 @@
 #'
 #' @name prepare metadata
 #'
+#' @family content-prep
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "metadata")

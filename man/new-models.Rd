@@ -83,3 +83,8 @@ Having been created using \code{\link{new_model_controls}}, the new model's cont
  }
 
 }
+\seealso{
+Directory customization functions:
+\code{\link{new datasets}}
+}
+\concept{customize}

@@ -55,3 +55,10 @@ Forecast Portal rodent populations using the data and models in a portalcasting 
 }
 
 }
+\seealso{
+Core forecasting functions:
+\code{\link{ensemble}},
+\code{\link{evaluate forecasts}},
+\code{\link{process forecast output}}
+}
+\concept{core}

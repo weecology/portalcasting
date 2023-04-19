@@ -36,16 +36,17 @@ authors:
 navbar:
   title: "portalcasting"
   structure:
-    left: [home, articles, reference, news]
+    left: [home, getting_started, articles, reference, news]
     right: [twitter, github, website] 
   components: 
+    getting_started:
+      text: "Getting Started"
+      href: articles/getting_started.html
     articles:
       text: "Articles"
       menu:
        - text: "Current Models"
          href: articles/current_models.html
-       - text: "Getting Started"
-         href: articles/getting_started.html
        - text: "Adding a Model and Data"
          href: articles/adding_model_and_data.html
        - text: "Codebase"

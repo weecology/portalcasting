@@ -91,3 +91,8 @@ Generalized data input-output functionality with specifics for common files. \cr
  }
 
 }
+\seealso{
+File read-write functions:
+\code{\link{directory configuration file}}
+}
+\concept{read-write}
