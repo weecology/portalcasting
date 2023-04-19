@@ -40,9 +40,18 @@ test_that(desc = "server functions work off of global list", {
   expect_is(uo2, "list")
 
 
+  global <<- global_list(main = main3)
+
+  rows_in <- global$forecasts_evaluations$newmoonnumber == global$initial_evaluation_tab_selected_newmoonnumber &
+             global$forecasts_evaluations$species == global$initial_evaluation_tab_selected_species &
+             global$forecasts_evaluations$model == global$initial_evaluation_tab_selected_model &
+             global$forecasts_evaluations$dataset == global$initial_evaluation_tab_selected_dataset 
+
+
+  global$initial_evaluation_tab_selected_historic_end_newmoonnumber <<- max(global$forecasts_evaluations$historic_end_newmoonnumber[rows_in])
+
   testServer(app_server, {
 
-    global <- global_list(main = main3)
     session$setInputs(forecast_tab_species                       = global$initial_forecast_tab_selected_species,
                       forecast_tab_dataset                       = global$initial_forecast_tab_selected_dataset,
                       forecast_tab_model                         = global$initial_forecast_tab_selected_model,
@@ -52,6 +61,8 @@ test_that(desc = "server functions work off of global list", {
                       evaluation_tab_model                       = global$initial_evaluation_tab_selected_model,
                       evaluation_tab_historic_end_newmoonnumber  = global$initial_evaluation_tab_selected_historic_end_newmoonnumber,
                       evaluation_tab_newmoonnumber               = global$initial_evaluation_tab_selected_newmoonnumber)
+
+    output <- initial_output(main = main3, rv = rv, output = output)
 
     expect_equal(output$forecast_tab_species, as.character(global$initial_forecast_tab_selected_species))
     expect_equal(output$forecast_tab_dataset, global$initial_forecast_tab_selected_dataset)
@@ -63,15 +74,20 @@ test_that(desc = "server functions work off of global list", {
     expect_equal(output$evaluation_tab_historic_end_newmoonnumber, as.character(global$initial_evaluation_tab_selected_historic_end_newmoonnumber))
     expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
 
-    output <- initial_output(main = main3, rv = rv, output = output)
 
-    expect_equal(names(output$forecast_tab_ts_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$forecast_tab_ss_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$evaluation_tab_sp_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$evaluation_tab_RMSE_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$covariates_tab_ndvi_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$covariates_tab_precip_plot), c("src", "width", "height", "alt", "coordmap"))
-    expect_equal(names(output$covariates_tab_temp_plot), c("src", "width", "height", "alt", "coordmap"))
+    output <- update_output(main   = main3, 
+                            event  = "forecast_tab", 
+                            rv     = rv, 
+                            input  = input, 
+                            output = output)
+
+    expect_is(output, "shinyoutput")
+    output <- update_output(main   = main3, 
+                            event  = "evaluation_tab", 
+                            rv     = rv, 
+                            input  = input, 
+                            output = output)
+    expect_is(output, "shinyoutput")
 
     expect_equal(event_reaction(main = main3,
                                 global = global,
@@ -138,12 +154,19 @@ test_that(desc = "server functions work off of global list", {
                                 output = output, 
                                 session = session), NULL)
 
+    expect_equal(names(output$forecast_tab_ts_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$forecast_tab_ss_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$evaluation_tab_sp_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$evaluation_tab_RMSE_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$covariates_tab_ndvi_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$covariates_tab_precip_plot), c("src", "width", "height", "alt", "coordmap"))
+    expect_equal(names(output$covariates_tab_temp_plot), c("src", "width", "height", "alt", "coordmap"))
+
   })
 
+  rm(global, envir = .GlobalEnv)
 
 })
-
-
 
 
 
