@@ -177,6 +177,7 @@ Most users will not want or need to change the directory folders and file names,
 Directory orchestration functions:
 \code{\link{directory configuration file}},
 \code{\link{directory creation}},
+\code{\link{directory filling}},
 \code{\link{directory paths}}
 }
 \concept{customization}

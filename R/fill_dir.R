@@ -33,7 +33,7 @@
 #'
 #' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
-#' @family orchesration
+#' @family orchestration
 #' @family content-prep
 #'
 #' @name directory filling

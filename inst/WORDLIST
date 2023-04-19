@@ -37,6 +37,7 @@ NKN
 NMME
 NaN
 NaiveArima
+ORCID
 Plummer
 PortalData
 README
@@ -65,11 +66,13 @@ csv
 dataset's
 dev
 dir
+dontrun
 downscaled
 dplyr
 ensembled
 ensembling
 et
+eval
 exclosure
 exclosures
 fcast
@@ -84,6 +87,7 @@ initializer
 inits
 json
 ly
+md
 nb
 nbGARCH
 nbinom
@@ -105,6 +109,7 @@ portalr
 portalr's
 pre
 precip
+prefabmodels
 preloaded
 psGARCH
 rEDM
@@ -120,6 +125,7 @@ sandboxing
 sapply
 sd
 se
+shinyapp
 subfolders
 summarization
 timeseries

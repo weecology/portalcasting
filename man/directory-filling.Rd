@@ -93,6 +93,12 @@ Additionally, new models and datasets can be added to the directory at filling u
 
 }
 \seealso{
+Directory orchestration functions:
+\code{\link{directory configuration file}},
+\code{\link{directory creation}},
+\code{\link{directory paths}},
+\code{\link{directory settings}}
+
 Content preparation functions:
 \code{\link{prepare covariates}},
 \code{\link{prepare metadata}},
@@ -101,4 +107,4 @@ Content preparation functions:
 \code{\link{prepare rodents}}
 }
 \concept{content-prep}
-\concept{orchesration}
+\concept{orchestration}
