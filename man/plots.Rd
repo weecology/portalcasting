@@ -2,6 +2,7 @@
 % Please edit documentation in R/figures.R
 \name{plots}
 \alias{plots}
+\alias{figures}
 \alias{plot_forecasts_error_lead}
 \alias{plot_forecasts_cov_RMSE}
 \alias{plot_forecast_point}

@@ -2,6 +2,7 @@
 % Please edit documentation in R/prefab_models.R
 \name{prefabricated models}
 \alias{prefabricated models}
+\alias{prefab-models}
 \alias{prefab_models_controls}
 \alias{prefab_models}
 \title{Provide the Names or Controls for the Prefabricated Models}

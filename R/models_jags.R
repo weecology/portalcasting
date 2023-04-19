@@ -72,6 +72,8 @@
 #'
 #' @family prefabmodels
 #'
+#' @aliases jags-models
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "runjags")

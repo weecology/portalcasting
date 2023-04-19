@@ -12,6 +12,8 @@
 #'
 #' @family shinyapp
 #'
+#' @aliases web-app app
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "app")

@@ -2,6 +2,8 @@
 % Please edit documentation in R/prepare_covariates.R
 \name{prepare covariates}
 \alias{prepare covariates}
+\alias{prep-covariates}
+\alias{covariates}
 \alias{prepare_covariates}
 \title{Prepare Covariate Data for Casting}
 \usage{

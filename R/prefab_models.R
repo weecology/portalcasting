@@ -7,6 +7,8 @@
 #'
 #' @name prefabricated models
 #'
+#' @aliases prefab-models
+#'
 #' @family prefabmodels
 #'
 #' @examples

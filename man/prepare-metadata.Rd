@@ -2,6 +2,8 @@
 % Please edit documentation in R/prepare_metadata.R
 \name{prepare metadata}
 \alias{prepare metadata}
+\alias{prep-metadata}
+\alias{metadata}
 \alias{prepare_metadata}
 \title{Prepare a Model-Running Metadata List}
 \usage{

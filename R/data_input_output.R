@@ -20,7 +20,7 @@
 #'
 #' @param data_name `character` representation of the data needed. Current options include `"rodents"`, `"rodents_table"`, `"covariates"`, `"climate_forecasts"`, `"newmoons"`, and `"metadata"`.
 #'
-#' @param dataset,datasets `character` representation of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
+#' @param dataset,datasets `character` of the grouping name(s) used to define the rodents. Standard options are `"all"`, `"controls"`, and `"exclosures"`. `dataset` can only be length 1, `datasets` is not restricted in length.
 #'
 #' @return `write_data`: `x` as input, [`invisible`][base::invisible]-ly. \cr 
 #'         `read_data`:  data requested, typically as a `data.frame` or `list`.
@@ -28,6 +28,8 @@
 #' @family read-write
 #'
 #' @name read write data
+#'
+#' @aliases read-data write-data io
 #'
 #' @examples  
 #'  \dontrun{

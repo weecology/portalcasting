@@ -2,6 +2,8 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate forecasts}
 \alias{evaluate forecasts}
+\alias{evaluate}
+\alias{evaluation}
 \alias{evaluate_forecasts}
 \alias{evaluate_forecast}
 \alias{read_forecasts_evaluations}

@@ -26,6 +26,8 @@
 #'
 #' @family shinyapp
 #'
+#' @aliases web-app-server app-server server
+#'
 #' @name portalcasting app server
 #'
 #' @examples

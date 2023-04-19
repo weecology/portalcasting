@@ -2,6 +2,8 @@
 % Please edit documentation in R/prepare_models.R
 \name{prepare models}
 \alias{prepare models}
+\alias{prep-models}
+\alias{models}
 \alias{write_models_controls}
 \alias{write_models_scripts}
 \alias{prepare-models}

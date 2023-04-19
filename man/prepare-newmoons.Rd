@@ -2,6 +2,8 @@
 % Please edit documentation in R/prepare_newmoons.R
 \name{prepare newmoons}
 \alias{prepare newmoons}
+\alias{prep-newmoons}
+\alias{newmoons}
 \alias{prepare_newmoons}
 \alias{add_forecast_newmoons}
 \title{Prepare Lunar Data for the Portalcasting Repository}

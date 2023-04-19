@@ -44,6 +44,8 @@
 #'
 #' @name process forecast output
 #'
+#' @aliases process-forecasts
+#'
 #' @family core
 #'
 #' @examples

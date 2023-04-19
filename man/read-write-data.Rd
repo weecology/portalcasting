@@ -2,6 +2,9 @@
 % Please edit documentation in R/data_input_output.R
 \name{read write data}
 \alias{read write data}
+\alias{read-data}
+\alias{write-data}
+\alias{io}
 \alias{write_data}
 \alias{read_data}
 \alias{read_rodents_dataset}
@@ -58,7 +61,7 @@ read_climate_forecasts(main = ".")
 
 \item{data_name}{\code{character} representation of the data needed. Current options include \code{"rodents"}, \code{"rodents_table"}, \code{"covariates"}, \code{"climate_forecasts"}, \code{"newmoons"}, and \code{"metadata"}.}
 
-\item{dataset, datasets}{\code{character} representation of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
+\item{dataset, datasets}{\code{character} of the grouping name(s) used to define the rodents. Standard options are \code{"all"}, \code{"controls"}, and \code{"exclosures"}. \code{dataset} can only be length 1, \code{datasets} is not restricted in length.}
 }
 \value{
 \code{write_data}: \code{x} as input, \code{\link[base:invisible]{invisible}}-ly. \cr

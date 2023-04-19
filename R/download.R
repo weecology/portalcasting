@@ -41,6 +41,8 @@
 #'
 #' @family downloads
 #'
+#' @aliases climate-forecasts
+#'
 #' @examples
 #'    NMME_urls( )
 #'
@@ -212,6 +214,8 @@ NMME_urls <- function (start = Sys.Date(),
 #' @name download archive
 #'
 #' @family downloads
+#'
+#' @aliases archive
 #'
 #' @examples
 #' \dontrun{

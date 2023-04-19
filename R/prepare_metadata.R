@@ -12,6 +12,8 @@
 #'
 #' @name prepare metadata
 #'
+#' @aliases prep-metadata metadata
+#'
 #' @family content-prep
 #'
 #' @examples

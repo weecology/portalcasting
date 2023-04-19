@@ -38,6 +38,8 @@
 #'
 #' @name directory filling
 #'
+#' @aliases fill
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "fill_standard")

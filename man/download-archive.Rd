@@ -2,6 +2,7 @@
 % Please edit documentation in R/download.R
 \name{download archive}
 \alias{download archive}
+\alias{archive}
 \alias{download_archive}
 \title{Download the Portal Predictions Repository Archive}
 \usage{

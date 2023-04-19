@@ -2,6 +2,10 @@
 % Please edit documentation in R/directory.R
 \name{directory configuration file}
 \alias{directory configuration file}
+\alias{config}
+\alias{configuration}
+\alias{dir-config}
+\alias{directory-config}
 \alias{write_directory_configuration}
 \alias{read_directory_configuration}
 \alias{read_directory_settings}

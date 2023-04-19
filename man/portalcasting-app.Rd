@@ -2,6 +2,8 @@
 % Please edit documentation in R/webapp.R
 \name{portalcasting app}
 \alias{portalcasting app}
+\alias{web-app}
+\alias{app}
 \alias{run_app}
 \alias{global_list}
 \title{Build and Launch the Portal Forecast Web Application}

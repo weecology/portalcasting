@@ -7,6 +7,8 @@
 #'
 #' @name prefabricated rodents datasets
 #'
+#' @aliases prefab-rodents prefab-datasets prefab-rodents-datasets
+#'
 #' @examples
 #'   prefab_datasets_controls( )
 #'   prefab_datasets( )

@@ -93,6 +93,8 @@
 #'
 #' @name directory settings
 #'
+#' @aliases settings
+#'
 #' @family orchestration
 #' @family customization
 #'
@@ -143,7 +145,7 @@ directory_settings <- function (files             = directory_files( ),
 #'
 time_settings <- function (timeseries_start = as.Date("1995-01-01"), 
                            origin           = Sys.Date( ),
-                           forecast_date        = Sys.Date( ),
+                           forecast_date    = Sys.Date( ),
                            lead_time        = 365,
                            max_lag          = 365,
                            lag_buffer       = 60,

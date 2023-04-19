@@ -2,6 +2,9 @@
 % Please edit documentation in R/prefab_rodents_datasets.R
 \name{prefabricated rodents datasets}
 \alias{prefabricated rodents datasets}
+\alias{prefab-rodents}
+\alias{prefab-datasets}
+\alias{prefab-rodents-datasets}
 \alias{prefab_datasets}
 \alias{prefab_datasets_controls}
 \title{Provide the Names or Controls for the Prefabricated Rodent Datasets}

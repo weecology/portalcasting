@@ -2,6 +2,7 @@
 % Please edit documentation in R/fill_dir.R
 \name{directory filling}
 \alias{directory filling}
+\alias{fill}
 \alias{fill_dir}
 \alias{fill_data}
 \alias{fill_app}

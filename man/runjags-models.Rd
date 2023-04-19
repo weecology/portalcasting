@@ -2,6 +2,7 @@
 % Please edit documentation in R/models_jags.R
 \name{runjags models}
 \alias{runjags models}
+\alias{jags-models}
 \alias{runjags_inits}
 \alias{runjags_model}
 \alias{runjags_monitors}

@@ -2,6 +2,8 @@
 % Please edit documentation in R/prepare_rodents.R
 \name{prepare rodents}
 \alias{prepare rodents}
+\alias{prep-rodents}
+\alias{rodents}
 \alias{prepare_abundance}
 \alias{prepare_rodents}
 \alias{prepare_dataset}

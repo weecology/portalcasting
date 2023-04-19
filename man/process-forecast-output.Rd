@@ -2,6 +2,7 @@
 % Please edit documentation in R/process_casts.R
 \name{process forecast output}
 \alias{process forecast output}
+\alias{process-forecasts}
 \alias{process_model_output}
 \alias{read_forecast_table}
 \alias{read_forecast_tables}

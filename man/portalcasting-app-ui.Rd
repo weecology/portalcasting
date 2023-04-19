@@ -2,6 +2,9 @@
 % Please edit documentation in R/webapp_ui.R
 \name{portalcasting app ui}
 \alias{portalcasting app ui}
+\alias{web-app-ui}
+\alias{app-ui}
+\alias{ui}
 \alias{app_ui}
 \alias{app_theme}
 \alias{main_panel}

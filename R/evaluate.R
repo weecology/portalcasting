@@ -13,6 +13,8 @@
 #'
 #' @name evaluate forecasts
 #'
+#' @aliases evaluate evaluation
+#'
 #' @family core
 #'
 #' @examples

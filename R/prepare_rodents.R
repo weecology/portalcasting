@@ -64,6 +64,8 @@
 #'
 #' @name prepare rodents
 #'
+#' @aliases prep-rodents rodents
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "rodents")

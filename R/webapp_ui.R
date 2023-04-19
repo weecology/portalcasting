@@ -49,6 +49,8 @@
 #'
 #' @family shinyapp
 #'
+#' @aliases web-app-ui app-ui ui
+#'
 #' @name portalcasting app ui
 #'
 #' @examples

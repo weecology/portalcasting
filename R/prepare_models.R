@@ -17,6 +17,8 @@
 #'
 #' @name prepare models
 #'
+#' @aliases prep-models models
+#'
 #' @family content-prep
 #'
 #' @examples

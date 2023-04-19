@@ -15,6 +15,8 @@
 #'
 #' @family content-prep
 #'
+#' @aliases prep-newmoons newmoons
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "newmoons")

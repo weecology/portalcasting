@@ -2,6 +2,9 @@
 % Please edit documentation in R/webapp_server.R
 \name{portalcasting app server}
 \alias{portalcasting app server}
+\alias{web-app-server}
+\alias{app-server}
+\alias{server}
 \alias{app_server}
 \alias{initial_reactive_values}
 \alias{initial_output}

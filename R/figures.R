@@ -38,6 +38,8 @@
 #'
 #' @name plots
 #'
+#' @aliases figures
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "figures")

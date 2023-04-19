@@ -2,6 +2,7 @@
 % Please edit documentation in R/settings.R
 \name{directory settings}
 \alias{directory settings}
+\alias{settings}
 \alias{directory_settings}
 \alias{time_settings}
 \alias{directory_files}

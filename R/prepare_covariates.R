@@ -10,6 +10,8 @@
 #'  
 #' @name prepare covariates
 #'
+#' @aliases prep-covariates covariates
+#'
 #' @examples
 #' \dontrun{
 #'    main1 <- file.path(tempdir(), "covariates")

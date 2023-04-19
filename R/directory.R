@@ -23,6 +23,8 @@
 #'
 #' @name directory creation
 #'
+#' @aliases create setup directory directory-setup directory-creation 
+#'
 #' @family orchestration
 #'
 #' @examples
@@ -226,6 +228,8 @@ setup_sandbox <- function (main                  = ".",
 #'
 #' @name directory configuration file
 #'
+#' @aliases config configuration dir-config directory-config
+#'
 #' @family orchestration
 #' @family read-write
 #'
@@ -385,7 +389,8 @@ update_directory_configuration <- function (main = ".") {
 #'
 #' @name directory paths
 #'
-#' @family paths
+#' @aliases paths
+#'
 #' @family orchestration
 #'
 #' @examples

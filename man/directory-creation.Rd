@@ -2,6 +2,11 @@
 % Please edit documentation in R/directory.R
 \name{directory creation}
 \alias{directory creation}
+\alias{create}
+\alias{setup}
+\alias{directory}
+\alias{directory-setup}
+\alias{directory-creation}
 \alias{create_dir}
 \alias{update_dir}
 \alias{setup_dir}

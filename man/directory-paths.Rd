@@ -158,4 +158,3 @@ Directory orchestration functions:
 \code{\link{directory settings}}
 }
 \concept{orchestration}
-\concept{paths}

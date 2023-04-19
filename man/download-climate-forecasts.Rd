@@ -2,6 +2,7 @@
 % Please edit documentation in R/download.R
 \name{download climate forecasts}
 \alias{download climate forecasts}
+\alias{climate-forecasts}
 \alias{download_climate_forecasts}
 \alias{NMME_urls}
 \title{Download Climate Forecasts}
