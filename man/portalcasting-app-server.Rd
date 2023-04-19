@@ -2,7 +2,7 @@
 % Please edit documentation in R/webapp_server.R
 \name{portalcasting app server}
 \alias{portalcasting app server}
-\alias{portal_forecast_server}
+\alias{app_server}
 \alias{initial_reactive_values}
 \alias{initial_output}
 \alias{event_reaction}
@@ -11,7 +11,7 @@
 \alias{update_input}
 \title{Generate the Server Code for the Web App}
 \usage{
-portal_forecast_server(input, output, session)
+app_server(input, output, session)
 
 initial_reactive_values(global = global_list())
 
@@ -42,7 +42,7 @@ update_input(global, event, rv, input, session)
 Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 }
 \value{
-\code{portal_forecast_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr
+\code{app_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr
 \code{initial_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr
 \code{initial_output}: an \code{output} \code{list}. \cr
 \code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se. \cr
