@@ -87,9 +87,10 @@ test_that(desc = "global_list makes a list of globals and component functions op
   expect_is(selected_newmoonnumber(global = gl, event = "null_test", rv = rv1), "NULL")
 
 
-
-
 })
+
+
+
 
 
 

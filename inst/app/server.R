@@ -1,2 +1,2 @@
 
-portal_forecast_server
+app_server

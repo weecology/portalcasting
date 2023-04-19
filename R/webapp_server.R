@@ -16,7 +16,7 @@
 #'
 #' @param global A `list` of global values for the app.
 #'
-#' @return `portal_forecast_server`: an observer reference class object (see [`observeEvent`][shiny::observeEvent] and [`observe`][shiny::observe]). \cr
+#' @return `app_server`: an observer reference class object (see [`observeEvent`][shiny::observeEvent] and [`observe`][shiny::observe]). \cr
 #'         `initial_reactive_values`: a [`reactiveValues`][shiny::reactiveValues] `list`. \cr
 #'         `initial_output`: an `output` `list`. \cr
 #'         `event_reaction`: updates the `rv`, `output`, and `input` `list`s, but does not return them, per se. \cr
@@ -35,9 +35,9 @@ NULL
 #'
 #' @export
 #'
-portal_forecast_server <- function (input, 
-                                    output, 
-                                    session) {
+app_server <- function (input, 
+                        output, 
+                        session) {
 
   rv     <- initial_reactive_values(global = global)
 

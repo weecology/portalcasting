@@ -70,7 +70,7 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_silent(pt <- rodents_profiles_table(global = gl))
   expect_is(pt, "shiny.tag")
 
-  expect_silent(pf <- portal_forecast_ui(global = gl))
+  expect_silent(pf <- app_ui(global = gl))
   expect_is(pt, "shiny.tag")
 
 

@@ -1,2 +1,2 @@
 
-portal_forecast_ui(global = global)
+app_ui(global = global)
