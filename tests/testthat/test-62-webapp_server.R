@@ -42,25 +42,26 @@ test_that(desc = "server functions work off of global list", {
 
   testServer(app_server, {
 
-    session$setInputs(forecast_tab_species                       = gl$initial_forecast_tab_selected_species,
-                      forecast_tab_dataset                       = gl$initial_forecast_tab_selected_dataset,
-                      forecast_tab_model                         = gl$initial_forecast_tab_selected_model,
-                      forecast_tab_historic_end_newmoonnumber    = gl$initial_forecast_tab_selected_historic_end_newmoonnumber,
-                      evaluation_tab_species                     = gl$initial_evaluation_tab_selected_species,
-                      evaluation_tab_dataset                     = gl$initial_evaluation_tab_selected_dataset,
-                      evaluation_tab_model                       = gl$initial_evaluation_tab_selected_model,
-                      evaluation_tab_historic_end_newmoonnumber  = gl$initial_evaluation_tab_selected_historic_end_newmoonnumber,
-                      evaluation_tab_newmoonnumber               = gl$initial_evaluation_tab_selected_newmoonnumber)
+    global <- global_list(main = main3)
+    session$setInputs(forecast_tab_species                       = global$initial_forecast_tab_selected_species,
+                      forecast_tab_dataset                       = global$initial_forecast_tab_selected_dataset,
+                      forecast_tab_model                         = global$initial_forecast_tab_selected_model,
+                      forecast_tab_historic_end_newmoonnumber    = global$initial_forecast_tab_selected_historic_end_newmoonnumber,
+                      evaluation_tab_species                     = global$initial_evaluation_tab_selected_species,
+                      evaluation_tab_dataset                     = global$initial_evaluation_tab_selected_dataset,
+                      evaluation_tab_model                       = global$initial_evaluation_tab_selected_model,
+                      evaluation_tab_historic_end_newmoonnumber  = global$initial_evaluation_tab_selected_historic_end_newmoonnumber,
+                      evaluation_tab_newmoonnumber               = global$initial_evaluation_tab_selected_newmoonnumber)
 
-    expect_equal(output$forecast_tab_species, as.character(gl$initial_forecast_tab_selected_species))
-    expect_equal(output$forecast_tab_dataset, gl$initial_forecast_tab_selected_dataset)
-    expect_equal(output$forecast_tab_model, as.character(gl$initial_forecast_tab_selected_model))
-    expect_equal(output$forecast_tab_historic_end_newmoonnumber, as.character(gl$initial_forecast_tab_selected_historic_end_newmoonnumber))
-    expect_equal(output$evaluation_tab_species, as.character(gl$initial_evaluation_tab_selected_species))
-    expect_equal(output$evaluation_tab_dataset, gl$initial_evaluation_tab_selected_dataset)
-    expect_equal(output$evaluation_tab_model, as.character(gl$initial_evaluation_tab_selected_model))
-    expect_equal(output$evaluation_tab_historic_end_newmoonnumber, as.character(gl$initial_evaluation_tab_selected_historic_end_newmoonnumber))
-    expect_equal(output$evaluation_tab_newmoonnumber, as.character(gl$initial_evaluation_tab_selected_newmoonnumber))
+    expect_equal(output$forecast_tab_species, as.character(global$initial_forecast_tab_selected_species))
+    expect_equal(output$forecast_tab_dataset, global$initial_forecast_tab_selected_dataset)
+    expect_equal(output$forecast_tab_model, as.character(global$initial_forecast_tab_selected_model))
+    expect_equal(output$forecast_tab_historic_end_newmoonnumber, as.character(global$initial_forecast_tab_selected_historic_end_newmoonnumber))
+    expect_equal(output$evaluation_tab_species, as.character(global$initial_evaluation_tab_selected_species))
+    expect_equal(output$evaluation_tab_dataset, global$initial_evaluation_tab_selected_dataset)
+    expect_equal(output$evaluation_tab_model, as.character(global$initial_evaluation_tab_selected_model))
+    expect_equal(output$evaluation_tab_historic_end_newmoonnumber, as.character(global$initial_evaluation_tab_selected_historic_end_newmoonnumber))
+    expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
 
     output <- initial_output(main = main3, rv = rv, output = output)
 
@@ -73,28 +74,28 @@ test_that(desc = "server functions work off of global list", {
     expect_equal(names(output$covariates_tab_temp_plot), c("src", "width", "height", "alt", "coordmap"))
 
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "forecast_tab_species", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "forecast_tab_dataset", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "forecast_tab_model", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "forecast_tab_historic_end_newmoonnumber", 
                                 rv = rv, 
                                 input = input, 
@@ -102,35 +103,35 @@ test_that(desc = "server functions work off of global list", {
                                 session = session), NULL)
 
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "evaluation_tab_species", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "evaluation_tab_dataset", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "evaluation_tab_model", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "evaluation_tab_historic_end_newmoonnumber", 
                                 rv = rv, 
                                 input = input, 
                                 output = output, 
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
-                                global = gl,
+                                global = global,
                                 event = "evaluation_tab_newmoonnumber", 
                                 rv = rv, 
                                 input = input, 
