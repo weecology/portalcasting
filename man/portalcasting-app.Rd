@@ -27,7 +27,6 @@ global_list(main = ".")
    setup_dir(main = main1)
 
    global_list(main = main1)
- 
 
    if (getShinyOption("shiny.launch.browser")) {
      run_app(main = main1)

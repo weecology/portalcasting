@@ -7,17 +7,17 @@
 \alias{main_panel}
 \alias{title_panel}
 \alias{subtitle_panel}
-\alias{about_table}
-\alias{models_table}
-\alias{rodents_profiles_table}
-\alias{forecast_table}
+\alias{about_tab}
+\alias{models_tab}
+\alias{rodents_profiles_tab}
+\alias{forecast_tab}
 \alias{forecast_tab_input_selection_checks_row}
 \alias{forecast_tab_input_selection_row}
 \alias{forecast_tab_input_selection_row_species}
 \alias{forecast_tab_input_selection_row_dataset}
 \alias{forecast_tab_input_selection_row_model}
 \alias{forecast_tab_input_selection_row_historic_end_newmoonnumber}
-\alias{evaluation_table}
+\alias{evaluation_tab}
 \alias{evaluation_tab_input_selection_checks_row}
 \alias{evaluation_tab_input_selection_row}
 \alias{evaluation_tab_input_selection_row_species}
@@ -25,7 +25,7 @@
 \alias{evaluation_tab_input_selection_row_model}
 \alias{evaluation_tab_input_selection_row_historic_end_newmoonnumber}
 \alias{evaluation_tab_input_selection_row_newmoonnumber}
-\alias{covariates_table}
+\alias{covariates_tab}
 \alias{data_sources_section}
 \alias{portal_project_href}
 \alias{portal_data_href}
@@ -45,13 +45,13 @@ title_panel()
 
 subtitle_panel()
 
-about_table(global = global_list())
+about_tab(global = global_list())
 
-models_table(global = global_list())
+models_tab(global = global_list())
 
-rodents_profiles_table(global = global_list())
+rodents_profiles_tab(global = global_list())
 
-forecast_table(global = global_list())
+forecast_tab(global = global_list())
 
 forecast_tab_input_selection_checks_row()
 
@@ -67,7 +67,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber(
   global = global_list()
 )
 
-evaluation_table(global = global_list())
+evaluation_tab(global = global_list())
 
 evaluation_tab_input_selection_checks_row()
 
@@ -85,7 +85,7 @@ evaluation_tab_input_selection_row_historic_end_newmoonnumber(
 
 evaluation_tab_input_selection_row_newmoonnumber(global = global_list())
 
-covariates_table(global = global_list())
+covariates_tab(global = global_list())
 
 data_sources_section()
 
@@ -172,6 +172,42 @@ The UI is hierarchical built as:
 }
 }
 }
+}
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "app_ui")
+   setup_dir(main = main1)
+
+   global <- global_list(main = main1)
+ 
+   app_ui(global = global)
+   title_panel( )
+   subtitle_panel( )
+   main_panel(global = global)
+   forecast_tab(global = global)
+   forecast_tab_input_selection_row(global = global)
+   forecast_tab_input_selection_row_species(global = global)
+   forecast_tab_input_selection_row_dataset(global = global)
+   forecast_tab_input_selection_row_model(global = global)
+   forecast_tab_input_selection_row_historic_end_newmoonnumber(global = global)
+   forecast_tab_input_selection_checks_row( )
+   evaluation_tab(global = global)
+   evaluation_tab_input_selection_row(global = global)
+   evaluation_tab_input_selection_row_species(global = global)
+   evaluation_tab_input_selection_row_dataset(global = global)
+   evaluation_tab_input_selection_row_model(global = global)
+   evaluation_tab_input_selection_row_historic_end_newmoonnumber(global = global)
+   evaluation_tab_input_selection_row_newmoonnumber(global = global)
+   evaluation_tab_input_selection_checks_row( )
+   about_tab( )
+   models_tab(global = global)
+   rodents_profiles_tab(global = global)
+   covariates_tab(global = global)
+   data_sources_section( )
+
+   unlink(main1, recursive = TRUE)
+ }
+
 }
 \seealso{
 Other shinyapp: 

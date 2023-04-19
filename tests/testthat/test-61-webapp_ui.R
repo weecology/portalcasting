@@ -22,9 +22,9 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_silent(psp <- subtitle_panel( ))
   expect_is(psp, "shiny.tag")
 
-  expect_silent(ft <- forecast_table(global = gl)) 
+  expect_silent(ft <- forecast_tab(global = gl)) 
   expect_is(ft, "shiny.tag")
-  expect_silent(et <- evaluation_table(global = gl)) 
+  expect_silent(et <- evaluation_tab(global = gl)) 
   expect_is(et, "shiny.tag")
 
   expect_silent(cr <- forecast_tab_input_selection_checks_row( )) 
@@ -61,13 +61,13 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   expect_silent(bs <- app_theme())
   expect_is(bs, "bs_theme")
 
-  expect_silent(at <- about_table(global = gl))
+  expect_silent(at <- about_tab(global = gl))
   expect_is(at, "shiny.tag")
 
-  expect_silent(mt <- models_table(global = gl))
+  expect_silent(mt <- models_tab(global = gl))
   expect_is(mt, "shiny.tag")
 
-  expect_silent(pt <- rodents_profiles_table(global = gl))
+  expect_silent(pt <- rodents_profiles_tab(global = gl))
   expect_is(pt, "shiny.tag")
 
   expect_silent(pf <- app_ui(global = gl))
@@ -79,11 +79,11 @@ test_that(desc = "ui functions can build a functioning ui off the global list", 
   gll$forecasts_evaluations <- NULL
   gll$covariates            <- NULL
 
-  expect_silent(ft <- forecast_table(global = gll)) 
+  expect_silent(ft <- forecast_tab(global = gll)) 
   expect_is(ft, "shiny.tag")
-  expect_silent(et <- evaluation_table(global = gll)) 
+  expect_silent(et <- evaluation_tab(global = gll)) 
   expect_is(et, "shiny.tag")
-  expect_silent(et <- covariates_table(global = gll)) 
+  expect_silent(et <- covariates_tab(global = gll)) 
   expect_is(et, "shiny.tag")
   
 
@@ -99,22 +99,22 @@ test_that(desc = "ui functions can build a functioning ui off the global list of
   expect_message(gl <- global_list(main = main2))
   expect_is(gl, "list")
 
-  expect_silent(ft <- forecast_table(global = gl)) 
+  expect_silent(ft <- forecast_tab(global = gl)) 
   expect_is(ft, "shiny.tag")
-  expect_silent(et <- evaluation_table(global = gl)) 
+  expect_silent(et <- evaluation_tab(global = gl)) 
   expect_is(et, "shiny.tag")
-  expect_silent(ct <- covariates_table(global = gl)) 
+  expect_silent(ct <- covariates_tab(global = gl)) 
   expect_is(ct, "shiny.tag")
 
 
   expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
-  expect_silent(ft <- forecast_table(global = gl)) 
+  expect_silent(ft <- forecast_tab(global = gl)) 
   expect_is(ft, "shiny.tag")
-  expect_silent(et <- evaluation_table(global = gl)) 
+  expect_silent(et <- evaluation_tab(global = gl)) 
   expect_is(et, "shiny.tag")
-  expect_silent(ct <- covariates_table(global = gl)) 
+  expect_silent(ct <- covariates_tab(global = gl)) 
   expect_is(ct, "shiny.tag")
 
 })

@@ -28,6 +28,22 @@
 #'
 #' @name portalcasting app server
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "app")
+#'    setup_dir(main = main1)
+#'
+#'    global <- global_list(main = main1)
+#'  
+#'    rv     <- initial_reavtive_values(global = global)
+#'
+#'    output <- initial_output(main   = main1,
+#'                             rv     = rv,
+#'                             output = list())
+#'
+#'    unlink(main1, recursive = TRUE)
+#'  }
+#'
 NULL
 
 

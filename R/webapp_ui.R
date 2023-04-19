@@ -51,6 +51,41 @@
 #'
 #' @name portalcasting app ui
 #'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "app_ui")
+#'    setup_dir(main = main1)
+#'
+#'    global <- global_list(main = main1)
+#'  
+#'    app_ui(global = global)
+#'    title_panel( )
+#'    subtitle_panel( )
+#'    main_panel(global = global)
+#'    forecast_tab(global = global)
+#'    forecast_tab_input_selection_row(global = global)
+#'    forecast_tab_input_selection_row_species(global = global)
+#'    forecast_tab_input_selection_row_dataset(global = global)
+#'    forecast_tab_input_selection_row_model(global = global)
+#'    forecast_tab_input_selection_row_historic_end_newmoonnumber(global = global)
+#'    forecast_tab_input_selection_checks_row( )
+#'    evaluation_tab(global = global)
+#'    evaluation_tab_input_selection_row(global = global)
+#'    evaluation_tab_input_selection_row_species(global = global)
+#'    evaluation_tab_input_selection_row_dataset(global = global)
+#'    evaluation_tab_input_selection_row_model(global = global)
+#'    evaluation_tab_input_selection_row_historic_end_newmoonnumber(global = global)
+#'    evaluation_tab_input_selection_row_newmoonnumber(global = global)
+#'    evaluation_tab_input_selection_checks_row( )
+#'    about_tab( )
+#'    models_tab(global = global)
+#'    rodents_profiles_tab(global = global)
+#'    covariates_tab(global = global)
+#'    data_sources_section( )
+#'
+#'    unlink(main1, recursive = TRUE)
+#'  }
+#'
 NULL
 
 
@@ -86,12 +121,12 @@ app_theme <- function ( ) {
 #
 main_panel <- function (global = global_list( )) {
 
-  mainPanel(tabsetPanel(forecast_table(global = global),
-                        evaluation_table(global = global),
-                        about_table(global = global),
-                        models_table(global = global),
-                        rodents_profiles_table(global = global),
-                        covariates_table(global = global)))
+  mainPanel(tabsetPanel(forecast_tab(global = global),
+                        evaluation_tab(global = global),
+                        about_tab(global = global),
+                        models_tab(global = global),
+                        rodents_profiles_tab(global = global),
+                        covariates_tab(global = global)))
 
 
 }
@@ -121,7 +156,7 @@ subtitle_panel <- function ( ) {
 #'
 #' @export
 #'
-about_table <- function (global = global_list( )) {
+about_tab <- function (global = global_list( )) {
 
   tabPanel(title = "About",
            includeMarkdown(global$about_md_path)) 
@@ -132,7 +167,7 @@ about_table <- function (global = global_list( )) {
 #'
 #' @export
 #'
-models_table <- function (global = global_list( )) {
+models_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Models",
            includeHTML(global$models_html_path)) 
@@ -143,7 +178,7 @@ models_table <- function (global = global_list( )) {
 #'
 #' @export
 #'
-rodents_profiles_table <- function (global = global_list( )) {
+rodents_profiles_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Rodent Profiles",
            includeHTML(global$rodents_profiles_html_path)) 
@@ -154,7 +189,7 @@ rodents_profiles_table <- function (global = global_list( )) {
 #'
 #' @export
 #
-forecast_table <- function (global = global_list( )) {
+forecast_tab <- function (global = global_list( )) {
 
   if (is.null(global$forecasts_metadata)) {
 
@@ -271,7 +306,7 @@ forecast_tab_input_selection_row_historic_end_newmoonnumber <- function (global 
 #'
 #' @export
 #
-evaluation_table <- function (global = global_list( )) {
+evaluation_tab <- function (global = global_list( )) {
 
   if (is.null(global$forecasts_evaluations)) {
 
@@ -403,7 +438,7 @@ evaluation_tab_input_selection_row_newmoonnumber <- function (global = global_li
 #'
 #' @export
 #'
-covariates_table <- function (global = global_list( )) {
+covariates_tab <- function (global = global_list( )) {
 
   if (is.null(global$covariates)) {
 

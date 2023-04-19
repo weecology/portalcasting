@@ -53,6 +53,23 @@ Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \c
 \description{
 Generate the Server Code for the Web App
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "app")
+   setup_dir(main = main1)
+
+   global <- global_list(main = main1)
+ 
+   rv     <- initial_reavtive_values(global = global)
+
+   output <- initial_output(main   = main1,
+                            rv     = rv,
+                            output = list())
+
+   unlink(main1, recursive = TRUE)
+ }
+
+}
 \seealso{
 Other shinyapp: 
 \code{\link{portalcasting app selection helpers}},
