@@ -9,7 +9,7 @@ ensemble_forecasts(
   main = ".",
   method = "unwtavg",
   forecast_groups = NULL,
-  forecast_ids = NULL,
+  forecasts_ids = NULL,
   forecast_table = NULL,
   historic_end_newmoonnumber = NULL,
   models = NULL,
@@ -24,7 +24,7 @@ ensemble_forecasts(
 
 \item{forecast_groups}{\code{integer} (or integer \code{numeric}) value of the forecast group to combine with an ensemble. If \code{NULL} (default), the most recent forecast group is ensembled.}
 
-\item{forecast_ids}{\code{integer} (or integer \code{numeric}) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information.}
+\item{forecasts_ids}{\code{integer} (or integer \code{numeric}) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
 \item{forecast_table}{Optional \code{data.frame} of forecast table outputs. If not input, will be loaded.}
 
@@ -44,17 +44,17 @@ Combine multiple forecasts' output into a single ensemble. Presently, only a gen
 }
 \details{
 A pre-loaded table of forecasts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr
-The forecasts can be trimmed specifically using the \code{forecast_ids} input, otherwise, all relevant forecasts from the stated \code{forecast_groups} will be included.
+The forecasts can be trimmed specifically using the \code{forecasts_ids} input, otherwise, all relevant forecasts from the stated \code{forecast_groups} will be included.
 }
 \examples{
 \dontrun{
    main1 <- file.path(tempdir(), "ensemble")
    setup_production(main = main1)
 
-   forecast_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
+   forecasts_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
 
    ensemble_forecasts(main         = main1, 
-                      forecast_ids = forecast_ids)
+                      forecasts_ids = forecasts_ids)
 
    unlink(main1, recursive = TRUE)
 }

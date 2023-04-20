@@ -6,8 +6,8 @@
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the forecasts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
-#'        `forecast_id` can only be a single value, whereas `forecast_ids` can be multiple.
+#' @param forecast_id,forecasts_ids `integer` (or integer `numeric`) value(s) representing the forecasts of interest for evaluating, as indexed within the `forecasts` subdirectory. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. \cr
+#'        `forecast_id` can only be a single value, whereas `forecasts_ids` can be multiple.
 #'
 #' @return A `data.frame` of all forecast evaluations at the observation (newmoon) level, as requested, [`invisible`][base::invisible]-ly.
 #'
@@ -54,15 +54,15 @@ NULL
 #' @export
 #'
 evaluate_forecasts <- function (main         = ".", 
-                                forecast_ids = NULL) {
+                                forecasts_ids = NULL) {
 
   settings <- read_directory_settings(main = main)
 
   forecasts_to_evaluate <- select_forecasts(main         = main, 
-                                            forecast_ids = forecast_ids)
+                                            forecasts_ids = forecasts_ids)
 
-  forecast_ids  <- forecasts_to_evaluate$forecast_id
-  nforecast_ids <- length(forecast_ids)
+  forecasts_ids  <- forecasts_to_evaluate$forecast_id
+  nforecast_ids <- length(forecasts_ids)
 
   if (NROW(forecasts_to_evaluate) == 0) {
 
@@ -87,41 +87,41 @@ evaluate_forecasts <- function (main         = ".",
   
   } else {
 
-    forecasts_left_to_evaluate  <- forecast_ids
+    forecasts_left_to_evaluate  <- forecasts_ids
 
   }
 
-  selected_forecast_ids <- forecast_ids[forecast_ids %in% forecasts_left_to_evaluate]
+  selected_forecasts_ids <- forecasts_ids[forecasts_ids %in% forecasts_left_to_evaluate]
 
-  if (length(selected_forecast_ids) == 0) {
+  if (length(selected_forecasts_ids) == 0) {
 
     message(" No forecasts need evaluation.", quiet = settings$quiet)
     return(existing_evaluations)
 
   }
 
-  nselected_forecast_ids <- length(selected_forecast_ids)
+  nselected_forecasts_ids <- length(selected_forecasts_ids)
 
-  out <- named_null_list(element_names = selected_forecast_ids)
+  out <- named_null_list(element_names = selected_forecasts_ids)
 
   messageq("Evaluating forecasts ...\n", quiet = settings$quiet)
 
-  for (i in 1:nselected_forecast_ids) {
+  for (i in 1:nselected_forecasts_ids) {
 
     out[[i]] <- tryCatch(evaluate_forecast(main        = main,
-                                           forecast_id = selected_forecast_ids[i]),
+                                           forecast_id = selected_forecasts_ids[i]),
                          error = function(x) {NA})
 
   }
 
   nrows_out <- sapply(out, NROW)
-  row_1     <- cumsum(c(1, nrows_out[1:(nselected_forecast_ids - 1)]))
+  row_1     <- cumsum(c(1, nrows_out[1:(nselected_forecasts_ids - 1)]))
   row_2     <- cumsum(nrows_out) 
 
   out_flat  <- data.frame(matrix(NA, nrow = row_2[length(row_2)], ncol = ncol(out[[1]])) )
   colnames(out_flat) <- colnames(out[[1]])
 
-  for (i in 1:nselected_forecast_ids) { 
+  for (i in 1:nselected_forecasts_ids) { 
 
     out_flat[row_1[i]:row_2[i], ] <- out[[i]]
 

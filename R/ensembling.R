@@ -3,7 +3,7 @@
 #' @description Combine multiple forecasts' output into a single ensemble. Presently, only a general average ensemble is available.
 #'
 #' @details A pre-loaded table of forecasts can be input, but if not (default), the table will be efficiently (as defined by the inputs) loaded and trimmed. \cr 
-#'          The forecasts can be trimmed specifically using the `forecast_ids` input, otherwise, all relevant forecasts from the stated `forecast_groups` will be included. 
+#'          The forecasts can be trimmed specifically using the `forecasts_ids` input, otherwise, all relevant forecasts from the stated `forecast_groups` will be included. 
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'
@@ -11,7 +11,7 @@
 #'
 #' @param forecast_groups `integer` (or integer `numeric`) value of the forecast group to combine with an ensemble. If `NULL` (default), the most recent forecast group is ensembled. 
 #'
-#' @param forecast_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information.
+#' @param forecasts_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
 #' @param historic_end_newmoonnumber `integer` (or integer `numeric`) newmoon number of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
@@ -34,10 +34,10 @@
 #'    main1 <- file.path(tempdir(), "ensemble")
 #'    setup_production(main = main1)
 #'
-#'    forecast_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
+#'    forecasts_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
 #'
 #'    ensemble_forecasts(main         = main1, 
-#'                       forecast_ids = forecast_ids)
+#'                       forecasts_ids = forecasts_ids)
 #'
 #'    unlink(main1, recursive = TRUE)
 #' }
@@ -52,7 +52,7 @@ NULL
 ensemble_forecasts <- function (main                       = ".", 
                                 method                     = "unwtavg", 
                                 forecast_groups            = NULL, 
-                                forecast_ids               = NULL, 
+                                forecasts_ids               = NULL, 
                                 forecast_table             = NULL, 
                                 historic_end_newmoonnumber = NULL, 
                                 models                     = NULL, 
@@ -64,7 +64,7 @@ ensemble_forecasts <- function (main                       = ".",
   if (is.null(forecast_table)) {
 
     forecast_choices <- select_forecasts(main                        = main, 
-                                         forecast_ids                = forecast_ids, 
+                                         forecasts_ids                = forecasts_ids, 
                                          forecast_groups             = forecast_groups, 
                                          models                      = models, 
                                          species                     = species, 
@@ -77,8 +77,8 @@ ensemble_forecasts <- function (main                       = ".",
 
     } else {
 
-      forecast_table <- read_forecast_tables(main     = main, 
-                                             forecast_ids = forecast_choices$forecast_id)
+      forecast_table <- read_forecasts_tables(main     = main, 
+                                              forecasts_ids = forecast_choices$forecast_id)
       forecast_table <- add_observations_to_forecast_table(main           = main,  
                                                            forecast_table = forecast_table)
       forecast_table$covered <- forecast_table$observation >= forecast_table$lower_pi & forecast_table$observation <= forecast_table$upper_pi 
@@ -88,12 +88,12 @@ ensemble_forecasts <- function (main                       = ".",
 
   }
 
-  forecast_ids                  <- ifnull(forecast_ids, unique(forecast_table$forecast_id))
+  forecasts_ids                  <- ifnull(forecasts_ids, unique(forecast_table$forecast_id))
   models                        <- ifnull(models, unique(forecast_table$model)[1])
   dataset                       <- ifnull(dataset, unique(forecast_table$dataset)[1])
   species                       <- ifnull(species, unique(forecast_table$species)[1]) 
   historic_end_newmoonnumber    <- ifnull(historic_end_newmoonnumber, unique(forecast_table$historic_end_newmoonnumber)[1]) 
-  forecast_id_in                <- forecast_table$forecast_id %in% forecast_ids
+  forecast_id_in                <- forecast_table$forecast_id %in% forecasts_ids
   model_in                      <- forecast_table$model %in% models
   dataset_in                    <- forecast_table$dataset == dataset
   species_in                    <- forecast_table$species %in% species

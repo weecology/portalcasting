@@ -265,8 +265,8 @@ read_forecast_table <- function (main        = ".",
 #'
 #' @export
 #'
-read_forecast_tables <- function (main         = ".", 
-                                  forecasts_ids = NULL) {
+read_forecasts_tables <- function (main         = ".", 
+                                   forecasts_ids = NULL) {
   
   settings <- read_directory_settings(main = main)
 

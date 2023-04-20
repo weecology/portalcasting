@@ -9,7 +9,7 @@
 \alias{read_forecasts_evaluations}
 \title{Evaluate Forecasts}
 \usage{
-evaluate_forecasts(main = ".", forecast_ids = NULL)
+evaluate_forecasts(main = ".", forecasts_ids = NULL)
 
 evaluate_forecast(main = ".", forecast_id = NULL)
 
@@ -18,8 +18,8 @@ read_forecasts_evaluations(main = ".")
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the forecasts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
-\code{forecast_id} can only be a single value, whereas \code{forecast_ids} can be multiple.}
+\item{forecast_id, forecasts_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the forecasts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
+\code{forecast_id} can only be a single value, whereas \code{forecasts_ids} can be multiple.}
 }
 \value{
 A \code{data.frame} of all forecast evaluations at the observation (newmoon) level, as requested, \code{\link[base:invisible]{invisible}}-ly.

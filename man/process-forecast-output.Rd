@@ -5,7 +5,7 @@
 \alias{process-forecasts}
 \alias{process_model_output}
 \alias{read_forecast_table}
-\alias{read_forecast_tables}
+\alias{read_forecasts_tables}
 \alias{add_observations_to_forecast_table}
 \alias{read_forecast_metadata}
 \alias{read_model_fit}
@@ -25,7 +25,7 @@ process_model_output(
 
 read_forecast_table(main = ".", forecast_id = NULL)
 
-read_forecast_tables(main = ".", forecasts_ids = NULL)
+read_forecasts_tables(main = ".", forecasts_ids = NULL)
 
 add_observations_to_forecast_table(main = ".", forecast_table = NULL)
 
