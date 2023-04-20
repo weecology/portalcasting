@@ -8,7 +8,7 @@
 ensemble_forecasts(
   main = ".",
   method = "unwtavg",
-  forecast_groups = NULL,
+  forecasts_groups = NULL,
   forecasts_ids = NULL,
   forecast_table = NULL,
   historic_end_newmoonnumber = NULL,
@@ -22,7 +22,7 @@ ensemble_forecasts(
 
 \item{method}{\code{character} value of the name of the ensemble method to use. Presently, only \code{"unwtavg"} (unweighted average) is allowed.}
 
-\item{forecast_groups}{\code{integer} (or integer \code{numeric}) value of the forecast group to combine with an ensemble. If \code{NULL} (default), the most recent forecast group is ensembled.}
+\item{forecasts_groups}{\code{integer} (or integer \code{numeric}) value of the forecasts groups to combine with an ensemble. If \code{NULL} (default), the most recent forecast group is ensembled.}
 
 \item{forecasts_ids}{\code{integer} (or integer \code{numeric}) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information.}
 
@@ -53,7 +53,7 @@ The forecasts can be trimmed specifically using the \code{forecasts_ids} input, 
 
    forecasts_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
 
-   ensemble_forecasts(main         = main1, 
+   ensemble_forecasts(main          = main1, 
                       forecasts_ids = forecasts_ids)
 
    unlink(main1, recursive = TRUE)

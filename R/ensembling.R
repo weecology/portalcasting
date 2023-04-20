@@ -9,7 +9,7 @@
 #'
 #' @param method `character` value of the name of the ensemble method to use. Presently, only `"unwtavg"` (unweighted average) is allowed.
 #'
-#' @param forecast_groups `integer` (or integer `numeric`) value of the forecast group to combine with an ensemble. If `NULL` (default), the most recent forecast group is ensembled. 
+#' @param forecasts_groups `integer` (or integer `numeric`) value of the forecasts groups to combine with an ensemble. If `NULL` (default), the most recent forecast group is ensembled. 
 #'
 #' @param forecasts_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting ensembling, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information.
 #'
@@ -36,7 +36,7 @@
 #'
 #'    forecasts_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
 #'
-#'    ensemble_forecasts(main         = main1, 
+#'    ensemble_forecasts(main          = main1, 
 #'                       forecasts_ids = forecasts_ids)
 #'
 #'    unlink(main1, recursive = TRUE)
@@ -51,8 +51,8 @@ NULL
 #'
 ensemble_forecasts <- function (main                       = ".", 
                                 method                     = "unwtavg", 
-                                forecast_groups            = NULL, 
-                                forecasts_ids               = NULL, 
+                                forecasts_groups           = NULL, 
+                                forecasts_ids              = NULL, 
                                 forecast_table             = NULL, 
                                 historic_end_newmoonnumber = NULL, 
                                 models                     = NULL, 
@@ -64,8 +64,8 @@ ensemble_forecasts <- function (main                       = ".",
   if (is.null(forecast_table)) {
 
     forecast_choices <- select_forecasts(main                        = main, 
-                                         forecasts_ids                = forecasts_ids, 
-                                         forecast_groups             = forecast_groups, 
+                                         forecasts_ids               = forecasts_ids, 
+                                         forecasts_groups            = forecasts_groups, 
                                          models                      = models, 
                                          species                     = species, 
                                          historic_end_newmoonnumbers = historic_end_newmoonnumber, 
@@ -77,7 +77,7 @@ ensemble_forecasts <- function (main                       = ".",
 
     } else {
 
-      forecast_table <- read_forecasts_tables(main     = main, 
+      forecast_table <- read_forecasts_tables(main          = main, 
                                               forecasts_ids = forecast_choices$forecast_id)
       forecast_table <- add_observations_to_forecast_table(main           = main,  
                                                            forecast_table = forecast_table)
@@ -88,7 +88,7 @@ ensemble_forecasts <- function (main                       = ".",
 
   }
 
-  forecasts_ids                  <- ifnull(forecasts_ids, unique(forecast_table$forecast_id))
+  forecasts_ids                 <- ifnull(forecasts_ids, unique(forecast_table$forecast_id))
   models                        <- ifnull(models, unique(forecast_table$model)[1])
   dataset                       <- ifnull(dataset, unique(forecast_table$dataset)[1])
   species                       <- ifnull(species, unique(forecast_table$species)[1]) 
@@ -107,6 +107,7 @@ ensemble_forecasts <- function (main                       = ".",
   }
 
   forecast_table    <- forecast_table[all_in, ]
+
   nspecies    <- length(species)
 
   moons       <- unique(forecast_table$newmoonnumber)
