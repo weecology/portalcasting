@@ -7,8 +7,8 @@
 #'
 #' @param model_fit,model_forecast Output from a model's fit and forecast functions.
 #'
-#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) value(s) representing the forecast(s) of interest, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated forecast's output is read in. \cr 
-#'        `forecast_ids` can be NULL, one value, or more than one values, `forecast_id` can only be NULL or one value.
+#' @param forecast_id,forecasts_ids `integer` (or integer `numeric`) value(s) representing the forecast(s) of interest, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated forecast's output is read in. \cr 
+#'        `forecasts_ids` can be NULL, one value, or more than one values, `forecast_id` can only be NULL or one value.
 #'
 #' @param model,models `character` values of the name(s) of the model(s) of interest, as indexed within the directory in the `forecasts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated forecast's output is read in. \cr 
 #'        `models` can be NULL, one value, or more than one values, `model` can only be NULL or one value.
@@ -22,9 +22,11 @@
 #'
 #' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon numbers of the forecast origin. Default value is `NULL`, which equates to no selection.
 #'
-#' @param forecast_groups `integer` (or integer `numeric`) value of the forecast groups to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
+#' @param forecasts_groups `integer` (or integer `numeric`) value of the forecast groups to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @param forecasts_metadata `data.frame` of forecast metadata. If `NULL` (default), will try to read via [`read_forecasts_metadata`].
 #'
 #' @details Four model-specific output components are saved and returned:
 #'          * `forecast_metadata`: saved out with [`write_yaml`][yaml::write_yaml].
@@ -264,20 +266,20 @@ read_forecast_table <- function (main        = ".",
 #' @export
 #'
 read_forecast_tables <- function (main         = ".", 
-                                  forecast_ids = NULL) {
+                                  forecasts_ids = NULL) {
   
   settings <- read_directory_settings(main = main)
 
-  if (is.null(forecast_ids)) {
+  if (is.null(forecasts_ids)) {
 
     forecasts_meta <- select_forecasts(main = main)
-    forecast_ids   <- max(forecasts_meta$forecast_id)
+    forecasts_ids   <- max(forecasts_meta$forecast_id)
 
   }
 
   forecast_table <- read_forecast_table(main        = main,
-                                        forecast_id = forecast_ids[1])
-  ncasts         <- length(forecast_ids)
+                                        forecast_id = forecasts_ids[1])
+  ncasts         <- length(forecasts_ids)
 
 
   if (ncasts > 1) {
@@ -285,7 +287,7 @@ read_forecast_tables <- function (main         = ".",
     for (i in 2:ncasts) {
 
       forecast_table_i <- read_forecast_table(main        = main,
-                                              forecast_id = forecast_ids[i])
+                                              forecast_id = forecasts_ids[i])
 
       forecast_table <- rbind(forecast_table, forecast_table_i)
 
@@ -427,8 +429,9 @@ read_model_forecast <- function (main        = ".",
 #' @export
 #'
 select_forecasts <- function (main                        = ".", 
-                              forecast_ids                = NULL,
-                              forecast_groups             = NULL,
+                              forecasts_metadata          = NULL,
+                              forecasts_ids               = NULL,
+                              forecasts_groups            = NULL,
                               models                      = NULL, 
                               datasets                    = NULL,
                               species                     = NULL,
@@ -436,15 +439,15 @@ select_forecasts <- function (main                        = ".",
 
   settings           <- read_directory_settings(main = main)
 
-  forecasts_metadata <- read_forecasts_metadata(main = main)
+  forecasts_metadata <- ifnull(forecasts_metadata, read_forecasts_metadata(main = main))
 
   uforecast_ids      <- unique(forecasts_metadata$forecast_id[forecasts_metadata$QAQC])
-  forecast_ids       <- ifnull(forecast_ids, uforecast_ids)
-  match_id           <- forecasts_metadata$forecast_id %in% forecast_ids
+  forecasts_ids       <- ifnull(forecasts_ids, uforecast_ids)
+  match_id           <- forecasts_metadata$forecast_id %in% forecasts_ids
 
   uforecast_groups   <- unique(forecasts_metadata$forecast_group[forecasts_metadata$QAQC])
-  forecast_groups    <- ifnull(forecast_groups, uforecast_groups)
-  match_group        <- forecasts_metadata$forecast_group %in% forecast_groups
+  forecasts_groups    <- ifnull(forecasts_groups, uforecast_groups)
+  match_group        <- forecasts_metadata$forecast_group %in% forecasts_groups
 
   uend_moons         <- unique(forecasts_metadata$historic_end_newmoonnumber[forecasts_metadata$QAQC])
   end_moons          <- ifnull(historic_end_newmoonnumbers, uend_moons)

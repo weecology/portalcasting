@@ -25,7 +25,7 @@ process_model_output(
 
 read_forecast_table(main = ".", forecast_id = NULL)
 
-read_forecast_tables(main = ".", forecast_ids = NULL)
+read_forecast_tables(main = ".", forecasts_ids = NULL)
 
 add_observations_to_forecast_table(main = ".", forecast_table = NULL)
 
@@ -37,8 +37,9 @@ read_model_forecast(main = ".", forecast_id = NULL)
 
 select_forecasts(
   main = ".",
-  forecast_ids = NULL,
-  forecast_groups = NULL,
+  forecasts_metadata = NULL,
+  forecasts_ids = NULL,
+  forecasts_groups = NULL,
   models = NULL,
   datasets = NULL,
   species = NULL,
@@ -60,12 +61,14 @@ read_forecasts_metadata(main = ".")
 
 \item{species}{\code{character} value of the species codes (or \code{"total"} for the total across species) to include. Default value is \code{NULL}, which equates to no selection with respect to \code{species}.}
 
-\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the forecast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated forecast's output is read in. \cr
-\code{forecast_ids} can be NULL, one value, or more than one values, \code{forecast_id} can only be NULL or one value.}
+\item{forecast_id, forecasts_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the forecast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated forecast's output is read in. \cr
+\code{forecasts_ids} can be NULL, one value, or more than one values, \code{forecast_id} can only be NULL or one value.}
 
 \item{forecast_table}{A \code{data.frame} of a cast's output. See \code{\link{read_forecast_table}}.}
 
-\item{forecast_groups}{\code{integer} (or integer \code{numeric}) value of the forecast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{forecast_group}.}
+\item{forecasts_metadata}{\code{data.frame} of forecast metadata. If \code{NULL} (default), will try to read via \code{\link{read_forecasts_metadata}}.}
+
+\item{forecasts_groups}{\code{integer} (or integer \code{numeric}) value of the forecast groups to include. Default value is \code{NULL}, which equates to no selection with respect to \code{forecast_group}.}
 
 \item{historic_end_newmoonnumbers}{\code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection.}
 }

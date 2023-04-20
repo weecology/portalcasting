@@ -12,7 +12,8 @@
 \usage{
 plot_forecasts_error_lead(
   main = ".",
-  forecast_ids = NULL,
+  forecasts_ids = NULL,
+  forecasts_evaluations = NULL,
   historic_end_newmoonnumbers = NULL,
   models = NULL,
   datasets = NULL,
@@ -21,7 +22,9 @@ plot_forecasts_error_lead(
 
 plot_forecasts_cov_RMSE(
   main = ".",
-  forecast_ids = NULL,
+  forecasts_metadata = NULL,
+  forecasts_ids = NULL,
+  forecasts_evaluations = NULL,
   historic_end_newmoonnumbers = NULL,
   models = NULL,
   datasets = NULL,
@@ -30,6 +33,7 @@ plot_forecasts_cov_RMSE(
 
 plot_forecast_point(
   main = ".",
+  forecasts_metadata = NULL,
   forecast_id = NULL,
   dataset = NULL,
   model = NULL,
@@ -42,8 +46,8 @@ plot_forecast_point(
 
 plot_forecast_ts(
   main = ".",
+  forecasts_metadata = NULL,
   forecast_id = NULL,
-  forecast_group = NULL,
   dataset = NULL,
   model = NULL,
   historic_start_newmoonnumber = NULL,
@@ -56,9 +60,13 @@ plot_covariates(main = ".", to_plot = "ndvi")
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
+\item{forecasts_evaluations}{\code{data.frame} of forecast evaluations, as returned from \code{\link{evaluate_forecasts}}. If \code{NULL} (default), will try to read via \code{\link{read_forecasts_evaluations}}.}
+
 \item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{portalr::forecasting_species}}.}
 
-\item{forecast_id, forecast_ids}{\code{integer} (or integer \code{numeric}) values representing the forecasts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \code{forecast_id} can only be length-1 or \code{NULL}, whereas \code{forecast_ids} is not length-restricted.}
+\item{forecasts_metadata}{\code{data.frame} of forecast metadata. If \code{NULL} (default), will try to read via \code{\link{read_forecasts_metadata}}.}
+
+\item{forecast_id, forecasts_ids}{\code{integer} (or integer \code{numeric}) values representing the forecasts of interest for restricting plotting, as indexed within the directory in the \code{casts} sub folder. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \code{forecast_id} can only be length-1 or \code{NULL}, whereas \code{forecasts_ids} is not length-restricted.}
 
 \item{dataset, datasets}{\code{character} value of the rodent data set(s) to include. \code{dataset} can only be length-1 or \code{NULL}, whereas \code{datasets} is not length-restricted.}
 
@@ -71,8 +79,6 @@ plot_covariates(main = ".", to_plot = "ndvi")
 \item{newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the plot.}
 
 \item{with_census}{\code{logical} toggle if the plot should include the observed data collected during the predicted census.}
-
-\item{forecast_group}{\code{integer} (or integer \code{numeric}) value of the forecast group to include. Default value is \code{NULL}, which equates to no selection with respect to \code{forecast_group}.}
 
 \item{historic_start_newmoonnumber}{\code{integer} (or integer \code{numeric}) newmoon number for the beginning of the x-axis of the plot. \cr
 Does not influence the fit of the models, just the presentation.}
@@ -108,9 +114,9 @@ As of \verb{portalcasting v0.9.0}, the line and bands in \code{plot_forecast_ts}
                            datasets = c("all", "controls"))$forecast_id
    nids         <- length(ids)
    nsample_ids  <- 1000
-   forecast_ids <- ids[round(seq(1, nids, length.out = nsample_ids))]
+   forecasts_ids <- ids[round(seq(1, nids, length.out = nsample_ids))]
    evaluate_forecasts(main         = main3, 
-                      forecast_ids = forecast_ids) 
+                      forecasts_ids = forecasts_ids) 
 
    plot_forecast_ts(main = main1)
    plot_forecast_point(main = main1)

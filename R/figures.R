@@ -9,9 +9,11 @@
 #' @details Casts can be selected either by supplying a `forecast_id` number or any combination of `dataset`, `model`, and `historic_end_newmoonnumber`, which filter the available forecasts in unison. This plot type can only handle output from a single forecast, so if multiple forecasts still remain, the one with the highest number is selected. To be more certain about forecast selection, use the `forecast_id` input. \cr 
 #'          As of `portalcasting v0.9.0`, the line and bands in `plot_forecast_ts` and point and bars in `plot_forecast_point` represent the mean and the 95 percent prediction interval. \cr
 #'
-#' @param forecast_group `integer` (or integer `numeric`) value of the forecast group to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
+#' @param forecast_id,forecasts_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. `forecast_id` can only be length-1 or `NULL`, whereas `forecasts_ids` is not length-restricted.
 #'
-#' @param forecast_id,forecast_ids `integer` (or integer `numeric`) values representing the forecasts of interest for restricting plotting, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. `forecast_id` can only be length-1 or `NULL`, whereas `forecast_ids` is not length-restricted.
+#' @param forecasts_evaluations `data.frame` of forecast evaluations, as returned from [`evaluate_forecasts`]. If `NULL` (default), will try to read via [`read_forecasts_evaluations`].
+#'
+#' @param forecasts_metadata `data.frame` of forecast metadata. If `NULL` (default), will try to read via [`read_forecasts_metadata`].
 #'
 #' @param historic_start_newmoonnumber `integer` (or integer `numeric`) newmoon number for the beginning of the x-axis of the plot. \cr
 #'        Does not influence the fit of the models, just the presentation. 
@@ -55,9 +57,9 @@
 #'                            datasets = c("all", "controls"))$forecast_id
 #'    nids         <- length(ids)
 #'    nsample_ids  <- 1000
-#'    forecast_ids <- ids[round(seq(1, nids, length.out = nsample_ids))]
+#'    forecasts_ids <- ids[round(seq(1, nids, length.out = nsample_ids))]
 #'    evaluate_forecasts(main         = main3, 
-#'                       forecast_ids = forecast_ids) 
+#'                       forecasts_ids = forecasts_ids) 
 #'
 #'    plot_forecast_ts(main = main1)
 #'    plot_forecast_point(main = main1)
@@ -77,7 +79,8 @@ NULL
 #' @export
 #'
 plot_forecasts_error_lead <- function (main                        = ".", 
-                                       forecast_ids                = NULL, 
+                                       forecasts_ids                = NULL, 
+                                       forecasts_evaluations       = NULL, 
                                        historic_end_newmoonnumbers = NULL, 
                                        models                      = NULL, 
                                        datasets                    = NULL, 
@@ -85,15 +88,15 @@ plot_forecasts_error_lead <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_forecasts_evaluations(main)
+  evals <- ifnull(forecasts_evaluations, read_forecasts_evaluations(main))
 
   models                        <- ifnull(models, "AutoArima")
   datasets                      <- ifnull(datasets, "controls")
   species                       <- ifnull(species, "DM") 
-  forecast_ids                  <- ifnull(forecast_ids, unique(evals$forecast_id))
+  forecasts_ids                  <- ifnull(forecasts_ids, unique(evals$forecast_id))
   historic_end_newmoonnumbers   <- ifnull(historic_end_newmoonnumbers, unique(evals$historic_end_newmoonnumber)) 
 
-  forecast_id_in                <- evals$forecast_id %in% forecast_ids
+  forecast_id_in                <- evals$forecast_id %in% forecasts_ids
   model_in                      <- evals$model %in% models
   dataset_in                    <- evals$dataset == datasets
   species_in                    <- evals$species %in% species
@@ -181,7 +184,7 @@ plot_forecasts_error_lead <- function (main                        = ".",
 
       for(i in 1:nmodels){
 
-        forecast_id_in <- evals_in$forecast_id %in% forecast_ids
+        forecast_id_in <- evals_in$forecast_id %in% forecasts_ids
 
 
         dataset_in                     <- evals_in$dataset %in% datasets
@@ -322,7 +325,9 @@ plot_forecasts_error_lead <- function (main                        = ".",
 #' @export
 #'
 plot_forecasts_cov_RMSE <- function (main                        = ".", 
-                                     forecast_ids                = NULL, 
+                                     forecasts_metadata          = NULL, 
+                                     forecasts_ids               = NULL, 
+                                     forecasts_evaluations       = NULL, 
                                      historic_end_newmoonnumbers = NULL, 
                                      models                      = NULL, 
                                      datasets                    = NULL, 
@@ -330,10 +335,11 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
 
   settings <- read_directory_settings(main = main)
 
-  evals    <- read_forecasts_evaluations(main = main)
+  evals <- ifnull(forecasts_evaluations, read_forecasts_evaluations(main))
 
   forecasts_meta <- select_forecasts(main                        = main, 
-                                     forecast_ids                = forecast_ids,
+                                     forecasts_metadata          = forecasts_metadata,
+                                     forecasts_ids               = forecasts_ids,
                                      historic_end_newmoonnumbers = historic_end_newmoonnumbers, 
                                      models                      = models, 
                                      datasets                    = datasets, 
@@ -343,10 +349,10 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
   datasets                      <- unique(forecasts_meta$dataset)[unique(forecasts_meta$dataset) %in% unique(evals$dataset)]
   species                       <- unique(forecasts_meta$species)[unique(forecasts_meta$species) %in% unique(evals$species)]
   models                        <- unique(forecasts_meta$model)[unique(forecasts_meta$model) %in% unique(evals$model)]
-  forecast_ids                  <- unique(forecasts_meta$forecast_id)[unique(forecasts_meta$forecast_id) %in% unique(evals$forecast_id)]
+  forecasts_ids                  <- unique(forecasts_meta$forecast_id)[unique(forecasts_meta$forecast_id) %in% unique(evals$forecast_id)]
   historic_end_newmoonnumbers   <- unique(forecasts_meta$historic_end_newmoonnumber)[unique(forecasts_meta$historic_end_newmoonnumber) %in% unique(evals$historic_end_newmoonnumber)]
 
-  forecast_id_in                <- evals$forecast_id %in% forecast_ids
+  forecast_id_in                <- evals$forecast_id %in% forecasts_ids
   model_in                      <- evals$model %in% models
   dataset_in                    <- evals$dataset %in% datasets
   species_in                    <- evals$species %in% species
@@ -487,6 +493,7 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
 #' @export
 #'
 plot_forecast_point <- function (main                       = ".", 
+                                 forecasts_metadata         = NULL, 
                                  forecast_id                = NULL, 
                                  dataset                    = NULL, 
                                  model                      = NULL, 
@@ -499,7 +506,8 @@ plot_forecast_point <- function (main                       = ".",
   settings <- read_directory_settings(main = main)
 
   forecasts_meta <- select_forecasts(main                        = main, 
-                                     forecast_ids                = forecast_id,
+                                     forecasts_metadata          = forecasts_metadata,
+                                     forecasts_ids               = forecast_id,
                                      historic_end_newmoonnumbers = historic_end_newmoonnumber, 
                                      models                      = model, 
                                      datasets                    = dataset, 
@@ -648,8 +656,8 @@ plot_forecast_point <- function (main                       = ".",
 #' @export
 #'
 plot_forecast_ts <- function (main                         = ".", 
+                              forecasts_metadata           = NULL, 
                               forecast_id                  = NULL, 
-                              forecast_group               = NULL,
                               dataset                      = NULL, 
                               model                        = NULL, 
                               historic_start_newmoonnumber = NULL, 
@@ -659,7 +667,8 @@ plot_forecast_ts <- function (main                         = ".",
   settings <- read_directory_settings(main = main)
 
   forecasts_meta <- select_forecasts(main                        = main, 
-                                     forecast_ids                = forecast_id,
+                                     forecasts_metadata          = forecasts_metadata,
+                                     forecasts_ids               = forecast_id,
                                      historic_end_newmoonnumbers = historic_end_newmoonnumber, 
                                      models                      = model, 
                                      datasets                    = dataset, 
