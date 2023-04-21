@@ -14,7 +14,7 @@ test_that(desc = "server functions work off of global list", {
   expect_silent(irv <- initial_reactive_values(global = gl))
   expect_is(irv, "reactivevalues")
 
-  expect_silent(io <- initial_output(main = main3, rv = irv, output = list()))
+  expect_silent(io <- initial_output(main = main3, global = gl, rv = irv, output = list()))
   expect_is(io, "list")
 
   rv <- list(forecast_tab_species                       = gl$initial_forecast_tab_selected_species,
@@ -34,9 +34,9 @@ test_that(desc = "server functions work off of global list", {
   expect_is(urv2, "list")
 
 
-  expect_silent(uo <- update_output(main = main3, event = "forecast_tab", rv = rv, input = rv, output = io))
+  expect_silent(uo <- update_output(main = main3, global = gl, event = "forecast_tab", rv = rv, input = rv, output = io))
   expect_is(uo, "list")
-  expect_silent(uo2 <- update_output(main = main3, event = "evaluation_tab", rv = rv, input = rv, output = io))
+  expect_silent(uo2 <- update_output(main = main3, global = gl, event = "evaluation_tab", rv = rv, input = rv, output = io))
   expect_is(uo2, "list")
 
 

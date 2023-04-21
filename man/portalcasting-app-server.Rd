@@ -18,13 +18,13 @@ app_server(input, output, session)
 
 initial_reactive_values(global = global_list())
 
-initial_output(main = ".", rv, output)
+initial_output(main = ".", global, rv, output)
 
 event_reaction(main, global, event, rv, input, output, session)
 
 update_reactive_values(event, rv, input)
 
-update_output(main, event, rv, input, output)
+update_output(main, global, event, rv, input, output)
 
 update_input(global, event, rv, input, session)
 }
@@ -66,6 +66,7 @@ Generate the Server Code for the Web App
    rv     <- initial_reavtive_values(global = global)
 
    output <- initial_output(main   = main1,
+                            global = global,
                             rv     = rv,
                             output = list())
 
