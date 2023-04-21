@@ -15,13 +15,13 @@ test_that(desc = "read_forecast_table reads in a forecast tab", {
 
 })
 
-test_that(desc = "read_forecast_tables reads in multiple forecast tabs", {
+test_that(desc = "read_forecasts_tables reads in multiple forecast tabs", {
 
 
   skip_on_cran() 
 
-  expect_is(read_forecast_tables(main = main3, forecast_ids = NULL), "data.frame")
-  expect_is(read_forecast_tables(main = main3, forecast_ids = c("1.01", "1.02")), "data.frame")
+  expect_is(read_forecasts_tables(main = main3, forecasts_ids = NULL), "data.frame")
+  expect_is(read_forecasts_tables(main = main3, forecasts_ids = c("1.01", "1.02")), "data.frame")
 
 })
 

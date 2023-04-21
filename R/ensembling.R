@@ -34,7 +34,9 @@
 #'    main1 <- file.path(tempdir(), "ensemble")
 #'    setup_production(main = main1)
 #'
-#'    forecasts_ids <- select_forecasts(main = main1, datasets = "controls", species = "DM")$forecast_id
+#'    forecasts_ids <- select_forecasts(main     = main1, 
+#'                                      datasets = "controls", 
+#'                                      species  = "DM")$forecast_id
 #'
 #'    ensemble_forecasts(main          = main1, 
 #'                       forecasts_ids = forecasts_ids)
