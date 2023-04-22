@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project \url{https://github.com/weecology/portalpredictions} and website \url{https://portal.naturecast.org} as well as support for exploring and developing new models in sandbox environments.
+Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project continuous integration system \url{https://github.com/weecology/portalpredictions} and website \url{https://portal.naturecast.org} as well as support for exploring and developing new models in sandbox environments.
 }
 \seealso{
 Useful links:
