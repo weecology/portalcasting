@@ -19,7 +19,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0001-6728-7745")),
     person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
       comment = c(ORCID = "0000-0002-6026-8530")))
-Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> as well as support for exploring and developing new models in sandbox environments.
+Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> and website <https://portal.naturecast.org> as well as support for exploring and developing new models in sandbox environments.
 URL: https://weecology.github.io/portalcasting/, https://github.com/weecology/portalcasting
 BugReports: https://github.com/weecology/portalcasting/issues
 Depends: 
