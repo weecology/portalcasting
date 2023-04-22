@@ -38,7 +38,7 @@ Imports:
   jsonlite,
   knitr,
   markdown,
-  portalr,
+  portalr  (>= 0.4.0),
   rmarkdown,
   runjags,
   scoringRules,
@@ -49,8 +49,6 @@ Imports:
 Suggests:
   pkgdown,
   testthat
-Remotes:
-  weecology/portalr#288
 SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
