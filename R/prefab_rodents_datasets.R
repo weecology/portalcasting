@@ -1,36 +1,40 @@
-#' @title Provide the Names or Controls for the Prefab Rodent Datasets
+#' @title Provide the Names or Controls for the Prefabricated Rodent Datasets
 #'
-#' @description Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or a \code{list} of their controls
+#' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
 #'
-#' @return \code{prefab_datasets}: \code{character} vector of dataset names. \cr
-#'         \code{prefab_dataset_controls}: \code{list} vector of dataset controls. \cr
+#' @return `prefab_datasets`: `character` vector of dataset names. \cr 
+#'         `prefab_datasets_controls`: `list` vector of dataset controls. 
+#'
+#' @name prefabricated rodents datasets
+#'
+#' @aliases prefab-rodents prefab-datasets prefab-rodents-datasets
 #'
 #' @examples
-#'  prefab_datasets()
-#'  prefab_dataset_controls()
-#'
-#' @name prefabricated_datasets
+#'   prefab_datasets_controls( )
+#'   prefab_datasets( )
 #'
 NULL
 
-#' @rdname prefabricated_datasets
+#' @rdname prefabricated-rodents-datasets
 #'
 #' @export
 #'
-prefab_datasets <- function(){
+prefab_datasets <- function( ){
 
-  names(prefab_dataset_controls())
+  names(prefab_datasets_controls( ))
 
 }
 
 
-#' @rdname prefabricated_datasets
+#' @rdname prefabricated-rodents-datasets
 #'
 #' @export
 #'
-prefab_dataset_controls <- function () {
+prefab_datasets_controls <- function ( ) {
 
-  prefab_controls_file <- system.file("extdata", "prefab_dataset_controls.yaml", package = "portalcasting")
+  prefab_controls_file <- system.file(...     = "extdata", 
+                                      ...     = "prefab_datasets_controls.yaml", 
+                                      package = "portalcasting")
 
   read_yaml(prefab_controls_file)
 

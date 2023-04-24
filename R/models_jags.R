@@ -1,1427 +1,316 @@
-#' @rdname prefab_model_functions
+
+#' @title Create and Run a runjags Portalcasting Model 
 #'
-#' @export
+#' @description Using the runjags (Denwood 2016) package to produce JAGS-based forecasts. \cr 
+#'              `fit_runjags`: Wraps up the runjags model object preparation functions with the model running ([`run.jags`][runjags::run.jags] function in the runjags (Denwood 2016) package) we use to run JAGS (Plummer 2003) models in portalcasting. \cr
+#'              `runjags_data`, `runjags_monitor`, `runjags_model`, `runjags_inits`: Produce the model-specific components as named. \cr 
+#'              `forecast.runjags`: A convenience function for extracting existing forecasts from runjags objects and summarizing them into a `"forecast"`-class object. \cr 
+#'              `runjags_controls`: Combines the [`run.jags`][runjags::run.jags] control parameters that users may be interested in changing with a few portalcasting-specific parameters into a control list for input into specific model functions. 
 #'
-jags_logistic_competition <- function (main            = ".", 
-                                       dataset         = "controls",  
-                                       settings        = directory_settings(), 
-                                       control_runjags = runjags_control(), 
-                                       quiet           = FALSE, 
-                                       verbose         = FALSE) {
-
-
-  dataset     <- tolower(dataset)
-  messageq("  -jags_logistic_competition for ", dataset, quiet = quiet)
-
-  monitor <- c("mu", "sigma", "r_int", "log_K_int", "log_K_slope")
-
-
-  inits <- function (data = NULL) {
-
-    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-
-    log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(data$past_count, na.rm = TRUE))
-
-    sd_log_past_count <- sd(log(data$past_count), na.rm = TRUE)
-
-    function (chain = chain) {
-
-      mu        <- rnorm(1, log_mean_past_count, 0.1)
-      log_K_int <- rnorm(1, log_max_past_count, 0.01)
-
-      log_K_int <- max(c(mu, log_K_int)) + 0.1
-
-      list(.RNG.name    = sample(rngs, 1),
-           .RNG.seed    = sample(1:1e+06, 1),
-            mu          = mu, 
-            sigma       = runif(1, 0.00001, 0.005),
-            r_int       = rnorm(1, 0, 0.01),
-            log_K_int   = log_K_int,
-            log_K_slope = rnorm(1, 0, 0.01))
-
-    }
-
-  }
-
-  jags_model <- "model { 
- 
-    # priors
-
-    mu          ~  dnorm(log_mean_past_count, 5)
-    sigma       ~  dunif(0, 1) 
-    tau         <- pow(sigma, -2)
-    r_int       ~  dnorm(0, 5)
-    log_K_int   ~  dnorm(log_max_past_count, 5)
-    log_K_slope ~  dnorm(0, 1)
- 
-    # initial state
-
-    log_X[1]      <- mu
-    X[1]          <- exp(log_X[1])
-    count[1]      ~  dpois(X[1]) 
-
-    # exampand parameters
-
-    for (i in 1:N) {
-
-      r[i] <- r_int
-      K[i] <- exp(log_K_int + log_K_slope * ordii[i]) 
-
-    }
-
-
-    # through time
-
-    for(i in 2:N) {
-
-      # Process model
-
-      pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-      pred_log_X[i] <- log(pred_X[i])
-      log_X[i]      ~  dnorm(pred_log_X[i], tau)
-      X[i]          <- exp(log_X[i])
-
-      # observation model
-
-      count[i] ~ dpois(X[i])
-
-    }
-
-  }"
-
-
-
-
-  model_name     <- "jags_logistic_competition"
-
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
-
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = dataset, 
-                                      settings = settings) 
-  covariates    <- read_covariates(main     = main,
-                                   settings = settings)
-  metadata      <- read_metadata(main     = main,
-                                 settings = settings)
-
-  dataset_controls  <- metadata$controls_r[[dataset]]
-  start_moon        <- metadata$time$start_moon
-  end_moon          <- metadata$time$end_moon
-  true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level  <- metadata$confidence_level
-  dataset_controls  <- metadata$dataset_controls[[dataset]]
-
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-  nspecies <- length(species)
-  mods     <- named_null_list(species)
-  casts    <- named_null_list(species)
-  cast_tab <- data.frame()
-
-  for (i in 1:nspecies) {
-
-    s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
-
-    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
-    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
-    moon         <- rodents_table[moon_in, "newmoonnumber"] 
-    moon         <- c(moon, metadata$time$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
-
-    ntraps           <- rodents_table[moon_in, "ntraps"] 
-    na_traps         <- which(is.na(ntraps) == TRUE)
-    ntraps[na_traps] <- 0
-    cast_ntraps      <- rep(max(ntraps), true_count_lead)
-    ntraps           <- c(ntraps, cast_ntraps)
-    past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
-
-    species_in <- which(colnames(rodents_table) == s)
-    count <- rodents_table[moon_in, species_in]
-
-    if (sum(count, na.rm = TRUE) == 0) {
-
-      next()
-
-    }
-
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(count, cast_count)
-    past_count  <- rodents_table[past_moon_in, species_in]
-    no_count    <- which(is.na(past_count) == TRUE)
-
-    if (length(no_count) > 0) {
-
-      past_moon   <- past_moon[-no_count]
-      past_count  <- past_count[-no_count]
-      past_ntraps <- past_ntraps[-no_count]
-
-    }
-
-    log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(past_count, na.rm = TRUE))
-
-    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_thirteen_newmoons   <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ordii_controls         <- scale(covariates$ordii_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
- 
-
-    data <- list(count                  = count, 
-                 ntraps                 = ntraps, 
-                 N                      = length(count),
-                 moon                   = moon, 
-                 log_mean_past_count    = log_mean_past_count,
-                 log_max_past_count     = log_max_past_count,
-                 past_count             = past_count,
-                 ordii                = ordii_controls[ , 1])
-
-
-    obs_pred_times      <- metadata$time$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
-
-    train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
-    test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
-    model_text <- paste0("model: ", model_name, "; ", train_text, "; ", test_text)
-
-    if (control_runjags$cast_obs) {
-
-      obs_pred <- paste0("X[", obs_pred_times_spot, "]")
-      monitor  <- c(monitor, obs_pred) 
-
-    }
-
-    mods[[i]] <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
-
-    if (control_runjags$cast_obs) {
-
-      nchains <- control_runjags$nchains
-      vals    <- mods[[i]]$mcmc[[1]]
-
-      if (nchains > 1) {
-
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods[[i]]$mcmc[[j]])
-
-        }
-
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      point_forecast <- round(apply(vals, 2, mean), 3)
-      HPD            <- HPDinterval(as.mcmc(vals))
-      lower_cl       <- round(HPD[ , "lower"], 3)
-      upper_cl       <- round(HPD[ , "upper"], 3)
-      casts_i        <- data.frame(Point.Forecast = point_forecast,
-                                   lower_cl       = lower_cl, 
-                                   upper_cl       = upper_cl,
-                                   moon           = obs_pred_times)
-
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
-      rownames(casts_i)      <- NULL
-      casts[[i]]             <- casts_i
-
-      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = dataset_controls$args$output,
-                               model            = model_name, 
-                               dataset          = dataset, 
-                               species          = ss, 
-                               estimate         = point_forecast,
-                               lower_pi         = lower_cl, 
-                               upper_pi         = upper_cl,
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-      cast_tab <- rbind(cast_tab, cast_tab_i)
-
-    }
-
-  }
-
-  metadata <- update_list(metadata,
-                          models           = model_name,
-                          datasets         = dataset,
-                          dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts) 
- 
-
-}
-
-
-#' @rdname prefab_model_functions
+#' @param abundance Non-negative `integer`-conformable vector of rodent abundances to use in forecasting. See [`prepare_abundance`].
 #'
-#' @export
+#' @param metadata `list` of model control elements. See [`prepare_metadata`].
 #'
-jags_logistic_competition_covariates <- function (main            = ".", 
-                                                  dataset         = "controls",  
-                                                  settings        = directory_settings(), 
-                                                  control_runjags = runjags_control(), 
-                                                  quiet           = FALSE, 
-                                                  verbose         = FALSE) {
-
-
-  dataset     <- tolower(dataset)
-  messageq("  -jags_logistic_competition_covariates for ", dataset, quiet = quiet)
-
-  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope_NDVI", "log_K_slope_DO")
-
-
-  inits <- function (data = NULL) {
-
-    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-
-    log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(data$past_count, na.rm = TRUE))
-
-    sd_log_past_count <- sd(log(data$past_count), na.rm = TRUE)
-
-    function (chain = chain) {
-
-      mu        <- rnorm(1, log_mean_past_count, 0.1)
-      log_K_int <- rnorm(1, log_max_past_count, 0.01)
-
-      log_K_int <- max(c(mu, log_K_int)) + 0.1
-
-      list(.RNG.name         = sample(rngs, 1),
-           .RNG.seed         = sample(1:1e+06, 1),
-            mu               = mu, 
-            sigma            = runif(1, 0.01, 0.5),
-            r_int            = rnorm(1, 0, 0.01),
-            r_slope          = rnorm(1, 0, 0.1),
-            log_K_int        = log_K_int,
-            log_K_slope_NDVI = rnorm(1, 0, 0.01),
-            log_K_slope_DO   = rnorm(1, 0, 0.01))
-
-    }
-
-  }
-
-  jags_model <- "model { 
- 
-    # priors
-
-    mu               ~  dnorm(log_mean_past_count, 5)
-    sigma            ~  dunif(0, 1) 
-    tau              <- pow(sigma, -1/2)
-    r_int            ~  dnorm(0, 5)
-    r_slope          ~  dnorm(0, 1)
-    log_K_int        ~  dnorm(log_max_past_count, 5)
-    log_K_slope_NDVI ~  dnorm(0, 4)
-    log_K_slope_DO   ~  dnorm(0, 4)
- 
-    # initial state
-
-    log_X[1]      <- mu
-    X[1]          <- exp(log_X[1])
-    count[1]      ~  dpois(X[1]) 
-
-    # exampand parameters
-
-    for (i in 1:N) {
-
-      r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
-      K[i] <- exp(log_K_int + log_K_slope_DO * ordii[i] + log_K_slope_NDVI * ndvi_thirteen_newmoons[i]) 
-
-    }
-
-
-    # through time
-
-    for(i in 2:N) {
-
-      # Process model
-
-      pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-      pred_log_X[i] <- log(pred_X[i])
-      log_X[i]      ~  dnorm(pred_log_X[i], tau)
-      X[i]          <- exp(log_X[i])
-
-      # observation model
-
-      count[i] ~ dpois(X[i])
-
-    }
-
-  }"
-
-
-
-
-  model_name     <- "jags_logistic_competition_covariates"
-
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
-
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = dataset, 
-                                      settings = settings) 
-  covariates    <- read_covariates(main     = main,
-                                   settings = settings)
-  metadata      <- read_metadata(main     = main,
-                                 settings = settings)
-
-  dataset_controls  <- metadata$controls_r[[dataset]]
-  start_moon        <- metadata$time$start_moon
-  end_moon          <- metadata$time$end_moon
-  true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level  <- metadata$confidence_level
-  dataset_controls  <- metadata$dataset_controls[[dataset]]
-
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_competition_covariates$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-  nspecies <- length(species)
-  mods     <- named_null_list(species)
-  casts    <- named_null_list(species)
-  cast_tab <- data.frame()
-
-  for (i in 1:nspecies) {
-
-    s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
-
-    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
-    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
-    moon         <- rodents_table[moon_in, "newmoonnumber"] 
-    moon         <- c(moon, metadata$time$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
-
-    ntraps           <- rodents_table[moon_in, "ntraps"] 
-    na_traps         <- which(is.na(ntraps) == TRUE)
-    ntraps[na_traps] <- 0
-    cast_ntraps      <- rep(max(ntraps), true_count_lead)
-    ntraps           <- c(ntraps, cast_ntraps)
-    past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
-
-    species_in <- which(colnames(rodents_table) == s)
-    count <- rodents_table[moon_in, species_in]
-
-    if (sum(count, na.rm = TRUE) == 0) {
-
-      next()
-
-    }
-
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(count, cast_count)
-    past_count  <- rodents_table[past_moon_in, species_in]
-    no_count    <- which(is.na(past_count) == TRUE)
-
-    if (length(no_count) > 0) {
-
-      past_moon   <- past_moon[-no_count]
-      past_count  <- past_count[-no_count]
-      past_ntraps <- past_ntraps[-no_count]
-
-    }
-
-    log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(past_count, na.rm = TRUE))
-
-    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ordii_controls       <- scale(covariates$ordii_controls[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
- 
-
-    data <- list(count                  = count, 
-                 ntraps                 = ntraps, 
-                 N                      = length(count),
-                 moon                   = moon, 
-                 log_mean_past_count    = log_mean_past_count,
-                 log_max_past_count     = log_max_past_count,
-                 past_count             = past_count,
-                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
-                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1],
-                 ordii                = ordii_controls[ , 1])
-
-
-    obs_pred_times      <- metadata$time$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
-
-    train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
-    test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
-    model_text <- paste0("model: ", model_name, "; ", train_text, "; ", test_text)
-
-    if (control_runjags$cast_obs) {
-
-      obs_pred <- paste0("X[", obs_pred_times_spot, "]")
-      monitor  <- c(monitor, obs_pred) 
-
-    }
-
-    mods[[i]] <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
-
-    if (control_runjags$cast_obs) {
-
-      nchains <- control_runjags$nchains
-      vals    <- mods[[i]]$mcmc[[1]]
-
-      if (nchains > 1) {
-
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods[[i]]$mcmc[[j]])
-
-        }
-
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      point_forecast <- round(apply(vals, 2, mean), 3)
-      HPD            <- HPDinterval(as.mcmc(vals))
-      lower_cl       <- round(HPD[ , "lower"], 3)
-      upper_cl       <- round(HPD[ , "upper"], 3)
-      casts_i        <- data.frame(Point.Forecast = point_forecast,
-                                   lower_cl       = lower_cl, 
-                                   upper_cl       = upper_cl,
-                                   moon           = obs_pred_times)
-
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
-      rownames(casts_i)      <- NULL
-      casts[[i]]             <- casts_i
-
-      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = dataset_controls$args$output,
-                               model            = model_name, 
-                               dataset          = dataset, 
-                               species          = ss, 
-                               estimate         = point_forecast,
-                               lower_pi         = lower_cl, 
-                               upper_pi         = upper_cl,
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-      cast_tab <- rbind(cast_tab, cast_tab_i)
-
-    }
-
-  }
-
-  metadata <- update_list(metadata,
-                          models           = model_name,
-                          datasets         = dataset,
-                          dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts) 
- 
-
-}
-
-#' @rdname prefab_model_functions
+#' @param covariates `data.frame` of covariates used in modeling. See [`prepare_covariates`].
 #'
-#' @export
+#' @param control_runjags `list` of controls for running runjags models. See [`runjags_controls`]. Optional. If not provided here, will be taken from the model controls list.
 #'
-jags_logistic_covariates <- function (main            = ".", 
-                                      dataset         = "controls",  
-                                      settings        = directory_settings(), 
-                                      control_runjags = runjags_control(), 
-                                      quiet           = FALSE, 
-                                      verbose         = FALSE) {
-
-
-  dataset     <- tolower(dataset)
-  messageq("  -jags_logistic_covariates for ", dataset, quiet = quiet)
-
-  monitor <- c("mu", "sigma", "r_int", "r_slope", "log_K_int", "log_K_slope")
-
-
-  inits <- function (data = NULL) {
-
-    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-
-    log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(data$past_count, na.rm = TRUE))
-
-    sd_log_past_count <- sd(log(data$past_count), na.rm = TRUE)
-
-    function (chain = chain) {
-
-      mu        <- rnorm(1, log_mean_past_count, 0.1)
-      log_K_int <- rnorm(1, log_max_past_count, 0.01)
-
-      log_K_int <- max(c(mu, log_K_int)) + 0.1
-
-      list(.RNG.name    = sample(rngs, 1),
-           .RNG.seed    = sample(1:1e+06, 1),
-            mu          = mu, 
-            sigma       = runif(1, 0.01, 0.5),
-            r_int       = rnorm(1, 0, 0.01),
-            r_slope     = rnorm(1, 0, 0.1),
-            log_K_int   = log_K_int,
-            log_K_slope = rnorm(1, 0, 0.01))
-
-    }
-
-  }
-
-  jags_model <- "model { 
- 
-    # priors
-
-    mu          ~  dnorm(log_mean_past_count, 5)
-    sigma       ~  dunif(0, 1) 
-    tau         <- pow(sigma, -2)
-    r_int       ~  dnorm(0, 5)
-    r_slope     ~  dnorm(0, 1)
-    log_K_int   ~  dnorm(log_max_past_count, 5)
-    log_K_slope ~  dnorm(0, 1)
- 
-    # initial state
-
-    log_X[1]      <- mu
-    X[1]          <- exp(log_X[1])
-    count[1]      ~  dpois(X[1]) 
-
-    # exampand parameters
-
-    for (i in 1:N) {
-
-      r[i] <- r_int + r_slope * warm_rain_three_newmoons[i]
-      K[i] <- exp(log_K_int + log_K_slope * ndvi_thirteen_newmoons[i]) 
-
-    }
-
-
-    # through time
-
-    for(i in 2:N) {
-
-      # Process model
-
-      pred_X[i]     <- X[i-1] * exp(r[i] * (1 - (X[i - 1] / K[i])))
-      pred_log_X[i] <- log(pred_X[i])
-      log_X[i]      ~  dnorm(pred_log_X[i], tau)
-      X[i]          <- exp(log_X[i])
-
-      # observation model
-
-      count[i] ~ dpois(X[i])
-
-    }
-
-  }"
-
-
-
-
-  model_name     <- "jags_logistic_covariates"
-
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
-
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = dataset, 
-                                      settings = settings) 
-  covariates    <- read_covariates(main     = main,
-                                   settings = settings)
-  metadata      <- read_metadata(main     = main,
-                                 settings = settings)
-
-  dataset_controls  <- metadata$controls_r[[dataset]]
-  start_moon        <- metadata$time$start_moon
-  end_moon          <- metadata$time$end_moon
-  true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level  <- metadata$confidence_level
-  dataset_controls  <- metadata$dataset_controls[[dataset]]
-
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic_covariates$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-
-  nspecies <- length(species)
-  mods     <- named_null_list(species)
-  casts    <- named_null_list(species)
-  cast_tab <- data.frame()
-
-  for (i in 1:nspecies) {
-
-    s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
-
-    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
-    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
-    moon         <- rodents_table[moon_in, "newmoonnumber"] 
-    moon         <- c(moon, metadata$time$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
-
-    ntraps           <- rodents_table[moon_in, "ntraps"] 
-    na_traps         <- which(is.na(ntraps) == TRUE)
-    ntraps[na_traps] <- 0
-    cast_ntraps      <- rep(max(ntraps), true_count_lead)
-    ntraps           <- c(ntraps, cast_ntraps)
-    past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
-
-    species_in <- which(colnames(rodents_table) == s)
-    count <- rodents_table[moon_in, species_in]
-
-    if (sum(count, na.rm = TRUE) == 0) {
-
-      next()
-
-    }
-
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(count, cast_count)
-    past_count  <- rodents_table[past_moon_in, species_in]
-    no_count    <- which(is.na(past_count) == TRUE)
-
-    if (length(no_count) > 0) {
-
-      past_moon   <- past_moon[-no_count]
-      past_count  <- past_count[-no_count]
-      past_ntraps <- past_ntraps[-no_count]
-
-    }
-
-    log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(past_count, na.rm = TRUE))
-
-    warm_rain_three_newmoons <- scale(covariates$warm_precip_3_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-    ndvi_thirteen_newmoons     <- scale(covariates$ndvi_13_moon[covariates$newmoonnumber >= start_moon & covariates$newmoonnumber <= max(metadata$time$covariate_cast_moons)])
-
-    data <- list(count                  = count, 
-                 ntraps                 = ntraps, 
-                 N                      = length(count),
-                 moon                   = moon, 
-                 log_mean_past_count    = log_mean_past_count,
-                 log_max_past_count     = log_max_past_count,
-                 past_count             = past_count,
-                 warm_rain_three_newmoons = warm_rain_three_newmoons[ , 1],
-                 ndvi_thirteen_newmoons     = ndvi_thirteen_newmoons[ , 1])
-
-
-    obs_pred_times      <- metadata$time$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
-
-    train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
-    test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
-    model_text <- paste0("model: ", model_name, "; ", train_text, "; ", test_text)
-
-    if (control_runjags$cast_obs) {
-
-      obs_pred <- paste0("X[", obs_pred_times_spot, "]")
-      monitor  <- c(monitor, obs_pred) 
-
-    }
-
-    mods[[i]] <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
-
-    if (control_runjags$cast_obs) {
-
-      nchains <- control_runjags$nchains
-      vals    <- mods[[i]]$mcmc[[1]]
-
-      if (nchains > 1) {
-
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods[[i]]$mcmc[[j]])
-
-        }
-
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      point_forecast <- round(apply(vals, 2, mean), 3)
-      HPD            <- HPDinterval(as.mcmc(vals))
-      lower_cl       <- round(HPD[ , "lower"], 3)
-      upper_cl       <- round(HPD[ , "upper"], 3)
-      casts_i        <- data.frame(Point.Forecast = point_forecast,
-                                   lower_cl       = lower_cl, 
-                                   upper_cl       = upper_cl,
-                                   moon           = obs_pred_times)
-
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
-      rownames(casts_i)      <- NULL
-      casts[[i]]             <- casts_i
-
-      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = dataset_controls$args$output,
-                               model            = model_name, 
-                               dataset          = dataset, 
-                               species          = ss, 
-                               estimate         = point_forecast,
-                               lower_pi         = lower_cl, 
-                               upper_pi         = upper_cl,
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-      cast_tab <- rbind(cast_tab, cast_tab_i)
-
-    }
-
-  }
-
-  metadata <- update_list(metadata,
-                          models           = model_name,
-                          datasets         = dataset,
-                          dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts) 
- 
-
-}
-
-
-#' @rdname prefab_model_functions
+#' @param inits `list` of model parameter initializer functions. See [`prefab_models_controls`].
 #'
-#' @export
+#' @param model_file `character` value of the model file name. See [`prefab_models_controls`].
 #'
-jags_logistic <- function (main            = ".", 
-                           dataset         = "controls",  
-                           settings        = directory_settings(), 
-                           control_runjags = runjags_control(), 
-                           quiet           = FALSE, 
-                           verbose         = FALSE) {
-
-
-  dataset     <- tolower(dataset)
-  messageq("  -jags_logistic for ", dataset, quiet = quiet)
-
-  monitor <- c("mu", "sigma", "r", "log_K")
-
-
-  inits <- function (data = NULL) {
-
-    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
-
-    log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(data$past_count, na.rm = TRUE))
-
-    sd_log_past_count <- sd(log(data$past_count), na.rm = TRUE)
-
-    function (chain = chain) {
-
-      mu    <- rnorm(1, log_mean_past_count, 0.1)
-      log_K <- rnorm(1, log_max_past_count, 0.01)
-
-      log_K <- max(c(mu, log_K)) + 0.01
-
-      list(.RNG.name = sample(rngs, 1),
-           .RNG.seed = sample(1:1e+06, 1),
-            mu       = mu, 
-            sigma    = runif(1, 0.01, 0.5),
-            r        = rnorm(1, 0, 0.01),
-            log_K    = log_K)
-
-    }
-
-  }
-
-  jags_model <- "model { 
- 
-    # priors
-
-    mu    ~  dnorm(log_mean_past_count, 5)
-    sigma ~  dunif(0, 1) 
-    tau   <- pow(sigma, -2)
-    r     ~  dnorm(0, 5)
-    log_K ~  dnorm(log_max_past_count, 5)
-    K     <- exp(log_K) 
- 
-    # initial state
-
-    log_X[1]      <- mu
-    X[1]          <- exp(log_X[1])
-    count[1]      ~  dpois(X[1]) 
-
-
-    # through time
-
-    for(i in 2:N) {
-
-      # Process model
-
-      pred_X[i]     <- X[i-1] * exp(r * (1 - (X[i - 1] / K)))
-      pred_log_X[i] <- log(pred_X[i])
-      log_X[i]      ~  dnorm(pred_log_X[i], tau)
-      X[i]          <- exp(log_X[i])
-
-      # observation model
-
-      count[i] ~ dpois(X[i])
-
-    }
-
-  }"
-
-
-
-
-  model_name     <- "jags_logistic"
-
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
-
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = dataset, 
-                                      settings = settings) 
-  metadata      <- read_metadata(main     = main,
-                                 settings = settings)
-
-  dataset_controls  <- metadata$controls_r[[dataset]]
-  start_moon        <- metadata$time$start_moon
-  end_moon          <- metadata$time$end_moon
-  true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level  <- metadata$confidence_level
-  dataset_controls  <- metadata$dataset_controls[[dataset]]
-
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_logistic$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-
-  nspecies <- length(species)
-  mods     <- named_null_list(species)
-  casts    <- named_null_list(species)
-  cast_tab <- data.frame()
-
-  for (i in 1:nspecies) {
-
-    s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
-
-    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
-    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
-    moon         <- rodents_table[moon_in, "newmoonnumber"] 
-    moon         <- c(moon, metadata$time$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
-
-    ntraps           <- rodents_table[moon_in, "ntraps"] 
-    na_traps         <- which(is.na(ntraps) == TRUE)
-    ntraps[na_traps] <- 0
-    cast_ntraps      <- rep(max(ntraps), true_count_lead)
-    ntraps           <- c(ntraps, cast_ntraps)
-    past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
-
-    species_in <- which(colnames(rodents_table) == s)
-    count <- rodents_table[moon_in, species_in]
-
-    if (sum(count, na.rm = TRUE) == 0) {
-
-      next()
-
-    }
-
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(count, cast_count)
-    past_count  <- rodents_table[past_moon_in, species_in]
-    no_count    <- which(is.na(past_count) == TRUE)
-
-    if (length(no_count) > 0) {
-
-      past_moon   <- past_moon[-no_count]
-      past_count  <- past_count[-no_count]
-      past_ntraps <- past_ntraps[-no_count]
-
-    }
-
-    log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-    log_max_past_count  <- log(max(past_count, na.rm = TRUE))
-
-    data <- list(count               = count, 
-                 ntraps              = ntraps, 
-                 N                   = length(count),
-                 moon                = moon, 
-                 log_mean_past_count = log_mean_past_count,
-                 log_max_past_count  = log_max_past_count,
-                 past_count          = past_count)
-
-
-    obs_pred_times      <- metadata$time$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
-
-    train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
-    test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
-    model_text <- paste0("model: ", model_name, "; ", train_text, "; ", test_text)
-
-    if (control_runjags$cast_obs) {
-
-      obs_pred <- paste0("X[", obs_pred_times_spot, "]")
-      monitor  <- c(monitor, obs_pred) 
-
-    }
-
-    mods[[i]] <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
-
-    if (control_runjags$cast_obs) {
-
-      nchains <- control_runjags$nchains
-      vals    <- mods[[i]]$mcmc[[1]]
-
-      if (nchains > 1) {
-
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods[[i]]$mcmc[[j]])
-
-        }
-
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      point_forecast <- round(apply(vals, 2, mean), 3)
-      HPD            <- HPDinterval(as.mcmc(vals))
-      lower_cl       <- round(HPD[ , "lower"], 3)
-      upper_cl       <- round(HPD[ , "upper"], 3)
-      casts_i        <- data.frame(Point.Forecast = point_forecast,
-                                   lower_cl       = lower_cl, 
-                                   upper_cl       = upper_cl,
-                                   moon           = obs_pred_times)
-
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
-      rownames(casts_i)      <- NULL
-      casts[[i]]             <- casts_i
-
-      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = dataset_controls$args$output,
-                               model            = model_name, 
-                               dataset          = dataset, 
-                               species          = ss, 
-                               estimate         = point_forecast,
-                               lower_pi         = lower_cl, 
-                               upper_pi         = upper_cl,
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-      cast_tab <- rbind(cast_tab, cast_tab_i)
-
-    }
-
-  }
-
-  metadata <- update_list(metadata,
-                          models           = model_name,
-                          datasets         = dataset,
-                          dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts) 
- 
-
-}
-
-
-
-#' @rdname prefab_model_functions
+#' @param data_names `character` vector of data values to include in the data `list`. See [`prefab_models_controls`].
 #'
-#' @export
+#' @param seed A single `integer`-conformable value or `NULL` set in [`set.seed`].
 #'
-jags_RW <- function (main            = ".", 
-                     dataset         = "controls",  
-                     settings        = directory_settings(),
-                     control_runjags = runjags_control(), 
-                     quiet           = FALSE, 
-                     verbose         = FALSE){
- 
-  dataset <- tolower(dataset)
-  messageq("  -jags_RW for ", dataset, quiet = quiet)
-
-  monitor <- c("mu", "sigma")
-
-  inits <- function (data = NULL) {
-
-    rngs       <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
- 
-    log_mean_past_count <- log(mean(data$past_count, na.rm = TRUE))
-
-    function (chain = chain) {
-
-      list(.RNG.name = sample(rngs, 1),
-           .RNG.seed = sample(1:1e+06, 1),
-            mu       = rnorm(1, mean = log_mean_past_count, sd = 0.1),  
-            sigma    = runif(1, min = 0.01, max = 0.5))
-
-    }
-
-  }
-
-  jags_model <- "model { 
- 
-    # priors
-
-    mu    ~  dnorm(log_mean_past_count, 5)
-    sigma ~  dunif(0, 1) 
-    tau   <- pow(sigma, -2)
-
-    # initial state
-
-    log_X[1]      <- mu
-    X[1]          <- exp(log_X[1])
-    count[1]      ~  dpois(X[1]) 
-
-
-    # through time
-
-    for(i in 2:N) {
-
-      # Process model
-
-      pred_log_X[i] <- log_X[i-1]
-      log_X[i]      ~  dnorm(pred_log_X[i], tau)
-      X[i]          <- exp(log_X[i])
-   
-
-      # observation model
-
-      count[i] ~ dpois(X[i])
-
-    }
-
-
-  }"
-
-  model_name     <- "jags_RW"
-
-  runjags.options(silent.jags    = control_runjags$silent_jags, 
-                  silent.runjags = control_runjags$silent_jags)
-
-  rodents_table <- read_rodents_table(main     = main,
-                                      dataset = dataset, 
-                                      settings = settings) 
-  metadata      <- read_metadata(main     = main,
-                                 settings = settings)
-
-  dataset_controls  <- metadata$controls_r[[dataset]]
-  start_moon        <- metadata$time$start_moon
-  end_moon          <- metadata$time$end_moon
-  true_count_lead   <- length(metadata$time$rodent_cast_moons)
-  confidence_level  <- metadata$confidence_level
-  dataset_controls  <- metadata$dataset_controls[[dataset]]
-
-  species <- species_from_table(rodents_tab = rodents_table, 
-                                total       = TRUE, 
-                                nadot       = TRUE)
-  temp_species  <- read_model_controls(main = main, settings = settings)$jags_RW$species
-  if (length(temp_species) == 1 && temp_species == "all") {
-    species <- species
-  } else {
-    species <- species[species %in% temp_species]
-  }
-  nspecies <- length(species)
-  mods     <- named_null_list(species)
-  casts    <- named_null_list(species)
-  cast_tab <- data.frame()
-
-  for (i in 1:nspecies) {
-
-    s  <- species[i]
-    ss <- gsub("NA.", "NA", s)
-    messageq("   -", ss, quiet = !verbose)
-
-    moon_in      <- which(rodents_table$newmoonnumber >= start_moon & rodents_table$newmoonnumber <= end_moon)
-    past_moon_in <- which(rodents_table$newmoonnumber < start_moon)
-    moon         <- rodents_table[moon_in, "newmoonnumber"] 
-    moon         <- c(moon, metadata$time$rodent_cast_moons)
-    past_moon    <- rodents_table[past_moon_in, "newmoonnumber"]
-
-    ntraps           <- rodents_table[moon_in, "ntraps"] 
-    na_traps         <- which(is.na(ntraps) == TRUE)
-    ntraps[na_traps] <- 0
-    cast_ntraps      <- rep(max(ntraps), true_count_lead)
-    ntraps           <- c(ntraps, cast_ntraps)
-    past_ntraps      <- rodents_table[past_moon_in, "ntraps"]
-
-    species_in <- which(colnames(rodents_table) == s)
-    count <- rodents_table[moon_in, species_in]
-
-    if (sum(count, na.rm = TRUE) == 0) {
-
-      next()
-
-    }
-
-    cast_count  <- rep(NA, true_count_lead)
-    count       <- c(count, cast_count)
-    past_count  <- rodents_table[past_moon_in, species_in]
-    no_count    <- which(is.na(past_count) == TRUE)
-
-    if (length(no_count) > 0) {
-
-      past_moon   <- past_moon[-no_count]
-      past_count  <- past_count[-no_count]
-      past_ntraps <- past_ntraps[-no_count]
-
-    }
-
-    log_mean_past_count <- log(mean(past_count, na.rm = TRUE))
-
-    data <- list(count               = count, 
-                 ntraps              = ntraps, 
-                 N                   = length(count),
-                 moon                = moon, 
-                 log_mean_past_count = log_mean_past_count,
-                 past_count          = past_count)
-
-
-    obs_pred_times      <- metadata$time$rodent_cast_moons 
-    obs_pred_times_spot <- obs_pred_times - metadata$time$start_moon
-
-    train_text <- paste0("train: ", metadata$start_moon, " to ", metadata$end_moon)
-    test_text  <- paste0("test: ",  metadata$end_moon + 1, " to ", metadata$end_moon + metadata$lead)
-    model_text <- paste0("model: ", model_name, "; ", train_text, "; ", test_text)
-
-    if (control_runjags$cast_obs) {
-
-      obs_pred <- paste0("X[", obs_pred_times_spot, "]")
-      monitor  <- c(monitor, obs_pred) 
-
-    }
-
-    mods[[i]] <- run.jags(model     = jags_model, 
-                          monitor   = monitor, 
-                          inits     = inits(data), 
-                          data      = data, 
-                          n.chains  = control_runjags$nchains, 
-                          adapt     = control_runjags$adapt, 
-                          burnin    = control_runjags$burnin, 
-                          sample    = control_runjags$sample, 
-                          thin      = control_runjags$thin, 
-                          modules   = control_runjags$modules, 
-                          method    = control_runjags$method, 
-                          factories = control_runjags$factories, 
-                          mutate    = control_runjags$mutate, 
-                          summarise = FALSE, 
-                          plots     = FALSE)
-
-    if (control_runjags$cast_obs) {
-
-      nchains <- control_runjags$nchains
-      vals    <- mods[[i]]$mcmc[[1]]
-
-      if (nchains > 1) {
-
-        for (j in 2:nchains) {
-
-          vals <- rbind(vals, mods[[i]]$mcmc[[j]])
-
-        }
-
-      }
-
-      pred_cols      <- grep("X", colnames(vals))
-      vals           <- vals[ , pred_cols]
-      point_forecast <- round(apply(vals, 2, mean), 3)
-      HPD            <- HPDinterval(as.mcmc(vals))
-      lower_cl       <- round(HPD[ , "lower"], 3)
-      upper_cl       <- round(HPD[ , "upper"], 3)
-      casts_i        <- data.frame(Point.Forecast = point_forecast,
-                                   lower_cl       = lower_cl, 
-                                   upper_cl       = upper_cl,
-                                   moon           = obs_pred_times)
-
-      colnames(casts_i)[2:3] <- paste0(c("Lo.", "Hi."), confidence_level * 100)
-      rownames(casts_i)      <- NULL
-      casts[[i]]             <- casts_i
-
-      cast_tab_i <- data.frame(cast_date        = metadata$time$cast_date, 
-                               cast_month       = metadata$time$rodent_cast_months,
-                               cast_year        = metadata$time$rodent_cast_years, 
-                               moon             = metadata$time$rodent_cast_moons,
-                               currency         = dataset_controls$args$output,
-                               model            = model_name, 
-                               dataset          = dataset, 
-                               species          = ss, 
-                               estimate         = point_forecast,
-                               lower_pi         = lower_cl, 
-                               upper_pi         = upper_cl,
-                               cast_group       = metadata$cast_group,
-                               confidence_level = metadata$confidence_level,
-                               start_moon       = metadata$time$start_moon,
-                               end_moon         = metadata$time$end_moon)
-
-      cast_tab <- rbind(cast_tab, cast_tab_i)
-
-    }
-
-  }
-
-  metadata <- update_list(metadata,
-                          models           = model_name,
-                          datasets         = dataset,
-                          dataset_controls = dataset_controls)
-
-  list(metadata    = metadata, 
-       cast_tab    = cast_tab, 
-       model_fits  = mods, 
-       model_casts = casts) 
- 
-
-
-}
-
-
-#' @title Create a control list for a runjags JAGS model run
+#' @param nchains Non-negative `integer`-conformable value of the number of parallel chains to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @description We leverage the \code{\link[runjags]{run.jags}} function in the runjags (Denwood 2016) package to run JAGS (Plummer 2003) models in portalcasting. That function has a number of control parameters that users may be interested in changing, and this function wraps those parameters with a few portalcasting-specific parameters into a control list for input into specific model functions.
+#' @param adapt Non-negative `integer`-conformable value of the number of adaptation steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param nchains Non-negative \code{integer}-conformable value of the number of parallel chains to use. See \code{\link[runjags]{run.jags}}.
+#' @param burnin Non-negative `integer`-conformable value of the number of burnin steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param adapt Non-negative \code{integer}-conformable value of the number of adaptation steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param sample Non-negative `integer`-conformable value of the number of sampling steps to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param burnin Non-negative \code{integer}-conformable value of the number of burnin steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param thin Positive `integer`-conformable value of the thinning interval to use. See [`run.jags`][runjags::run.jags].
 #'
-#' @param sample Non-negative \code{integer}-conformable value of the number of sampling steps to use. See \code{\link[runjags]{run.jags}}.
+#' @param modules `character` vector of external modules to add to JAGS. See [`run.jags`][runjags::run.jags].
 #'
-#' @param thin Non-negative \code{integer}-conformable value of the thinning interval to use. See \code{\link[runjags]{run.jags}}.
+#' @param method `character` value of the [`run.jags`][runjags::run.jags] method to use. Options include `"rjags"`, `"simple"`, `"interruptible"`, `"parallel"`, `"rjparallel"`, `"background"`, `"bgparallel"`, and `"snow"`. See [`run.jags`][runjags::run.jags].
 #'
-#' @param modules \code{character} vector of external modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
+#' @param factories `character` vector of factory modules to add to JAGS. See [`run.jags`][runjags::run.jags].
 #'
-#' @param method \code{character} value of the \code{\link[runjags]{run.jags}} method to use. Options include \code{"rjags"}, \code{"simple"}, \code{"interruptible"}, \code{"parallel"}, \code{"rjparallel"}, \code{"background"}, \code{"bgparallel"}, and \code{"snow"}. See \code{\link[runjags]{run.jags}}.
+#' @param monitors `character` vector of parameters to track. Forecasted observations and state variables are tracked automatically.
 #'
-#' @param factories \code{character} vector of factory modules to add to JAGS. See \code{\link[runjags]{run.jags}}.
+#' @param mutate A `function` or `list` (with the first element being a `function`) used to add variables to the posterior chain (rather than throughout sampling). See [`run.jags`][runjags::run.jags]. 
 #'
-#' @param mutate A \code{function} or \code{list} (with the first element being a \code{function}) used to add variables to the posterior chain (rather than throughout sampling). See \code{\link[runjags]{run.jags}}. 
+#' @param silent_jags `logical` value for quieting the output from the runjags function, including the underlying JAGS output. 
 #'
-#' @param cast_obs \code{logical} value indicating if the observations should be forecast as well (should be kept as \code{TRUE} for the vast majority of uses).
+#' @param object A `runjags`-class object with columns of `"X"` values (state variables) in the the `mcmc` element.
 #'
-#' @param silent_jags \code{logical} value for quieting the output from the runjags function, including the underlying JAGS output. 
+#' @param h `integer`-conformable number of steps forward to include in the forecast.
 #'
-#' @return \code{list} of controls. 
+#' @param level `numeric` of the confidence level to use in summarizing the predictions.
 #'
+#' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
+#'
+#' @param ... Additional parameters 
+#'
+#' @return `fit_runjags`: An object of class `"runjags"` of model components. See [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_data`: A `list` of model-specific data for use in [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_monitor`: A `vector` of model-specific `character` values of parameters to track in [`run.jags`][runjags::run.jags].  \cr
+#'         `runjags_model`: A single `character` value of the JAGS model block for [`run.jags`][runjags::run.jags].  \cr 
+#'         `runjags_inits`: A `function` that takes the argument `data` to produce chain-specific initial values for [`run.jags`][runjags::run.jags]. \cr
+#'         `runjags_controls`: A `list` of controls. \cr 
+#'         `forecast.runjags`: `list` with `"forecast"`-class with named elements including `"mean"`, `"lower"`, `"upper"`, and `"level"`. 
+#' 
 #' @references 
-#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. \href{https://www.jstatsoft.org/article/view/v071i09}{URL}. 
+#'  Denwood, M. J. 2016. runjags: an R package providing interface utilities, model templates, parallel computing methods and additional distributions for MCMC models in JAGS. Journal of Statistical Software, 71:9. [URL](https://www.jstatsoft.org/article/view/v071i09). 
 #'  
-#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. \href{https://bit.ly/33aQ37Y}{URL}.
+#'  Plummer, M. 2003. JAGS: A program for analysis of Bayesian graphical models using Gibbs Sampling. Proceedings of the 3rd International Workshop on Distributed Statistical Computing (DSC 2003). ISSN 1609-395X. 
+#'
+#' @name runjags models
+#'
+#' @family prefabmodels
+#'
+#' @aliases jags-models
 #'
 #' @examples
-#'  runjags_control()
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "runjags")
+#'
+#'    setup_dir(main = main1)
+#'    dataset    <- "all"
+#'    species    <- "DM"
+#'    model      <- "jags_RW"
+#'    model_file <- gsub("'", "",
+#'                       models_controls(main1)[[model]]$fit$full_model_file)
+#'  
+#'    abundance      <- prepare_abundance(main    = main1,
+#'                                        dataset = dataset,
+#'                                        species = species,
+#'                                        model   = model)
+#'    model_controls <- models_controls(main       = main1,
+#'                                      models     = model)[[model]]
+#'    metadata       <- read_metadata(main        = main1)
+#'    newmoons       <- read_newmoons(main        = main1)                                        
+#'    covariates     <- read_covariates(main      = main1)
+#'    control_runjags <- runjags_controls(nchains = 3, 
+#'                                        adapt   = 1e3, 
+#'                                        burnin  = 1e3, 
+#'                                        sample  = 1e3, 
+#'                                        thin    = 1)
+#'    data_names      <- c("count", "N", "log_mean_count")
+#'
+#'    runjags_model(model_file = model_file)
+#'
+#'    runjags_monitors(monitors = c("mu", "sigma"),
+#'                     metadata = metadata)
+#'
+#'    data <- runjags_data(data_names = data_names,
+#'                         abundance  = abundance,
+#'                         metadata   = metadata,
+#'                         covariates = covariates)
+#'
+#'    runjags_inits(inits = list(mu    = rnorm(1, mean = data$log_mean_count, sd = 0.1),
+#'                               sigma = runif(1, min  = 0.01, max = 0.5)))
+#'
+#'    fit <- fit_runjags(abundance       = abundance, 
+#'                       metadata        = metadata,
+#'                       covariates      = covariates, 
+#'                       monitors        = c("mu", "sigma"), 
+#'                       inits           = list(mu    = rnorm(1, data$log_mean_count, 0.1),
+#'                                              sigma = runif(1, 0.01, 0.5)), 
+#'                       model_file      = model_file,
+#'                       data_names      = data_names,
+#'                       control_runjags = control_runjags)
+#'  
+#'    forecast(object   = fit,  
+#'             h        = metadata$time$lead_time_newmoons,   
+#'             level    = metadata$confidence_level,   
+#'             nsamples = metadata$nsamples)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+#' @rdname runjags-models
 #'
 #' @export
 #'
-runjags_control <- function (nchains     = 4, 
-                             adapt       = 1e4, 
-                             burnin      = 1e4, 
-                             sample      = 1e4, 
-                             thin        = 10, 
-                             modules     = "glm", 
-                             method      = "interruptible", 
-                             factories   = "", 
-                             mutate      = NA, 
-                             cast_obs    = TRUE, 
-                             silent_jags = FALSE){
+runjags_inits <- function (inits) {
+
+  rngs  <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", "base::Super-Duper", "base::Mersenne-Twister")
+
+  function (data = NULL) {
+
+    function(chain = chain) {
+
+      model_specific_inits <- named_null_list(element_names = names(inits))
+      for (i in 1:length(model_specific_inits)) {
+
+        model_specific_inits[[i]] <- eval(parse(text = inits[[i]]))
+
+      }
+
+      c(.RNG.name = sample(rngs, 1),
+        .RNG.seed = sample(1:1e+06, 1), 
+        model_specific_inits)                  
+      
+    }
+
+  }
+
+}
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+runjags_model <- function (model_file) {
+
+  scan(file  = model_file,
+       what  = "character",
+       quiet = TRUE)
+  
+}
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+runjags_monitors <- function (monitors,
+                              metadata) {
+
+  count_predicted <- paste0("count_predicted[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  X               <- paste0("X[", metadata$time$forecast_newmoonnumbers - metadata$time$historic_start_newmoonnumber + 1, "]")
+  c(count_predicted, X, monitors)
+
+}
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+runjags_data <- function (data_names,
+                          abundance, 
+                          metadata, 
+                          covariates) {
+
+  true_count_lead <- metadata$time$lead_time_newmoons
+  forecast_count      <- rep(NA, true_count_lead)
+  count           <- c(abundance, forecast_count)
+  N               <- length(count)
+  log_mean_count  <- log(mean(abundance, na.rm = TRUE))
+  log_max_count   <- log(max(abundance, na.rm = TRUE))
+
+  warm_rain_three_newmoons <- scale(covariates$warm_precip[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 3)])[ , 1]
+  ndvi_thirteen_newmoons   <- scale(covariates$ndvi[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 13)])[ , 1]
+  ordii_one_newmoon        <- scale(covariates$ordii[covariates$newmoonnumber %in% ((metadata$time$historic_start_newmoon:metadata$time$forecast_end_newmoonnumber) - 1)])[ , 1]
+
+  list(true_count_lead          = true_count_lead,
+       forecast_count               = forecast_count,
+       count                    = count,
+       N                        = N,
+       log_mean_count           = log_mean_count,
+       log_max_count            = log_max_count,
+       warm_rain_three_newmoons = warm_rain_three_newmoons,
+       ndvi_thirteen_newmoons   = ndvi_thirteen_newmoons,
+       ordii_one_newmoon        = ordii_one_newmoon)[data_names]
+
+}
+
+
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+fit_runjags <- function (abundance, 
+                         metadata, 
+                         covariates, 
+                         monitors, 
+                         inits,
+                         model_file,
+                         data_names,
+                         control_runjags = runjags_controls( )) {
+
+  monitor    <- runjags_monitors(monitors = monitors,
+                                 metadata = metadata)  
+  init       <- runjags_inits(inits       = inits)  
+  jags_model <- runjags_model(model_file  = model_file)  
+  data       <- runjags_data(data_names   = data_names,
+                             abundance    = abundance,
+                             metadata     = metadata,
+                             covariates   = covariates)  
+
+
+  runjags.options(silent.jags    = control_runjags$silent_jags, 
+                  silent.runjags = control_runjags$silent_jags)
+
+  model_fit <- run.jags(model     = jags_model, 
+                        monitor   = monitor, 
+                        inits     = init(data), 
+                        data      = data, 
+                        n.chains  = control_runjags$nchains, 
+                        adapt     = control_runjags$adapt, 
+                        burnin    = control_runjags$burnin, 
+                        sample    = control_runjags$sample, 
+                        thin      = control_runjags$thin, 
+                        modules   = control_runjags$modules, 
+                        method    = control_runjags$method, 
+                        factories = control_runjags$factories, 
+                        mutate    = control_runjags$mutate, 
+                        summarise = TRUE, 
+                        plots     = FALSE)
+
+
+}
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+forecast.runjags <- function (object, 
+                              h, 
+                              level,
+                              nsamples,
+                              seed = NULL,
+                              ...) {
+
+  vals        <- combine.mcmc(mcmc.objects = object$mcmc)
+
+  pred_cols   <- grep("count_predicted", colnames(vals))
+  vals        <- vals[ , pred_cols]
+  HPD         <- HPDinterval(obj = as.mcmc(vals), prob = level)
+  set.seed(seed = seed)
+  sample_rows <- sample(1:nrow(vals), min(c(nrow(vals), nsamples)))
+  sample      <- vals[sample_rows, ]
+  out         <- list(mean   = as.ts(round(apply(vals, 2, mean)[1:h], 3)),
+                      lower  = as.ts(round(HPD[1:h, "lower", drop = FALSE], 3)), 
+                      upper  = as.ts(round(HPD[1:h, "upper", drop = FALSE], 3)),
+                      level  = level,
+                      sample = sample)
+
+  structure(.Data = out, 
+            class = "forecast")
+
+}
+
+#' @rdname runjags-models
+#'
+#' @export
+#'
+runjags_controls <- function (nchains     = 4, 
+                              adapt       = 1e4, 
+                              burnin      = 1e4, 
+                              sample      = 1e4, 
+                              thin        = 10, 
+                              modules     = "glm", 
+                              method      = "interruptible", 
+                              factories   = "", 
+                              mutate      = NA, 
+                              silent_jags = FALSE){
 
   list(nchains     = nchains, 
        adapt       = adapt, 
@@ -1432,7 +321,6 @@ runjags_control <- function (nchains     = 4,
        method      = method, 
        factories   = factories,
        mutate      = mutate, 
-       cast_obs    = cast_obs, 
        silent_jags = silent_jags)
 
 }

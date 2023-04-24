@@ -1,207 +1,186 @@
 #' @title Forecast Portal Rodents Models
 #'
-#' @description Forecast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
-#'  \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
-#'  \code{cast} runs a single cast of multiple models across data sets.
+#' @description Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
+#'              `portalcast` wraps around `cast` to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr 
+#'              `cast` runs a single forecast of a single model on one species of one dataset. \cr 
+#'              `make_model_combinations` translates model controls into a `data.frame` of model, dataset, and species columns, with a row for each combination. 
 #'
-#' @details Multiple models can be run together on the multiple, varying data sets for a single new moon using \code{cast}. \code{portalcast} wraps around \code{cast}, providing updating, verification, and resetting utilities as well as facilitating multiple runs of \code{cast} across new moons (e.g., when using a rolling origin).
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param models,model `character` vector of name(s) of model(s) to include in the forecast. In `cast`, `model` can only be length-one.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param datasets,dataset `character` vector of datasets to be forecast. In `cast`, `dataset` can only be length-one. 
 #'
-#' @param end_moons,end_moon \code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
-#'  \strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.
+#' @param species `character` vector of species to be forecast. In `cast`, `species` can only be length-one. See [`rodent_species`][portalr::rodent_species].
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.
+#' @return `portalcast`: `data.frame` of model combinations with a `logical` column added for fit success, [`invisible`][base::invisible]-ly. \cr
+#'         `cast`: `list` of model outputs from [`process_model_output`]. \cr 
+#'         `make_model_combinations`: `data.frame` of the model combinations.
 #'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.
+#' @family core
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param datasets \code{character} vector of dataset names to be created. 
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages). 
-#'
-#' @return Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
+#' @name portalcast
 #'
 #' @examples
-#'  \donttest{
-#'   setup_dir()
-#'   portalcast(models = "ESSS")
-#'   cast()
-#'  }
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "portalcast")
+#'    setup_dir(main = main1)
 #'
-#' @export
+#'    make_model_combinations(main = main1)
+#'    portalcast(main = main1, models = "AutoArima")
+#'    cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
 #'
-portalcast <- function (main       = ".", 
-                        models     = prefab_models(), 
-                        datasets   = prefab_datasets(),
-                        end_moons  = NULL, 
-                        start_moon = 217, 
-                        cast_date  = Sys.Date(),
-                        settings   = directory_settings(),
-                        quiet      = FALSE,
-                        verbose    = FALSE){
-
-#
-# the datasets here should come from the models selected
-#  and not as an argument ... or? maybe not? idk. think this out.
-#  i think so
-# should the start and end time also come from somewhere else?
-#  well, here the end moon is what is looped over
-#   not sure this is what i want to happen more generally, tho
-#  we want portalcast to iterate over individual casts, but generally
-#   i think we want to create a recipe list or something
-
-  return_if_null(models)
-
-  messageq(message_break(), "\nPreparing directory for casting\n", message_break(), "\nThis is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", message_break(), quiet = quiet)
-
-  moons <- read_newmoons(main     = main,
-                      settings = settings)
-
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moons       <- ifnull(end_moons, last_moon)
-  nend_moons      <- length(end_moons)
-
-  for (i in 1:nend_moons) {
-
-    cast(main       = main, 
-         datasets   = datasets,
-         models     = models, 
-         end_moon   = end_moons[i], 
-         start_moon = start_moon, 
-         cast_date  = cast_date, 
-         settings   = settings,
-         quiet      = quiet, 
-         verbose    = verbose)
-
-  }
-
-  if (end_moons[nend_moons] != last_moon) {
- # this maybe should happen within cast? or maybe we can sidestep it
-  # yeah, i would like to avoid refilling the data so many times, how to do?
-    messageq(message_break(), "\nResetting data to most up-to-date versions\n", message_break(), quiet = quiet)
-
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
-
-  }
-
-  messageq(message_break(), "\nCasting complete\n", message_break(), quiet = quiet)
-  invisible() 
-
-} 
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
 
 
 #' @rdname portalcast
 #'
 #' @export
 #'
-cast <- function (main       = ".", 
-                  models     = prefab_models(), 
-                  datasets   = prefab_datasets(),
-                  end_moon   = NULL, 
-                  start_moon = 217, 
-                  cast_date  = Sys.Date(), 
-                  settings   = directory_settings(), 
-                  quiet      = FALSE, 
-                  verbose    = FALSE) {
+portalcast <- function (main     = ".", 
+                        models   = prefab_models( ), 
+                        datasets = prefab_datasets( ),
+                        species  = NULL) {
 
-  moons <- read_newmoons(main     = main,
-                      settings = settings)
+  settings <- read_directory_settings(main = main)
 
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moon        <- ifnull(end_moon, last_moon)
+  species <- ifnull(species, forecasting_species(path = resources_path(main = main), total = TRUE))
 
-  messageq(message_break(), "\nReadying data for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
+  messageq(break_line( ), "Forecasting models...\n", 
+           break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
+           break_line( ), quiet = settings$quiet)
 
-  if (end_moon != last_moon) {
+  model_combinations <- make_model_combinations(main     = main,
+                                                models   = models,
+                                                datasets = datasets,
+                                                species  = species)
 
-    fill_data(main     = main, 
-              datasets = datasets,
-              models   = models,
-              settings = settings,
-              quiet    = quiet, 
-              verbose  = verbose)
+  nmodel_combinations <- nrow(model_combinations)
+  out <- named_null_list(element_names = apply(model_combinations, 1, paste0, collapse = "_"))
 
-  }
+  for (i in 1:nmodel_combinations) {
 
-  messageq(message_break(), "\nRunning models for forecast origin newmoon ", end_moon, "\n", message_break(), quiet = quiet)
+    out[[i]] <- tryCatch(expr = cast(main    = main,
+                                     model   = model_combinations$model[i],
+                                     dataset = model_combinations$dataset[i],
+                                     species = model_combinations$species[i]),
+                         error = function(x) {NA})
+ 
+    if (all(is.na(out[[i]]))) { 
 
-  models_scripts <- models_to_cast(main     = main, 
-                                   models   = models,
-                                   settings = settings)
-
-  nmodels <- length(models)
-
-  for (i in 1:nmodels) {
-
-    model <- models_scripts[i]
-
-    messageq(message_break(), "\n -Running ", path_no_ext(basename(model)), "\n", message_break(), quiet = quiet)
-
-    run_status <- tryCatch(expr  = source(model),
-                           error = function(x){NA})
-
-    if (all(is.na(run_status))) {
-
-      messageq("  |----| ", path_no_ext(basename(model)), " failed |----|", quiet = quiet)
+      messageq("    |------| failed |------|", quiet = settings$quiet) 
 
     } else {
 
-      messageq("  |++++| ", path_no_ext(basename(model)), " successful |++++|", quiet = quiet)
+      messageq("    |++++| successful |++++|", quiet = settings$quiet)    
 
     }
-
   }
 
-  invisible()
+  model_combinations$fit_successful <- NA
+  for (i in 1:nmodel_combinations) {
+    model_combinations$fit_successful[i] <- !(all(is.na(out[[i]])))
+  }
+  row.names(model_combinations) <- NULL
+  write_csv_arrow(x         = model_combinations, 
+                  file      = forecasts_results_path(main = main))
+
+  messageq(break_line( ), "...forecasting complete.\n", break_line( ), quiet = settings$quiet)
+  invisible(model_combinations) 
+
+} 
+
+#' @rdname portalcast
+#'
+#' @export
+#'
+cast <- function (main     = ".", 
+                  dataset  = NULL,
+                  species  = NULL,
+                  model    = NULL) {
+
+  return_if_null(x = dataset)
+  return_if_null(x = species)
+  return_if_null(x = model)
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("  - ", model, " for ", dataset, " ", species, quiet = settings$quiet)
+
+  abundance      <- prepare_abundance(main    = main,
+                                      dataset = dataset,
+                                      species = species,
+                                      model   = model)
+  model_controls <- models_controls(main       = main,
+                                    models     = model)[[model]]
+  metadata       <- read_metadata(main        = main)
+  newmoons       <- read_newmoons(main        = main)                                        
+  covariates     <- read_covariates(main      = main)
+
+  fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+  for (i in 1:length(fit_args)) {
+    fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+  }
+  model_fit  <- do.call(what = model_controls$fit$fun,
+                        args = fit_args)
+
+
+  forecast_args  <- named_null_list(element_names = names(model_controls$forecast$args))
+  for (i in 1:length(forecast_args)) {
+    forecast_args[[i]] <- eval(parse(text = model_controls$forecast$args[i]))
+  }
+
+  model_forecast <- do.call(what = model_controls$forecast$fun,
+                            args = forecast_args)
+
+  process_model_output(main           = main,
+                       model_fit      = model_fit,
+                       model_forecast = model_forecast,
+                       model          = model,
+                       dataset        = dataset,
+                       species        = species) 
 
 }
 
 
-
-
-#' @title Determine the Paths to the Scripts for Models to Cast with
-#'
-#' @description Translate a \code{character} vector of model name(s) into a \code{character} vector of file path(s) corresponding to the model scripts. 
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param models \code{character} vector of name(s) of model(s) to include.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return \code{character} vector of the path(s) of the R script file(s) to be run.
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   fill_models()
-#'   models_to_cast()
-#'  }
+#' @rdname portalcast
 #'
 #' @export
 #'
-models_to_cast <- function (main     = ".", 
-                            models   = prefab_models(),
-                            settings = directory_settings()) {
-  
-  models_path <- file.path(main, settings$subdirectories$models)
-  file_names  <- paste0(models, ".R")
-  torun       <- list.files(models_path) %in% file_names
-  torun_paths <- list.files(models_path, full.names = TRUE)[torun] 
+make_model_combinations <- function (main     = ".", 
+                                     models   = prefab_models( ), 
+                                     datasets = prefab_datasets( ),
+                                     species  = forecasting_species(total = TRUE)) {
 
-  normalizePath(torun_paths)
+  available_controls  <- read_models_controls(main = main)
+  available_models    <- names(available_controls)
+  navailable_models   <- length(available_models)
+
+  out <- data.frame(model   = character(0),
+                    dataset = character(0),
+                    species = character(0))
+
+  for (i in 1:navailable_models) {
+
+    control <- available_controls[[available_models[i]]]
+
+    model_datasets   <- control$datasets
+    dataset_species  <- lapply(model_datasets, getElement, "species")    
+    ndataset_species <- lapply(dataset_species, length) 
+
+    out <- rbind(out, data.frame(model   = available_models[[i]], 
+                                 dataset = rep(names(model_datasets), ndataset_species),
+                                 species = unlist(dataset_species)))
+
+  }
+
+  row.names(out) <- NULL
+  all_in         <- out$model %in% models &
+                    out$dataset %in% datasets &
+                    out$species %in% species
+  out[all_in, ]
 
 }

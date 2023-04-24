@@ -1,0 +1,30 @@
+citHeader("To cite portalR in publications, use:")
+
+citEntry(key = "simonis2022portalcasting",
+         entry = "Article",
+         title = "portalcasting: Supporting automated forecasting of rodent populations",
+         author = personList(as.person("Juniper L. Simonis"),
+                             as.person("Glenda M. Yenni"),
+                             as.person("Ellen K. Bledsoe"),
+                             as.person("Erica M. Christensen"),
+                             as.person("Henry Senyondo"),
+                             as.person("Shawn D. Taylor"),
+                             as.person("Hao Ye"),
+                             as.person("Ethan P. White"),
+                             as.person("S. K. Morgan Ernest")),
+         year = "2022",
+         journal = "Journal of Open Source Software",
+         volume = "7",
+         number = "72",
+         pages = "3220",
+         doi = "10.21105/joss.03220",
+         publisher = "The Open Journal",
+         textVersion =
+           paste("Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe,",
+                 "Erica M. Christensen, Henry Senyondo, Shawn D. Taylor,",
+                 "Hao Ye, Ethan P. White, and S. K. Morgan Ernest. (2022).",
+                 "portalcasting: Supporting automated forecasting of rodent",
+                 "populations.",
+                 "Journal of Open Source Software, 7(72), 3220,",
+                 "https://doi.org/10.21105/joss.03220")
+)

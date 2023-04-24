@@ -3,68 +3,62 @@
 \name{portalcast}
 \alias{portalcast}
 \alias{cast}
+\alias{make_model_combinations}
 \title{Forecast Portal Rodents Models}
 \usage{
 portalcast(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  end_moons = NULL,
-  start_moon = 217,
-  cast_date = Sys.Date(),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  species = NULL
 )
 
-cast(
+cast(main = ".", dataset = NULL, species = NULL, model = NULL)
+
+make_model_combinations(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  end_moon = NULL,
-  start_moon = 217,
-  cast_date = Sys.Date(),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  species = forecasting_species(total = TRUE)
 )
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to include.}
+\item{models, model}{\code{character} vector of name(s) of model(s) to include in the forecast. In \code{cast}, \code{model} can only be length-one.}
 
-\item{datasets}{\code{character} vector of dataset names to be created.}
+\item{datasets, dataset}{\code{character} vector of datasets to be forecast. In \code{cast}, \code{dataset} can only be length-one.}
 
-\item{end_moons, end_moon}{\code{integer} (or integer \code{numeric}) newmoon number(s) of the last sample(s) to be included. Default value is \code{NULL}, which equates to the most recently included sample. \cr
-\strong{\code{end_moons} allows for multiple moons, \code{end_moon} can only be one value}.}
-
-\item{start_moon}{\code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.}
-
-\item{cast_date}{\code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.}
-
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).}
+\item{species}{\code{character} vector of species to be forecast. In \code{cast}, \code{species} can only be length-one. See \code{\link[portalr:rodent_species]{rodent_species}}.}
 }
 \value{
-Results are saved to files, \code{NULL} is returned \code{\link[base]{invisible}}-ly.
+\code{portalcast}: \code{data.frame} of model combinations with a \code{logical} column added for fit success, \code{\link[base:invisible]{invisible}}-ly. \cr
+\code{cast}: \code{list} of model outputs from \code{\link{process_model_output}}. \cr
+\code{make_model_combinations}: \code{data.frame} of the model combinations.
 }
 \description{
-Forecast the Portal rodent population data using the (updated if needed) data and models in a portalcasting directory. \cr \cr
- \code{portalcast} wraps around \code{cast} to allow multiple runs of multiple models, with data preparation as needed between runs occurring via \code{prepare_data}. \cr \cr
- \code{cast} runs a single cast of multiple models across data sets.
-}
-\details{
-Multiple models can be run together on the multiple, varying data sets for a single new moon using \code{cast}. \code{portalcast} wraps around \code{cast}, providing updating, verification, and resetting utilities as well as facilitating multiple runs of \code{cast} across new moons (e.g., when using a rolling origin).
+Forecast Portal rodent populations using the data and models in a portalcasting directory. \cr \cr
+\code{portalcast} wraps around \code{cast} to allow multiple runs of model - dataset - species combinations. It returns and saves out the model combinations table with fit success added as a column.\cr
+\code{cast} runs a single forecast of a single model on one species of one dataset. \cr
+\code{make_model_combinations} translates model controls into a \code{data.frame} of model, dataset, and species columns, with a row for each combination.
 }
 \examples{
- \donttest{
-  setup_dir()
-  portalcast(models = "ESSS")
-  cast()
- }
+\dontrun{
+   main1 <- file.path(tempdir(), "portalcast")
+   setup_dir(main = main1)
+
+   make_model_combinations(main = main1)
+   portalcast(main = main1, models = "AutoArima")
+   cast(main = main1, model = "AutoArima", dataset = "controls", species = "DM")
+
+   unlink(main1, recursive = TRUE)
+}
 
 }
+\seealso{
+Core forecasting functions:
+\code{\link{ensemble}},
+\code{\link{evaluate forecasts}},
+\code{\link{process forecast output}}
+}
+\concept{core}

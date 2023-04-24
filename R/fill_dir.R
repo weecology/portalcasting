@@ -1,49 +1,64 @@
 #' @title Fill a Portalcasting Directory with Basic Components
 #'
-#' @description Fill the directory with components including \enumerate{
-#'   \item{Resources (\code{\link{fill_resources}}): \itemize{
-#'     \item{raw data (\code{\link[portalr]{download_observations}})}
-#'     \item{directory archive (\code{\link{download_archive}})}
-#'     \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-#'   \item{Output: \itemize{
-#'     \item{forecasts (\code{\link{fill_forecasts}})}
-#'     \item{model fits (\code{\link{fill_fits}})}}}
-#'   \item{Data (\code{\link{fill_data}}):  \itemize{
-#'     \item{rodent datasets (\code{\link{prepare_rodents}})}
-#'     \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
-#'     \item{covariates (\code{\link{prepare_covariates}})}
-#'     \item{metadata (\code{\link{prepare_metadata}})}}}
-#'   \item{Models (\code{\link{fill_models}})}
-#'  }
+#' @description Fill the directory with components including: 
+#'              * Resources ([`fill_resources`]) 
+#'                * raw data ([`download_observations`][portalr::download_observations])
+#'                * directory archive ([`download_archive`])
+#'                * climate forecasts ([`download_climate_forecasts`])
+#'              * Output 
+#'                * forecasts ([`fill_forecasts`])
+#'                * model fits ([`fill_fits`])
+#'              * Data ([`fill_data`])  
+#'                * rodent datasets ([`prepare_rodents`])
+#'                * temporal (lunar) data ([`prepare_newmoons`])
+#'                * covariates ([`prepare_covariates`])
+#'                * metadata ([`prepare_metadata`])
+#'              * Models ([`fill_models`]) 
+#'                * models controls ([`write_models_controls`])
+#'                * models scripts (if needed) ([`write_models_scripts`])
+#'              * Web Application ([`fill_app`]) 
+#'                * transfers app files from package to main
+#'                * renders ([`render`][rmarkdown::render]) and sources ([`source`][base::source]) files into HTML. \cr \cr
+#'              Additionally, new models and datasets can be added to the directory at filling using the optional arguments `new_models_controls` and `new_datasets_controls`, but the model or dataset must still be listed in its respective main argument, as well.
 #'             
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param models `character` vector of name(s) of model(s) to include. Defaults to [`prefab_models`]. If controls are provided in `new_models_controls`, the model still needs to be named here to be included.
 #'
-#' @param datasets \code{character} vector of name(s) of rodent dataset(s) to be created. 
+#' @param datasets `character` vector of name(s) of rodent dataset(s) to be created. Defaults to [`prefab_datasets`]. If controls are provided in `new_datasets_controls`, the dataset still needs to be named here to be included.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#' @param new_datasets_controls Optional named `list` of controls for new datasets. See [`datasets_controls`].
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @param new_models_controls Optional named `list` of controls for new models. See [`models_controls`].
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or just the tidy messages.
+#' @return `NULL`, [`invisible`][base::invisible]-ly.
 #'
-#' @return \code{NULL}, \code{\link[base]{invisible}}-ly.
-#'
-#' @examples
-#'  \donttest{
-#'
-#'   create_dir("./portalcasting")
-#'   fill_dir("./portalcasting")
-#'
-#'   create_dir("./pc")
-#'   fill_resources("./pc")
-#'   fill_forecasts("./pc")
-#'   fill_fits("./pc")
-#'   fill_models("./pc")
-#'  }
+#' @family orchestration
+#' @family content-prep
 #'
 #' @name directory filling
+#'
+#' @aliases fill
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "fill_standard")
+#'    main2 <- file.path(tempdir(), "fill_production")
+#'
+#'    create_dir(main = main1)
+#'    fill_dir(main = main1)
+#'
+#'    create_dir(main = main2, settings = production_settings())
+#'    fill_resources(main = main2)
+#'    fill_forecasts(main = main2)
+#'    fill_fits(main = main2)
+#'    fill_models(main = main2)
+#'    fill_data(main = main2)
+#'    fill_app(main = main2)
+#'
+#'    unlink(main1, recursive = TRUE)
+#'    unlink(main2, recursive = TRUE)
+#' }
 #'
 NULL
 
@@ -51,50 +66,35 @@ NULL
 #'
 #' @export
 #'
-fill_dir <- function (main     = ".",
-                      models   = prefab_models(), 
-                      datasets = prefab_datasets(),
-                      settings = directory_settings(), 
-                      quiet    = FALSE, 
-                      verbose  = FALSE) {
+fill_dir <- function (main                  = ".",
+                      models                = prefab_models( ), 
+                      datasets              = prefab_datasets( ),
+                      new_datasets_controls = NULL,
+                      new_models_controls   = NULL) {
 
-  messageq("Filling directory with content: \n", quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  subdirectories <- settings$subdirectories
+  messageq("Filling directory with content: \n", quiet = settings$quiet)
 
-# make all of these have the same arguments and standardize further
+  fill_resources(main             = main)
 
-  fill_resources(main     = main, 
-                 settings = settings, 
-                 quiet    = quiet, 
-                 verbose  = verbose)
+  fill_forecasts(main             = main)
 
-  fill_forecasts(main     = main, 
-                 settings = settings, 
-                 quiet    = quiet, 
-                 verbose  = verbose)
+  fill_fits(main                  = main)
 
-  fill_fits(main     = main, 
-            settings = settings, 
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_models(main                = main, 
+              models              = models,
+              new_models_controls = new_models_controls)
 
-  fill_data(main     = main, 
-            datasets = datasets,
-            models   = models,
-            settings = settings,
-            quiet    = quiet, 
-            verbose  = verbose)
+  fill_data(main                  = main, 
+            datasets              = datasets,
+            new_datasets_controls = new_datasets_controls)
 
-  fill_models(main     = main, 
-              settings = settings,
-              models   = models, 
-              quiet    = quiet, 
-              verbose  = verbose)
+  fill_app(main                   = main)
 
-  messageq("\nDirectory filling complete.", quiet = quiet)
+  messageq("\nDirectory filling complete.", quiet = settings$quiet)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -103,69 +103,84 @@ fill_dir <- function (main     = ".",
 #'
 #' @export
 #'
-fill_data <- function (main     = ".",
-                       models   = prefab_models(),
-                       datasets = prefab_datasets(),
-                       settings = directory_settings(), 
-                       quiet    = FALSE,
-                       verbose  = FALSE) {
+fill_data <- function (main                  = ".",
+                       datasets              = prefab_datasets( ),
+                       new_datasets_controls = NULL) {
 
-  messageq(" Preparing data files ... ", quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  messageq("  ... removing existing data files ... ", quiet = quiet)
+  messageq(" Preparing data files ... ", quiet = settings$quiet)
+  messageq("  ... removing existing data files ... ", quiet = settings$quiet)
 
-  unlink(x = list.files(path       = file.path(main, settings$subdirectories$data),
+  unlink(x = list.files(path       = data_path(main = main),
                         full.names = TRUE),
          force = TRUE)
 
-  messageq("  ... adding data files ... ", quiet = quiet)
+  messageq("  ... adding data files ... ", quiet = settings$quiet)
 
-  prepare_rodents(main     = main,
-                  settings = settings,
-                  datasets = datasets,
-                  quiet    = quiet,
-                  verbose  = verbose)
+  prepare_newmoons(main                = main)
 
-  prepare_newmoons(main      = main,  
-                   settings  = settings,
-                   quiet     = quiet, 
-                   verbose   = verbose)
+  prepare_rodents(main                  = main,  
+                  datasets              = datasets,
+                  new_datasets_controls = new_datasets_controls) 
 
-  prepare_covariates(main      = main,  
-                     settings  = settings,
-                     quiet     = quiet, 
-                     verbose   = verbose)
+  prepare_covariates(main              = main)
 
-  prepare_metadata(main     = main, 
-                   datasets = datasets,
-                   models   = models, 
-                   settings = settings,
-                   quiet    = quiet, 
-                   verbose  = verbose)
+  prepare_metadata(main                  = main, 
+                   datasets              = datasets,
+                   new_datasets_controls = new_datasets_controls)
 
-  messageq("  ... data preparing complete.", quiet = quiet)
-
-  invisible()
+  messageq(" ... complete.\n", quiet = settings$quiet)
+  invisible( )
 
 }
-
 
 
 #' @rdname directory-filling
 #'
 #' @export
 #'
-fill_resources <- function (main     = ".",
-                            settings = directory_settings(),
-                            quiet    = FALSE,
-                            verbose  = FALSE) {
+fill_app <- function (main = ".") {
 
-  messageq("Downloading resources ... ", quiet = quiet)
+  settings <- read_directory_settings(main = main)
 
-  download_observations(path        = file.path(main, settings$subdirectories$resources), 
-                        version     = settings$resources$PortalData$version,
-                        from_zenodo = settings$resources$PortalData$source == "zenodo",
-                        quiet       = quiet)
+  messageq("Setting up local web app instance ... ", quiet = settings$quiet)
+
+  app_directory <- system.file(...     = "app", 
+                               package = "portalcasting")
+
+  file.copy(from      = list.files(app_directory, full.names = TRUE),
+            to        = app_path(main = main),
+            recursive = TRUE,
+            overwrite = TRUE)
+
+  write_rodents_profiles_tab_html(main = main)
+  write_models_tab_html(main = main)
+
+  messageq(" ... complete.\n", quiet = settings$quiet)
+  invisible( )
+
+}
+
+
+#' @rdname directory-filling
+#'
+#' @export
+#'
+fill_resources <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("Downloading resources ... ", quiet = settings$quiet)
+
+  download_observations(path      = resources_path(main = main),
+                        version   = settings$resources$PortalData$version,
+                        source    = settings$resources$PortalData$source,
+                        pause     = settings$unzip_pause,
+                        timeout   = settings$download_timeout,
+                        force     = settings$force,
+                        quiet     = settings$quiet,
+                        verbose   = settings$verbose)
 
   download_archive(main          = main, 
                    resources_sub = settings$subdirectories$resources,
@@ -173,9 +188,9 @@ fill_resources <- function (main     = ".",
                    source        = settings$resources$portalPredictions$source,
                    pause         = settings$unzip_pause,
                    timeout       = settings$download_timeout,
-                   overwrite     = settings$overwrite,
-                   quiet         = quiet,
-                   verbose       = verbose)
+                   force         = settings$force,
+                   quiet         = settings$quiet,
+                   verbose       = settings$verbose)
 
   download_climate_forecasts(main          = main, 
                              resources_sub = settings$subdirectories$resources,
@@ -183,17 +198,15 @@ fill_resources <- function (main     = ".",
                              version       = settings$resources$climate_forecast$version, 
                              data          = settings$resources$climate_forecast$data, 
                              timeout       = settings$download_timeout,
-                             overwrite     = settings$overwrite,
-                             quiet         = quiet,
-                             verbose       = verbose)
+                             force         = settings$force,
+                             quiet         = settings$quiet,
+                             verbose       = settings$verbose)
 
-  messageq("  ... downloads complete. ", quiet = quiet)
+  messageq(" ... complete.\n", quiet = settings$quiet)
   
-  update_directory_configuration(main     = main,
-                                 settings = settings,
-                                 quiet    = quiet)
+  update_directory_configuration(main = main)
 
-  invisible()
+  invisible( )
 
 }
 
@@ -201,50 +214,43 @@ fill_resources <- function (main     = ".",
 #'
 #' @export
 #'
-fill_forecasts <- function (main     = ".", 
-                            settings = directory_settings(), 
-                            quiet    = FALSE, 
-                            verbose  = FALSE) { 
+fill_forecasts <- function (main = ".") { 
+
+  settings <- read_directory_settings(main = main)
 
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
                       full.names = TRUE)
 
+  if (!settings$force) {
 
-  if (!settings$overwrite) {
-
-    existing_files <- list.files(path = file.path(main, settings$subdirectories$forecasts))
+    existing_files <- list.files(path = forecasts_path(main = main))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts))
     short_meta     <- files_short == settings$files$forecast_metadata
     files          <- unique(c(files[!(files_short %in% existing_files)],
                                files[short_meta]))
     
-
   }
 
   if (length(files) == 0) {
 
-    return(invisible())
+    return(invisible( ))
 
   }
 
-  messageq(paste0(" Located ", length(files), " cast file(s) in resources to be moved to directory ... \n  ... moving ..."), quiet = quiet)
+  messageq(paste0(" Located ", length(files), " forecast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
+  messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subdirectories$forecasts), 
+                      to        = forecasts_path(main = main), 
                       recursive = TRUE)
 
-  messageq(paste(ifelse(sum(copied) > 0, 
-                   paste("  moved:", basename(files[copied]), collapse = "\n   "),
-                   ""),
-                 ifelse(sum(!copied) > 0, 
-                   paste("  not moved:", basename(files[!copied]), collapse = "\n   "),
-                   ""),
-                 collapse = "\n"),
-           quiet = !verbose)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
+  ### --- patch to deal with refactor backwards compat --- ###
+    update_forecasts_folder(main = main)
+  ### --- end patch --- ###
 
-  invisible()
+  invisible( )
 
 }
 
@@ -253,48 +259,37 @@ fill_forecasts <- function (main     = ".",
 #'
 #' @export
 #'
-fill_fits <- function (main     = ".", 
-                       settings = directory_settings(), 
-                       quiet    = FALSE, 
-                       verbose  = FALSE) { 
+fill_fits <- function (main = ".") { 
+
+  settings <- read_directory_settings(main = main)
 
   files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits),
                       full.names = TRUE)
 
+  if (!settings$force) {
 
-  if (!settings$overwrite) {
-
-    existing_files <- list.files(path = file.path(main, settings$subdirectories$fits))
+    existing_files <- list.files(path = fits_path(main = main))
     files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$fits))
     files          <- unique(c(files[!(files_short %in% existing_files)]))   
 
   }
 
-
   if (length(files) == 0) {
 
-    return(invisible())
+    return(invisible( ))
 
   }
 
-  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ... \n  ... moving ..."), quiet = quiet)
+  messageq(paste0(" Located ", length(files), " fit file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
+  messageq("  ... moving ... ", quiet = settings$quiet)
 
   copied <- file.copy(from      = files, 
-                      to        = file.path(main, settings$subdirectories$fits), 
+                      to        = fits_path(main = main),
                       recursive = TRUE)
 
-  messageq(paste(ifelse(sum(copied) > 0, 
-                   paste("  moved:", basename(files[copied]), collapse = "\n   "),
-                   ""),
-                 ifelse(sum(!copied) > 0, 
-                   paste("  not moved:", basename(files[!copied]), collapse = "\n   "),
-                   ""),
-                 collapse = "\n"),
-           quiet = !verbose)
+  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = quiet)
-
-  invisible()
+  invisible( )
 
 }
 
@@ -304,37 +299,18 @@ fill_fits <- function (main     = ".",
 #'
 #' @export
 #'
-fill_models <- function (main     = ".", 
-                         models   = prefab_models(), 
-                         settings = directory_settings(), 
-                         quiet    = FALSE, 
-                         verbose  = FALSE) {
+fill_models <- function (main               = ".", 
+                         models             = prefab_models( ), 
+                         new_models_controls = NULL) {
 
-  model_controls_list <- write_model_controls(main     = main, 
-                                              settings = settings, 
-                                              models   = models, 
-                                              quiet    = quiet)
+  controls <- write_models_controls(main                = main, 
+                                    models              = models,
+                                    new_models_controls = new_models_controls) 
 
-  return_if_null(models)
+  write_models_scripts(main     = main, 
+                       controls = controls)
 
-
-  messageq(" Writing model scripts ... ", quiet = quiet)
-
-  nmodels <- length(model_controls_list)
-
-  for (i in 1:nmodels) {
-
-    write_model(main     = main, 
-                model    = models[i], 
-                settings = settings, 
-                quiet    = quiet, 
-                verbose  = verbose)
-
-  }
-
-  messageq("  ... done. ", quiet = quiet)
-
-  invisible()
+  invisible( )
 
 }
 

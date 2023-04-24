@@ -2,28 +2,36 @@
 % Please edit documentation in R/utilities.R
 \name{file_ext}
 \alias{file_ext}
-\alias{path_no_ext}
-\title{Determine a File's Extension or Remove the Extension from the File Path}
+\title{Determine a File's Extension}
 \usage{
 file_ext(path, sep_char = ".")
-
-path_no_ext(path, sep_char = ".")
 }
 \arguments{
 \item{path}{\code{character} value of the file path possibly with an extension.}
 
-\item{sep_char}{\code{character} value of the separator that delineates the extension from the file path. Generally, this will be \code{"."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.}
+\item{sep_char}{\code{character} value of the separator that delineates the extension from the file path. \cr
+Generally, this will be \verb{."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.}
 }
 \value{
-\code{character} value of the extension (\code{file_ext}) or the path without the extension (\code{path_no_ext}.
+\code{character} value of the extension (\code{file_ext}).
 }
 \description{
-Based on the separating character, \code{file_ext} determines the file extension and \code{path_no_ext} determines the file path without the extension.
+Based on the separating character, determine the file extension.
 }
 \examples{
- file_ext("home/folders.with.dots/stuff/ok.csv")
- path_no_ext("home/folders.with.dots/stuff/ok.csv")
- file_ext(NMME_urls()[[1]])
- file_ext(NMME_urls()[[1]], "=")
+   file_ext("home/folders.with.dots/stuff/ok.csv")
+   file_ext(NMME_urls()[[1]])
+   file_ext(NMME_urls()[[1]], "=")
 
 }
+\seealso{
+Other utilities: 
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{named_null_list}()},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

@@ -2,41 +2,67 @@
 % Please edit documentation in R/evaluate.R
 \name{evaluate forecasts}
 \alias{evaluate forecasts}
-\alias{evaluate_casts}
-\alias{evaluate_cast}
+\alias{evaluate}
+\alias{evaluation}
+\alias{evaluate_forecasts}
+\alias{evaluate_forecast}
+\alias{read_forecasts_evaluations}
 \title{Evaluate Forecasts}
 \usage{
-evaluate_casts(
-  main = ".",
-  settings = directory_settings(),
-  cast_ids = NULL,
-  quiet = FALSE,
-  verbose = FALSE
-)
+evaluate_forecasts(main = ".", forecasts_ids = NULL)
 
-evaluate_cast(
-  main = ".",
-  settings = directory_settings(),
-  cast_id = NULL,
-  quiet = FALSE,
-  verbose = FALSE
-)
+evaluate_forecast(main = ".", forecast_id = NULL)
+
+read_forecasts_evaluations(main = ".")
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.}
-
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).}
-
-\item{cast_id, cast_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the casts of interest for evaluating, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. \cr
-\code{cast_id} can only be a single value, whereas \code{cast_ids} can be multiple.}
+\item{forecast_id, forecasts_ids}{\code{integer} (or integer \code{numeric}) value(s) representing the forecasts of interest for evaluating, as indexed within the \code{forecasts} subdirectory. See the forecasts metadata file (\code{forecasts_metadata.csv}) for summary information. \cr
+\code{forecast_id} can only be a single value, whereas \code{forecasts_ids} can be multiple.}
 }
 \value{
-A \code{data.frame}, or \code{list} of \code{data.frame}s.
+A \code{data.frame} of all forecast evaluations at the observation (newmoon) level, as requested, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
-Evaluate forecasts in the directory, based on id or group, or (if \code{cast_ids = NULL} and \code{cast_groups = NULL}, the default) \code{evaluate_casts} will evaluate all and (if \code{cast_id = NULL} and \code{cast_group = NULL}, the default), \code{evaluate_cast} will evaluate the most recent cast.
+Evaluate forecasts in the directory, based on id(s). \cr \cr
+Current metrics include raw error (which can be used to calculate root mean squared error; RMSE), coverage, log score, and continuous rank probability score (CRPS). \cr
+\code{read_forecasts_evaluations} read in the forecasts evaluations file.
 }
+\examples{
+\dontrun{
+   main1 <- file.path(tempdir(), "evaluations")
+   setup_dir(main = main1)
+
+   plot_covariates(main = main1)
+
+   make_model_combinations(main = main1)
+
+   portalcast(main   = main1, 
+              models = "AutoArima")
+
+   cast(main    = main1,
+        model   = "AutoArima", 
+        dataset = "controls", 
+        species = "DM")
+
+   ## evaluate_forecasts(main = main1) ## extensive runtime for full evaluation from scratch
+
+   ids <- select_forecasts(main = main1)$forecast_id
+        
+   evaluate_forecast(main        = main1, 
+                     forecast_id = ids[1])
+
+   read_forecasts_evaluations(main = main1)
+
+   unlink(main1, recursive = TRUE)
+}
+
+}
+\seealso{
+Core forecasting functions:
+\code{\link{ensemble}},
+\code{\link{portalcast}()},
+\code{\link{process forecast output}}
+}
+\concept{core}

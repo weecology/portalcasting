@@ -16,6 +16,17 @@ named_null_list(element_names = NULL)
 Produces a list with \code{NULL} for each element named according to \code{element_names}.
 }
 \examples{
- named_null_list(c("a", "b", "c"))
+   named_null_list(c("a", "b", "c"))
 
 }
+\seealso{
+Other utilities: 
+\code{\link{file_ext}()},
+\code{\link{foy}()},
+\code{\link{ifnull}()},
+\code{\link{messages}},
+\code{\link{package_version_finder}()},
+\code{\link{round_na.interp}()},
+\code{\link{update_list}()}
+}
+\concept{utilities}

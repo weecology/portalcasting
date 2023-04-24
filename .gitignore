@@ -15,3 +15,6 @@ model_testing/*
 testing/* 
 testing_dir/* 
 *.bak
+/doc/
+/Meta/
+inst/app/models.knit.md

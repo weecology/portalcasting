@@ -17,3 +17,5 @@
 ^docker$
 ^\.github$
 ^code_development$
+^pkgdown$
+^codemeta\.json$

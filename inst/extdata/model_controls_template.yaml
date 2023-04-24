@@ -1,46 +1,34 @@
 # Basic template and explanation for a model controls list.
 # This is used to read in for population from the R command line.
 # Important notes:
-#   while normally text fields don't need to be quoted, "y" does because otherwise it's read as yes aka TRUE
+#   while normally text fields don't need to be quoted, "y" and "n" do because otherwise they are read as yes aka TRUE or no aka FALSE
 
 model_name:
   metadata:
     name: model_name
-    descriptor: free-form text field that is not used to populate anything
-    text: Text field that is used to populate descriptions of the model on websites, etc.
-  fun: model_function_name
-  args: 
-    arg_1: arg_1_default_value
+    print_name: model name
+    tags: []
+    text: 
+  fit:
+    fun: 
+    args: 
+  forecast:
+    fun: forecast
+    args: 
+      object: model_fit
+      h:      metadata$time$lead_time_newmoons
+      level:  metadata$confidence_level
   interpolate: 
     needed: no
-    fun: ~
   datasets:
-  - all
-  - controls
-  - exclosures
-  species: 
-    - BA
-    - DM
-    - DO
-    - DS
-    - NA
-    - OL
-    - OT
-    - PB
-    - PE
-    - PF
-    - PH
-    - PL
-    - PM
-    - PP
-    - RF
-    - RM
-    - RO
-    - SF
-    - SH
-    - SO
-    - total
+    all:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PL, PM, PP, RM, RO, SF, SH, total]
+    controls:
+      species: [BA, DM, DO, DS, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
+    exclosures:
+      species: [BA, NA, OL, OT, PB, PE, PF, PM, PP, RM, SF, SH, total]
   response: 
-    link: normal
-    type: distribution 
+    link: 
+    type:  
+    scoring_family: 
   time: newmoon

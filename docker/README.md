@@ -1,6 +1,6 @@
 # `portalcasting`
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalcasting/main/LICENSE)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 Supporting [automated forecasting](https://portal.naturecast.org/) of [rodent populations](https://portal.weecology.org/)

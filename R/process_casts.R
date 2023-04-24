@@ -1,322 +1,350 @@
-
-#' @title Measure Error and Fit Metrics for Forecasts
+#' @title Process and Save Forecast Output to Files
+#'
+#' @description Take the model fit and forecast output, process them into savable objects, and save them to the output folders. \cr
+#'              The forecast metadata file is updated accordingly to track the saved output. \cr
+#'              `add_observations_to_forecast_table` appends a column of observations to a forecast's forecast tab. If a model interpolated a data set, it adds the true (non-interpolated) observations so that model predictions are all compared to the same data. \cr 
+#'              `select_forecasts` determines the forecasts that match user specifications. Functionally, it is a wrapper on [`read_forecasts_metadata`] with filtering for specifications that provides a simple user interface to the large set of available forecasts via the metadata. 
+#'
+#' @param model_fit,model_forecast Output from a model's fit and forecast functions.
+#'
+#' @param forecast_id,forecasts_ids `integer` (or integer `numeric`) value(s) representing the forecast(s) of interest, as indexed within the directory in the `casts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated forecast's output is read in. \cr 
+#'        `forecasts_ids` can be NULL, one value, or more than one values, `forecast_id` can only be NULL or one value.
+#'
+#' @param model,models `character` values of the name(s) of the model(s) of interest, as indexed within the directory in the `forecasts` sub folder. See the forecasts metadata file (`forecasts_metadata.csv`) for summary information. If `NULL` (the default), the most recently generated forecast's output is read in. \cr 
+#'        `models` can be NULL, one value, or more than one values, `model` can only be NULL or one value.
+#'
+#' @param dataset,datasets `character` vector of the rodent dataset name(s) to include.
+#'        `datasets` can be NULL, one value, or more than one values, `dataset` can only be NULL or one value.
+#'
+#' @param species `character` value of the species codes (or `"total"` for the total across species) to include. Default value is `NULL`, which equates to no selection with respect to `species`.
 #' 
-#' @description Summarize the cast-level errors or fits to the observations. \cr 
-#'  Presently included are root mean square error and coverage.
-#' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
+#' @param forecast_table A `data.frame` of a cast's output. See [`read_forecast_table`].
 #'
-#' @return \code{data.frame} of metrics for each cast for each species. 
+#' @param historic_end_newmoonnumbers `integer` (or integer `numeric`) newmoon numbers of the forecast origin. Default value is `NULL`, which equates to no selection.
+#'
+#' @param forecasts_groups `integer` (or integer `numeric`) value of the forecast groups to include. Default value is `NULL`, which equates to no selection with respect to `forecast_group`.
+#'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
+#' @param forecasts_metadata `data.frame` of forecast metadata. If `NULL` (default), will try to read via [`read_forecasts_metadata`].
+#'
+#' @details Four model-specific output components are saved and returned:
+#'          * `forecast_metadata`: saved out with [`write_yaml`][yaml::write_yaml].
+#'          * `forecast_tab`: saved using [`write_csv_arrow`].
+#'          * `model_fit`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
+#'          * `model_forecast`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
+#'
+#' @return `process_model_output`: relevant elements are saved to external files, and returned as a `list`. \cr
+#'         `read_forecast_table`: forecast table `data.frame`. \cr
+#'         `read_forecast_tables`: `data.frame` of combined forecast tables. \cr
+#'         `add_observations_to_forecast_table`: forecast table `data.frame` with an observation column added. \cr
+#'         `read_forecast_metadata`: `list` of `forecast_metadata`. \cr
+#'         `read_model_fit`: forecast output (typically as a `list`). \cr
+#'         `read_model_forecast`: forecast output (typically as a `list`). \cr
+#'         `select_forecasts`:  `data.frame` of selected forecasts' metadata. \cr
+#'         `read_forecasts_metadata`: `data.frame` of forecasts' metadata. 
+#'
+#' @name process forecast output
+#'
+#' @aliases process-forecasts
+#'
+#' @family core
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "forecast_output")
+#'
+#'    setup_dir(main = main1)
+#'    dataset <- "all"
+#'    species <- "DM"
+#'    model   <- "AutoArima"
+#'  
+#'    abundance      <- prepare_abundance(main    = main1,
+#'                                        dataset = dataset,
+#'                                        species = species,
+#'                                        model   = model)
+#'    model_controls <- models_controls(main      = main1,
+#'                                      models    = model)[[model]]
+#'    metadata       <- read_metadata(main        = main1)
+#'    newmoons       <- read_newmoons(main        = main1)                                        
+#'    covariates     <- read_covariates(main      = main1)
+#'  
+#'    fit_args  <- named_null_list(element_names = names(model_controls$fit$args))
+#'    for (i in 1:length(fit_args)) {
+#'      fit_args[[i]] <- eval(parse(text = model_controls$fit$args[i]))
+#'    }
+#'    model_fit  <- do.call(what = model_controls$fit$fun,
+#'                          args = fit_args)
+#'  
+#'  
+#'    forecast_args  <- named_null_list(element_names = names(model_controls$forecast$args))
+#'    for (i in 1:length(forecast_args)) {
+#'      forecast_args[[i]] <- eval(parse(text = model_controls$forecast$args[i]))
+#'    }
+#'  
+#'    model_forecast <- do.call(what = model_controls$forecast$fun,
+#'                              args = forecast_args)
+#'  
+#'    process_model_output(main           = main1,
+#'                         model_fit      = model_fit,
+#'                         model_forecast = model_forecast,
+#'                         model          = model,
+#'                         dataset        = dataset,
+#'                         species        = species) 
+#'
+#'    cast_table     <- read_forecast_table(main = main1)
+#'    cast_table2    <- add_observations_to_forecast_table(main = main1,
+#'                                                         forecast_table = cast_table)
+#'    cast_tables    <- read_forecast_tables(main = main1)
+#'    cast_metadata  <- read_forecast_metadata(main = main1)
+#'    cast_forecast  <- read_model_forecast(main = main1)
+#'
+#'    casts_metadata <- read_forecasts_metadata(main = main1)
+#'    select_forecasts(main = main1)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
+
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-measure_cast_level_error <- function (cast_tab = NULL) {
+process_model_output <- function (main      = ".", 
+                                  model_fit = NULL,
+                                  model_forecast,
+                                  model,
+                                  dataset,
+                                  species) {
+
+  settings <- read_directory_settings(main = main)
+
+  forecasts_metadata <- read_forecasts_metadata(main = main) 
+
+  metadata <- read_metadata(main = main)
+
+  ids     <- forecasts_metadata$forecast_id
+  ids     <- as.numeric(ids)
+  next_id <- ceiling(max(c(0, ids), na.rm = TRUE)) + 1
+
+  model_controls <- read_models_controls(main = main)[[model]]
+
+  forecast_metadata <- update_list(metadata, 
+                                   forecast_id      = next_id,
+                                   model            = model,
+                                   dataset          = dataset,
+                                   species          = species,
+                                   model_controls   = model_controls[[model]],
+                                   dataset_controls = metadata$datasets_controls[[dataset]])
+
+  forecast_table <- data.frame(lead_time_newmoons                 = 1:metadata$time$lead_time_newmoons,
+                               max_lag                            = metadata$time$max_lag,
+                               lag_buffer                         = metadata$time$lag_buffer,
+                               origin                             = metadata$time$origin, 
+                               forecast_date                      = metadata$time$forecast_date, 
+                               forecast_month                     = metadata$time$forecast_months,
+                               forecast_year                      = metadata$time$forecast_years, 
+                               newmoonnumber                      = metadata$time$forecast_newmoonnumbers,
+                               currency                           = metadata$datasets_controls[[dataset]]$args$output,
+                               model                              = model, 
+                               dataset                            = dataset, 
+                               species                            = species, 
+                               estimate                           = as.numeric(model_forecast$mean), 
+                               lower_pi                           = as.numeric(model_forecast$lower[ , 1]),
+                               upper_pi                           = as.numeric(model_forecast$upper[ , 1]), 
+                               historic_start_newmoonnumber       = metadata$time$historic_start_newmoonnumber,
+                               historic_end_newmoonnumber         = metadata$time$historic_end_newmoonnumber,
+                               forecast_start_newmoonnumber       = metadata$time$forecast_start_newmoonnumber,
+                               forecast_end_newmoonnumber         = metadata$time$forecast_end_newmoonnumber,
+                               confidence_level                   = metadata$confidence_level,
+                               forecast_group                     = metadata$forecast_group,
+                               old_cast_id                        = NA,
+                               forecast_id                        = forecast_metadata$forecast_id)
+
+  pkg_version   <- metadata$directory_configuration$setup$core_package_version
+
+  new_forecast_metadata <- data.frame(forecast_id                  = forecast_metadata$forecast_id,
+                                      old_cast_id                  = NA,
+                                      forecast_group               = forecast_metadata$forecast_group,
+                                      forecast_date                = forecast_metadata$time$forecast_date,
+                                      origin                       = forecast_metadata$time$origin,
+                                      historic_start_newmoonnumber = forecast_metadata$time$historic_start_newmoonnumber,
+                                      historic_end_newmoonnumber   = forecast_metadata$time$historic_end_newmoonnumber,
+                                      forecast_start_newmoonnumber = forecast_metadata$time$forecast_start_newmoonnumber,
+                                      forecast_end_newmoonnumber   = forecast_metadata$time$forecast_end_newmoonnumber,
+                                      lead_time_newmoons           = forecast_metadata$time$lead_time_newmoons,
+                                      model                        = model,
+                                      dataset                      = dataset,
+                                      species                      = species,
+                                      portalcasting_version        = pkg_version,
+                                      QAQC                         = TRUE,
+                                      notes                        = NA)
+
+  forecasts_metadata <- rbind(forecasts_metadata, new_forecast_metadata)
+
+  if (settings$save) {
+ 
+  # update these to be write_data calls
+
+    forecast_metadata_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_metadata.yaml")
+    forecast_metadata_path     <- file.path(main, settings$subdirectories$forecasts, forecast_metadata_filename)
+
+    write_yaml(x    = forecast_metadata,
+               file = forecast_metadata_path)
 
 
-  return_if_null(cast_tab)
+    forecast_table_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_forecast_table.csv") 
+    forecast_table_path     <- file.path(main, settings$subdirectories$forecasts, forecast_table_filename)
 
-  ucast_ids <- unique(cast_tab$cast_id)
-  ncast_ids <- length(ucast_ids)
-  uspecies  <- unique(cast_tab$species)
-  nspecies  <- length(uspecies)
-  RMSE      <- rep(NA, ncast_ids * nspecies)
-  coverage  <- rep(NA, ncast_ids * nspecies)
-  model     <- rep(NA, ncast_ids * nspecies)
-  counter   <- 1
+    row.names(forecast_table) <- NULL
+    write_csv_arrow(x         = forecast_table,
+                    file      = forecast_table_path)
 
-  for (i in 1:ncast_ids) {
+    row.names(forecasts_metadata) <- NULL
+    write_csv_arrow(x         = forecasts_metadata, 
+                    file      = forecasts_metadata_path(main = main))
 
-    for (j in 1:nspecies) {
+    model_fit_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_model_fit.json") 
+    model_fit_path     <- file.path(main, settings$subdirectories$fits, model_fit_filename)
+    model_fit_json     <- serializeJSON(x = model_fit)
 
-      ij          <- cast_tab$cast_id == ucast_ids[i] & cast_tab$species == uspecies[j]
-      cast_tab_ij <- cast_tab[ij, ]
-      err         <- cast_tab_ij$err
+    write_json(x       = model_fit_json, 
+               path    = model_fit_path)
 
-      if (!is.null(err)) {
+    model_forecast_filename <- paste0("forecast_id_", forecast_metadata$forecast_id, "_model_forecast.json") 
+    model_forecast_path     <- file.path(main, settings$subdirectories$forecasts, model_forecast_filename)
+    model_forecast_json     <- serializeJSON(x = model_forecast)
 
-        RMSE[counter] <- sqrt(mean(err^2, na.rm = TRUE))
-
-      }
-
-      covered <- cast_tab_ij$covered
-
-      if (!is.null(covered)) {
-
-        coverage[counter] <- mean(covered, na.rm = TRUE)            
-
-      }
-
-      if (length(cast_tab_ij$model) > 0) {
-
-        model[counter] <- unique(cast_tab_ij$model)
-
-      }
-
-      counter <- counter + 1
-
-    }
+    write_json(x    = model_forecast_json, 
+               path = model_forecast_path)
 
   }
 
-  ids <- rep(ucast_ids, each = nspecies)
-  spp <- rep(uspecies, ncast_ids)
-
-  data.frame(cast_id  = ids, 
-             species  = spp, 
-             model    = model, 
-             RMSE     = RMSE, 
-             coverage = coverage)
-}
-
-#' @title Add the Associated Values to a Cast Tab
-#' 
-#' @description Add values to a cast's cast tab. If necessary components are missing (such as no observations added yet and the user requests errors), the missing components are added. \cr \cr
-#'  \code{add_lead_to_cast_tab} adds a column of lead times. \cr \cr
-#'  \code{add_obs_to_cast_tab} appends a column of observations. \cr \cr
-#'  \code{add_err_to_cast_tab} adds a column of raw error values. \cr \cr
-#'  \code{add_covered_to_cast_tab} appends a \code{logical} column indicating if the observation was within the prediction interval. 
-#'
-#' @details If a model interpolated a data set, \code{add_obs_to_cast_tab} adds the true (non-interpolated) observations so that model predictions are all compared to the same data.
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#' 
-#' @param cast_tab A \code{data.frame} of a cast's output. See \code{\link{read_cast_tab}}.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return \code{data.frame} of \code{cast_tab} with an additional column or columns if needed. 
-#'
-#' @name add to cast tab
-#'
-#' @export
-#'
-add_lead_to_cast_tab <- function (main     = ".", 
-                                  settings = directory_settings(), 
-                                  cast_tab = NULL) {
-
-  return_if_null(cast_tab)
-  cast_tab$lead <- cast_tab$moon - cast_tab$end_moon
-  cast_tab
+  list(forecast_metadata   = forecast_metadata, 
+       forecast_table      = forecast_table, 
+       model_fit           = model_fit, 
+       model_forecast      = model_forecast)
 
 }
 
-#' @rdname add-to-cast-tab
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-add_err_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings(), 
-                                 cast_tab = NULL) {
+read_forecast_table <- function (main        = ".", 
+                                 forecast_id = NULL) {
 
+  settings <- read_directory_settings(main = main)
 
-  return_if_null(cast_tab)
-  if (is.null(cast_tab$obs)) {
+  if (is.null(forecast_id) ){
 
-    cast_tab <- add_obs_to_cast_tab(main     = main,
-                                    settings = settings,
-                                    cast_tab = cast_tab)
-  }
-
-  cast_tab$error <- cast_tab$estimate - cast_tab$obs
-  cast_tab
-
-}
-
-#' @rdname add-to-cast-tab
-#'
-#' @export
-#'
-add_covered_to_cast_tab <- function (main     = ".", 
-                                     settings = directory_settings(), 
-                                     cast_tab = NULL) {
-
-
-  return_if_null(cast_tab)
-  if (is.null(cast_tab$obs)) {
-
-    cast_tab <- add_obs_to_cast_tab(main     = main,
-                                    settings = settings,
-                                    cast_tab = cast_tab)
+    forecasts_meta <- select_forecasts(main = main)
+    forecast_id    <- max(forecasts_meta$forecast_id)
 
   }
 
-  cast_tab$covered <- cast_tab$obs >= cast_tab$lower_pi & cast_tab$obs <= cast_tab$upper_pi 
-  cast_tab$covered[is.na(cast_tab$obs)] <- NA
-  cast_tab
-
-}
-
-#' @rdname add-to-cast-tab
-#'
-#' @export
-#'
-add_obs_to_cast_tab <- function (main     = ".", 
-                                 settings = directory_settings(),
-                                 cast_tab = NULL) {
-
-  return_if_null(cast_tab)
-
-  # patch
-  colnames(cast_tab)[colnames(cast_tab) == "data_set"] <- "dataset"
-  # patch
-
-  cast_tab$obs   <- NA
-  cast_dataset   <- gsub("dm_", "", gsub("_interp", "", cast_tab$dataset))
-  ucast_dataset  <- unique(cast_dataset)
-  ncast_datasets <- length(ucast_dataset)
-
-  for (j in 1:ncast_datasets) {
-
-    obs <- read_rodents_table(main           = main, 
-                              settings       = settings,
-                              dataset = ucast_dataset[j])
-
-
-    matches <- which(cast_dataset == ucast_dataset[j])
-    nmatches <- length(matches)
-    obs_cols <- gsub("NA.", "NA", colnames(obs))
-
-    for (i in 1:nmatches) {
-
-      spot        <- matches[i]
-      obs_moon    <- which(obs$newmoonnumber == cast_tab$moon[spot])
-      obs_species <- which(obs_cols == cast_tab$species[spot])
-
-      if (length(obs_moon) == 1 & length(obs_species) == 1) {
-
-        cast_tab$obs[spot] <- obs[obs_moon, obs_species]
-
-      }
-
-    }
-
-  }
-
-  cast_tab 
-
-}
-
-
-
-#' @title Read in Cast Output From a Given Cast
-#'
-#' @description Read in the various output files of a cast or casts in the casts sub directory. 
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param cast_ids,cast_id \code{integer} (or integer \code{numeric}) value(s) representing the cast(s) of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information. If \code{NULL} (the default), the most recently generated cast's output is read in. \cr 
-#'  \code{cast_ids} can be NULL, one value, or more than one values, \code{cast_id} can only be NULL or one value.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return 
-#'  \code{read_cast_tab}: \code{data.frame} of the \code{cast_tab}. \cr \cr
-#'  \code{read_cast_tabs}: \code{data.frame} of the \code{cast_tab}s with a \code{cast_id} column added to distinguish among casts. \cr \cr
-#'  \code{read_cast_metadata}: \code{list} of \code{cast_metadata}. \cr \cr
-#'  \code{read_model_fit}: a model fit \code{list}. \cr \cr
-#'  \code{read_model_cast}: a model cast \code{list}.
-#'
-#' @name read cast output
-#'
-#' @export
-#'
-read_cast_tab <- function (main     = ".", 
-                           cast_id  = NULL, 
-                           settings = directory_settings()) {
-
-  if (is.null(cast_id) ){
-
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
-    cast_id    <- max(casts_meta$cast_id)
-
-  }
-
-  lpath <- paste0("cast_id_", cast_id, "_cast_tab.csv")
+  lpath <- paste0("forecast_id_", forecast_id, "_forecast_table.csv")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
-    stop("cast_id does not have a cast_table")
+    stop("forecast_id does not have a forecast_table")
 
   }
 
-  out <- read.csv(cpath) 
-
-
-  # patch
-  colnames(out)[colnames(out) %in% c("data_set", "dataset")] <- "dataset"
-  # patch
-
-  # patch
-  out$dataset <- gsub("_interp", "", out$dataset)
-  # patch
-
-  na_conformer(out)
+  out <- as.data.frame(read_csv_arrow(file = cpath))
+  out <- na_conformer(out)
+  class(out$species) <- "character"
+ 
+  out
 
 }
 
-#' @rdname read-cast-output
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-read_cast_tabs <- function (main     = ".", 
-                            cast_ids  = NULL, 
-                            settings = directory_settings()) {
+read_forecasts_tables <- function (main         = ".", 
+                                   forecasts_ids = NULL) {
   
-  if (is.null(cast_ids)) {
+  settings <- read_directory_settings(main = main)
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
-    cast_ids   <- max(casts_meta$cast_id)
+  if (is.null(forecasts_ids)) {
+
+    forecasts_meta <- select_forecasts(main = main)
+    forecasts_ids   <- max(forecasts_meta$forecast_id)
 
   }
 
-  cast_tab <- read_cast_tab(main     = main,
-                            cast_id  = cast_ids[1],
-                            settings = settings)
-  ncasts   <- length(cast_ids)
+  forecast_table <- read_forecast_table(main        = main,
+                                        forecast_id = forecasts_ids[1])
+  ncasts         <- length(forecasts_ids)
 
 
   if (ncasts > 1) {
 
     for (i in 2:ncasts) {
 
-      cast_tab_i <- read_cast_tab(main     = main,
-                                  cast_id  = cast_ids[i], 
-                                  settings = settings)
+      forecast_table_i <- read_forecast_table(main        = main,
+                                              forecast_id = forecasts_ids[i])
 
-      cast_tab   <- rbind(cast_tab, cast_tab_i)
+      forecast_table <- rbind(forecast_table, forecast_table_i)
 
     }
 
   }
 
-  cast_tab
+  forecast_table
 
 }
 
-#' @rdname read-cast-output
+
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-read_cast_metadata <- function (main     = ".", 
-                                cast_id  = NULL, 
-                                settings = directory_settings()) {
-  
-  if (is.null(cast_id)) {
+add_observations_to_forecast_table <- function (main           = ".", 
+                                                forecast_table = NULL) {
 
-    casts_meta <- select_casts(main = main)
-    cast_id    <- max(casts_meta$cast_id)
+  return_if_null(forecast_table)
+
+  dataset <- gsub("dm_", "", forecast_table$dataset[1])
+  species <- forecast_table$species[1]
+
+  forecast_table$observation   <- NA
+
+  obs <- read_rodents_dataset(main     = main, 
+                              dataset  = dataset)
+
+  forecast_table$observation <- obs[match(forecast_table$newmoonnumber, obs$newmoonnumber), species]
+
+  forecast_table 
+
+}
+
+#' @rdname process-forecast-output
+#'
+#' @export
+#'
+read_forecast_metadata <- function (main        = ".", 
+                                    forecast_id = NULL) {
+  
+  settings <- read_directory_settings(main = main)
+
+  if (is.null(forecast_id)) {
+
+    forecasts_meta <- select_forecasts(main = main)
+    forecast_id    <- max(forecasts_meta$forecast_id)
 
   }
 
-  lpath <- paste0("cast_id_", cast_id, "_metadata.yaml")
+  lpath <- paste0("forecast_id_", forecast_id, "_metadata.yaml")
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
 
-    stop("cast_id does not have a cast_metadata file")
+    stop("forecast_id does not have a forecast_metadata file")
 
   }
 
@@ -325,285 +353,177 @@ read_cast_metadata <- function (main     = ".",
 }
 
 
-#' @rdname read-cast-output
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-read_model_fit <- function (main     = ".", 
-                            cast_id  = NULL, 
-                            settings = directory_settings()) {
+read_model_fit <- function (main    = ".", 
+                            forecast_id = NULL) {
   
-  if (is.null(cast_id)) {
+  settings <- read_directory_settings(main = main)
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
-    cast_id <- max(casts_meta$cast_id)
+  if (is.null(forecast_id)) {
 
-  }
-
-  lpath <- paste0("cast_id_", cast_id, "_model_fits.json")
-  cpath <- file.path(main, settings$subdirectories$fits, lpath)
-
-  if (!file.exists(cpath)) {
-
-    stop("cast_id does not have a model_fits file")
+    forecasts_meta <- select_forecasts(main = main)
+    forecast_id <- max(forecasts_meta$forecast_id)
 
   }
 
-  read_in_json <- fromJSON(readLines(cpath))
-  unserializeJSON(read_in_json)
+  cpath <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_fit.json"))
+
+  if (file.exists(cpath)) {
+
+    read_in_json <- fromJSON(readLines(cpath))
+    unserializeJSON(read_in_json)
+
+  } else {
+
+    stop("forecast_id does not have a model_fit file")
+
+  } 
 
 }
 
-#' @rdname read-cast-output
+#' @rdname process-forecast-output
 #'
 #' @export
 #'
-read_model_cast <- function (main     = ".", 
-                             cast_id  = NULL, 
-                             settings = directory_settings()) {
+read_model_forecast <- function (main        = ".", 
+                                 forecast_id = NULL) {
   
-  if (is.null(cast_id)) {
+  settings <- read_directory_settings(main = main)
 
-    casts_meta <- select_casts(main     = main,
-                               settings = settings)
-    cast_id <- max(casts_meta$cast_id)
+  if (is.null(forecast_id)) {
+
+    forecasts_meta <- select_forecasts(main = main)
+
+    forecast_id    <- max(as.numeric(gsub("-", ".", forecasts_meta$forecast_id)))
 
   }
 
-  lpath_json  <- paste0("cast_id_", cast_id, "_model_casts.json")
-  cpath_json  <- file.path(main, settings$subdirectories$forecasts, lpath_json)
+  cpath_json  <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_forecast.json"))
+  cpath_RData <- file.path(main, settings$subdirectories$forecasts, paste0("forecast_id_", forecast_id, "_model_forecast.RData"))
 
-  lpath_RData <- paste0("cast_id_", cast_id, "_model_casts.RData")
-  cpath_RData  <- file.path(main, settings$subdirectories$forecasts, lpath_RData)
-
-  if (!file.exists(cpath_json)) {
-
-    if (!file.exists(cpath_RData)) {
-
-      stop("cast_id does not have a model_casts file")
-  
-    } else {
-
-      model_casts <- NULL
-      load(cpath_RData)
-      model_casts
-
-    }
-
-  } else {
+  if (file.exists(cpath_json)) {
 
     read_in_json <- fromJSON(readLines(cpath_json))
     unserializeJSON(read_in_json)
 
-  }
+  } else if (file.exists(cpath_RData)) {
 
-}
-
-
-#' @title Find Casts that Fit Specifications
-#'
-#' @description Determines the casts that match user specifications. \cr
-#'  Functionally, a wrapper on \code{\link{read_casts_metadata}} with filtering for specifications that provides a simple user interface to the large set of available casts via the metadata. 
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param cast_ids \code{integer} (or integer \code{numeric}) values representing the casts of interest, as indexed within the directory in the \code{casts} sub folder. See the casts metadata file (\code{casts_metadata.csv}) for summary information.
-#'
-#' @param end_moons \code{integer} (or integer \code{numeric}) newmoon numbers of the forecast origin. Default value is \code{NULL}, which equates to no selection with respect to \code{end_moon}.
-#'
-#' @param cast_groups \code{integer} (or integer \code{numeric}) value of the cast group to combine with an ensemble. If \code{NULL} (default), the most recent cast group is ensembled. 
-#'
-#' @param models \code{character} values of the names of the models to include. Default value is \code{NULL}, which equates to no selection with respect to \code{model}.
-#'
-#' @param datasets \code{character} values of the rodent data sets to include Default value is \code{NULL}, which equates to no selection with respect to \code{dataset}.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @return \code{data.frame} of the \code{cast_tab}.
-#'
-#' @export
-#'
-select_casts <- function (main           = ".", 
-                          settings       = directory_settings(), 
-                          cast_ids       = NULL, 
-                          cast_groups    = NULL,
-                          end_moons      = NULL, 
-                          models         = NULL, 
-                          datasets       = NULL,
-                          quiet          = FALSE) {
-
-
-  casts_metadata <- read_casts_metadata(main     = main,
-                                        settings = settings,
-                                        quiet    = quiet)
-
-  ucast_ids <- unique(casts_metadata$cast_id[casts_metadata$QAQC])
-  cast_ids  <- ifnull(cast_ids, ucast_ids)
-  match_id  <- casts_metadata$cast_id %in% cast_ids
-
-  ucast_groups <- unique(casts_metadata$cast_group[casts_metadata$QAQC])
-  cast_groups  <- ifnull(cast_groups, ucast_groups)
-  match_group  <- casts_metadata$cast_group %in% cast_groups
-
-  uend_moons     <- unique(casts_metadata$end_moon[casts_metadata$QAQC])
-  end_moons      <- ifnull(end_moons, uend_moons)
-  match_end_moon <- casts_metadata$end_moon %in% end_moons
-
-  umodels     <- unique(casts_metadata$model[casts_metadata$QAQC])
-  models      <- ifnull(models, umodels)
-  match_model <- casts_metadata$model %in% models
-  
-  udatasets <- gsub("_interp", "", unique(casts_metadata$dataset[casts_metadata$QAQC]))
-  datasets  <- ifnull(datasets, udatasets)
-
-  match_dataset <- gsub("_interp", "", casts_metadata$dataset) %in% datasets
-  
-  QAQC <- casts_metadata$QAQC
-
-  casts_metadata[match_id & match_end_moon & match_model & match_dataset & QAQC, ]
-
-}
-
-
-
-#' @title Save Cast Output to Files
-#'
-#' @description Save out any output from a cast of a model for a data set and update the cast metadata file accordingly to track the saved output. \cr
-#'  Most users will want to at least save out model metadata and a table of predictions.
-#'
-#' @param cast Output from a model function (e.g., \code{\link{AutoArima}}) run on any rodents data set. Required to be a \code{list}, but otherwise has minimal strict requirements. \cr
-#'  Names of the elements of the list (such as \code{"metadat"}) indicate the specific saving procedures that happens to each of them. See \code{Details} section for specifics. 
-#'
-#' @details Currently, four generalized output components are recognized and indicated by the names of the elements of \code{cast}. 
-#'  \itemize{
-#'   \item \code{"metadata"}: saved out with \code{\link[yaml]{write_yaml}}. Will
-#'    typically be the model-specific metadata from the 
-#'    \code{data/metadata.yaml} file, but can more generally be any 
-#'    appropriate object (typically a \code{list}).  
-#'   \item \code{"cast_tab"}: saved using \code{\link{write.csv}}, so is
-#'    assumed to be a table such as a \code{matrix} or \code{data.frame} 
-#'    or coercible to one. Used to summarize the output across instances
-#'    of the model (across multiple species, for example). 
-#'   \item \code{"model_fits"}: saved out as a serialized \code{JSON} file 
-#'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#'    specific object structure. Saving out a \code{list} of the actual model
-#'    fit/return objects means that models do not need to be refit later.
-#'   \item \code{"model_casts"}: saved out as a serialized \code{JSON} file 
-#'    via \code{\link[jsonlite]{serializeJSON}} and 
-#'    \code{\link[jsonlite:read_json]{write_json}}, so quite flexible with respect to 
-#'    specific object structure. Is used to save \code{list}s
-#'    of predictions across multiple instances of the model.
-#'  }
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @return Relevant elements are saved to external files, and \code{NULL} is returned.
-#'
-#' @examples
-#'  \donttest{
-#'   setup_dir() 
-#'   out <- AutoArima()
-#'   save_cast_output(out)
-#'  }
-#'
-#' @export
-#'
-save_cast_output <- function (cast     = NULL, 
-                              main     = ".", 
-                              settings = directory_settings(), 
-                              quiet    = FALSE) {
-
-  cast_meta <- read_casts_metadata(main     = main, 
-                                   settings = settings,
-                                   quiet    = quiet)
-  cast_ids  <- cast_meta$cast_id
-
-  if (all(is.na(cast_ids))) {
-
-    next_cast_id <- 1
+      model_forecasts <- NULL
+      load(cpath_RData)
+      model_forecasts
 
   } else {
 
-    next_cast_id <- max(cast_ids) + 1
+     stop("forecast_id does not have a model_forecast file")
 
-  }
-
-  dir_config    <- cast$metadata$directory_configuration
-  pc_version    <- dir_config$setup$core_package_version
-  new_cast_meta <- data.frame(cast_id               = next_cast_id,
-                              cast_group            = cast$metadata$cast_group,
-                              cast_date             = cast$metadata$time$cast_date,
-                              start_moon            = cast$metadata$time$start_moon,
-                              end_moon              = cast$metadata$time$end_moon,
-                              lead_time             = cast$metadata$time$lead_time,
-                              model                 = cast$metadata$models,
-                              dataset               = gsub("_interp", "", cast$metadata$datasets),
-                              portalcasting_version = pc_version,
-                              QAQC                  = TRUE,
-                              notes                 = NA)
-  cast_meta     <- rbind(cast_meta, new_cast_meta)
-  meta_path     <- file.path(main, settings$subdirectories$forecasts, "casts_metadata.csv")
- 
-  write.csv(cast_meta, meta_path, row.names = FALSE)
-
-  if (!is.null(cast$metadata)) {
-
-    meta_filename <- paste0("cast_id_", next_cast_id, "_metadata.yaml")
-    meta_path     <- file.path(main, settings$subdirectories$forecasts, meta_filename)
-
-    write_yaml(x    = cast$metadata,
-               file = meta_path)
-
-  }
-
-  if (!is.null(cast$cast_tab)) {
-
-    cast_tab_filename         <- paste0("cast_id_", next_cast_id, "_cast_tab.csv") 
-    cast_tab_path             <- file.path(main, settings$subdirectories$forecasts, cast_tab_filename)
-    cast_tab                  <- cast$cast_tab
-    cast_tab$cast_id          <- next_cast_id
-
-    write.csv(x         = cast_tab,
-              file      = cast_tab_path, 
-              row.names = FALSE)
-
-  }
-
-  if (!is.null(cast$model_fits)) {
-
-    model_fits_filename <- paste0("cast_id_", next_cast_id, "_model_fits.json") 
-    model_fits_path     <- file.path(main, settings$subdirectories$fits, model_fits_filename)
-    model_fits          <- cast$model_fits
-    model_fits          <- serializeJSON(model_fits)
-
-    write_json(x    = model_fits, 
-               path = model_fits_path)
-
-  }
-
-  if (!is.null(cast$model_casts)) {
-
-    model_casts_filename <- paste0("cast_id_", next_cast_id, "_model_casts.json") 
-    model_casts_path     <- file.path(main, settings$subdirectories$forecasts, model_casts_filename)
-    model_casts          <- cast$model_casts
-    model_casts          <- serializeJSON(model_casts)
-
-    write_json(x    = model_casts, 
-               path = model_casts_path)
-
-  }
-
-  invisible()
+  } 
 
 }
 
 
+#' @rdname process-forecast-output
+#'
+#' @export
+#'
+select_forecasts <- function (main                        = ".", 
+                              forecasts_metadata          = NULL,
+                              forecasts_ids               = NULL,
+                              forecasts_groups            = NULL,
+                              models                      = NULL, 
+                              datasets                    = NULL,
+                              species                     = NULL,
+                              historic_end_newmoonnumbers = NULL) {
+
+  settings           <- read_directory_settings(main = main)
+
+  forecasts_metadata <- ifnull(forecasts_metadata, read_forecasts_metadata(main = main))
+
+  uforecast_ids      <- unique(forecasts_metadata$forecast_id[forecasts_metadata$QAQC])
+  forecasts_ids       <- ifnull(forecasts_ids, uforecast_ids)
+  match_id           <- forecasts_metadata$forecast_id %in% forecasts_ids
+
+  uforecast_groups   <- unique(forecasts_metadata$forecast_group[forecasts_metadata$QAQC])
+  forecasts_groups    <- ifnull(forecasts_groups, uforecast_groups)
+  match_group        <- forecasts_metadata$forecast_group %in% forecasts_groups
+
+  uend_moons         <- unique(forecasts_metadata$historic_end_newmoonnumber[forecasts_metadata$QAQC])
+  end_moons          <- ifnull(historic_end_newmoonnumbers, uend_moons)
+
+  match_end_moon     <- forecasts_metadata$historic_end_newmoonnumber %in% end_moons
+
+  umodels            <- unique(forecasts_metadata$model[forecasts_metadata$QAQC])
+  models             <- ifnull(models, umodels)
+  match_model        <- forecasts_metadata$model %in% models
+  
+  udatasets          <- unique(forecasts_metadata$dataset[forecasts_metadata$QAQC])
+  datasets           <- ifnull(datasets, udatasets)
+  match_dataset      <- forecasts_metadata$dataset %in% datasets
+
+  if ("species" %in% colnames(forecasts_metadata)) {
+
+    uspecies         <- unique(forecasts_metadata$species[forecasts_metadata$QAQC])
+    species          <- ifnull(species, uspecies)
+    match_species    <- forecasts_metadata$species %in% species
+
+  } else {
+  
+    match_species <- rep(TRUE, length(match_id))
+
+  }
+
+  forecasts_metadata[match_id & match_end_moon & match_model & match_dataset & match_species & forecasts_metadata$QAQC, ]
+
+}
+
+
+
+#' @rdname process-forecast-output
+#'
+#' @export
+#'
+read_forecasts_metadata <- function (main = ".") {
+  
+  settings  <- read_directory_settings(main = main)
+
+  meta_path <- forecasts_metadata_path(main = main)
+
+  if (!file.exists(meta_path)) {
+
+    messageq("  **creating forecast metadata file**", quiet = settings$quiet)
+
+    out <- data.frame(forecast_id                  = NA,
+                      old_cast_id                  = NA,
+                      forecast_group               = 0,
+                      forecast_date                = NA,
+                      origin                       = NA,
+                      historic_start_newmoonnumber = NA,
+                      historic_end_newmoonnumber   = NA,
+                      forecast_start_newmoonnumber = NA,
+                      forecast_end_newmoonnumber   = NA,
+                      lead_time_newmoons           = NA,
+                      model                        = NA,
+                      dataset                      = NA,
+                      species                      = NA,
+                      portalcasting_version        = NA,
+                      QAQC                         = NA,
+                      notes                        = NA)
+  
+    row.names(out) <- NULL
+    write_csv_arrow(x    = out, 
+                    file = meta_path)
+
+  }
+
+
+  out <- as.data.frame(read_csv_arrow(file = meta_path))
+
+  if ("species" %in% colnames(out)) {
+    out <- na_conformer(out)
+  }
+  out[out$forecast_group != 0, ]
+
+}
 

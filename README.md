@@ -5,10 +5,11 @@
 [![R-CMD-check-release](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml)
 [![Docker](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml)
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://codecov.io/github/weecology/portalcasting/branch/main)
-[![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
-[![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1929730)
+[![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1929730)
 [![JOSS](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
 
 
@@ -25,7 +26,7 @@ via a [sandbox](https://en.wikipedia.org/wiki/Sandbox_(software_development)) ap
 
 ## Status: Deployed, Active Development
 
-The `portalcasting` package is deployed for use within the [Portal Predictions repository](https://github.com/weecology/portalPredictions), providing the underlying R code to populate the directory with up-to-date data, analyze the data, produce new forecasts, generate new output figures, and render a new version of the [website](http://portal.naturecast.org/). 
+The `portalcasting` package is deployed for use within the [Portal Predictions repository](https://github.com/weecology/portalPredictions), providing the underlying R code to populate the directory with up-to-date data, analyze the data, produce new forecasts, generate new output figures, and render a new version of the [website](https://portal.naturecast.org/). 
 All of the code underlying the forecasting functionality has been migrated over from the [predictions repository](https://github.com/weecology/portalPredictions), which contains the code executed by the continuous integration. 
 Having relocated the code here, the `portalcasting` package is the location for active development of the model set and additional functionality. 
 
@@ -75,8 +76,8 @@ For the workflow, please checkout the [contribution](CONTRIBUTING.md) and [code 
 
 This project is developed in active collaboration with [DAPPER Stats](https://www.dapperstats.com/).
 
-The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the [National Science Foundation](http://nsf.gov/), most recently by [DEB-1622425](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425) to S. K. M. Ernest. 
-Much of the computational work was supported by the [Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative](http://www.moore.org/programs/science/data-driven-discovery) through [Grant GBMF4563](http://www.moore.org/grants/list/GBMF4563) to E. P. White. 
+The motivating study—the Portal Project—has been funded nearly continuously since 1977 by the [National Science Foundation](https://www.nsf.gov/), most recently by [DEB-1622425](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1622425) to S. K. M. Ernest. 
+Much of the computational work was supported by the [Gordon and Betty Moore Foundation’s Data-Driven Discovery Initiative](https://www.moore.org/initiative-strategy-detail?initiativeId=data-driven-discovery) through [Grant GBMF4563](https://www.moore.org/grant-detail?grantId=GBMF4563) to E. P. White. 
 
 We thank Heather Bradley for logistical support, John Abatzoglou for assistance with climate forecasts, and James Brown for establishing the Portal Project. 
 

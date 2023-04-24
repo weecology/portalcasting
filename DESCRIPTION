@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Functions Used in Predicting Portal Rodent Dynamics
-Version: 0.50.0
+Version: 0.51.0
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -17,31 +17,40 @@ Authors@R: c(
       comment = c(ORCID = "0000-0002-8630-1458")),
 	person(c("Ethan", "P."), "White", role = c("aut"),
       comment = c(ORCID = "0000-0001-6728-7745")),
-    person(c("S.K.", "Morgan"), "Ernest", role = c("aut"),
+    person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
       comment = c(ORCID = "0000-0002-6026-8530")))
-Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> as well as support for exploring and developing new models in sandbox environments.
-URL: https://weecology.github.io/portalcasting, https://github.com/weecology/portalcasting
+Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project continuous integration system <https://github.com/weecology/portalpredictions> and website <https://portal.naturecast.org> as well as support for exploring and developing new models in sandbox environments.
+URL: https://weecology.github.io/portalcasting/, https://github.com/weecology/portalcasting
 BugReports: https://github.com/weecology/portalcasting/issues
-Depends: R (>= 3.5.0)
+Depends: 
+  R (>= 4.2.0),
+  forecast,  
+  hypergeo,
+  tscount
 License: MIT + file LICENSE
 Imports:
-    coda,
-    forecast,
-    httr,
-    jsonlite,
-    portalr,
-    runjags,
-    scoringRules,
-    tscount,
-    viridis,
-    yaml
-Suggests:
-  knitr,
-  pkgdown,
+  arrow,
+  bslib,
+  coda,
   english,
+  htmltools,
+  httr,
+  jsonlite,
+  knitr,
   markdown,
+  portalr  (>= 0.4.0),
   rmarkdown,
+  runjags,
+  scoringRules,
+  shiny,
+  stats,
+  viridis,
+  yaml
+Suggests:
+  pkgdown,
   testthat
+SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)

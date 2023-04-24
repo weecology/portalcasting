@@ -1,22 +1,82 @@
+#' @title Find an Object's Host Package and Version Information
+#'
+#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
+#'              If the object is sourced through multiple packages, each package and its version are included.
+#'
+#' @param what An R object.
+#'
+#' @return `list` of the object, its class, the packages it is sourced from / through, and the versions of those packages.
+#'
+#' @name package_version_finder
+#'
+#' @family utilities
+#'
+#' @examples
+#'    package_version_finder( )
+#'
+NULL
+
+#' @rdname package_version_finder
+#'
+#' @export
+#'
+package_version_finder <- function (what) {
+
+  if (missing(what)) {
+
+    what <- "package_version_finder"
+
+  }
+
+  object_expr       <- parse(text         = what)
+  object_eval       <- eval(expr          = object_expr)
+  object_class      <- class(x            = object_eval)
+  location_name     <- find(what          = what)
+  packages_names    <- sapply(X           = location_name,
+                              FUN         = gsub,
+                              pattern     = "package\\:",
+                              replacement = "")
+  packages_versions <- sapply(X           = packages_names,
+                              FUN         = packageDescription,
+                              fields      = "Version")
+  
+  names(packages_versions) <- packages_names
+
+  list(object   = what,
+       class    = object_class,
+       package  = packages_names,
+       version  = packages_versions)
+
+}
+
+
 #' @title Round an Interpolated Series
 #'
-#' @description Wraps \code{\link{round}} around \code{\link[forecast]{na.interp}} to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default \code{min_val = 0}) via \code{\link{pmax}}.
+#' @description Wraps [`round`] around [`forecast::na.interp`] to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default `min_val = 0`) via [`pmax`].
 #'
-#' @param x A time series passed directly to \code{\link[forecast]{na.interp}}.
+#' @param x A time series passed directly to [`forecast::na.interp`].
 #'
-#' @param lambda Box-Cox transformation parameter passed directly to \code{\link[forecast]{na.interp}}.
+#' @param lambda Box-Cox transformation parameter passed directly to [`forecast::na.interp`].
 #'
-#' @param linear \code{logical} indicator of if linear interpolation should be used. Passed directly to \code{\link[forecast]{na.interp}}.
+#' @param linear `logical` indicator of if linear interpolation should be used. Passed directly to [`forecast::na.interp`].
 #'
-#' @param digits \code{integer} or \code{numeric} integer of how many digits to round to. Passed directly to \code{\link{round}}.
+#' @param digits `integer` or `numeric` integer of how many digits to round to. Passed directly to [`round`].
 #'
-#' @param min_val \code{integer} or \code{numeric} integer of minimum value allowable in the series.
+#' @param min_val `integer` or `numeric` integer of minimum value allowable in the series.
 #'
-#' @return \code{numeric} series.
+#' @return `numeric` series.
+#'
+#' @family utilities
+#'
+#' @name round_na.interp
 #' 
 #' @examples
-#'   round_na.interp(x = c(1, 2, 3, NA, NA, 170))
-#'   round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'    round_na.interp(x = c(1, 2, 3, NA, NA, 170))
+#'    round_na.interp(x = c(-1, 2, 3, NA, NA, 170), min_val = 1)
+#'
+NULL
+
+#' @rdname round_na.interp
 #'
 #' @export
 #'
@@ -39,22 +99,29 @@ round_na.interp <- function (x,
 }
 
 
-
-#' @title Determine a File's Extension or Remove the Extension from the File Path
+#' @title Determine a File's Extension 
 #'
-#' @description Based on the separating character, \code{file_ext} determines the file extension and \code{path_no_ext} determines the file path without the extension.
+#' @description Based on the separating character, determine the file extension.
 #'
-#' @param path \code{character} value of the file path possibly with an extension.
+#' @param path `character` value of the file path possibly with an extension.
 #'
-#' @param sep_char \code{character} value of the separator that delineates the extension from the file path. Generally, this will be \code{"."}, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be \code{"="}.
+#' @param sep_char `character` value of the separator that delineates the extension from the file path. \cr 
+#'        Generally, this will be `."`, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be `"="`.
 #'
-#' @return \code{character} value of the extension (\code{file_ext}) or the path without the extension (\code{path_no_ext}.
+#' @return `character` value of the extension (`file_ext`).
+#'
+#' @name file_ext
 #' 
+#' @family utilities
+#'
 #' @examples
-#'  file_ext("home/folders.with.dots/stuff/ok.csv")
-#'  path_no_ext("home/folders.with.dots/stuff/ok.csv")
-#'  file_ext(NMME_urls()[[1]])
-#'  file_ext(NMME_urls()[[1]], "=")
+#'    file_ext("home/folders.with.dots/stuff/ok.csv")
+#'    file_ext(NMME_urls()[[1]])
+#'    file_ext(NMME_urls()[[1]], "=")
+#'
+NULL
+
+#' @rdname file_ext
 #'
 #' @export
 #'
@@ -67,87 +134,25 @@ file_ext <- function (path, sep_char = ".") {
 
 }
 
-#' @rdname file_ext
-#'
-#' @export
-#'
-path_no_ext <- function (path, sep_char = ".") {
-  
-  for_sub <- paste0("([^", sep_char, "]+)\\.[[:alnum:]]+$")
-  sub(for_sub, "\\1", path)
-
-}
-
-
-
-#' @title Argument Matching with Defaults
-#'
-#' @description Expansion of \code{\link[base]{match.call}} to include default formal values.
-#'
-#' @param definition A \code{function}, by default the function from which \code{match.call.defaults} is called. 
-#'
-#' @param call An unevaluated \code{call} to the function specified by \code{definition}, as generated by \code{\link[base]{call}}.
-#'
-#' @param expand.dots \code{logical} defining if arguments matching \code{...} in the call be included or left as a \code{...} argument
-#'
-#' @param envir An \code{environment}, from which the \code{...} in \code{call} are retrieved, if any.
-#'
-#' @references 
-#'  DesignLibrary's \code{match.call.defaults} function. \cr
-#'  Stack overflow post reply by Roland. \href{https://bit.ly/2PtEgy1}{URL}
-#'
-#' @examples
-#'  fun <- function(arg1 = "ok", ...) {
-#'    match.call.defaults()
-#'  }
-#'  fun()
-#'  fun(arg2 = "hi")
-#'
-#' @export
-#'
-match.call.defaults <- function (definition  = sys.function(sys.parent()), 
-                                 call        = sys.call(sys.parent()), 
-                                 expand.dots = TRUE, 
-                                 envir       = parent.frame(2L)) {
-
-  call <- match.call(definition  = definition, 
-                     call        = call, 
-                     expand.dots = expand.dots, 
-                     envir       = envir)
-
-  formals <- formals(fun = definition)
-
-  if (expand.dots && "..." %in% names(formals)) {
-
-      formals[["..."]] <- NULL
-
-  }
-
-  diffs <- setdiff(names(formals), names(call))
-
-  for (i in diffs) {
-
-    call[i] <- list(formals[[i]])
-
-  }
-
-  match.call(definition  = definition, 
-             call        = call,
-             expand.dots = TRUE, 
-             envir       = envir)
-
-}
 
 #' @title Create a Named Empty List
 #'
-#' @description Produces a list with \code{NULL} for each element named according to \code{element_names}.
+#' @description Produces a list with `NULL` for each element named according to `element_names`.
 #' 
-#' @param element_names \code{character} vector of names for the elements in the list.
+#' @param element_names `character` vector of names for the elements in the list.
 #'
-#' @return \code{list} with names \code{element_names} and values \code{NULL}.
+#' @return `list` with names `element_names` and values `NULL`.
+#'
+#' @name named_null_list 
+#'
+#' @family utilities
 #'
 #' @examples
-#'  named_null_list(c("a", "b", "c"))
+#'    named_null_list(c("a", "b", "c"))
+#'
+NULL
+
+#' @rdname named_null_list 
 #'
 #' @export
 #'
@@ -163,53 +168,29 @@ named_null_list <- function (element_names = NULL) {
 
 }
 
-#' @title Error if a Function's Request is Deeper than can be Handled
-#'
-#' @description Produces an informative error message when a function that should only be called inside of other functions is called outside of a function (hence the request to the function is too deep for what it can handle).
-#' 
-#' @param lev The number of frames back in the stack where the request needs to be able to be evaluated.
-#'
-#' @return Throws an error if the function is called in a place where it cannot operate and returns \code{NULL} otherwise.
-#'
-#' @examples
-#'  \dontrun{
-#'  # will error:
-#'  # error_if_deep(-10)
-#'  }
-#'  error_if_deep(0)
-#'
-#' @export
-#'
-error_if_deep <- function (lev) {
-
-  lev2     <- lev - 1
-  too_deep <- tryCatch(sys.call(lev2), error = function(x){NA})
-
-  if (!is.null(too_deep) && !is.call(too_deep) && is.na(too_deep)) {
-
-    stop("too deep; function should only be called inside other functions")
-
-  } 
-
-}
-
-
-
 #' @title Update a List's Elements
 #'
 #' @description Update a list with new values for elements
 #'
-#' @param list \code{list} to be updated with \code{...}. 
+#' @param list `list` to be updated with `...`. 
 #'
-#' @param ... Named elements to update in \code{list}
+#' @param ... Named elements to update in `list`
 #'
-#' @return Updated \code{list}.
+#' @return Updated `list`.
+#'
+#' @name update_list
+#'
+#' @family utilities
 #'
 #' @examples
-#'  orig_list <- list(a = 1, b = 3, c = 4)
-#'  update_list(orig_list)
-#'  update_list(orig_list, a = "a")
-#'  update_list(orig_list, a = 10, b = NULL)
+#'    orig_list <- list(a = 1, b = 3, c = 4)
+#'    update_list(orig_list)
+#'    update_list(orig_list, a = "a")
+#'    update_list(orig_list, a = 10, b = NULL)
+#'
+NULL
+
+#' @rdname update_list
 #'
 #' @export
 #'
@@ -264,49 +245,25 @@ update_list <- function (list = list(),
 }
 
 
-
-#' @title Save Data Out to a csv, Appending the File if it Already Exists
-#'
-#' @description Appending a \code{.csv} without re-writing the header of the file. If the doesn't exist, it will be created.
-#'
-#' @param df \code{data.frame} table to be written out.
-#'
-#' @param filename \code{character} filename of existing \code{.csv} to be appended.
-#'
-#' @return \code{NULL}.
-#'
-#' @examples
-#'  \donttest{
-#'   df <- data.frame(x = 1:10)
-#'   fpath <- file.path("xx.csv")
-#'   append_csv(df, fpath)
-#'  }
-#'
-#' @export
-#'
-append_csv <- function(df, filename){
-  
-  write.table(x         = df, 
-              file      = filename, 
-              sep       = ",", 
-              row.names = FALSE, 
-              col.names = !file.exists(filename), 
-              append    = file.exists(filename))
-
-  NULL
-
-}
-
 #' @title Calculate the Fraction of the Year from a Date
 #' 
 #' @description Based on the year in which the date occurred, determine the fraction of the year (foy) for the date (in relation to New Year's Eve in that year). 
 #'
-#' @param dates \code{Date}(s) or \code{Date}-conformable value(s) to be converted to the fraction of the year.
+#' @param dates `Date`(s) or `Date`-conformable value(s) to be converted to the fraction of the year.
 #'
-#' @return \code{numeric} value(s) of the fraction of the year.
+#' @return `numeric` value(s) of the fraction of the year.
+#'
+#' @name foy
+#'
+#' @family utilities
 #'
 #' @examples
-#'  foy(Sys.Date())
+#'    Sys.Date( )
+#'    foy(Sys.Date())
+#'
+NULL
+
+#' @rdname foy
 #'
 #' @export
 #'
@@ -325,302 +282,40 @@ foy <- function (dates = NULL) {
 
 
 
-#' @title Combine a Historical Table and a Cast Table
+#' @title Replace a Value with an Alternative if it is NULL 
 #'
-#' @description A simple utility for combining a table of historical data and a table of cast data that might need to be assigned to either one or the other.
-#'
-#' @param hist_tab,cast_tab A pair of \code{data.frame}s with the same columns including a code{date} column of \code{Date}s, which is used to align them.
-#'
-#' @param winner \code{character} value either {"hist"} or \code{"cast"} to decide who wins any ties. In the typical portalcasting space, this is kept at its default value throughout. In the case of \code{NA} values, this will be overridden to use the entry that has no missing entries.
-#'
-#' @param column \code{character} indicating the column to use for identifying entries in combining.
-#'
-#' @return \code{data.frame} combining \code{hist_tab} and \code{cast_tab}.
-#' 
-#' @examples
-#'  hist_tab <- data.frame(date = seq(Sys.Date(), Sys.Date() + 5, 1), x = 1:6)
-#'  cast_tab <- data.frame(date = seq(Sys.Date() + 5, Sys.Date() + 10, 1), x = 101:106)
-#'  combine_hist_and_cast(hist_tab, cast_tab, "hist") 
-#'  combine_hist_and_cast(hist_tab, cast_tab, "cast")  
-#'
-#' @export
-#'
-combine_hist_and_cast <- function (hist_tab = NULL, 
-                                   cast_tab = NULL, 
-                                   winner   = "hist", 
-                                   column   = "date"){
-  
-  return_if_null(hist_tab, cast_tab)
-  return_if_null(cast_tab, hist_tab)
-
-  hist_tab$x_source <- "hist"
-  cast_tab$x_source <- "cast"
-
-  out    <- rbind(hist_tab, cast_tab)
-  in_out <- rep(TRUE, NROW(out))
-
-  if (!(winner %in% c("hist", "cast"))) {
-
-    stop("`winner` must be `hist` or `cast`")
-
-  }
-
-  dupes  <- names(which(table(out[,column]) > 1))
-  ndupes <- length(dupes) 
-
-  if (ndupes > 0) {
-
-    for (i in 1:ndupes) {
-
-      which_duped      <- which(out$moon == dupes[i])
-      which_duped_hist <- which(as.character(out[,column]) == dupes[i] & out$x_source == "hist")
-      which_duped_cast <- which(as.character(out[,column]) == dupes[i] & out$x_source == "cast") 
-
-      hist_dupe_NA <- any(is.na(out[which_duped_hist, ]))
-      cast_dupe_NA <- any(is.na(out[which_duped_cast, ]))
-
-      if (winner == "hist") {
-
-        if (!hist_dupe_NA) {
-
-          in_out[which_duped_cast] <- FALSE
-
-        } else {
-
-          in_out[which_duped_hist] <- FALSE   
-
-        }
-
-      } else if(winner == "cast") {
-
-        if (!cast_dupe_NA) {
-
-          in_out[which_duped_hist] <- FALSE
-
-        } else {
-
-          in_out[which_duped_cast] <- FALSE   
-
-        }
-
-      }
-
-    }
-
-  }
-
-  out <- out[ , -which(colnames(out) == "x_source")]
-
-  out[in_out, ]
-
-}
-
-#' @title Add a Date to a Table That has the Year, Month, and Day as Components 
-#' 
-#' @description Add a date (as a \code{Date}) column to a table that has the year month and day as components.
-#' 
-#' @param df \code{data.frame} with columns named \code{year}, \code{month}, and \code{day}. 
-#'
-#' @return \code{data.frame} \code{df} with column of \code{Date}s named \code{date} added.
-#'
-#' @examples
-#'  df <- data.frame(year = 2010, month = 2, day = 1:10)
-#'  add_date_from_components(df)
-#'
-#' @export
-#'
-add_date_from_components <- function (df) {
-  
-  yrs     <- df$year
-  mns     <- df$month
-  dys     <- df$day
-  df$date <- as.Date(paste(yrs, mns, dys, sep = "-"))
-  df
-
-}
-
-
-
-
-#' @title Remove any Specific Incomplete Entries as Noted by an NA
-#'
-#' @description Remove any incomplete entries in a table, as determined by the presence of an \code{NA} entry in a specific column (\code{colname}).
-#'
-#' @param df \code{data.frame} table to be written out.
-#'
-#' @param colname A single \code{character} value of the column to use to remove incomplete entries. 
-#'
-#' @return \code{df} without any incomplete entries. 
-#'
-#' @examples
-#'  df <- data.frame(c1 = c(1:9, NA), c2 = 11:20)
-#'  remove_incompletes(df, "c1")
-#'
-#' @export
-#'
-remove_incompletes <- function (df, colname) {
-  
-  incompletes <- which(is.na(df[ , colname]))
-
-  if (length(incompletes) > 0) {
-
-    df <- df[-incompletes, ]
-
-  }
-
-  df
-
-}
-
-#' @title Determine the Depth of a List
-#'
-#' @description Evaluate an input for the depth of its nesting. 
-#'
-#' @details If \code{xlist = list()}, then technically the input value is a list, but is empty (of length \code{0}), so depth is returned as \code{0}.
-#'
-#' @param xlist Focal input \code{list}.
-#'
-#' @return \code{integer} value of the depth of the list.
-#' 
-#' @examples
-#'  list_depth("a")
-#'  list_depth(list())
-#'  list_depth(list("a"))
-#'  list_depth(list(list("a")))
-#'
-#' @export 
-#'
-list_depth <- function (xlist) {
-
-  xx  <- match.call()
-  xxx <- deparse(xx[[2]])
-
-  if(xxx == "list()") {
-
-    0L
-
-  } else if (is.list(xlist)) {
-
-    1L + max(sapply(xlist, list_depth))
-
-  } else {
-
-    0L
-
-  }
-
-}
-
-#' @title If a Value is NULL, Trigger the Parent Function's Return
-#'
-#' @description If the focal input is \code{NULL}, return \code{value} from the parent function. Should only be used within a function.
-#'
-#' @param x Focal input.
-#'
-#' @param value If \code{x} is \code{NULL}, \code{\link{return}} this input from the parent function. 
-#'
-#' @return If \code{x} is not \code{NULL}, \code{NULL} is returned. If \code{x} is \code{NULL}, the result of \code{\link{return}} with \code{value} as its input evaluated within the parent function's environment is returned.
-#' 
-#' @examples
-#'  ff <- function(x = 1, null_return = "hello"){
-#'    return_if_null(x, null_return)
-#'    x
-#'  }
-#'  ff()
-#'  ff(NULL)
-#'
-#' @export 
-#'
-return_if_null <- function (x, value = NULL) {
-
-  if (is.null(x)) {
-
-    do.call(what  = return, 
-            args  = list(value), 
-            envir = sys.frame(-1))
-
-  } 
-
-}
-
-
-#' @title Replace a Value with an Alternative if it is NULL or if it is NA
-#'
-#' @description 
-#'  \code{ifnull} replaces the focal input with the alternative value if it is \code{NULL}. \cr \cr
-#'  \code{ifna} replaces the focal input with the alternative value if it is \code{NA}.
+#' @description Replaces the focal input with the alternative value if it is `NULL`. 
 #'
 #' @param x Focal input.
 #'
 #' @param alt Alternative value.
 #'
-#' @return 
-#'  \code{ifnull}: \code{x} if not \code{NULL}, \code{alt} otherwise. \cr \cr
-#'  \code{ifna}:  \code{x} if not \code{NA}, \code{alt} otherwise. 
+#' @return `x` if not `NULL`, `alt` otherwise. 
 #' 
+#' @name ifnull
+#'
+#' @family utilities
+#'
 #' @examples
-#'  ifnull(NULL, 123)
-#'  ifnull(TRUE, 123)
-#'  ifnull(FALSE, 123)
-#'  ifna(NA, 123)
-#'  ifna(FALSE, 123)
-#'  ifna(NA, NA)
+#'    ifnull(NULL, 123)
+#'    ifnull(TRUE, 123)
+#'    ifnull(FALSE, 123)
 #'
-#' @name alternative values
+NULL
+
+#' @rdname ifnull
 #'
-#' @export 
+#' @export
 #'
 ifnull <- function (x = NULL, alt = NULL) {
 
   if (is.null(x)) {
-
-    x <- alt
-
+    alt
+  } else {
+    x
   }
-
-  x
-
-}
-
-#' @rdname alternative-values
-#'
-#' @export 
-#'
-ifna <- function (x = NULL, alt = NA) {
-
-  ifelse(is.na(x), alt, x)
 
 }
 
 
 
-
-#' @title Add a Newmoon Number Column to a Table that has a Date Column 
-#' 
-#' @description Add a \code{newmoonnumber} column to a table that has a \code{date} column.
-#' 
-#' @param df \code{data.frame} with column of \code{date}s.
-#'
-#' @param moons Moons \code{data.frame}. See \code{\link{prepare_newmoons}}.
-#'
-#' @return \code{data.frame} \code{df} with column of \code{newmoonnumber}s added.
-#'
-#' @export
-#'
-add_newmoonnumbers_from_dates <- function (df, moons = NULL) {
-
-  return_if_null(moons, df)
-
-  if (is.null(df$date)) {
-
-    df <- add_date_from_components(df)
-  }
-
-  df$newmoonnumber <- NA
-  for (i in 1:nrow(df)) {
-    df$newmoonnumber[i] <- max(moons$newmoonnumber[moons$newmoondate <= df$date[i]])
-  }
-
-  df
-
-}

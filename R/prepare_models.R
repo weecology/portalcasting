@@ -1,271 +1,140 @@
-#' @title Read and Write Model Control Lists
+#' @title Prepare Portalcasting Models
 #'
-#' @description Input/output functions for model control lists.
+#' @description Add model controls and scripts to the portalcasting directory and read in controls and model names.
 #'
-#' @param quiet \code{logical} indicator controlling if messages are printed.
+#' @param main `character` value of the name of the main component of the directory tree. 
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree. 
+#' @param models `character` vector of name(s) of model(s) to include.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param new_models_controls `list` of controls for any new models (not in the prefab models) listed in `models` that are to be added to the control list and file.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.
+#' @param controls `list` of controls for the models. 
 #'
-#' @param new_model_controls \code{list} of controls for any new models (not in the prefab models) listed in \code{models} that are to be added to the control list and file.
+#' @return `model_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr 
+#'         `read_models_controls`: `list` of all `models`' control `list`s, from the file defined in [`directory_settings`], [`invisible`][base::invisible]-ly. \cr 
+#'         `write_models_controls`: `list` of `models`' control `list`s, [`invisible`][base::invisible]-ly. \cr 
+#'         `write_models_scripts`: `NULL`, [`invisible`][base::invisible]-ly.
 #'
-#' @return \code{list} of \code{models}' control \code{list}s, \code{\link[base]{invisible}}-ly for \code{write_model_controls}.
-#'  
-#' @name read and write model controls
+#' @name prepare models
 #'
-#' @export
+#' @aliases prep-models models
 #'
-read_model_controls <- function (main     = ".",
-                                 settings = directory_settings()) {
+#' @family content-prep
+#'
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "models")
+#'
+#'    create_dir(main = main1)
+#'    fill_resources(main = main1)
+#'    fill_forecasts(main = main1)
+#'    fill_fits(main = main1)
+#'
+#'    controls <- write_models_controls(main = main1)
+#'    write_models_scripts(main     = main1, 
+#'                       controls = controls)
+#'
+#'    unlink(main1, recursive = TRUE)
+#' }
+#'
+NULL
 
-  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
-
-}
-
-
-#' @rdname read-and-write-model-controls
-#'
-#' @export
-#'
-model_controls <- function (main     = ".",
-                            models   = prefab_models(),
-                            settings = directory_settings()) {
-
-  nmodels <- length(models)
-
-# want to cut this commented part out but need to make sure it will still work fine or figure out where i need to fix it
-#  if (nmodels == 1) {
-#
-#    read_model_controls(main     = main, 
-#                        settings = settings)[[models]]
-#
-#  } else if (nmodels > 1) {
-
-    read_model_controls(main     = main, 
-                        settings = settings)[models]
-
-#  }
-
-}
-
-#' @rdname read-and-write-model-controls
+#' @rdname prepare-models
 #'
 #' @export
 #'
-write_model_controls <- function (main               = ".",
-                                  new_model_controls = NULL,
-                                  models             = prefab_models(),
-                                  settings           = directory_settings(),
-                                  quiet              = FALSE) {
+write_models_controls <- function (main                = ".",
+                                   new_models_controls = NULL,
+                                   models              = prefab_models( )) {
 
-  model_controls <- prefab_model_controls()
+  settings <- read_directory_settings(main = main)
 
-  nmodels     <- length(model_controls)
-  nnew_models <- length(new_model_controls)
+  messageq("Writing models controls ...", quiet = settings$quiet)
 
-  if (nnew_models > 0) {
+  models_controls <- c(prefab_models_controls( ), new_models_controls)[models]
+  nmodels         <- length(models_controls)
 
-    for (i in 1:nnew_models) {
+  for (i in 1:nmodels) {
 
-      model_controls <- update_list(model_controls, 
-                                    x = new_model_controls[[i]])
+    if(!is.null(models_controls[[i]]$fit$model_file)) {
 
-      names(model_controls)[nmodels + i] <- names(new_model_controls)[i]
+      models_controls[[i]]$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, models_controls[[i]]$fit$model_file), "'")
+
+    } else {
+
+      models_controls[[i]]$fit$full_model_file <- NULL
 
     }
 
   }
 
-  write_yaml(x    = model_controls,
-             file = file.path(main, settings$subdirectories$models, settings$files$model_controls))
+  write_yaml(x    = models_controls,
+             file = models_controls_path(main = main))
 
-  invisible(model_controls)
+  messageq(" ... complete.\n", quiet = settings$quiet)
 
-}
-
-
-
-
-
-
-#' @title Write Model Function Script into Directory
-#'
-#' @description Writes a model's function as a script into the defined directory for use in forecasting. \cr \cr \code{model} can be input as a \code{character} string, symbol (backquoted name), or \code{function}, as \code{\link{match.fun}}
-#'
-#' @param main \code{character} value of the name of the main component of the directory tree.
-#'
-#' @param model \code{character} name of a model function, the \code{function} itself, or its symbol (backquoted name).
-#'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
-#'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
-#'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information (and thus just the tidy messages).
-#'
-#' @param datasets \code{character} vector of dataset names for the model. 
-#'
-#' @return \code{write_mode} \code{\link{write}}s the model script out and returns \code{NULL}, \code{\link[base]{invisible}}-ly.. \cr \cr
-#'  \code{model_template}: \code{character}-valued text for a model script to be housed in the model directory. \cr \cr
-#'  \code{control_list_arg}: \code{character}-valued text for part of a model script. \cr \cr
-#'
-#' @examples
-#'  \donttest{
-#'   create_dir()
-#'   write_model("AutoArima")
-#'   model_template()
-#'   control_list_arg(runjags_control(nchains = 3), "runjags_control")
-#'  }
-#'
-#' @export
-#'
-write_model <- function (main     = ".", 
-                         model    = NULL, 
-                         settings = directory_settings(), 
-                         quiet    = FALSE, 
-                         verbose  = FALSE) {
-
-
-  return_if_null(model)
-  
-  control_model   <- tryCatch(prefab_model_controls()[[model]],
-                              error = function(x){NULL})
-  datasets <- control_model$datasets
-
-  if (is.null(datasets)) {
-
-    messageq("   ~datasets = NULL for ", model, quiet = quiet)
-    datasets <- prefab_datasets()
-
-  }
-
-  model_file <- paste0(model, ".R")
-  mod_path   <- file.path(main, settings$subdirectories$models, model_file)
-
-
-  mod_template <- model_template(main     = main, 
-                                 model    = model, 
-                                 datasets = prefab_datasets(),
-                                 settings = directory_settings(), 
-                                 quiet    = FALSE, 
-                                 verbose  = FALSE)
-
-  if (file.exists(mod_path) ) {#& settings$overwrite) {
-
-    write(mod_template, mod_path)
-    messageq("  -", ifelse(verbose, "Updating ", ""), model, quiet = quiet)
-
-
-  } else if (!file.exists(mod_path)) {
-
-    write(mod_template, mod_path)
-    messageq("  -", ifelse(verbose, "Adding ", ""), model, quiet = quiet)
-
-  } 
-
-  invisible()
+  invisible(models_controls)
 
 }
 
-#' @rdname write_model
+
+
+#' @rdname prepare-models
 #'
 #' @export
 #'
-model_template <- function (main     = ".", 
-                            model    = NULL, 
-                            datasets = NULL,
-                            settings = directory_settings(), 
-                            quiet    = FALSE, 
-                            verbose  = FALSE) {
+write_models_scripts <- function (main     = ".",
+                                  controls = prefab_models_controls( )) {
 
-  return_if_null(model)
+  settings <- read_directory_settings(main = main)
 
-  control_model   <- tryCatch(prefab_model_controls()[[model]],
-                              error = function(x){NULL})
+  files  <- unlist(mapply(getElement, mapply(getElement, controls, "fit"), "model_file"))
 
-  datasets <- control_model$datasets
-  nds             <- length(datasets)
-  
-  return_if_null(datasets)
+  nfiles <- length(files)
+  if (nfiles > 0) {
 
+    messageq("Writing models script files ...", quiet = settings$quiet)
 
-  main_arg     <- paste0(', main = "', main, '"')
-  quiet_arg    <- paste0(', quiet = ', quiet)
-  verbose_arg  <- paste0(', verbose = ', verbose)
-  ds_args      <- paste0('dataset = "', datasets, '"')
-  settings_arg <- paste0(', settings = directory_settings()')
+    for (i in 1:nfiles) {
 
-  additional_args <- NULL
+      messageq("   - ", names(files)[i], quiet = !settings$verbose)
 
-  nadditional_args <- length(control_model$args)
-
-  if (nadditional_args > 0) {
-
-    for (i in 1:nadditional_args) {
-
-     # additional_args <- paste0(additional_args, ", ", names(control_model$args)[i], " = ", control_model$args[i])
-
+      from_path <- system.file(...     = "extdata", 
+                               ...     = files[i], 
+                               package = "portalcasting")
+      to_path   <- file.path(main, settings$subdirectories$models, files[i])
+      file.copy(from      = from_path,
+                to        = to_path, 
+                overwrite = TRUE)
     }
 
-  }
-  
-
-  out <- NULL
-  for(i in 1:nds){
-
-    resp <- paste0('cast_', datasets[i])
-
-    model_args <- paste0(ds_args[i], main_arg, settings_arg, quiet_arg, verbose_arg, additional_args)
-
-    model_fun  <- paste0(model, '(', model_args, ');')
-    model_line <- paste0(resp, ' <- ', model_fun)
-    save_args  <- paste0(resp, main_arg, settings_arg, quiet_arg)
-    save_fun   <- paste0('save_cast_output(', save_args, ');')
-    save_line  <- save_fun
-    newout     <- c(model_line, save_line)
-    out        <- c(out, newout)
+    messageq(" ... complete.\n", quiet = settings$quiet)
 
   }
 
-  out
+  invisible( )
+
+}
+
+#' @name prepare-models
+#'
+#' @export
+#'
+read_models_controls <- function (main = ".") {
+
+  settings <- read_directory_settings(main = main)
+  read_yaml(file = file.path(main, settings$subdirectories$models, settings$files$models_controls))
 
 }
 
 
-#' @title Create a covariate model list
-#'
-#' @description Convenience function for creating covariate model \code{list}s.
-#'
-#' @param model \code{character} name for covariate models. Currently only \code{"pevGARCH"} is supported.
-#'
-#' @return \code{list} of covariate model structures.
-#'
-#' @examples
-#'  covariate_models()
+#' @rdname prepare-models
 #'
 #' @export
 #'
-covariate_models <- function (model = "pevGARCH") {
+models_controls <- function (main     = ".",
+                             models   = prefab_models( )) {
 
-  out <- NULL
-  if (model == "pevGARCH") {
-
-    out <- list(c("maxtemp", "meantemp", "precipitation", "ndvi"),
-                c("maxtemp", "mintemp", "precipitation", "ndvi"),
-                c("mintemp", "maxtemp", "meantemp", "precipitation"),
-                c("precipitation", "ndvi"),
-                c("mintemp", "ndvi"),
-                c("mintemp"),
-                c("maxtemp"),
-                c("meantemp"),
-                c("precipitation"),
-                c("ndvi"),
-                c(NULL))
-
-  }
-
-  out
+  read_models_controls(main = main)[models]
 
 }

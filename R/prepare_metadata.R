@@ -1,137 +1,103 @@
 #' @title Prepare a Model-Running Metadata List
 #'
-#' @description Sets up the metadata used for forecasting, in particular the matching of time period across the datasets. This should always be run after \code{\link{prepare_newmoons}}, \code{\link{prepare_rodents}}, and \code{\link{prepare_covariates}} but before any model is run.
+#' @description Sets up the metadata list used for forecasting, in particular the matching of time period across the datasets, according to the [`directory_settings`].
 #'
-#' @param main \code{character} value of the name of the main component of the directory tree.
+#' @param main `character` value of the name of the main component of the directory tree.
 #'
-#' @param models \code{character} vector of name(s) of model(s) to include.
+#' @param datasets `character` vector of name(s) of dataset(s) to include.
 #'
-#' @param datasets \code{character} vector of name(s) of dataset(s) to include.
+#' @param new_datasets_controls `list` of controls for any new datasets (not in the prefab datasets) listed in `datasets` that are to be added to the control list and file.
 #'
-#' @param settings \code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}} that should generally not need to be altered.
+#' @return `list` of forecasting metadata, which is also saved out as a YAML file (`.yaml`) if desired.
 #'
-#' @param quiet \code{logical} indicator if progress messages should be quieted.
+#' @name prepare metadata
 #'
-#' @param verbose \code{logical} indicator of whether or not to print out all of the information or not (and thus just the tidy messages).
+#' @aliases prep-metadata metadata
 #'
-#' @param cast_date \code{Date} from which future is defined (the origin of the cast). In the recurring forecasting, is set to today's date using \code{\link{Sys.Date}}.
+#' @family content-prep
 #'
-#' @param start_moon \code{integer} (or integer \code{numeric}) newmoon number of the first sample to be included. Default value is \code{217}, corresponding to \code{1995-01-01}.
+#' @examples
+#' \dontrun{
+#'    main1 <- file.path(tempdir(), "metadata")
 #'
-#' @param end_moon \code{integer} (or integer \code{numeric}) newmoon number of the last sample to be included. Default value is \code{NULL}, which equates to the most recently included sample. 
+#'    create_dir(main = main1)
+#'    fill_resources(main = main1)
+#'    fill_forecasts(main = main1)
+#'    fill_fits(main = main1)
+#'    fill_models(main = main1)
 #'
-#' @param lead_time \code{integer} (or integer \code{numeric}) value for the number of timesteps forward a cast will cover.
+#'    prepare_newmoons(main   = main1)
+#'    prepare_rodents(main    = main1) 
+#'    prepare_covariates(main = main1)
+#'    prepare_metadata(main   = main1)
 #'
-#' @param confidence_level \code{numeric} confidence level used in summarizing model output. Must be between \code{0} and \code{1}.
+#'    unlink(main1, recursive = TRUE)
+#' }
 #'
-#' @return \code{list} of casting metadata, which is also saved out as a YAML file (\code{.yaml}) if desired.
-#' 
+NULL
+
+#' @rdname prepare-metadata
+#'
 #' @export
 #'
-prepare_metadata <- function (main             = ".",
-                              models           = prefab_models(), 
-                              datasets         = prefab_datasets(),
-                              end_moon         = NULL, 
-                              start_moon       = 217, 
-                              lead_time        = 12,
-                              cast_date        = Sys.Date(), 
-                              confidence_level = 0.95,
-                              settings         = directory_settings(), 
-                              quiet            = FALSE, 
-                              verbose          = FALSE) {
+prepare_metadata <- function (main                 = ".",
+                              datasets             = prefab_datasets( ),
+                              new_datasets_controls = NULL) {
+
+  settings <- read_directory_settings(main = main)
+
+  messageq("  - metadata", quiet = settings$quiet)
+
+  config <- read_directory_configuration(main = main)
+  
+  newmoons <- read_newmoons(main = main)
+  datasets_controls_list <- datasets_controls(main     = main, 
+                                              datasets = datasets)
+
+  historic_start_newmoonnumber <- min(newmoons$newmoonnumber[newmoons$newmoondate >= settings$time$timeseries_start])
+  historic_end_newmoonnumber   <- max(newmoons$newmoonnumber[newmoons$newmoondate < settings$time$origin])
+  historic_newmoonnumbers      <- historic_start_newmoonnumber:historic_end_newmoonnumber
+  forecast_start_newmoonnumber <- min(newmoons$newmoonnumber[newmoons$newmoondate >= settings$time$origin])
+  forecast_end_newmoonnumber   <- max(newmoons$newmoonnumber[newmoons$newmoondate < settings$time$forecast_end_buffered])
+  forecast_newmoonnumbers      <- forecast_start_newmoonnumber:forecast_end_newmoonnumber
+  forecast_dates               <- as.Date(newmoons$newmoondate[match(forecast_newmoonnumbers, newmoons$newmoonnumber)])
+  forecast_months              <- format(forecast_dates, "%m")
+  forecast_years               <- format(forecast_dates, "%Y")
+  lead_time_newmoons           <- length(forecast_newmoonnumbers)
+
+  forecast_meta  <- read_forecasts_metadata(main = main)
+  forecast_group <- max(c(0, forecast_meta$forecast_group), na.rm = TRUE) + 1
 
 
-  moons      <- read_newmoons(main     = main, 
-                           settings = settings)
-  rodents    <- read_rodents(main     = main, 
-                             datasets = datasets, 
-                             settings = settings)
-  covariates <- read_covariates(main     = main, 
-                                settings = settings)
-
-  dataset_controls_list <- dataset_controls(main     = main, 
-                                            settings = settings, 
-                                            datasets = datasets)
-
-
-  messageq("  - metadata file", quiet = quiet)
-
-   
-  which_last_moon <- max(which(moons$newmoondate < cast_date))
-  last_moon       <- moons$newmoonnumber[which_last_moon]
-  end_moon        <- ifnull(end_moon, last_moon)
-
-
-  ncontrols_r      <- length(rodents)
-  last_rodent_moon <- 0
-
-  for (i in 1:ncontrols_r) {
-
-    rodent_moon_i      <- rodents[[i]]$newmoonnumber
-    last_rodent_moon_i <- max(rodent_moon_i[rodent_moon_i <= end_moon], na.rm = TRUE)
-    last_rodent_moon   <- max(c(last_rodent_moon, last_rodent_moon_i, na.rm = TRUE))
-
-  }
-
-  last_covar_moon        <- max(covariates$newmoonnumber[covariates$source == "historic"], na.rm = TRUE)
-  first_cast_covar_moon  <- last_covar_moon + 1
-  first_cast_rodent_moon <- last_rodent_moon + 1
-  last_cast_moon         <- end_moon + lead_time
-  rodent_cast_moons      <- first_cast_rodent_moon:last_cast_moon
-
-  which_r_nms        <- which(moons$newmoonnumber%in% rodent_cast_moons)
-  rodent_nm_dates    <- as.Date(moons$newmoondate[which_r_nms])
-  rodent_cast_months <- as.numeric(format(rodent_nm_dates, "%m"))
-  rodent_cast_years  <- as.numeric(format(rodent_nm_dates, "%Y"))
-
-  covar_cast_moons  <- first_cast_covar_moon:last_cast_moon
-  which_c_nms       <- which(moons$newmoonnumber %in% covar_cast_moons)
-  covar_nm_dates    <- as.Date(moons$newmoondate[which_c_nms])
-  covar_cast_months <- as.numeric(format(covar_nm_dates, "%m"))
-  covar_cast_years  <- as.numeric(format(covar_nm_dates, "%Y"))
-
-  cast_type  <- ifelse(end_moon == last_moon, "forecast", "hindcast")
-  cast_meta  <- read_casts_metadata(main     = main, 
-                                    settings = settings,
-                                    quiet    = quiet)
-  cast_group <- max(c(0, cast_meta$cast_group)) + 1
-
-
-
-
-
-
-  covariates_origin_date <- max(covariates$date[covariates$source == "historic"])
-
-  config <- read_directory_configuration(main     = main, 
-                                         settings = settings,
-                                         quiet    = quiet)
-
-
-  out <- list(cast_group              = cast_group,
-              cast_type               = cast_type,
-              models                  = models, 
-              datasets                = datasets, 
-              dataset_controls        = dataset_controls_list,
-              time                    = list(start_moon            = start_moon,
-                                             end_moon              = end_moon,
-                                             last_moon             = last_moon,
-                                             cast_date             = as.character(cast_date), 
-                                             lead_time             = lead_time,
-                                             covariate_cast_moons  = covar_cast_moons, 
-                                             covariate_cast_months = covar_cast_months, 
-                                             covariate_cast_years  = covar_cast_years,
-                                             rodent_cast_moons     = rodent_cast_moons, 
-                                             rodent_cast_months    = rodent_cast_months, 
-                                             rodent_cast_years     = rodent_cast_years),
-              confidence_level        = confidence_level,
+  out <- list(time                    = list(timeseries_start             = as.character(settings$time$timeseries_start),
+                                             timeseries_start_lagged      = as.character(settings$time$timeseries_start_lagged),
+                                             forecast_end                 = as.character(settings$time$forecast_end),
+                                             forecast_end_buffered        = as.character(settings$time$forecast_end_buffered),
+                                             lead_time                    = settings$time$lead_time,
+                                             max_lag                      = settings$time$max_lag,
+                                             lag_buffer                   = settings$time$lag_buffer,
+                                             forecast_date                = as.character(settings$time$forecast_date),
+                                             origin                       = as.character(settings$time$origin),
+                                             historic_start_newmoonnumber = historic_start_newmoonnumber,
+                                             historic_end_newmoonnumber   = historic_end_newmoonnumber,
+                                             historic_newmoonnumbers      = historic_newmoonnumbers,
+                                             forecast_start_newmoonnumber = forecast_start_newmoonnumber,
+                                             forecast_end_newmoonnumber   = forecast_end_newmoonnumber,
+                                             forecast_newmoonnumbers      = forecast_newmoonnumbers,
+                                             forecast_years               = forecast_years,
+                                             forecast_months              = forecast_months,
+                                             lead_time_newmoons           = lead_time_newmoons),
+              forecast_group          = forecast_group,
+              datasets_controls       = datasets_controls_list,
+              confidence_level        = settings$confidence_level,
+              nsamples                = settings$nsamples,
               directory_configuration = config)
 
-  write_data(x       = out, 
+  write_data(x         = out, 
              main      = main, 
              save      = settings$save, 
              filename  = settings$files$metadata, 
-#             overwrite = settings$overwrite, 
-             quiet     = !verbose)
+             overwrite = settings$overwrite, 
+             quiet     = !settings$verbose)
 
 }

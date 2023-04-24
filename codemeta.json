@@ -1,0 +1,420 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "portalcasting",
+  "description": "Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> as well as support for exploring and developing new models in sandbox environments.",
+  "name": "portalcasting: Functions Used in Predicting Portal Rodent Dynamics",
+  "relatedLink": "https://weecology.github.io/portalcasting/",
+  "codeRepository": "https://github.com/weecology/portalcasting",
+  "issueTracker": "https://github.com/weecology/portalcasting/issues",
+  "license": "https://spdx.org/licenses/MIT",
+  "version": "0.51.0",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.2.2 (2022-10-31 ucrt)",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": ["Juniper", "L."],
+      "familyName": "Simonis",
+      "email": "juniper.simonis@weecology.org",
+      "@id": "https://orcid.org/0000-0001-9798-0460"
+    },
+    {
+      "@type": "Person",
+      "givenName": ["Glenda", "M."],
+      "familyName": "Yenni",
+      "@id": "https://orcid.org/0000-0001-6969-1848"
+    },
+    {
+      "@type": "Person",
+      "givenName": ["Ellen", "K."],
+      "familyName": "Bledsoe",
+      "@id": "https://orcid.org/0000-0002-3629-7235"
+    },
+    {
+      "@type": "Person",
+      "givenName": ["Erica", "M."],
+      "familyName": "Christensen",
+      "@id": "https://orcid.org/0000-0002-5635-2502"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Henry",
+      "familyName": "Senyondo",
+      "@id": "https://orcid.org/0000-0001-7105-5808"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Hao",
+      "familyName": "Ye",
+      "@id": "https://orcid.org/0000-0002-8630-1458"
+    },
+    {
+      "@type": "Person",
+      "givenName": ["Ethan", "P."],
+      "familyName": "White",
+      "@id": "https://orcid.org/0000-0001-6728-7745"
+    },
+    {
+      "@type": "Person",
+      "givenName": ["S. K.", "Morgan"],
+      "familyName": "Ernest",
+      "@id": "https://orcid.org/0000-0002-6026-8530"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": ["Juniper", "L."],
+      "familyName": "Simonis",
+      "email": "juniper.simonis@weecology.org",
+      "@id": "https://orcid.org/0000-0001-9798-0460"
+    }
+  ],
+  "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "pkgdown",
+      "name": "pkgdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pkgdown"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "testthat",
+      "name": "testthat",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=testthat"
+    }
+  ],
+  "softwareRequirements": {
+    "1": {
+      "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 3.5.0"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
+      "identifier": "forecast",
+      "name": "forecast",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=forecast"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "hypergeo",
+      "name": "hypergeo",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=hypergeo"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "tscount",
+      "name": "tscount",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tscount"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "arrow",
+      "name": "arrow",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=arrow"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "bslib",
+      "name": "bslib",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=bslib"
+    },
+    "7": {
+      "@type": "SoftwareApplication",
+      "identifier": "coda",
+      "name": "coda",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=coda"
+    },
+    "8": {
+      "@type": "SoftwareApplication",
+      "identifier": "english",
+      "name": "english",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=english"
+    },
+    "9": {
+      "@type": "SoftwareApplication",
+      "identifier": "htmltools",
+      "name": "htmltools",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=htmltools"
+    },
+    "10": {
+      "@type": "SoftwareApplication",
+      "identifier": "httr",
+      "name": "httr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=httr"
+    },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "jsonlite",
+      "name": "jsonlite",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=jsonlite"
+    },
+    "12": {
+      "@type": "SoftwareApplication",
+      "identifier": "knitr",
+      "name": "knitr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=knitr"
+    },
+    "13": {
+      "@type": "SoftwareApplication",
+      "identifier": "markdown",
+      "name": "markdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=markdown"
+    },
+    "14": {
+      "@type": "SoftwareApplication",
+      "identifier": "portalr",
+      "name": "portalr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=portalr"
+    },
+    "15": {
+      "@type": "SoftwareApplication",
+      "identifier": "rmarkdown",
+      "name": "rmarkdown",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rmarkdown"
+    },
+    "16": {
+      "@type": "SoftwareApplication",
+      "identifier": "runjags",
+      "name": "runjags",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=runjags"
+    },
+    "17": {
+      "@type": "SoftwareApplication",
+      "identifier": "scoringRules",
+      "name": "scoringRules",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=scoringRules"
+    },
+    "18": {
+      "@type": "SoftwareApplication",
+      "identifier": "shiny",
+      "name": "shiny",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=shiny"
+    },
+    "19": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    "20": {
+      "@type": "SoftwareApplication",
+      "identifier": "viridis",
+      "name": "viridis",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=viridis"
+    },
+    "21": {
+      "@type": "SoftwareApplication",
+      "identifier": "yaml",
+      "name": "yaml",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=yaml"
+    },
+    "SystemRequirements": "JAGS 4.x.y; libcurl; gsl"
+  },
+  "fileSize": "1602.8KB",
+  "citation": [
+    {
+      "@type": "ScholarlyArticle",
+      "datePublished": "2022",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": ["Juniper", "L."],
+          "familyName": "Simonis"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Glenda", "M."],
+          "familyName": "Yenni"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Ellen", "K."],
+          "familyName": "Bledsoe"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Erica", "M."],
+          "familyName": "Christensen"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Henry",
+          "familyName": "Senyondo"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Shawn", "D."],
+          "familyName": "Taylor"
+        },
+        {
+          "@type": "Person",
+          "givenName": "Hao",
+          "familyName": "Ye"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["Ethan", "P."],
+          "familyName": "White"
+        },
+        {
+          "@type": "Person",
+          "givenName": ["S.", "K.", "Morgan"],
+          "familyName": "Ernest"
+        }
+      ],
+      "name": "portalcasting: Supporting automated forecasting of rodent populations",
+      "identifier": "10.21105/joss.03220",
+      "pagination": "3220",
+      "@id": "https://doi.org/10.21105/joss.03220",
+      "sameAs": "https://doi.org/10.21105/joss.03220",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "72",
+        "datePublished": "2022",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "7",
+          "name": "Journal of Open Source Software"
+        }
+      }
+    }
+  ],
+  "releaseNotes": "https://github.com/weecology/portalcasting/blob/master/NEWS.md",
+  "readme": "https://github.com/weecology/portalcasting/blob/main/README.md",
+  "contIntegration": ["https://github.com/weecology/portalcasting/actions/workflows/check-release.yaml", "https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml", "https://codecov.io/github/weecology/portalcasting/branch/main"],
+  "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html", "https://www.repostatus.org/#active"],
+  "keywords": ["ecology", "forecasting", "portal", "r", "r-package", "r-stats", "reproducible-research", "shiny", "workflow"]
+}

@@ -2,8 +2,10 @@
 % Please edit documentation in R/fill_dir.R
 \name{directory filling}
 \alias{directory filling}
+\alias{fill}
 \alias{fill_dir}
 \alias{fill_data}
+\alias{fill_app}
 \alias{fill_resources}
 \alias{fill_forecasts}
 \alias{fill_fits}
@@ -14,93 +16,96 @@ fill_dir(
   main = ".",
   models = prefab_models(),
   datasets = prefab_datasets(),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_datasets_controls = NULL,
+  new_models_controls = NULL
 )
 
 fill_data(
   main = ".",
-  models = prefab_models(),
   datasets = prefab_datasets(),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
+  new_datasets_controls = NULL
 )
 
-fill_resources(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_app(main = ".")
 
-fill_forecasts(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_resources(main = ".")
 
-fill_fits(
-  main = ".",
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_forecasts(main = ".")
 
-fill_models(
-  main = ".",
-  models = prefab_models(),
-  settings = directory_settings(),
-  quiet = FALSE,
-  verbose = FALSE
-)
+fill_fits(main = ".")
+
+fill_models(main = ".", models = prefab_models(), new_models_controls = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}
 
-\item{models}{\code{character} vector of name(s) of model(s) to include.}
+\item{models}{\code{character} vector of name(s) of model(s) to include. Defaults to \code{\link{prefab_models}}. If controls are provided in \code{new_models_controls}, the model still needs to be named here to be included.}
 
-\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created.}
+\item{datasets}{\code{character} vector of name(s) of rodent dataset(s) to be created. Defaults to \code{\link{prefab_datasets}}. If controls are provided in \code{new_datasets_controls}, the dataset still needs to be named here to be included.}
 
-\item{settings}{\code{list} of controls for the directory, with defaults set in \code{\link{directory_settings}}.}
+\item{new_datasets_controls}{Optional named \code{list} of controls for new datasets. See \code{\link{datasets_controls}}.}
 
-\item{quiet}{\code{logical} indicator if progress messages should be quieted.}
-
-\item{verbose}{\code{logical} indicator of whether or not to print out all of the information or just the tidy messages.}
+\item{new_models_controls}{Optional named \code{list} of controls for new models. See \code{\link{models_controls}}.}
 }
 \value{
-\code{NULL}, \code{\link[base]{invisible}}-ly.
+\code{NULL}, \code{\link[base:invisible]{invisible}}-ly.
 }
 \description{
-Fill the directory with components including \enumerate{
-  \item{Resources (\code{\link{fill_resources}}): \itemize{
-    \item{raw data (\code{\link[portalr]{download_observations}})}
-    \item{directory archive (\code{\link{download_archive}})}
-    \item{climate forecasts (\code{\link{download_climate_forecasts}})}}}
-  \item{Output: \itemize{
-    \item{forecasts (\code{\link{fill_forecasts}})}
-    \item{model fits (\code{\link{fill_fits}})}}}
-  \item{Data (\code{\link{fill_data}}):  \itemize{
-    \item{rodent datasets (\code{\link{prepare_rodents}})}
-    \item{temporal (lunar) data (\code{\link{prepare_newmoons}})}
-    \item{covariates (\code{\link{prepare_covariates}})}
-    \item{metadata (\code{\link{prepare_metadata}})}}}
-  \item{Models (\code{\link{fill_models}})}
- }
+Fill the directory with components including:
+* Resources (\code{\link{fill_resources}})
+* raw data (\code{\link[portalr:download_observations]{download_observations}})
+* directory archive (\code{\link{download_archive}})
+* climate forecasts (\code{\link{download_climate_forecasts}})
+* Output
+* forecasts (\code{\link{fill_forecasts}})
+* model fits (\code{\link{fill_fits}})
+* Data (\code{\link{fill_data}})
+* rodent datasets (\code{\link{prepare_rodents}})
+* temporal (lunar) data (\code{\link{prepare_newmoons}})
+* covariates (\code{\link{prepare_covariates}})
+* metadata (\code{\link{prepare_metadata}})
+* Models (\code{\link{fill_models}})
+* models controls (\code{\link{write_models_controls}})
+* models scripts (if needed) (\code{\link{write_models_scripts}})
+* Web Application (\code{\link{fill_app}})
+* transfers app files from package to main
+* renders (\code{\link[rmarkdown:render]{render}}) and sources (\code{\link[base:source]{source}}) files into HTML. \cr \cr
+Additionally, new models and datasets can be added to the directory at filling using the optional arguments \code{new_models_controls} and \code{new_datasets_controls}, but the model or dataset must still be listed in its respective main argument, as well.
 }
 \examples{
- \donttest{
+\dontrun{
+   main1 <- file.path(tempdir(), "fill_standard")
+   main2 <- file.path(tempdir(), "fill_production")
 
-  create_dir("./portalcasting")
-  fill_dir("./portalcasting")
+   create_dir(main = main1)
+   fill_dir(main = main1)
 
-  create_dir("./pc")
-  fill_resources("./pc")
-  fill_forecasts("./pc")
-  fill_fits("./pc")
-  fill_models("./pc")
- }
+   create_dir(main = main2, settings = production_settings())
+   fill_resources(main = main2)
+   fill_forecasts(main = main2)
+   fill_fits(main = main2)
+   fill_models(main = main2)
+   fill_data(main = main2)
+   fill_app(main = main2)
+
+   unlink(main1, recursive = TRUE)
+   unlink(main2, recursive = TRUE)
+}
 
 }
+\seealso{
+Directory orchestration functions:
+\code{\link{directory configuration file}},
+\code{\link{directory creation}},
+\code{\link{directory paths}},
+\code{\link{directory settings}}
+
+Content preparation functions:
+\code{\link{prepare covariates}},
+\code{\link{prepare metadata}},
+\code{\link{prepare models}},
+\code{\link{prepare newmoons}},
+\code{\link{prepare rodents}}
+}
+\concept{content-prep}
+\concept{orchestration}
