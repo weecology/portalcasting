@@ -24,6 +24,6 @@
 #'
 #' @keywords internal
 #'
-NULL
+"_PACKAGE"
 
 utils::globalVariables(c("main", "global"))
