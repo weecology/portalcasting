@@ -594,6 +594,7 @@ write_rodents_profiles_tab_html <- function (main = ".") {
      '\n</tbody>
      </table>
      </body>
+     <br>
      ', collapse = '\n')
 
   write(x    = html_out, 
