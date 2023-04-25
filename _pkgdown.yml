@@ -4,7 +4,10 @@ development:
   mode: auto
 
 template:
-  bootstrap: 5
+  bootstrap: 5         
+
+home:
+  strip_header: true
   
 news:
   releases:
