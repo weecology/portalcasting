@@ -8,8 +8,8 @@ template:
 
 news:
   releases:
-  - text: "Version 0.50.0"
-    href: https://github.com/weecology/portalcasting/releases/tag/v0.50.0
+  - text: "Version 0.51.0"
+    href: https://github.com/weecology/portalcasting/releases/tag/v0.51.0
 
 home:
   strip_header: true
