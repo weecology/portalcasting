@@ -7,18 +7,22 @@
 \alias{prefab-rodents-datasets}
 \alias{prefab_datasets}
 \alias{prefab_datasets_controls}
+\alias{prefab_species}
 \title{Provide the Names or Controls for the Prefabricated Rodent Datasets}
 \usage{
 prefab_datasets()
 
 prefab_datasets_controls()
+
+prefab_species(main = ".")
 }
 \value{
 \code{prefab_datasets}: \code{character} vector of dataset names. \cr
-\code{prefab_datasets_controls}: \code{list} vector of dataset controls.
+\code{prefab_datasets_controls}: \code{list} of dataset controls. \cr
+\code{prefab_species}: \code{character} vector of species abbreviations.
 }
 \description{
-Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or a \code{list} of their controls
+Create a \code{character} vector of the names of the pre-fabricated (prefab) rodent datasets or species or a \code{list} of their controls
 }
 \examples{
   prefab_datasets_controls( )

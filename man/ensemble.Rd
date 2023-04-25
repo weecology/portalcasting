@@ -34,7 +34,7 @@ ensemble_forecasts(
 
 \item{dataset}{\code{character} value of the rodent data set to include Default value is \code{NULL}, which equates to the first data set encountered.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{forecasting_species}} called by \code{\link{prefab_species}}.}
 }
 \value{
 \code{data.frame} of ensembled forecasts.

@@ -26,7 +26,7 @@
 #'
 #' @param newmoonnumber `integer` (or integer `numeric`) newmoon number for the plot. 
 #'
-#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`portalr::forecasting_species`].
+#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][`portalr::forecasting_species`] called by [`prefab_species`].
 #'
 #' @param main `character` value of the name of the main component of the directory tree.
 #'

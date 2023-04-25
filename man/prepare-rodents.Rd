@@ -39,7 +39,7 @@ prepare_dataset(
   min_traps = 1,
   min_plots = 24,
   effort = TRUE,
-  species = forecasting_species(),
+  species = prefab_species(main = main),
   total = TRUE,
   save = TRUE
 )

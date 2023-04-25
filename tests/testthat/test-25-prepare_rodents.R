@@ -49,6 +49,15 @@ test_that(desc = "prefab_datasets names the proper sets", {
 
 })
 
+test_that(desc = "prefab_rodents names the proper species", {
+
+  ps1 <- prefab_species(main = main2)
+
+  expect_is(ps1, "character")
+  expect_equal(sort(ps1), c("BA", "DM", "DO", "DS", "NA", "OL", "OT", "PB", "PE", "PF", "PH", "PL", "PM", "PP", "RF", "RM", "RO", "SF", "SH", "SO", "total"))
+
+})
+
 
 
 

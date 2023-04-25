@@ -62,7 +62,7 @@ plot_covariates(main = ".", to_plot = "ndvi")
 
 \item{forecasts_evaluations}{\code{data.frame} of forecast evaluations, as returned from \code{\link{evaluate_forecasts}}. If \code{NULL} (default), will try to read via \code{\link{read_forecasts_evaluations}}.}
 
-\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{portalr::forecasting_species}}.}
+\item{species}{\code{character} vector of the species code(s) or \code{"total"} for the total across species) to be plotted \code{NULL} translates to the species defined by \code{\link[portalr:rodent_species]{forecasting_species}} called by \code{\link{prefab_species}}.}
 
 \item{forecasts_metadata}{\code{data.frame} of forecast metadata. If \code{NULL} (default), will try to read via \code{\link{read_forecasts_metadata}}.}
 

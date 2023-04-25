@@ -61,7 +61,7 @@ evaluate_forecasts <- function (main         = ".",
   forecasts_to_evaluate <- select_forecasts(main          = main, 
                                             forecasts_ids = forecasts_ids)
 
-  forecasts_ids  <- forecasts_to_evaluate$forecast_id
+  forecasts_ids <- forecasts_to_evaluate$forecast_id
   nforecast_ids <- length(forecasts_ids)
 
   if (NROW(forecasts_to_evaluate) == 0) {
@@ -106,6 +106,8 @@ evaluate_forecasts <- function (main         = ".",
   messageq("Evaluating forecasts ...\n", quiet = settings$quiet)
 
   for (i in 1:nselected_forecasts_ids) {
+
+    messageq(paste0("  -", selected_forecasts_ids[i]), quiet = !settings$verbose)
 
     out[[i]] <- tryCatch(evaluate_forecast(main        = main,
                                            forecast_id = selected_forecasts_ids[i]),
@@ -197,7 +199,8 @@ evaluate_forecast <- function (main        = ".",
 
     }
 
-    return(forecast_table)
+    cols_in <- c("forecast_id", "newmoonnumber", "estimate", "lower_pi", "upper_pi", "observation", "covered", "error", "logs", "crps", "complete")
+    return(forecast_table[ , cols_in])
 
   }
 

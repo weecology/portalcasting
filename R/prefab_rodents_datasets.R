@@ -1,9 +1,10 @@
 #' @title Provide the Names or Controls for the Prefabricated Rodent Datasets
 #'
-#' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or a `list` of their controls
+#' @description Create a `character` vector of the names of the pre-fabricated (prefab) rodent datasets or species or a `list` of their controls
 #'
 #' @return `prefab_datasets`: `character` vector of dataset names. \cr 
-#'         `prefab_datasets_controls`: `list` vector of dataset controls. 
+#'         `prefab_datasets_controls`: `list` of dataset controls. \cr 
+#'         `prefab_species`: `character` vector of species abbreviations.
 #'
 #' @name prefabricated rodents datasets
 #'
@@ -25,7 +26,6 @@ prefab_datasets <- function( ){
 
 }
 
-
 #' @rdname prefabricated-rodents-datasets
 #'
 #' @export
@@ -37,5 +37,16 @@ prefab_datasets_controls <- function ( ) {
                                       package = "portalcasting")
 
   read_yaml(prefab_controls_file)
+
+}
+
+#' @rdname prefabricated-rodents-datasets
+#'
+#' @export
+#'
+prefab_species <- function (main = ".") {
+
+  forecasting_species(path  = resources_path(main = main), 
+                      total = TRUE)
 
 }
