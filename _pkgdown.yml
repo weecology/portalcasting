@@ -6,7 +6,8 @@ development:
 template:
   bootstrap: 5         
 
-strip_header: true
+home:
+  strip_header: true
   
 news:
   releases:
