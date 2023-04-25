@@ -1,7 +1,7 @@
 ---
 title: "Current Models"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: "Juniper L. Simonis, Hao Ye, and S. K. Morgan Ernest"
+author: "Juniper L. Simonis, Hao Ye, Ethan P. White, and S. K. Morgan Ernest"
 output: rmarkdown::html_vignette
 bibliography: refs.bibtex
 vignette: >
@@ -47,6 +47,6 @@ We currently analyze and forecast rodent data at Portal using `r nmodels_text` m
 In addition to the base models, we include a starting-point ensemble. 
 Prior to v0.9.0, the ensemble was based on AIC weights, but in the shift to separating the interpolated from non-interpolated data in model fitting, we had to transfer to an unweighted average ensemble model. 
 The ensemble mean is calculated as the mean of all model means and the ensemble variance is estimated as the sum of the mean of all model variances and the variance of the estimated mean, calculated using the unbiased estimate of sample variances.
-
+Given that the current ensemble is unweighted and includes a number of very naive models, we do not currently consider it the best model for forecasting.
 
 ## References
