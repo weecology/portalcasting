@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   release:
     types: [published]
 
@@ -30,7 +33,7 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
-      - name: Deploy package
+      - name: Deploy site
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
