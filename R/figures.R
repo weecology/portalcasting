@@ -79,7 +79,7 @@ NULL
 #' @export
 #'
 plot_forecasts_error_lead <- function (main                        = ".", 
-                                       forecasts_ids                = NULL, 
+                                       forecasts_ids               = NULL, 
                                        forecasts_evaluations       = NULL, 
                                        historic_end_newmoonnumbers = NULL, 
                                        models                      = NULL, 
@@ -89,6 +89,14 @@ plot_forecasts_error_lead <- function (main                        = ".",
   settings <- read_directory_settings(main = main)
 
   evals <- ifnull(forecasts_evaluations, read_forecasts_evaluations(main))
+  fm <- read_forecasts_metadata(main = main)
+
+  evals$historic_end_newmoonnumber <- fm$historic_end_newmoonnumber[match(evals$forecast_id, fm$forecast_id)]
+  evals$model                      <- fm$model[match(evals$forecast_id, fm$forecast_id)]
+  evals$dataset                    <- fm$dataset[match(evals$forecast_id, fm$forecast_id)]
+  evals$species                    <- fm$species[match(evals$forecast_id, fm$forecast_id)]
+  evals$lead_time_newmoons         <- evals$newmoonnumber - evals$historic_end_newmoonnumber
+  
 
   models                        <- ifnull(models, "AutoArima")
   datasets                      <- ifnull(datasets, "controls")
@@ -344,6 +352,11 @@ plot_forecasts_cov_RMSE <- function (main                        = ".",
                                      models                      = models, 
                                      datasets                    = datasets, 
                                      species                     = species)
+
+  evals$historic_end_newmoonnumber <- forecasts_meta$historic_end_newmoonnumber[match(evals$forecast_id, forecasts_meta$forecast_id)]
+  evals$model                      <- forecasts_meta$model[match(evals$forecast_id, forecasts_meta$forecast_id)]
+  evals$dataset                    <- forecasts_meta$dataset[match(evals$forecast_id, forecasts_meta$forecast_id)]
+  evals$species                    <- forecasts_meta$species[match(evals$forecast_id, forecasts_meta$forecast_id)]
 
 
   datasets                      <- unique(forecasts_meta$dataset)[unique(forecasts_meta$dataset) %in% unique(evals$dataset)]

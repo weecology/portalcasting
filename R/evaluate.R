@@ -58,7 +58,7 @@ evaluate_forecasts <- function (main         = ".",
 
   settings <- read_directory_settings(main = main)
 
-  forecasts_to_evaluate <- select_forecasts(main         = main, 
+  forecasts_to_evaluate <- select_forecasts(main          = main, 
                                             forecasts_ids = forecasts_ids)
 
   forecasts_ids  <- forecasts_to_evaluate$forecast_id
@@ -273,7 +273,7 @@ evaluate_forecast <- function (main        = ".",
 
   }
 
-  species                    <- ifelse(forecast_table$species[1] == "NA", "NA.", forecast_table$species[1])
+  species                    <- ifelse(forecast_table$species[1] == "NA", "NA", forecast_table$species[1])
   rodents_table              <- read_rodents_dataset(main = main, dataset = forecast_table$dataset[1])                          
   last_census_newmoonnumber  <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
   forecast_table$complete    <- forecast_table$forecast_end_newmoonnumber <= last_census_newmoonnumber
