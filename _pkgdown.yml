@@ -6,6 +6,9 @@ development:
 template:
   bootstrap: 5         
 
+home:
+  strip_header: true
+  
 news:
   releases:
   - text: "Version 0.50.0"
