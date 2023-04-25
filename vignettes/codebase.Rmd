@@ -1,0 +1,148 @@
+---
+title: "portalcasting Codebase"
+output: rmarkdown::html_vignette
+author: "Juniper L. Simonis"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+vignette: >
+  %\VignetteIndexEntry{portalcasting Codebase}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include=FALSE}
+library(portalcasting)
+vers <- packageVersion("portalcasting")
+today <- Sys.Date()
+```
+
+This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). 
+**portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.
+
+## Installation
+
+To install the most recent version of **portalcasting** from GitHub:
+
+```{r, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("weecology/portalcasting")
+```
+
+## Directory Structure
+
+The package uses a directory tree with two levels to organize the project:
+
+* `main`: project folder encompassing all content
+* `subdirectories`: specific subfolders that organize the project files
+ 
+structured as
+
+```
+main
+│
+└──resources
+│   <stable version of resources used to populate other folders>
+└──models
+│   <model controls list>
+│   <model scripts>
+└──data
+│   <dataset control list>
+│   <rodent datasets>
+│   <covariates, newmoons, and metadata data files>
+└──forecasts
+│   <previous and current model forecasts>
+│   <casts metadata file>
+└──fits
+│   <previous and current model fits>
+└──app
+│   <ui, server, and application files>
+└──directory_configuration.yaml
+```
+
+The `main` argument controls the location of the directory and defaults to `"."`, the present working location. 
+To group the project subfolders into a multi-leveled folder, simply add structure to the `main` input, such as `main = "~/project_folder"`.
+
+## Instantiating a Directory
+
+Setting up a fully functional directory for a production or sandbox pipeline consists of two steps: creating (instantiating folders that are missing) and filling (adding files to the folders). 
+These steps can be executed separately or in combination via a general `setup_dir()` function or via specialized versions of `setup_dir()`: `setup_sandbox`() (for creating a pipeline with defaults to facilitate sandboxing) and `setup_production()` (for creating a production pipeline).  
+
+These functions are general and flexible, but are designed to work well under default settings.
+To alter the directory configurations in `setup_<>` and `create_dir()`, use the `settings` argument, which takes a list of inputs, condensed and detailed in `directory_settings()`.
+
+### Creating 
+
+The directory is established using `create_dir()`, which takes `main` as an argument and in sequence creates each of the levels' folders if they do not already exist. 
+A typical user is likely to want to change the `main` input (to locate the forecasting directory where they would like it), but general users should not alter the `subdirectories` structure, and so that option is not directly available. 
+If needed, the `subdirectories` can be altered via the `directory_settings()` controls.
+
+`create_dir()` also initializes the `directory_configuration.yaml` file, which is held within `main` and contains metadata about the directory setting up process.
+
+### Filling 
+
+The directory is filled (loaded with files for forecasting) using a series of subdirectory-specific functions that are combined in the overall `fill_dir()` function:
+
+* `fill_resources()` downloads each of the resources for the directory, which presently include the source data (rodents), covariate data (weather, NDVI), and previous forecasts' archive. Upon completion of the downloads, `fill_resources()` updates `directory_configuration.yaml` with downloaded versions.
+* `fill_forecasts()` moves the existing model forecast output files from the `resources` subdirectory to the `forecasts` subdirectory.
+* `fill_fits()` moves the existing model fit files from the `resource` subdirectory to the `fits` subdirectory.
+* `fill_models()` writes the model controls list and scripts into the `models` subdirectory.
+* `fill_data()` prepares the forecasting data files from the `resources` downloaded data files and moves them into the `data` subdirectory.
+  * `prepare_newmoons()` prepares and formats the temporal (lunar) data from the raw data.
+  * `prepare_rodents()` prepares multiple structures of the rodents data for analyses from the raw data.
+  * `prepare_covariates()` downloads and forecasts covariates data.
+  * `prepare_metadata()` creates and saves out a YAML metadata list for the forecasting configurations. 
+* `fill_app()` moves the app-building files into the directory and renders components based on local content.
+
+Each of these components can be run individually, as well. For example, `fill_data()` can be used to set up the complete set of data for a given model run.
+
+### Updating 
+
+The directory is updated (loaded with any out of date resources and re-filling data) using the `update_dir` function, which provides an update-flavored implementation of the core functions. 
+
+
+## Running models
+
+Models are run using a function pipeline similar to the creation and filling function pipelines, with flexible controls through a variety of arguments, but robust operation under default settings. 
+
+* `portalcast()` is the overarching function that controls forecasting of the Portal data
+  * `make_model_combinations()` takes the input arguments and available components and produces a data frame of model run combinations (model - dataset - species).
+  * `cast()` runs ("casts") each of the model combinations using the `fit` and `cast` functions described in the model controls list. 
+
+## Data IO
+
+**portalcasting** has a generalized `read_data()` function that allows for toggling among `read_rodents()`, `read_rodents_dataset()`, `read_covariates()`, `read_newmoons()`, and `read_metadata()`, which each have specific loading procedures in place. Similar to the `read_data()` functions, `read_forecasts()` provides a simple user interface for reading the forecast files into the R session.
+
+For saving out, `write_data()` provides a simple means for interfacing with potentially pre-existing data files, with logical inputs for saving generally and overwriting a pre-existing file specifically, and flexible file naming. The type of data saved out is currently restricted to `.csv` `.json`, and `.yaml`, which is extracted from the filename given. 
+
+The directory configuration file is a special file, and has its own IO functions separate from the rest: `write_directory_configuration()` creates the file (from within `create_dir()`, `update_directory_configuration()` adds downloads information from inside `fill_resources()`) and `read_directory_configuration()` brings the information from the file into the R session. Reading the configuration file into R is also the means by which directory settings are passed among functions (to limit clashing arguments and reduce verbosity). 
+
+
+## Utilities
+
+To facilitate tidy and easy-to-follow code, we introduce a few important utility functions, which are put to use throughout the codebase.
+
+### (Rodent) data interpolating
+
+`round_na.interp()` combines the `round`, `na.interp`, and `pmax` functions to provide a single-function for interpolating to biologically reasonable values.
+
+### File paths
+
+`file_ext()` determines the file extension, based on the separating character (`sep_char`), which facilitates use with generalized URL APIs. 
+
+### Messaging
+
+`messageq()` provides a simple wrapper on `message` that also has a logical input for quieting. This helps switch messaging off as desired while localizing the actual boolean operator code to one spot. 
+`break_line()` makes a single horizontal breaking line, `break_lines` makes multiple `break_line`s, and `castle` makes a castle character element, all for use in `messageq`. 
+
+
+### Time
+
+`foy()` calculates the fraction of year of a date.
+
+  
