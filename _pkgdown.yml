@@ -11,9 +11,6 @@ news:
   - text: "Version 0.50.0"
     href: https://github.com/weecology/portalcasting/releases/tag/v0.50.0
 
-home:
-  strip_header: true
-
 authors:
   Juniper L. Simonis:
     href: https://www.dapperstats.com/author/dr.-juniper-l.-simonis/
