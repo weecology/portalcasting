@@ -3,6 +3,18 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.52.0](https://github.com/weecology/portalcasting/releases/tag/v0.52.0)
+*In Progress*
+
+## Patching evaluations issues
+
+
+# [portalcasting 0.51.1](https://github.com/weecology/portalcasting/releases/tag/v0.51.1)
+*4-24-2023*
+
+## Patches to pkgdown site
+
+
 # [portalcasting 0.51.0](https://github.com/weecology/portalcasting/releases/tag/v0.51.0)
 *4-24-2023*
 

@@ -1,5 +1,8 @@
 # this will update old forecast folders to the new species-level files and numbering
 
+#'
+#'@export
+#' @rdname directory-filling
 update_forecasts_folder <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)

@@ -71,20 +71,19 @@ evaluate_forecasts <- function (main         = ".",
   }
 
   existing_evaluations      <- read_forecasts_evaluations(main = main)
+  forecasts_metadata        <- read_forecasts_metadata(main = main)
   rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
   if (!is.null(existing_evaluations)) {
 
-    if (is.null(existing_evaluations$cast_evaluation_complete)) {
+    all_forecasts_ids           <- forecasts_metadata$forecast_id
+    past_forecasts_ids          <- forecasts_metadata$forecast_id[forecasts_metadata$forecast_start_newmoonnumber <= last_census_newmoonnumber]
+    complete_evaluation_ids     <- unique(existing_evaluations$forecast_id[existing_evaluations$complete])
 
-      existing_evaluations$cast_evaluation_complete <- existing_evaluations$forecast_end_newmoonnumber <= last_census_newmoonnumber
+    forecasts_left_to_evaluate  <- past_forecasts_ids[!(past_forecasts_ids %in% complete_evaluation_ids)]
 
-    }
-
-    forecasts_left_to_evaluate  <- unique(existing_evaluations$forecast_id[!existing_evaluations$cast_evaluation_complete & 
-                                                                       existing_evaluations$forecast_start_newmoonnumber <= last_census_newmoonnumber])
-  
+ 
   } else {
 
     forecasts_left_to_evaluate  <- forecasts_ids
@@ -127,6 +126,8 @@ evaluate_forecasts <- function (main         = ".",
 
   }
 
+  out_flat <- rbind(existing_evaluations, out_flat)
+
   messageq("... done.\n", quiet = settings$quiet)
 
   write_data(x            = out_flat,
@@ -160,11 +161,11 @@ evaluate_forecast <- function (main        = ".",
   model_forecast  <- read_model_forecast(main         = main, 
                                  forecast_id      = forecast_id)
 
-  forecast_table$covered                      <- forecast_table$observation >= forecast_table$lower_pi & forecast_table$observation <= forecast_table$upper_pi 
-  forecast_table$error                        <- forecast_table$estimate - forecast_table$observation 
-  forecast_table$logs                         <- NA
-  forecast_table$crps                         <- NA
-  forecast_table$forecast_evaluation_complete <- FALSE
+  forecast_table$covered  <- forecast_table$observation >= forecast_table$lower_pi & forecast_table$observation <= forecast_table$upper_pi 
+  forecast_table$error    <- forecast_table$estimate - forecast_table$observation 
+  forecast_table$logs     <- NA
+  forecast_table$crps     <- NA
+  forecast_table$complete <- FALSE
 
   scoring_family <- switch(forecast_meta$model,
                            "AutoArima"                            = "normal",
@@ -192,7 +193,7 @@ evaluate_forecast <- function (main        = ".",
 
     if (all(forecast_table$newmoonnumber <= last_census_newmoonnumber)) {
 
-      forecast_table$forecast_evaluation_complete <- TRUE
+      forecast_table$complete <- TRUE
 
     }
 
@@ -272,11 +273,12 @@ evaluate_forecast <- function (main        = ".",
 
   }
 
-  species                                     <- ifelse(forecast_table$species[1] == "NA", "NA.", forecast_table$species[1])
-  rodents_table                               <- read_rodents_dataset(main = main, dataset = forecast_table$dataset[1])                          
-  last_census_newmoonnumber                   <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
-  forecast_table$forecast_evaluation_complete <- forecast_table$forecast_end_newmoonnumber <= last_census_newmoonnumber
-  forecast_table 
+  species                    <- ifelse(forecast_table$species[1] == "NA", "NA.", forecast_table$species[1])
+  rodents_table              <- read_rodents_dataset(main = main, dataset = forecast_table$dataset[1])                          
+  last_census_newmoonnumber  <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , species])]])
+  forecast_table$complete    <- forecast_table$forecast_end_newmoonnumber <= last_census_newmoonnumber
+  cols_in                    <- c("forecast_id", "newmoonnumber", "estimate", "lower_pi", "upper_pi", "observation", "covered", "error", "logs", "crps", "complete")
+  forecast_table[ , cols_in]
 
 }
 
