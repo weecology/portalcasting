@@ -6,6 +6,8 @@
 #'         `prefab_datasets_controls`: `list` of dataset controls. \cr 
 #'         `prefab_species`: `character` vector of species abbreviations.
 #'
+#' @param main `character` value of the name of the main component of the directory tree.
+#'
 #' @name prefabricated rodents datasets
 #'
 #' @aliases prefab-rodents prefab-datasets prefab-rodents-datasets

@@ -16,6 +16,9 @@ prefab_datasets_controls()
 
 prefab_species(main = ".")
 }
+\arguments{
+\item{main}{\code{character} value of the name of the main component of the directory tree.}
+}
 \value{
 \code{prefab_datasets}: \code{character} vector of dataset names. \cr
 \code{prefab_datasets_controls}: \code{list} of dataset controls. \cr

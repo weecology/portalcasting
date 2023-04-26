@@ -9,7 +9,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ## Patching evaluations issues
 * The table was too big as was for github standard, so removing columns of repeated content that can be grabbed from metadata
 
-# portalcasting 0.51.1
+# [portalcasting 0.51.1](https://github.com/weecology/portalcasting/releases/tag/v0.51.1)
 *4-24-2023*
 
 ## Patches to pkgdown site
