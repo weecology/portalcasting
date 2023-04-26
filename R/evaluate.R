@@ -202,13 +202,15 @@ evaluate_forecast <- function (main        = ".",
     cols_in <- c("forecast_id", "newmoonnumber", "estimate", "lower_pi", "upper_pi", "observation", "covered", "error", "logs", "crps", "complete")
     return(forecast_table[ , cols_in])
 
+  } else {
+
+    forecast_obs  <- forecast_table$observation[can_score]
+
   }
 
   if (scoring_family == "normal") {
 
-    forecast_obs  <- forecast_table$observation[can_score]
-
-    forecast_mean   <- forecast_table$estimate[can_score]
+    forecast_mean <- forecast_table$estimate[can_score]
     forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
 
 
@@ -223,11 +225,7 @@ evaluate_forecast <- function (main        = ".",
 
   } else if (scoring_family == "poisson") {
 
-
-    forecast_obs  <- forecast_table$observation[can_score]
-
     forecast_lambda  <- pmax(1e-5, forecast_table$estimate[can_score])
-
 
     forecast_table$logs[can_score] <- logs(y      = forecast_obs,
                                            family = scoring_family,
@@ -246,8 +244,6 @@ evaluate_forecast <- function (main        = ".",
     #  var  = mu + mu^2 / size
     #  size = mu^2 / (var - mu)
 
-    forecast_obs  <- forecast_table$observation[can_score]
-
     forecast_mu   <- pmax(1e-5, forecast_table$estimate[can_score])
     forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
     forecast_var  <- (forecast_sd) ^ 2
@@ -265,14 +261,42 @@ evaluate_forecast <- function (main        = ".",
 
   } else if (scoring_family == "sample") {
 
-    forecast_obs    <- forecast_table$observation[can_score]
-    forecast_sample <- t(model_forecast$sample[ , can_score])
+    if (!is.null(model_forecast$sample)) {
 
-    forecast_table$logs[can_score] <- logs_sample(y   = forecast_obs,
-                                                  dat = forecast_sample)
+      forecast_sample <- t(model_forecast$sample[ , can_score])
 
-    forecast_table$crps[can_score] <- crps_sample(y   = forecast_obs,
-                                                  dat = forecast_sample)
+      forecast_table$logs[can_score] <- logs_sample(y   = forecast_obs,
+                                                    dat = forecast_sample)
+
+      forecast_table$crps[can_score] <- crps_sample(y   = forecast_obs,
+                                                    dat = forecast_sample)
+
+    } else {
+
+      # mu:   mean
+      # size: dispersion
+      # var:  variance
+      # sd:   standard deviation
+      #  var  = sd ^ 2
+      #  var  = mu + mu^2 / size
+      #  size = mu^2 / (var - mu)
+
+      forecast_mu   <- pmax(1e-5, forecast_table$estimate[can_score])
+      forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
+      forecast_var  <- (forecast_sd) ^ 2
+      forecast_size <- pmax(1e-4, (forecast_mu ^ 2) / (forecast_var - forecast_mu), na.rm = TRUE)
+
+      forecast_table$logs[can_score] <- logs(y      = forecast_obs,
+                                             family = "nbinom",
+                                             mu     = forecast_mu,
+                                             size   = forecast_size)
+
+      forecast_table$crps[can_score] <- crps(y      = forecast_obs,
+                                             family = "nbinom",
+                                             mu     = forecast_mu,
+                                             size   = forecast_size)
+
+    }
 
   }
 
