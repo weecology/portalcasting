@@ -65,7 +65,7 @@ global_list <- function (main = ".") {
     forecasts_evaluations$historic_end_newmoonnumber <- forecasts_metadata$historic_end_newmoonnumber[match(forecasts_evaluations$forecast_id, forecasts_metadata$forecast_id)]
     forecasts_evaluations$model                      <- forecasts_metadata$model[match(forecasts_evaluations$forecast_id, forecasts_metadata$forecast_id)]
     forecasts_evaluations$dataset                    <- forecasts_metadata$dataset[match(forecasts_evaluations$forecast_id, forecasts_metadata$forecast_id)]
-    forecasts_evaluations$species                    <- fmforecasts_metadataspecies[match(forecasts_evaluations$forecast_id, forecasts_metadata$forecast_id)]
+    forecasts_evaluations$species                    <- forecasts_metadata$species[match(forecasts_evaluations$forecast_id, forecasts_metadata$forecast_id)]
   
   }
 
