@@ -246,10 +246,6 @@ fill_forecasts <- function (main = ".") {
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
-  ### --- patch to deal with refactor backwards compat --- ###
-    update_forecasts_folder(main = main)
-  ### --- end patch --- ###
-
   invisible( )
 
 }

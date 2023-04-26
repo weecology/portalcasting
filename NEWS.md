@@ -3,6 +3,11 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 
+# [portalcasting 0.53.0](https://github.com/weecology/portalcasting/releases/tag/v0.53.0)
+*4-26-2023*
+
+## Removing temporary patch for backwards compatibility  
+
 # [portalcasting 0.52.0](https://github.com/weecology/portalcasting/releases/tag/v0.52.0)
 *4-25-2023*
 
