@@ -214,7 +214,7 @@ setup_sandbox <- function (main                  = ".",
 #' @description The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
 #'              `write_directory_configuration` creates the YAML metadata configuration file. It is (and should only be) called from within [`setup_dir`], as it captures information about the compute environment used to instantiate the directory. \cr \cr
 #'              `read_directory_configuration` reads the YAML config file into the R session. \cr \cr
-#'              `read_directory_configuration` reads the YAML config file into the R session and pulls just the directory settings list in.
+#'              `read_directory_settings` reads the YAML config file into the R session and pulls just the directory settings list in.
 #'
 #' @param quiet `logical` indicator if progress messages should be quieted.
 #'
@@ -284,6 +284,12 @@ write_directory_configuration <- function (main     = ".",
 #'
 read_directory_configuration<- function (main = ".") {
   
+  if (!file.exists(main)) {
+
+    stop("Directory not found at '", main, "' -- run `create_dir`")
+
+  }
+
   config <- tryCatch(
               read_yaml(file.path(main, "directory_configuration.yaml")),
               error = function(x){NA}, 
@@ -291,7 +297,7 @@ read_directory_configuration<- function (main = ".") {
   
   if (length(config) == 1 && is.na(config)) {
 
-    stop("Directory configuration file is corrupted or missing")
+    stop("Directory configuration file not found in '", main, "' -- run `create_dir`")
 
   }
 

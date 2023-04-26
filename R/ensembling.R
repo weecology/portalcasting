@@ -21,7 +21,7 @@
 #'
 #' @param dataset `character` value of the rodent data set to include Default value is `NULL`, which equates to the first data set encountered.
 #'
-#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][portalr::forecasting_species].
+#' @param species `character` vector of the species code(s) or `"total"` for the total across species) to be plotted `NULL` translates to the species defined by [`forecasting_species`][portalr::forecasting_species] called by [`prefab_species`].
 #'
 #' @family core
 #'

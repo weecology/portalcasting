@@ -43,11 +43,9 @@ NULL
 portalcast <- function (main     = ".", 
                         models   = prefab_models( ), 
                         datasets = prefab_datasets( ),
-                        species  = NULL) {
+                        species  = prefab_species(main = main)) {
 
   settings <- read_directory_settings(main = main)
-
-  species <- ifnull(species, forecasting_species(path = resources_path(main = main), total = TRUE))
 
   messageq(break_line( ), "Forecasting models...\n", 
            break_line( ), "This is portalcasting v", packageDescription("portalcasting", fields = "Version"), "\n", 
@@ -98,13 +96,9 @@ portalcast <- function (main     = ".",
 #' @export
 #'
 cast <- function (main     = ".", 
-                  dataset  = NULL,
-                  species  = NULL,
-                  model    = NULL) {
-
-  return_if_null(x = dataset)
-  return_if_null(x = species)
-  return_if_null(x = model)
+                  dataset,
+                  species,
+                  model) {
 
   settings <- read_directory_settings(main = main)
 
@@ -153,7 +147,7 @@ cast <- function (main     = ".",
 make_model_combinations <- function (main     = ".", 
                                      models   = prefab_models( ), 
                                      datasets = prefab_datasets( ),
-                                     species  = forecasting_species(total = TRUE)) {
+                                     species  = prefab_species(main = main)) {
 
   available_controls  <- read_models_controls(main = main)
   available_models    <- names(available_controls)
