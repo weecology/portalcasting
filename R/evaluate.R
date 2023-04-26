@@ -273,6 +273,8 @@ evaluate_forecast <- function (main        = ".",
 
     } else {
 
+      # in the instance that it's a sample but there's no sample, use nbinom
+
       # mu:   mean
       # size: dispersion
       # var:  variance

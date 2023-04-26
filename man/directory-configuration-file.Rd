@@ -41,7 +41,7 @@ update_directory_configuration(main = ".")
 The directory configuration file is a special file within the directory setup and has its own set of functions. \cr \cr
 \code{write_directory_configuration} creates the YAML metadata configuration file. It is (and should only be) called from within \code{\link{setup_dir}}, as it captures information about the compute environment used to instantiate the directory. \cr \cr
 \code{read_directory_configuration} reads the YAML config file into the R session. \cr \cr
-\code{read_directory_configuration} reads the YAML config file into the R session and pulls just the directory settings list in.
+\code{read_directory_settings} reads the YAML config file into the R session and pulls just the directory settings list in.
 }
 \examples{
 \dontrun{

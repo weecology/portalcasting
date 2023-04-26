@@ -32,6 +32,7 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 
   expect_is(read_directory_configuration(main = main1), "list")
   expect_error(read_directory_configuration(main = "xyz"))
+  expect_error(read_directory_configuration(main = tempdir()))
 
 })
 
