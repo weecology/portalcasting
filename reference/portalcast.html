@@ -16,7 +16,7 @@ make_model_combinations translates model controls into a data.frame of model, da
     
     <a class="navbar-brand me-2" href="../index.html">portalcasting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.51.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.52.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,16 +91,16 @@ make_model_combinations translates model controls into a data.frame of model, da
 <span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  models <span class="op">=</span> <span class="fu"><a href="prefabricated-models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated-rodents-datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  species <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  species <span class="op">=</span> <span class="fu"><a href="prefabricated-rodents-datasets.html">prefab_species</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">cast</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, dataset <span class="op">=</span> <span class="cn">NULL</span>, species <span class="op">=</span> <span class="cn">NULL</span>, model <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">cast</span><span class="op">(</span>main <span class="op">=</span> <span class="st">"."</span>, <span class="va">dataset</span>, <span class="va">species</span>, <span class="va">model</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">make_model_combinations</span><span class="op">(</span></span>
 <span>  main <span class="op">=</span> <span class="st">"."</span>,</span>
 <span>  models <span class="op">=</span> <span class="fu"><a href="prefabricated-models.html">prefab_models</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  datasets <span class="op">=</span> <span class="fu"><a href="prefabricated-rodents-datasets.html">prefab_datasets</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  species <span class="op">=</span> <span class="fu">forecasting_species</span><span class="op">(</span>total <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  species <span class="op">=</span> <span class="fu"><a href="prefabricated-rodents-datasets.html">prefab_species</a></span><span class="op">(</span>main <span class="op">=</span> <span class="va">main</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
