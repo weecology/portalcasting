@@ -1,0 +1,24 @@
+# test the app deploy on shinyapps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: shinyapps
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://weecology/portalcasting:latest
+    env:
+      R_DEFAULT_INTERNET_TIMEOUT: 300
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v3
+
