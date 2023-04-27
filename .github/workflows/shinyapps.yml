@@ -22,3 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Create manifest.json
+        shell: Rscript {0}
+        run: |
+          rsconnect::writeManifest()
