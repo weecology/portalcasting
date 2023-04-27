@@ -11,7 +11,7 @@ on:
 name: test-extra-examples
 
 jobs:
-  R-CMD-check:
+  examples:
     runs-on: ubuntu-latest
 
     env:

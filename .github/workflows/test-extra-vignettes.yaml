@@ -11,7 +11,7 @@ on:
 name: test-extra-vignettes
 
 jobs:
-  R-CMD-check:
+  vignettes:
     runs-on: ubuntu-latest
 
     env:
