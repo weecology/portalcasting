@@ -25,4 +25,5 @@ jobs:
       - name: Create manifest.json
         shell: Rscript {0}
         run: |
+          install.packages("rsconnect")
           rsconnect::writeManifest()
