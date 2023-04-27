@@ -94,7 +94,7 @@ jobs:
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Docker meta app
-        id: meta
+        id: app_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: weecology/portalcasting/app
@@ -109,6 +109,6 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }} 
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.app_meta.outputs.tags }} 
+          labels: ${{ steps.app_meta.outputs.labels }}
           file: docker/app/Dockerfile
