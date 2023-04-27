@@ -25,4 +25,5 @@ jobs:
       - name: test
         shell: Rscript {0}
         run: |
-          portalcasting::package_version_finder()
+          library(portalcasting)
+          package_version_finder()
