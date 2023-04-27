@@ -1,7 +1,8 @@
-#' @title Create the Structure of a Directory and Fill It with Content or Update an Existing Directory
+#' @title Create or Update the Structure of a Directory and Fill It with Content or Update an Existing Directory
 #'
 #' @description Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. \cr 
-#'              Options for pre-defined setups include `setup_sandbox` for quick and flexible builds and `setup_production` for robust, rigid builds, as defined in [`directory_settings`].
+#'              Options for pre-defined setups include `setup_sandbox` for quick and flexible builds and `setup_production` for robust, rigid builds, as defined in [`directory_settings`]. \cr
+#'              `update_dir` updates an existing directory and `update_sandbox` and `update_production` are companions akin to their `setup_<>` functions.
 #'
 #' @param quiet `logical` indicator if progress messages should be quieted.
 #'
@@ -23,7 +24,7 @@
 #'
 #' @name directory creation
 #'
-#' @aliases create setup directory directory-setup directory-creation 
+#' @aliases create setup update directory directory-setup directory-creation directory-update
 #'
 #' @family orchestration
 #'
@@ -113,6 +114,56 @@ update_dir <- function (main                  = ".",
            new_models_controls   = new_models_controls)
 
   messageq(break_lines( ), "Directory successfully updated.\n", break_lines( ), quiet = quiet)
+
+  read_directory_configuration(main = main)
+
+}
+
+#' @rdname directory-creation
+#'
+#' @export
+#'
+update_production <- function (main     = ".",
+                               models   = prefab_models( ), 
+                               datasets = prefab_datasets( ),
+                               settings = production_settings( ), 
+                               quiet    = FALSE, 
+                               verbose  = TRUE) {
+
+  update_dir(main     = main,
+             models   = models,
+             datasets = datasets,
+             settings = settings,
+             quiet    = quiet,
+             verbose  = verbose)
+
+}
+
+
+
+#' @rdname directory-creation
+#'
+#' @export
+#'
+update_sandbox <- function (main                  = ".",
+                            models                = prefab_models( ), 
+                            datasets              = prefab_datasets( ),
+                            new_datasets_controls = NULL,
+                            new_models_controls   = NULL,
+                            settings              = sandbox_settings( ), 
+                            quiet                 = FALSE, 
+                            verbose               = FALSE) {
+
+  update_dir(main                  = main,
+             models                = models, 
+             datasets              = datasets,
+             new_datasets_controls = new_datasets_controls,
+             new_models_controls   = new_models_controls,
+             settings              = settings,
+             quiet                 = quiet,
+             verbose               = verbose)
+
+  messageq(castle(), "Sandbox directory successfully updated at \n\n  ", normalizePath(file.path(main = main)), "\n\nHappy model building!", quiet = quiet)
 
   read_directory_configuration(main = main)
 

@@ -4,15 +4,19 @@
 \alias{directory creation}
 \alias{create}
 \alias{setup}
+\alias{update}
 \alias{directory}
 \alias{directory-setup}
 \alias{directory-creation}
+\alias{directory-update}
 \alias{create_dir}
 \alias{update_dir}
+\alias{update_production}
+\alias{update_sandbox}
 \alias{setup_dir}
 \alias{setup_production}
 \alias{setup_sandbox}
-\title{Create the Structure of a Directory and Fill It with Content or Update an Existing Directory}
+\title{Create or Update the Structure of a Directory and Fill It with Content or Update an Existing Directory}
 \usage{
 create_dir(
   main = ".",
@@ -28,6 +32,26 @@ update_dir(
   new_datasets_controls = NULL,
   new_models_controls = NULL,
   settings = directory_settings(),
+  quiet = FALSE,
+  verbose = FALSE
+)
+
+update_production(
+  main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  settings = production_settings(),
+  quiet = FALSE,
+  verbose = TRUE
+)
+
+update_sandbox(
+  main = ".",
+  models = prefab_models(),
+  datasets = prefab_datasets(),
+  new_datasets_controls = NULL,
+  new_models_controls = NULL,
+  settings = sandbox_settings(),
   quiet = FALSE,
   verbose = FALSE
 )
@@ -85,7 +109,8 @@ The \code{list} of directory settings \code{\link[base:invisible]{invisible}}-ly
 }
 \description{
 Instantiates the necessary folder structure for a directory, writes the setup configuration file, and fills the directory with content. \cr
-Options for pre-defined setups include \code{setup_sandbox} for quick and flexible builds and \code{setup_production} for robust, rigid builds, as defined in \code{\link{directory_settings}}.
+Options for pre-defined setups include \code{setup_sandbox} for quick and flexible builds and \code{setup_production} for robust, rigid builds, as defined in \code{\link{directory_settings}}. \cr
+\code{update_dir} updates an existing directory and \code{update_sandbox} and \code{update_production} are companions akin to their \verb{setup_<>} functions.
 }
 \examples{
 \dontrun{

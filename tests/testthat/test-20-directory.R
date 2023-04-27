@@ -66,3 +66,23 @@ test_that(desc = "update_directory does",
   expect_is(out, "list")
 
 })
+
+test_that(desc = "update_sandbox does",
+          code = {
+
+  skip_on_cran() 
+
+  expect_message(out <- update_sandbox(main = main2, verbose = TRUE))
+  expect_is(out, "list")
+
+})
+
+test_that(desc = "update_production does",
+          code = {
+
+  skip_on_cran() 
+
+  expect_message(out <- update_production(main = main3, verbose = TRUE))
+  expect_is(out, "list")
+
+})
