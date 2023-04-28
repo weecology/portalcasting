@@ -10,5 +10,5 @@ RUN apt-get update \
 
 COPY . ./portalcasting
 RUN ls ./portalcasting
-RUN R -e "devtools::build("./portalcasting")"
+RUN R -e "devtools::build('./portalcasting')"
 
