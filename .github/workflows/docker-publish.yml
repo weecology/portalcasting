@@ -50,6 +50,8 @@ jobs:
           images: name/app
           tags: |
             type=sha
+            type=raw,value=latest
+            type=semver,pattern={{raw}}  
 
       - name: Build and push base image
         uses: docker/build-push-action@v4
