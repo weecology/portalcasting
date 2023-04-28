@@ -48,6 +48,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: name/app
+          tags: |
+            type=sha
 
       - name: Build and push base image
         uses: docker/build-push-action@v4

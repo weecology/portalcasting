@@ -8,5 +8,8 @@ RUN apt-get update \
     && apt-get install -y \
        jags
 
-# Install git2r, portalcasting from github
+# Install portalcasting from github
+
+# TODO: reference the specific location on github of the current build
+
 RUN R -e "remotes::install_github('weecology/portalcasting')"
