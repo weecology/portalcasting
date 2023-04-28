@@ -13,7 +13,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -37,7 +36,6 @@ jobs:
           args: 'c("--no-manual", "--as-cran")'
           error-on: '"error"'
           check-dir: '"check"'
-
 
   build-docker-image:
 
@@ -73,12 +71,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: docker/Dockerfile
 
-      - name: Build and push app image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          file: docker/app/Dockerfile
           

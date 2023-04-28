@@ -1,8 +1,11 @@
-# base image is weecology/portalcasting, which includes all required environment content
+# base image is rocker/tidyverse, which includes remotes and shiny
 
-FROM weecology/portalcasting:latest
+FROM rocker/tidyverse:latest
 
-# Setup production directory
+# Install `jags` c library
 
-RUN R -e "portalcasting::setup_production( )"
+RUN apt-get update \
+    && apt-get install -y \
+       jags
 
+# Install portalcasting 
