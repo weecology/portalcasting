@@ -8,5 +8,5 @@ RUN apt-get update \
     && apt-get install -y \
        jags
 
-# Install portalcasting 
-RUN R -e "devtools::build( )"
+COPY . .
+
