@@ -17,5 +17,5 @@ RUN echo "Installing from github at ref $SHA"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
 
 # Set up the directory
-
+RUN R -e ".libPaths()"
 RUN R -e "library(portalcasting)"
