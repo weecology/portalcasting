@@ -70,7 +70,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name == 'release' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: app/${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file: docker/app/Dockerfile
           build-args: |
