@@ -64,24 +64,3 @@ jobs:
           file: docker/Dockerfile
           build-args: |
             "SHA=${{ github.sha }}"
-
-      - name: Docker app meta
-        id: app_meta
-        uses: docker/metadata-action@v4
-        with:
-          images: weecology/portalcasting
-          tags: |
-            type=raw,value=app_latest
-            
-      - name: Build and push app image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: ${{ github.event_name == 'pull_request' }}
-          tags: ${{ steps.app_meta.outputs.tags }}
-          labels: ${{ steps.app_meta.outputs.labels }}
-          file: docker/app/Dockerfile
-          build-args: |
-            "SHA=${{ github.sha }}"
-
-          
