@@ -18,3 +18,4 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
 
 # Set up the directory
 RUN R -e "library(portalcasting)"
+RUN R -e "portalcasting::setup_sandbox()"
