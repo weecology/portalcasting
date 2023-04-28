@@ -1,4 +1,5 @@
 # App building and serving script
 
 library(portalcasting)
-setup_sandbox( )
+prefab_models()
+#setup_sandbox( )
