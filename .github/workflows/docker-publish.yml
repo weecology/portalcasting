@@ -69,10 +69,9 @@ jobs:
         id: app_meta
         uses: docker/metadata-action@v4
         with:
-          images: weecology/portalcasting/app
+          images: weecology/portalcasting
           tags: |
-            type=raw,value=latest
-            type=semver,pattern={{raw}}  
+            type=raw,value=app_latest
             
       - name: Build and push app image
         uses: docker/build-push-action@v4
