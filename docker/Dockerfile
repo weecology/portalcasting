@@ -14,4 +14,6 @@ RUN apt-get update \
 
 ARG SHA ""
 
+RUN echo "the sha is $SHA"
+
 RUN R -e "remotes::install_github('weecology/portalcasting')"
