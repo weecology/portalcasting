@@ -18,4 +18,5 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
 
 # Set up the directory
 RUN R -e ".libPaths()"
-RUN R -e "library(portalcasting)"
+RUN R -e "list.files(.libPaths()[1])"
+RUN R -e "list.files(.libPaths()[2])"
