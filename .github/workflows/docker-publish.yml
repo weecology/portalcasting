@@ -13,7 +13,15 @@ jobs:
 
   build-docker-image:
 
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile:
+          - { docker/Dockerfile }
+
     runs-on: ubuntu-latest
+    
+    name: ${{ matrix.dockerfile }} 
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -61,6 +69,6 @@ jobs:
           push: ${{ github.event_name == 'release' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          file: docker/Dockerfile
+          file: ${{ matrix.dockerfile }}
           build-args: |
             "SHA=${{ github.sha }}"
