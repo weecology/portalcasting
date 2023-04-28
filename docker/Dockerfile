@@ -8,7 +8,5 @@ RUN apt-get update \
     && apt-get install -y \
        jags
 
-COPY /home/runner/work/portalcasting/portalcasting_0.54.0.tar.gz .
-
-
-
+# Install git2r, portalcasting from github
+RUN R -e "remotes::install_github('weecology/portalcasting')"

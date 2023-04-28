@@ -34,13 +34,7 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          
-      - name: build package
-        run: |
-          install.packages("devtools");
-          pkgobj <- devtools::build();
-          print(pkgobj)
-        shell: Rscript {0}      
+
           
       - name: Login to Docker Hub
         if: github.event_name != 'pull_request'      
