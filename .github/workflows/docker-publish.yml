@@ -47,7 +47,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: name/app
+          images: weecology/portalcasting
           tags: |
             type=sha
             type=raw,value=latest
