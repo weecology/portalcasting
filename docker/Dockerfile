@@ -10,14 +10,8 @@ RUN apt-get update \
 
 # Install portalcasting from github
 
-# TODO: reference the specific location on github of the current build
+ARG SHA "HEAD"
 
-ARG SHA ""
-
-RUN echo "the sha is $SHA"
-
-RUN R -e "print('$SHA')"
+RUN echo "Installing from github at ref $SHA"
 
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
-
-#RUN R -e "remotes::install_github('weecology/portalcasting')"
