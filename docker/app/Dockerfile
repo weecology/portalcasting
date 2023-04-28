@@ -14,8 +14,5 @@ ARG SHA "HEAD"
 
 RUN echo "Installing from github at ref $SHA"
 
-RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
+RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA'); portalcasting::setup_sandbox();"
 
-# Set up the directory
-
-RUN R -e "portalcasing::setup_sandbox()"
