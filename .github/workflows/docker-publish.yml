@@ -52,7 +52,7 @@ jobs:
           images: weecology/portalcasting
           tags: |
             type=raw,value=latest
-            type=semver,pattern={{raw}}  
+            type=semver,pattern={{version}}  
 
       - name: Build and push base image
         uses: docker/build-push-action@v4
