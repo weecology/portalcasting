@@ -22,7 +22,7 @@ jobs:
             image: weecology/portalcasting
             image_name: base
           - dockerfile: docker/Dockerfile
-            image: weecology/portalcasting
+            image: weecology/portalcasting_app
             image_name: app
           
     runs-on: ubuntu-latest
