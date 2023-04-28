@@ -9,4 +9,4 @@ RUN apt-get update \
        jags
 
 COPY . .
-
+RUN ls .
