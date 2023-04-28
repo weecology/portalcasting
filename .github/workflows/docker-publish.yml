@@ -19,10 +19,15 @@ jobs:
       matrix:
         include:
           - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: base
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: app
           
     runs-on: ubuntu-latest
     
-    name: ${{ matrix.dockerfile }} 
+    name: xyzzz ${{ matrix.image_name }} 
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -58,12 +63,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: weecology/portalcasting
+          images: ${{ matrix.image }}
           tags: |
             type=raw,value=latest
             type=semver,pattern={{raw}}  
 
-      - name: Build and push base image
+      - name: Build and push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
           context: .
