@@ -18,4 +18,4 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
 
 # Set up the directory
 
-RUN R -e "portalcasing::setup_sandbox()"
+RUN R -e "shiny::a()"
