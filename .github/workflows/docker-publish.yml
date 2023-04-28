@@ -15,10 +15,11 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix:
-        dockerfile:
-          - docker/Dockerfile
 
+      matrix:
+        include:
+          - dockerfile: docker/Dockerfile
+          
     runs-on: ubuntu-latest
     
     name: ${{ matrix.dockerfile }} 
