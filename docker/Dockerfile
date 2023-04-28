@@ -12,4 +12,6 @@ RUN apt-get update \
 
 # TODO: reference the specific location on github of the current build
 
+ARG SHA ""
+
 RUN R -e "remotes::install_github('weecology/portalcasting')"
