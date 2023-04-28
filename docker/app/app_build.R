@@ -1,3 +1,4 @@
 # App building and serving script
 
-poralcasting::setup_sandbox( )
+library(portalcasting)
+#setup_sandbox( )

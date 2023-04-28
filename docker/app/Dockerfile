@@ -22,3 +22,5 @@ COPY ./docker/app/app_build.R app_build.R
 
 # Set up the directory
 RUN R -e "source('app_build.R')"
+
+RUN R -e "portalcasting::prefab_models()"
