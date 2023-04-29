@@ -87,4 +87,7 @@ jobs:
           build-args: |
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
-           
+
+      - name: Deploy app
+        id: app_deploy
+        uses: docker/metadata-action@v4           
