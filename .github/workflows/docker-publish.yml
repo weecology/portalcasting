@@ -89,5 +89,6 @@ jobs:
             "image_name=${{ matrix.image_name }}"
 
       - name: Deploy app
-        id: app_deploy
+        if: ${{ matrix.image_name == 'app' }}
         uses: docker/metadata-action@v4           
+        
