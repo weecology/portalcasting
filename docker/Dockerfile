@@ -2,9 +2,11 @@
 
 ARG image_name "base"
 
-# base image is rocker/tidyverse, which includes remotes and shiny
+RUN echo "Building the $image_name image"
 
-FROM rocker/tidyverse:latest
+# built upon the rocker/tidyverse image, which includes remotes and shiny
+
+FROM rocker/tidyverse:latest tidyverse
 
 # Install `jags` c library
 
@@ -19,3 +21,17 @@ ARG event_sha "HEAD"
 RUN echo "Installing from github at ref $event_sha"
 
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
+
+# For the app image, setup a directory
+
+
+FROM tidyverse AS base-branch
+RUN echo "this is the stage that sets VAR=TRUE"
+ENV VAR=TRUE
+
+FROM tidyverse AS app-branch
+RUN echo "this is the stage that sets VAR=FALSE"
+ENV VAR=FALSE
+
+FROM ${image_name}-branch AS final
+RUN echo "VAR is equal to ${VAR}"
