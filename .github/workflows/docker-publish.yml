@@ -26,6 +26,10 @@ jobs:
             image: weecology/portalcasting
             image_name: app
             tag_prefix: app_
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: production
+            tag_prefix: production_
           
     runs-on: ubuntu-latest
     

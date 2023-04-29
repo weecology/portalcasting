@@ -29,11 +29,12 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 # dev
 
 FROM tidyverse AS base-branch
-RUN echo "poop"
+
+FROM tidyverse AS production-branch
+RUN R -e "library(portalcasting); prefab_datasets()"
 
 FROM tidyverse AS app-branch
 RUN R -e "library(portalcasting); prefab_models()"
 
 
 FROM ${image_name}-branch AS final
-RUN echo "VAR is equal to ${VAR}"
