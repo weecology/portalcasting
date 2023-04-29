@@ -34,7 +34,7 @@ FROM tidyverse AS directory-branch
 RUN R -e "library(portalcasting); prefab_datasets(); #setup_production( )"
 
 FROM tidyverse AS app-branch
-RUN R -e "library(portalcasting); prefab_models(); #setup_production( )"
+RUN R -e "library(portalcasting); prefab_models(); setup_sandbox( )"
 EXPOSE 3838
 CMD ["R", "-e", "portalcasting::prefab_models()"]
 
