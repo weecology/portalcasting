@@ -1,3 +1,7 @@
+# image_name argument defines state of finished image
+
+ARG image_name "base"
+
 # base image is rocker/tidyverse, which includes remotes and shiny
 
 FROM rocker/tidyverse:latest
@@ -10,8 +14,8 @@ RUN apt-get update \
 
 # Install portalcasting from github
 
-ARG SHA "HEAD"
+ARG event_sha "HEAD"
 
-RUN echo "Installing from github at ref $SHA"
+RUN echo "Installing from github at ref $event_sha"
 
-RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$SHA')"
+RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"

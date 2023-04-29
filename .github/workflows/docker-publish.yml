@@ -79,4 +79,4 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: ${{ matrix.dockerfile }}
           build-args: |
-            "SHA=${{ github.sha }}"
+            "event_sha=${{ github.sha }}"
