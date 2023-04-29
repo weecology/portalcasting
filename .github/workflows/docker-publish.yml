@@ -87,8 +87,4 @@ jobs:
           build-args: |
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
-
-       - name: Deploy app
-         run: |
-           library(portalcasting);
-         shell: Rscript {0}           
+           
