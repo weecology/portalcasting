@@ -91,7 +91,10 @@ jobs:
       - name: Deploy app
         if: ${{ matrix.image_name == 'app' }}
         run: |
-          library(portalcasting)
+          library(rsconnect)
+          setAccountInfo(name   = ${{ secrets.SHINY_ACCOUNT }},
+                         token  = ${{ secrets.SHINY_TOKEN }},
+                         secret = ${{ secrets.SHINY_SECRET }})
         shell: Rscript {0}
         
         
