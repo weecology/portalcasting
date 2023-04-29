@@ -24,14 +24,3 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 
 # For the app image, setup a directory
 
-
-FROM tidyverse AS base-branch
-RUN echo "this is the stage that sets VAR=TRUE"
-ENV VAR=TRUE
-
-FROM tidyverse AS app-branch
-RUN echo "this is the stage that sets VAR=FALSE"
-ENV VAR=FALSE
-
-FROM ${image_name}-branch AS final
-RUN echo "VAR is equal to ${VAR}"
