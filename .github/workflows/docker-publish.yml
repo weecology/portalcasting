@@ -82,3 +82,4 @@ jobs:
           file: ${{ matrix.dockerfile }}
           build-args: |
             "event_sha=${{ github.sha }}"
+            "image_name=${{ matrix.image_name }}"
