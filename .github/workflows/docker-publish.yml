@@ -28,8 +28,12 @@ jobs:
             tag_prefix: app_
           - dockerfile: docker/Dockerfile
             image: weecology/portalcasting
-            image_name: directory
-            tag_prefix: directory_
+            image_name: production
+            tag_prefix: production_
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: sandbox
+            tag_prefix: sandbox_            
           
     runs-on: ubuntu-latest
     
@@ -91,6 +95,7 @@ jobs:
       - name: Deploy app
         if: ${{ matrix.image_name == 'app' }}
         run: |
+          install.packages("rsconnect")
           library(rsconnect)
           setAccountInfo(name   = ${{ secrets.SHINY_ACCOUNT }},
                          token  = ${{ secrets.SHINY_TOKEN }},

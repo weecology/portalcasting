@@ -9,8 +9,6 @@ ARG image_name "base"
 
 FROM rocker/tidyverse:latest AS tidyverse
 
-RUN echo "Building the $image_name image"
-
 # Install `jags` c library
 
 RUN apt-get update \
@@ -30,8 +28,11 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 
 FROM tidyverse AS base-branch
 
-FROM tidyverse AS directory-branch
+FROM tidyverse AS production-branch
 RUN R -e "library(portalcasting); prefab_datasets(); #setup_production( )"
+
+FROM tidyverse AS sandbox-branch
+RUN R -e "library(portalcasting); prefab_datasets(); setup_sandbox( )"
 
 FROM tidyverse AS app-branch
 RUN R -e "library(portalcasting); prefab_models(); setup_sandbox( )"
