@@ -2,11 +2,11 @@
 
 ARG image_name "base"
 
-RUN echo "Building the $image_name image"
-
 # built upon the rocker/tidyverse image, which includes remotes and shiny
 
 FROM rocker/tidyverse:latest AS tidyverse
+
+RUN echo "Building the $image_name image"
 
 # Install `jags` c library
 
@@ -23,3 +23,10 @@ RUN echo "Installing from github at ref $event_sha"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
 
 
+# dev
+
+FROM tidyverse AS base-branch
+RUN echo "poop"
+
+FROM tidyverse AS app-branch
+RUN R -e "library(portalcasting); prefab_models()"
