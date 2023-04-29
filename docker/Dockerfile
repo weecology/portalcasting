@@ -31,10 +31,11 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 FROM tidyverse AS base-branch
 
 FROM tidyverse AS production-branch
-RUN R -e "library(portalcasting); prefab_datasets()"
+RUN R -e "library(portalcasting); prefab_datasets(); #setup_production( )"
 
 FROM tidyverse AS app-branch
-RUN R -e "library(portalcasting); prefab_models()"
-
+RUN R -e "library(portalcasting); prefab_models(); #setup_production( )"
+# EXPOSE ??
+# CMD run app
 
 FROM ${image_name}-branch AS final
