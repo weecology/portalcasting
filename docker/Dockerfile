@@ -1,3 +1,6 @@
+# We use multi-stage build contexts to generate different versions of the image
+# See https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae
+
 # image_name argument defines state of finished image
 
 ARG image_name "base"
@@ -30,3 +33,7 @@ RUN echo "poop"
 
 FROM tidyverse AS app-branch
 RUN R -e "library(portalcasting); prefab_models()"
+
+
+FROM ${image_name}-branch AS final
+RUN echo "VAR is equal to ${VAR}"
