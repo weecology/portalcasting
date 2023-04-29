@@ -88,4 +88,7 @@ jobs:
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
 
+       - name: Deploy app
+         if: ${{ matrix.image_name == 'app' }}
+         
            
