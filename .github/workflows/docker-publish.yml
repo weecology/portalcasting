@@ -89,10 +89,6 @@ jobs:
             "image_name=${{ matrix.image_name }}"
 
        - name: Deploy app
-         if: ${{ matrix.image_name == 'app' }}
          run: |
            library(portalcasting);
-           class(${{ secrets.SHINY_ACCOUNT }});
-           prefab_datasets();
-         shell: Rscript {0}         
-           
+         shell: Rscript {0}           
