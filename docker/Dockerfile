@@ -21,7 +21,7 @@ RUN apt-get update \
 
 ARG event_sha "HEAD"
 
-RUN echo "Installing from github at ref $event_sha"
+RUN echo "Installing portalcasting from github at ref $event_sha"
 
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
 

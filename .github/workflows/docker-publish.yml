@@ -87,3 +87,12 @@ jobs:
           build-args: |
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
+
+       - name: Deploy app
+         if: ${{ matrix.image_name == 'app' }}
+         run: |
+           library(portalcasting);
+           prefab_datasets();
+         shell: Rscript {0}
+         
+           
