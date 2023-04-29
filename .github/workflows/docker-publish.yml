@@ -68,7 +68,7 @@ jobs:
           images: ${{ matrix.image }}
           tags: |
             type=raw,value=${{ matrix.tag_prefix }}latest
-            type=semver,pattern={{raw}}  
+            type=semver,pattern={{raw}},prefix=${{ matrix.tag_prefix }}  
 
       - name: Build and push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
