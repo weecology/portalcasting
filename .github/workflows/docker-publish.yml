@@ -23,7 +23,7 @@ jobs:
             image_name: base
             tag_prefix: ''
           - dockerfile: docker/Dockerfile
-            image: weecology/portalcasting_app
+            image: weecology/portalcasting
             image_name: app
             tag_prefix: app_
           
@@ -67,7 +67,7 @@ jobs:
         with:
           images: ${{ matrix.image }}
           tags: |
-            type=raw,value=latest
+            type=raw,value=${{ matrix.tag_prefix }}latest
             type=semver,pattern={{raw}}  
 
       - name: Build and push ${{ matrix.image_name }} image
@@ -75,7 +75,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name == 'release' }}
-          tags: ${{ matrix.tag_prefix }}${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file: ${{ matrix.dockerfile }}
           build-args: |
