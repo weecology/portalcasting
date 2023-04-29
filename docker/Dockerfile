@@ -1,12 +1,12 @@
 # image_name argument defines state of finished image
 
-#ARG image_name "base"
+ARG image_name "base"
 
-#RUN echo "Building the $image_name image"
+RUN echo "Building the $image_name image"
 
 # built upon the rocker/tidyverse image, which includes remotes and shiny
 
-FROM rocker/tidyverse:latest tidyverse
+FROM rocker/tidyverse:latest AS tidyverse
 
 # Install `jags` c library
 
