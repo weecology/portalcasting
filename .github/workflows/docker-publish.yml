@@ -90,5 +90,8 @@ jobs:
 
       - name: Deploy app
         if: ${{ matrix.image_name == 'app' }}
-        uses: docker/metadata-action@v4           
+        run: |
+          library(portalcasting)
+        shell: Rscript {0}
+        
         
