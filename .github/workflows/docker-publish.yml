@@ -95,9 +95,10 @@ jobs:
       - name: Deploy app
         if: ${{ matrix.image_name == 'app' }}
         run: |
-          install.packages("rsconnect")
-          library(rsconnect)
-          setAccountInfo(name = "${{ secrets.SHINY_ACCOUNT }}", token = "${{ secrets.SHINY_TOKEN }}", secret = "${{ secrets.SHINY_SECRET }}")
+           portalcasting::prefab_models()
+#          install.packages("rsconnect")
+#          library(rsconnect)
+#          setAccountInfo(name = "${{ secrets.SHINY_ACCOUNT }}", token = "${{ secrets.SHINY_TOKEN }}", secret = "${{ secrets.SHINY_SECRET }}")
         shell: Rscript {0}
         
         
