@@ -38,7 +38,7 @@ jobs:
           needs: check
           
       - name: Login to Docker Hub
-        if: github.event_name == 'release'      
+        if:  ${{ github.event_name == 'release' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
