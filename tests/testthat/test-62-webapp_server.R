@@ -8,6 +8,9 @@ test_that(desc = "server functions work off of global list", {
 
   skip_on_cran() 
 
+  expect_silent(ae <- app_events())
+  expect_is(ae, "character")
+
   expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")
 
