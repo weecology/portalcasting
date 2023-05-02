@@ -13,7 +13,19 @@ jobs:
 
   build-docker-image:
 
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: base
+            tag_prefix: ''     
+          
     runs-on: ubuntu-latest
+    
+    name: ${{ matrix.image_name }} 
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -36,9 +48,12 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
           
       - name: Login to Docker Hub
-        if:  ${{ github.event_name == 'release' }}
+        if: ${{ github.event_name == 'release' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -48,18 +63,22 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: weecology/portalcasting
+          images: ${{ matrix.image }}
           tags: |
-            type=raw,value=latest
-            type=semver,pattern={{raw}}  
+            type=raw,value=${{ matrix.tag_prefix }}latest
+            type=semver,pattern={{raw}},prefix=${{ matrix.tag_prefix }}  
 
-      - name: Build and push base image
+      - name: Build and push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: ${{ github.event_name == 'release' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          file: docker/Dockerfile
+          file: ${{ matrix.dockerfile }}
           build-args: |
             "event_sha=${{ github.sha }}"
+            "image_name=${{ matrix.image_name }}"
+
+
+        
