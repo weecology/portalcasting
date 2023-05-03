@@ -18,7 +18,7 @@
 #' @importFrom shiny column fluidPage fluidRow getShinyOption mainPanel observeEvent plotOutput reactiveValues renderPlot renderText runApp selectInput shinyApp shinyOptions tabPanel tabsetPanel textOutput titlePanel updateSelectInput
 #' @importFrom stats AIC as.ts filter frequency lm na.omit predict qnorm quantile rgamma rnorm runif sd
 #' @importFrom tscount tsglm
-#' @importFrom utils download.file find globalVariables packageDescription read.csv sessionInfo tail unzip write.csv write.table
+#' @importFrom utils download.file find globalVariables help.search packageDescription read.csv sessionInfo tail unzip write.csv write.table
 #' @importFrom viridis viridis
 #' @importFrom yaml read_yaml write_yaml
 #'
