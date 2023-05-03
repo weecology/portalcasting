@@ -2,8 +2,8 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.54.0
-*In progress*
+# [portalcasting 0.54.0](https://github.com/weecology/portalcasting/releases/tag/v0.54.0)
+*5-3-2023*
 
 ## Adding `sandbox` and `production` version of `update_` functions. 
 
