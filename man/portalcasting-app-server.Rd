@@ -5,6 +5,7 @@
 \alias{web-app-server}
 \alias{app-server}
 \alias{server}
+\alias{app_events}
 \alias{app_server}
 \alias{initial_reactive_values}
 \alias{initial_output}
@@ -14,6 +15,8 @@
 \alias{update_input}
 \title{Generate the Server Code for the Web App}
 \usage{
+app_events()
+
 app_server(input, output, session)
 
 initial_reactive_values(global = global_list())
@@ -42,7 +45,7 @@ update_input(global, event, rv, input, session)
 \item{rv}{\code{\link[shiny:reactiveValues]{reactiveValues}} \code{list} for the UI.}
 
 \item{event}{\code{character} value of the server event. \cr
-Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
+Options are managed by \code{\link{app_events}} -- currently including \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \code{"forecast_tab_model"}, \code{"forecast_tab_historic_end_newmoonnumber"}, \code{"evaluation_tab_species"}, \code{"evaluation_tab_dataset"}, \code{"evaluation_tab_model"}, and \code{"evaluation_tab_historic_end_newmoonnumber"})}
 }
 \value{
 \code{app_server}: an observer reference class object (see \code{\link[shiny:observeEvent]{observeEvent}} and \code{\link[shiny:observe]{observe}}). \cr
@@ -51,7 +54,8 @@ Options include \code{"forecast_tab_species"}, \code{"forecast_tab_dataset"}, \c
 \code{event_reaction}: updates the \code{rv}, \code{output}, and \code{input} \code{list}s, but does not return them, per se. \cr
 \code{update_reactive_values}: a \code{\link[shiny:reactiveValues]{reactiveValues}} \code{list}. \cr
 \code{update_output}: an \code{output} \code{list}. \cr
-\code{update_input}: updates the \code{input} \code{list}, but does not return it.
+\code{update_input}: updates the \code{input} \code{list}, but does not return it. \cr
+\code{app_events}: \code{character} vector of event names.
 }
 \description{
 Generate the Server Code for the Web App

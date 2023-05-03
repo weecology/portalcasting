@@ -1,30 +1,39 @@
 
 on:
   push:
-    tags: [ 'v*.*.*' ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
+  release:
+    types: [ published ]
 
 name: Docker
 
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: docker.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-  DOCKERHUB_USERNAME: henrykironde
-
-
 jobs:
-  
-  R-CMD-check:
 
+  build-docker-image:
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: base
+            tag_prefix: ''     
+          
     runs-on: ubuntu-latest
-
-
+    
+    name: ${{ matrix.image_name }} 
+    
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v3
@@ -40,53 +49,36 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: r-lib/actions/check-r-package@v2
-        with:
-          args: 'c("--no-manual", "--as-cran")'
-          error-on: '"error"'
-          check-dir: '"check"'
-
-
-  build-docker-image:
-
-    needs: R-CMD-check
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+          
+      - name: Login to Docker Hub
+        if: ${{ github.event_name == 'release' }}
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ env.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
       - name: Docker meta
         id: meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: docker/metadata-action@v4
         with:
-          images: weecology/portalcasting
-          tag-custom: latest
-          tag-semver: |
-            {{raw}}   
+          images: ${{ matrix.image }}
+          tags: |
+            type=raw,value=${{ matrix.tag_prefix }}latest
+            type=semver,pattern={{raw}},prefix=${{ matrix.tag_prefix }}  
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
+      - name: Build and push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }} 
+          push: ${{ github.event_name == 'release' }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          file: docker/Dockerfile
+          file: ${{ matrix.dockerfile }}
+          build-args: |
+            "event_sha=${{ github.sha }}"
+            "image_name=${{ matrix.image_name }}"
+
+
+        

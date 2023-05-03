@@ -21,7 +21,7 @@
 #'
 #'    global_list(main = main1)
 #'
-#'    if (getShinyOption("shiny.launch.browser")) {
+#'    if (getShinyOption("shiny.launch.browser", FALSE)) {
 #'      run_app(main = main1)
 #'    }
 #'

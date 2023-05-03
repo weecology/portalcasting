@@ -2,6 +2,16 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# portalcasting 0.54.0
+*In progress*
+
+## Adding `sandbox` and `production` version of `update_` functions. 
+
+## Adding Pat as an author
+
+## Pointing the dockerfile to the current build SHA
+* Previously, we were using default settings for `remotes::install_github`, which actually points to HEAD, when testing the build and push for the docker action. that was fine (although not great) when we were only running that action on tagged version releases, as the main branch was typically up-to-date with the tag and such, but this isn't exact and it also means any testing of the build on a PR was actually still grabbing from main, which is not what we want.
+* We now use the SHA for the specific event that triggers the build by passing it into the docker file as an ARG
 
 # [portalcasting 0.53.0](https://github.com/weecology/portalcasting/releases/tag/v0.53.0)
 *4-26-2023*
