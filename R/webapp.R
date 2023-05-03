@@ -36,7 +36,7 @@ NULL
 #'
 run_app <- function(main = ".") {
 
-  runApp(appDir = shiny_app_dir(main = main))
+  runApp(appDir = shiny_app_path(main = main))
 
 }
 
