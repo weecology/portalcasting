@@ -81,7 +81,9 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">app_server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">app_events</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">app_server</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">initial_reactive_values</span><span class="op">(</span>global <span class="op">=</span> <span class="fu"><a href="portalcasting-app.html">global_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -124,7 +126,7 @@
 
 <dt>event</dt>
 <dd><p><code>character</code> value of the server event. <br>
-Options include <code>"forecast_tab_species"</code>, <code>"forecast_tab_dataset"</code>, <code>"forecast_tab_model"</code>, <code>"forecast_tab_historic_end_newmoonnumber"</code>, <code>"evaluation_tab_species"</code>, <code>"evaluation_tab_dataset"</code>, <code>"evaluation_tab_model"</code>, and <code>"evaluation_tab_historic_end_newmoonnumber"</code>)</p></dd>
+Options are managed by <code>app_events</code> -- currently including <code>"forecast_tab_species"</code>, <code>"forecast_tab_dataset"</code>, <code>"forecast_tab_model"</code>, <code>"forecast_tab_historic_end_newmoonnumber"</code>, <code>"evaluation_tab_species"</code>, <code>"evaluation_tab_dataset"</code>, <code>"evaluation_tab_model"</code>, and <code>"evaluation_tab_historic_end_newmoonnumber"</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -161,7 +163,10 @@ Options include <code>"forecast_tab_species"</code>, <code>"forecast_tab_dataset
 
 <p><code>update_input</code>: updates the <code>input</code></p>
 <p></p>
-<p><code>list</code>, but does not return it.</p>
+<p><code>list</code>, but does not return it. <br></p>
+
+
+<p><code>app_events</code>: <code>character</code> vector of event names.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -195,7 +200,7 @@ Options include <code>"forecast_tab_species"</code>, <code>"forecast_tab_dataset
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, Pat K. T. Dumandan, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
+  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, Pat K. T. Dumandan, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

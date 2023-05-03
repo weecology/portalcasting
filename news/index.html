@@ -87,6 +87,11 @@
 <div class="section level3">
 <h3 id="adding-pat-as-an-author-0-54-0">Adding Pat as an author<a class="anchor" aria-label="anchor" href="#adding-pat-as-an-author-0-54-0"></a></h3>
 </div>
+<div class="section level3">
+<h3 id="pointing-the-dockerfile-to-the-current-build-sha-0-54-0">Pointing the dockerfile to the current build SHA<a class="anchor" aria-label="anchor" href="#pointing-the-dockerfile-to-the-current-build-sha-0-54-0"></a></h3>
+<ul><li>Previously, we were using default settings for <code>remotes::install_github</code>, which actually points to HEAD, when testing the build and push for the docker action. that was fine (although not great) when we were only running that action on tagged version releases, as the main branch was typically up-to-date with the tag and such, but this isn’t exact and it also means any testing of the build on a PR was actually still grabbing from main, which is not what we want.</li>
+<li>We now use the SHA for the specific event that triggers the build by passing it into the docker file as an ARG</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.53.0" id="portalcasting-0530"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.53.0" class="external-link">portalcasting 0.53.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0530"></a></h2>
@@ -1398,7 +1403,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, Pat K. T. Dumandan, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
+  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, Pat K. T. Dumandan, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
