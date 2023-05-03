@@ -3,6 +3,7 @@
 \name{directory paths}
 \alias{directory paths}
 \alias{paths}
+\alias{directory_configuration_path}
 \alias{models_rmd_path}
 \alias{models_html_path}
 \alias{about_md_path}
@@ -19,6 +20,7 @@
 \alias{covariates_path}
 \alias{metadata_path}
 \alias{app_path}
+\alias{shiny_app_path}
 \alias{data_path}
 \alias{forecasts_path}
 \alias{fits_path}
@@ -27,6 +29,8 @@
 \title{Create a List of Full Directory Paths}
 \usage{
 paths(main = ".")
+
+directory_configuration_path(main = ".")
 
 models_rmd_path(main = ".")
 
@@ -60,6 +64,8 @@ metadata_path(main = ".")
 
 app_path(main = ".")
 
+shiny_app_path(main = ".")
+
 data_path(main = ".")
 
 forecasts_path(main = ".")
@@ -80,13 +86,15 @@ resources_path(main = ".")
 }
 \description{
 Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on \code{\link{directory_settings}}. \cr
-\code{paths} produces the full path \code{list}, whose contents can then also be accessed with specialized functions, see \code{Details}.
+\code{paths} produces the full path \code{list}, whose contents can then also be accessed with specialized functions, see \code{Details}. \cr
+There is also a special function for the shiny application location, which is not the same as the \code{app_path} (which is the files supporting the app), but technically the same as \code{main}.
 }
 \details{
 Wrapper functions for specific subdirectories and files include:
 \itemize{
 \item Files
 \itemize{
+\item \code{directory_configuration_path}
 \item \code{rodents_dataset_path}
 \item \code{climate_forecasts_paths}
 \item \code{forecasts_metadata_path}
@@ -109,6 +117,10 @@ Wrapper functions for specific subdirectories and files include:
 \item \code{models_path}
 \item \code{resources_path}
 }
+\item Shiny
+\itemize{
+\item \code{shiny_app_path}
+}
 }
 }
 \examples{
@@ -119,6 +131,8 @@ Wrapper functions for specific subdirectories and files include:
    paths(main = main1)
 
    newmoons_path(main = main1)
+
+   directory_configuration_path(main = main1)
 
    rodents_datasets_paths(main = main1)
    rodents_dataset_path(main = main1)
@@ -140,6 +154,8 @@ Wrapper functions for specific subdirectories and files include:
    about_md_path(main = main1)
    rodents_profiles_html_path(main = main1)
    rodents_profiles_csv_path(main = main1)
+
+   shiny_app_path(main = main1)
 
    app_path(main = main1)
    data_path(main = main1)

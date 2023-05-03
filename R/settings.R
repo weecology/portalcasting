@@ -21,6 +21,8 @@
 #'
 #' @param metadata `character` name for the Forecast metadata YAML.
 #'
+#' @param directory_configuration `character` name for the directory configuration YAML.
+#'
 #' @param datasets_controls `character` name for the YAML of datasets control list(s).
 #'
 #' @param models_rmd `character` name for the Rmd file for the models page of the app.
@@ -175,33 +177,35 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
 #'
 #' @export
 #'
-directory_files <- function (newmoons              = "newmoons.csv",
-                             covariates            = "covariates.csv",
-                             datasets_controls     = "datasets_controls.yaml", 
-                             models_controls       = "models_controls.yaml",
-                             forecasts_evaluations = "forecasts_evaluations.csv",
-                             forecasts_results     = "forecasts_results.csv",
-                             forecasts_metadata    = "forecasts_metadata.csv",
-                             metadata              = "metadata.yaml",
-                             about_md              = "about.md",
-                             models_html           = "models.html",
-                             models_rmd            = "models.Rmd",
-                             rodents_profiles_html = "rodents_profiles.html",
-                             rodents_profiles_csv  = "rodents_profiles.csv") {
+directory_files <- function (directory_configuration = "directory_configuration.yaml",
+                             newmoons                = "newmoons.csv",
+                             covariates              = "covariates.csv",
+                             datasets_controls       = "datasets_controls.yaml", 
+                             models_controls         = "models_controls.yaml",
+                             forecasts_evaluations   = "forecasts_evaluations.csv",
+                             forecasts_results       = "forecasts_results.csv",
+                             forecasts_metadata      = "forecasts_metadata.csv",
+                             metadata                = "metadata.yaml",
+                             about_md                = "about.md",
+                             models_html             = "models.html",
+                             models_rmd              = "models.Rmd",
+                             rodents_profiles_html   = "rodents_profiles.html",
+                             rodents_profiles_csv    = "rodents_profiles.csv") {
 
-  list(newmoons                = newmoons,
-       covariates              = covariates,
-       datasets_controls       = datasets_controls, 
-       models_controls         = models_controls,
-       forecasts_evaluations   = forecasts_evaluations,
-       forecasts_results       = forecasts_results,
-       forecasts_metadata      = forecasts_metadata,
-       about_md                = about_md,
-       models_rmd              = models_rmd,
-       models_html             = models_html,
-       rodents_profiles_html   = rodents_profiles_html,
-       rodents_profiles_csv    = rodents_profiles_csv,
-       metadata                = metadata)
+  list(directory_configuration   = directory_configuration,
+       newmoons                  = newmoons,
+       covariates                = covariates,
+       datasets_controls         = datasets_controls, 
+       models_controls           = models_controls,
+       forecasts_evaluations     = forecasts_evaluations,
+       forecasts_results         = forecasts_results,
+       forecasts_metadata        = forecasts_metadata,
+       about_md                  = about_md,
+       models_rmd                = models_rmd,
+       models_html               = models_html,
+       rodents_profiles_html     = rodents_profiles_html,
+       rodents_profiles_csv      = rodents_profiles_csv,
+       metadata                  = metadata)
 
 }
 

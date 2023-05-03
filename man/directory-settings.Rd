@@ -37,6 +37,7 @@ time_settings(
 )
 
 directory_files(
+  directory_configuration = "directory_configuration.yaml",
   newmoons = "newmoons.csv",
   covariates = "covariates.csv",
   datasets_controls = "datasets_controls.yaml",
@@ -113,6 +114,8 @@ Default value of \code{60} corresponds to two additional lunar months.}
 
 \item{lead_time_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
 Default value of \code{30} corresponds to one additional lunar month.}
+
+\item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 
 \item{newmoons}{\code{character} name for the lunar data csv.}
 

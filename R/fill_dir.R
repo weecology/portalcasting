@@ -150,7 +150,7 @@ fill_app <- function (main = ".") {
                                package = "portalcasting")
 
   file.copy(from      = list.files(app_directory, full.names = TRUE),
-            to        = app_path(main = main),
+            to        = main,
             recursive = TRUE,
             overwrite = TRUE)
 

@@ -414,10 +414,12 @@ update_directory_configuration <- function (main = ".") {
 #' @title Create a List of Full Directory Paths
 #' 
 #' @description Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on [`directory_settings`]. \cr
-#'              `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`.
+#'              `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`. \cr
+#'               There is also a special function for the shiny application location, which is not the same as the `app_path` (which is the files supporting the app), but technically the same as `main`.
 #'
 #' @details Wrapper functions for specific subdirectories and files include:   
 #'   * Files
+#'     * `directory_configuration_path`  
 #'     * `rodents_dataset_path`  
 #'     * `climate_forecasts_paths`  
 #'     * `forecasts_metadata_path`  
@@ -437,6 +439,9 @@ update_directory_configuration <- function (main = ".") {
 #'     * `fits_path`  
 #'     * `models_path`  
 #'     * `resources_path`
+#'   * Shiny
+#'     * `shiny_app_path`  
+
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -459,6 +464,8 @@ update_directory_configuration <- function (main = ".") {
 #'
 #'    newmoons_path(main = main1)
 #'
+#'    directory_configuration_path(main = main1)
+#'
 #'    rodents_datasets_paths(main = main1)
 #'    rodents_dataset_path(main = main1)
 #'    rodents_datasets_paths(main = main1)
@@ -479,6 +486,8 @@ update_directory_configuration <- function (main = ".") {
 #'    about_md_path(main = main1)
 #'    rodents_profiles_html_path(main = main1)
 #'    rodents_profiles_csv_path(main = main1)
+#'
+#'    shiny_app_path(main = main1)
 #'
 #'    app_path(main = main1)
 #'    data_path(main = main1)
@@ -517,7 +526,8 @@ paths <- function (main = ".") {
   names(rodents_datasets)  <- names(rodent_datasets_controls)
 
 
-  files <- list(newmoons                  = file.path(main, settings$subdirectories$data, settings$files$newmoons),
+  files <- list(directory_configuration   = file.path(main, settings$files$directory_configuration),
+                newmoons                  = file.path(main, settings$subdirectories$data, settings$files$newmoons),
                 covariates                = file.path(main, settings$subdirectories$data, settings$files$covariates),
                 metadata                  = file.path(main, settings$subdirectories$data, settings$files$metadata),
                 rodents_datasets          = rodents_datasets,
@@ -543,6 +553,16 @@ paths <- function (main = ".") {
        subdirectories = subdirectories,
        files          = files)
  
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+directory_configuration_path <- function (main = ".") {
+
+  paths(main = main)$files$directory_configuration
+
 }
 
 #' @rdname directory-paths
@@ -708,6 +728,17 @@ app_path <- function (main = ".") {
   paths(main = main)$subdirectories$app
   
 }
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+shiny_app_path <- function (main = ".") {
+
+  paths(main = main)$main
+  
+}
+
 
 #' @rdname directory-paths
 #'

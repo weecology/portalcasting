@@ -25,7 +25,7 @@ Authors:
   \item Glenda M. Yenni (\href{https://orcid.org/0000-0001-6969-1848}{ORCID})
   \item Ellen K. Bledsoe (\href{https://orcid.org/0000-0002-3629-7235}{ORCID})
   \item Erica M. Christensen (\href{https://orcid.org/0000-0002-5635-2502}{ORCID})
-  \item Pat K. T. Dumandan (\href{https://orcid.org/0000-0003-3360-1534}{ORCID})
+  \item Patricia K. T. Dumandan (\href{https://orcid.org/0000-0003-3360-1534}{ORCID})
   \item Henry Senyondo (\href{https://orcid.org/0000-0001-7105-5808}{ORCID})
   \item Hao Ye (\href{https://orcid.org/0000-0002-8630-1458}{ORCID})
   \item Ethan P. White (\href{https://orcid.org/0000-0001-6728-7745}{ORCID})
