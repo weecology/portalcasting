@@ -51,7 +51,9 @@
 #'
 #' @param forecasts `character` name for the forecasts subdirectory.
 #'
-#' @param app `character` name for the app subdirectory.
+#' @param www `character` name for the application www helpers subdirectory.
+#'
+#' @param app `character` name for the application R file.
 #'
 #' @param PortalData `list` of `source` and `version` elements of `character` values for the Portal Data download. Default values retrieve the latest data from github
 #'
@@ -178,6 +180,7 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
 #' @export
 #'
 directory_files <- function (directory_configuration = "directory_configuration.yaml",
+                             app                     = "app.R",
                              newmoons                = "newmoons.csv",
                              covariates              = "covariates.csv",
                              datasets_controls       = "datasets_controls.yaml", 
@@ -193,6 +196,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
                              rodents_profiles_csv    = "rodents_profiles.csv") {
 
   list(directory_configuration   = directory_configuration,
+       app                       = app,
        newmoons                  = newmoons,
        covariates                = covariates,
        datasets_controls         = datasets_controls, 
@@ -219,14 +223,14 @@ directory_subdirectories <- function (forecasts = "forecasts",
                                       models    = "models", 
                                       resources = "resources", 
                                       data      = "data", 
-                                      app       = "www") {
+                                      www       = "www") {
 
   list(forecasts = forecasts, 
        fits      = fits, 
        models    = models, 
        resources = resources, 
        data      = data, 
-       app       = app)
+       www       = www)
 
 }
 

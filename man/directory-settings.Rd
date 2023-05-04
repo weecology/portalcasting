@@ -38,6 +38,7 @@ time_settings(
 
 directory_files(
   directory_configuration = "directory_configuration.yaml",
+  app = "app.R",
   newmoons = "newmoons.csv",
   covariates = "covariates.csv",
   datasets_controls = "datasets_controls.yaml",
@@ -59,7 +60,7 @@ directory_subdirectories(
   models = "models",
   resources = "resources",
   data = "data",
-  app = "www"
+  www = "www"
 )
 
 directory_resources(
@@ -117,6 +118,8 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{directory_configuration}{\code{character} name for the directory configuration YAML.}
 
+\item{app}{\code{character} name for the application R file.}
+
 \item{newmoons}{\code{character} name for the lunar data csv.}
 
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
@@ -151,7 +154,7 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{data}{\code{character} name for the data subdirectory.}
 
-\item{app}{\code{character} name for the app subdirectory.}
+\item{www}{\code{character} name for the application www helpers subdirectory.}
 
 \item{PortalData}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
 
