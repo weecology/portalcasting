@@ -81,7 +81,7 @@ global_list <- function (main = ".") {
 
   messageq("Locating species and model names ... ", quiet = !settings$verbose)
 
-  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+  species_names_table  <- read.csv(file = species_names_path(main = main))
   species_names        <- species_names_table$code
   names(species_names) <- species_names_table$Latin
 

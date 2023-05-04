@@ -51,7 +51,8 @@ directory_files(
   models_html = "models.html",
   models_rmd = "models.Rmd",
   rodents_profiles_html = "rodents_profiles.html",
-  rodents_profiles_csv = "rodents_profiles.csv"
+  rodents_profiles_csv = "rodents_profiles.csv",
+  species_names = "species_names.csv"
 )
 
 directory_subdirectories(
@@ -145,6 +146,8 @@ Default value of \code{30} corresponds to one additional lunar month.}
 \item{rodents_profiles_html}{\code{character} name for the html file where the rodents profiles page will be saved for the app.}
 
 \item{rodents_profiles_csv}{\code{character} name for the csv file containing content for the rodents profiles table for the app.}
+
+\item{species_names}{\code{character} name for the csv file containing the output from \code{\link[portalr:rodent_species]{portalr::rodent_species}}, with \code{set = "forecasting"}, \code{type = "table"}, and \code{total = TRUE}.}
 
 \item{forecasts}{\code{character} name for the forecasts subdirectory.}
 

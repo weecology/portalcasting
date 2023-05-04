@@ -60,9 +60,10 @@ main
 │   <casts metadata file>
 └──fits
 │   <previous and current model fits>
-└──app
+└──www
 │   <ui, server, and application files>
 └──directory_configuration.yaml
+└──app.R
 ```
 
 The `main` argument controls the location of the directory and defaults to `"."`, the present working location. 

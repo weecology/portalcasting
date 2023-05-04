@@ -136,6 +136,18 @@ prepare_rodents <- function (main                  = ".",
   return_if_null(x = datasets)
   settings <- read_directory_settings(main = main)
 
+  write_data(x            = rodent_species(path  = file.path(main, settings$subdirectories$resources), 
+                                           set   = "forecasting", 
+                                           type  = "table", 
+                                           total = TRUE), 
+             main         = main, 
+             subdirectory = settings$subdirectories$data,
+             save         = settings$save, 
+             overwrite    = settings$overwrite, 
+             filename     = settings$files$species_names, 
+             quiet        = !settings$verbose)
+
+
   datasets_controls_list <- write_datasets_controls(main                  = main, 
                                                     datasets              = datasets, 
                                                     new_datasets_controls = new_datasets_controls)

@@ -421,6 +421,7 @@ update_directory_configuration <- function (main = ".") {
 #'   * Files
 #'     * `directory_configuration_path`  
 #'     * `rodents_dataset_path`  
+#'     * `species_names_path`  
 #'     * `climate_forecasts_paths`  
 #'     * `forecasts_metadata_path`  
 #'     * `forecasts_evaluations_path`  
@@ -464,7 +465,7 @@ update_directory_configuration <- function (main = ".") {
 #'
 #'    directory_configuration_path(main = main1)
 #'
-#'    rodents_datasets_paths(main = main1)
+#'    species_names_path(main = main1)
 #'    rodents_dataset_path(main = main1)
 #'    rodents_datasets_paths(main = main1)
 #'
@@ -529,7 +530,8 @@ paths <- function (main = ".") {
                 covariates                = file.path(main, settings$subdirectories$data, settings$files$covariates),
                 metadata                  = file.path(main, settings$subdirectories$data, settings$files$metadata),
                 rodents_datasets          = rodents_datasets,
-                rodents_datasets_controls = file.path(main, settings$subdirectories$data, settings$files$datasets_controls),
+                rodents_datasets_controls = file.path(main, settings$subdirectories$data, settings$files$datasets_controls), 
+                species_names             = file.path(main, settings$subdirectories$data, settings$files$species_names),
 
                 climate_forecasts         = climate_forecasts,
 
@@ -647,6 +649,16 @@ rodents_dataset_path <- function (main    = ".",
                                   dataset = "all") {
 
   paths(main = main)$files$rodents_datasets[dataset]
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+species_names_path <- function (main = ".") {
+
+  paths(main = main)$files$species_names
 
 }
 

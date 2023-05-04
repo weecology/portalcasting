@@ -35,6 +35,8 @@
 #'
 #' @param rodents_profiles_csv `character` name for the csv file containing content for the rodents profiles table for the app.
 #'
+#' @param species_names `character` name for the csv file containing the output from [`portalr::rodent_species`], with `set = "forecasting"`, `type = "table"`, and `total = TRUE`.
+#'
 #' @param models_controls `character` name for the YAML of models controls list(s).
 #'
 #' @param forecasts_evaluations `character` name for the forecast evaluations csv.
@@ -193,7 +195,8 @@ directory_files <- function (directory_configuration = "directory_configuration.
                              models_html             = "models.html",
                              models_rmd              = "models.Rmd",
                              rodents_profiles_html   = "rodents_profiles.html",
-                             rodents_profiles_csv    = "rodents_profiles.csv") {
+                             rodents_profiles_csv    = "rodents_profiles.csv",
+                             species_names           = "species_names.csv") {
 
   list(directory_configuration   = directory_configuration,
        app                       = app,
@@ -209,6 +212,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
        models_html               = models_html,
        rodents_profiles_html     = rodents_profiles_html,
        rodents_profiles_csv      = rodents_profiles_csv,
+       species_names             = species_names,
        metadata                  = metadata)
 
 }

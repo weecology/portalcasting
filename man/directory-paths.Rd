@@ -12,6 +12,7 @@
 \alias{rodents_datasets_controls_path}
 \alias{models_controls_path}
 \alias{rodents_dataset_path}
+\alias{species_names_path}
 \alias{climate_forecasts_paths}
 \alias{forecasts_metadata_path}
 \alias{forecasts_evaluations_path}
@@ -47,6 +48,8 @@ rodents_datasets_controls_path(main = ".")
 models_controls_path(main = ".")
 
 rodents_dataset_path(main = ".", dataset = "all")
+
+species_names_path(main = ".")
 
 climate_forecasts_paths(main = ".")
 
@@ -96,6 +99,7 @@ Wrapper functions for specific subdirectories and files include:
 \itemize{
 \item \code{directory_configuration_path}
 \item \code{rodents_dataset_path}
+\item \code{species_names_path}
 \item \code{climate_forecasts_paths}
 \item \code{forecasts_metadata_path}
 \item \code{forecasts_evaluations_path}
@@ -133,7 +137,7 @@ Wrapper functions for specific subdirectories and files include:
 
    directory_configuration_path(main = main1)
 
-   rodents_datasets_paths(main = main1)
+   species_names_path(main = main1)
    rodents_dataset_path(main = main1)
    rodents_datasets_paths(main = main1)
 
