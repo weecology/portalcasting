@@ -3,7 +3,6 @@
 \name{directory paths}
 \alias{directory paths}
 \alias{paths}
-\alias{directory_configuration_path}
 \alias{models_rmd_path}
 \alias{models_html_path}
 \alias{about_md_path}
@@ -30,8 +29,6 @@
 \title{Create a List of Full Directory Paths}
 \usage{
 paths(main = ".")
-
-directory_configuration_path(main = ".")
 
 models_rmd_path(main = ".")
 
@@ -97,7 +94,6 @@ Wrapper functions for specific subdirectories and files include:
 \itemize{
 \item Files
 \itemize{
-\item \code{directory_configuration_path}
 \item \code{rodents_dataset_path}
 \item \code{species_names_path}
 \item \code{climate_forecasts_paths}
@@ -134,8 +130,6 @@ Wrapper functions for specific subdirectories and files include:
    paths(main = main1)
 
    newmoons_path(main = main1)
-
-   directory_configuration_path(main = main1)
 
    species_names_path(main = main1)
    rodents_dataset_path(main = main1)

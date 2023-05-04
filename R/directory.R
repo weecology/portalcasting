@@ -419,7 +419,6 @@ update_directory_configuration <- function (main = ".") {
 #'
 #' @details Wrapper functions for specific subdirectories and files include:   
 #'   * Files
-#'     * `directory_configuration_path`  
 #'     * `rodents_dataset_path`  
 #'     * `species_names_path`  
 #'     * `climate_forecasts_paths`  
@@ -462,8 +461,6 @@ update_directory_configuration <- function (main = ".") {
 #'    paths(main = main1)
 #'
 #'    newmoons_path(main = main1)
-#'
-#'    directory_configuration_path(main = main1)
 #'
 #'    species_names_path(main = main1)
 #'    rodents_dataset_path(main = main1)
@@ -525,8 +522,7 @@ paths <- function (main = ".") {
   names(rodents_datasets)  <- names(rodent_datasets_controls)
 
 
-  files <- list(directory_configuration   = file.path(main, settings$files$directory_configuration),
-                newmoons                  = file.path(main, settings$subdirectories$data, settings$files$newmoons),
+  files <- list(newmoons                  = file.path(main, settings$subdirectories$data, settings$files$newmoons),
                 covariates                = file.path(main, settings$subdirectories$data, settings$files$covariates),
                 metadata                  = file.path(main, settings$subdirectories$data, settings$files$metadata),
                 rodents_datasets          = rodents_datasets,
@@ -557,16 +553,6 @@ paths <- function (main = ".") {
        subdirectories = subdirectories,
        files          = files)
  
-}
-
-#' @rdname directory-paths
-#'
-#' @export
-#'
-directory_configuration_path <- function (main = ".") {
-
-  paths(main = main)$files$directory_configuration
-
 }
 
 #' @rdname directory-paths
