@@ -56,7 +56,7 @@ test_that(desc = "server functions work off of global list", {
 
   main <- main3
 
-  testServer(app_path(main = main3)$file, {
+  testServer(app_paths(main = main3)$file, {
 
     session$setInputs(forecast_tab_species                       = global$initial_forecast_tab_selected_species,
                       forecast_tab_dataset                       = global$initial_forecast_tab_selected_dataset,

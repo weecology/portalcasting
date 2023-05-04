@@ -36,7 +36,7 @@ NULL
 #'
 run_app <- function(main = ".") {
 
-  runApp(appDir = app_path(main = main)$folder)
+  runApp(appDir = app_paths(main = main)$folder)
 
 }
 

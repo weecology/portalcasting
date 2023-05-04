@@ -439,7 +439,7 @@ update_directory_configuration <- function (main = ".") {
 #'     * `fits_path`  
 #'     * `models_path`  
 #'   * Shiny Application
-#'     * `app_path`
+#'     * `app_paths`
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -483,7 +483,7 @@ update_directory_configuration <- function (main = ".") {
 #'    rodents_profiles_html_path(main = main1)
 #'    rodents_profiles_csv_path(main = main1)
 #'
-#'    app_path(main = main1)
+#'    app_paths(main = main1)
 #'
 #'    www_path(main = main1)
 #'    data_path(main = main1)
@@ -733,7 +733,7 @@ www_path <- function (main = ".") {
 #'
 #' @export
 #'
-app_path <- function (main = ".") {
+app_paths <- function (main = ".") {
 
   paths(main = main)$app
   

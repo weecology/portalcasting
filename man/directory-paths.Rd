@@ -20,7 +20,7 @@
 \alias{covariates_path}
 \alias{metadata_path}
 \alias{www_path}
-\alias{app_path}
+\alias{app_paths}
 \alias{data_path}
 \alias{forecasts_path}
 \alias{fits_path}
@@ -64,7 +64,7 @@ metadata_path(main = ".")
 
 www_path(main = ".")
 
-app_path(main = ".")
+app_paths(main = ".")
 
 data_path(main = ".")
 
@@ -118,7 +118,7 @@ Wrapper functions for specific subdirectories and files include:
 }
 \item Shiny Application
 \itemize{
-\item \code{app_path}
+\item \code{app_paths}
 }
 }
 }
@@ -152,7 +152,7 @@ Wrapper functions for specific subdirectories and files include:
    rodents_profiles_html_path(main = main1)
    rodents_profiles_csv_path(main = main1)
 
-   app_path(main = main1)
+   app_paths(main = main1)
 
    www_path(main = main1)
    data_path(main = main1)
