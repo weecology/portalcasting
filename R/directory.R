@@ -547,7 +547,8 @@ paths <- function (main = ".") {
                 rodents_profiles_html     = file.path(main, settings$subdirectories$www, settings$files$rodents_profiles_html), 
                 rodents_profiles_csv      = file.path(main, settings$subdirectories$www, settings$files$rodents_profiles_csv))
 
-  app <- c(folder = main, file = file.path(main, settings$files$app))
+  app <- list(folder = main, 
+              file   = file.path(main, settings$files$app))
 
   list(main           = main,
        app            = app,
