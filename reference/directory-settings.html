@@ -16,7 +16,7 @@ time_settings collates the temporal aspects of the data, and can be used to set 
     
     <a class="navbar-brand me-2" href="../index.html">portalcasting</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.54.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.55.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,6 +113,8 @@ Most users will not want or need to change the directory folders and file names,
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">directory_files</span><span class="op">(</span></span>
+<span>  directory_configuration <span class="op">=</span> <span class="st">"directory_configuration.yaml"</span>,</span>
+<span>  app <span class="op">=</span> <span class="st">"app.R"</span>,</span>
 <span>  newmoons <span class="op">=</span> <span class="st">"newmoons.csv"</span>,</span>
 <span>  covariates <span class="op">=</span> <span class="st">"covariates.csv"</span>,</span>
 <span>  datasets_controls <span class="op">=</span> <span class="st">"datasets_controls.yaml"</span>,</span>
@@ -125,7 +127,8 @@ Most users will not want or need to change the directory folders and file names,
 <span>  models_html <span class="op">=</span> <span class="st">"models.html"</span>,</span>
 <span>  models_rmd <span class="op">=</span> <span class="st">"models.Rmd"</span>,</span>
 <span>  rodents_profiles_html <span class="op">=</span> <span class="st">"rodents_profiles.html"</span>,</span>
-<span>  rodents_profiles_csv <span class="op">=</span> <span class="st">"rodents_profiles.csv"</span></span>
+<span>  rodents_profiles_csv <span class="op">=</span> <span class="st">"rodents_profiles.csv"</span>,</span>
+<span>  species_names <span class="op">=</span> <span class="st">"species_names.csv"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">directory_subdirectories</span><span class="op">(</span></span>
@@ -134,7 +137,7 @@ Most users will not want or need to change the directory folders and file names,
 <span>  models <span class="op">=</span> <span class="st">"models"</span>,</span>
 <span>  resources <span class="op">=</span> <span class="st">"resources"</span>,</span>
 <span>  data <span class="op">=</span> <span class="st">"data"</span>,</span>
-<span>  app <span class="op">=</span> <span class="st">"app"</span></span>
+<span>  www <span class="op">=</span> <span class="st">"www"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">directory_resources</span><span class="op">(</span></span>
@@ -228,6 +231,14 @@ Default value of <code>60</code> corresponds to two additional lunar months.</p>
 Default value of <code>30</code> corresponds to one additional lunar month.</p></dd>
 
 
+<dt>directory_configuration</dt>
+<dd><p><code>character</code> name for the directory configuration YAML.</p></dd>
+
+
+<dt>app</dt>
+<dd><p><code>character</code> name for the application R file.</p></dd>
+
+
 <dt>newmoons</dt>
 <dd><p><code>character</code> name for the lunar data csv.</p></dd>
 
@@ -280,6 +291,10 @@ Default value of <code>30</code> corresponds to one additional lunar month.</p><
 <dd><p><code>character</code> name for the csv file containing content for the rodents profiles table for the app.</p></dd>
 
 
+<dt>species_names</dt>
+<dd><p><code>character</code> name for the csv file containing the output from <code><a href="https://weecology.github.io/portalr/reference/rodent_species.html" class="external-link">portalr::rodent_species</a></code>, with <code>set = "forecasting"</code>, <code>type = "table"</code>, and <code>total = TRUE</code>.</p></dd>
+
+
 <dt>forecasts</dt>
 <dd><p><code>character</code> name for the forecasts subdirectory.</p></dd>
 
@@ -296,8 +311,8 @@ Default value of <code>30</code> corresponds to one additional lunar month.</p><
 <dd><p><code>character</code> name for the data subdirectory.</p></dd>
 
 
-<dt>app</dt>
-<dd><p><code>character</code> name for the app subdirectory.</p></dd>
+<dt>www</dt>
+<dd><p><code>character</code> name for the application www helpers subdirectory.</p></dd>
 
 
 <dt>PortalData</dt>
@@ -342,7 +357,7 @@ Default value of <code>30</code> corresponds to one additional lunar month.</p><
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, Pat K. T. Dumandan, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
+  <p></p><p>Developed by <a href="https://www.dapperstats.com/author/dr.-juniper-l.-simonis/" class="external-link">Juniper L. Simonis</a>, <a href="https://www.weecology.org/author/glenda-m.-yenni/" class="external-link">Glenda M. Yenni</a>, <a href="https://nature.arizona.edu/ellen-bledsoe" class="external-link">Ellen K. Bledsoe</a>, <a href="https://scholar.google.com/citations?user=_cBpCegAAAAJ&amp;hl=en" class="external-link">Erica M. Christensen</a>, Patricia K. T. Dumandan, <a href="https://www.weecology.org/author/henry-senyondo/" class="external-link">Henry Senyondo</a>, <a href="https://haoye.us/" class="external-link">Hao Ye</a>, <a href="https://www.weecology.org/author/ethan-white/" class="external-link">Ethan P. White</a>, <a href="https://www.weecology.org/author/morgan-ernest/" class="external-link">S. K. Morgan Ernest</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
