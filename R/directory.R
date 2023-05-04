@@ -414,11 +414,13 @@ update_directory_configuration <- function (main = ".") {
 #' @title Create a List of Full Directory Paths
 #' 
 #' @description Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on [`directory_settings`]. \cr
-#'              `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`.
+#'              `paths` produces the full path `list`, whose contents can then also be accessed with specialized functions, see `Details`. \cr
+#'               There is also a special function for the shiny application location, which could either be referencing the file or folder.
 #'
 #' @details Wrapper functions for specific subdirectories and files include:   
 #'   * Files
 #'     * `rodents_dataset_path`  
+#'     * `species_names_path`  
 #'     * `climate_forecasts_paths`  
 #'     * `forecasts_metadata_path`  
 #'     * `forecasts_evaluations_path`  
@@ -431,12 +433,13 @@ update_directory_configuration <- function (main = ".") {
 #'     * `rodents_profiles_html_path` 
 #'     * `rodents_profiles_csv_path` 
 #'   * Subdirectories
-#'     * `app_path`  
+#'     * `www_path`  
 #'     * `data_path`  
 #'     * `forecasts_path`  
 #'     * `fits_path`  
 #'     * `models_path`  
-#'     * `resources_path`
+#'   * Shiny Application
+#'     * `app_paths`
 #'
 #' @param main `character` value of the name of the main component of the directory tree. 
 #'
@@ -459,7 +462,7 @@ update_directory_configuration <- function (main = ".") {
 #'
 #'    newmoons_path(main = main1)
 #'
-#'    rodents_datasets_paths(main = main1)
+#'    species_names_path(main = main1)
 #'    rodents_dataset_path(main = main1)
 #'    rodents_datasets_paths(main = main1)
 #'
@@ -480,7 +483,9 @@ update_directory_configuration <- function (main = ".") {
 #'    rodents_profiles_html_path(main = main1)
 #'    rodents_profiles_csv_path(main = main1)
 #'
-#'    app_path(main = main1)
+#'    app_paths(main = main1)
+#'
+#'    www_path(main = main1)
 #'    data_path(main = main1)
 #'    forecasts_path(main = main1)
 #'    fits_path(main = main1)
@@ -521,7 +526,8 @@ paths <- function (main = ".") {
                 covariates                = file.path(main, settings$subdirectories$data, settings$files$covariates),
                 metadata                  = file.path(main, settings$subdirectories$data, settings$files$metadata),
                 rodents_datasets          = rodents_datasets,
-                rodents_datasets_controls = file.path(main, settings$subdirectories$data, settings$files$datasets_controls),
+                rodents_datasets_controls = file.path(main, settings$subdirectories$data, settings$files$datasets_controls), 
+                species_names             = file.path(main, settings$subdirectories$data, settings$files$species_names),
 
                 climate_forecasts         = climate_forecasts,
 
@@ -533,13 +539,17 @@ paths <- function (main = ".") {
 
                 directory_configuration   = file.path(main, "directory_configuration.yaml"), 
 
-                models_rmd                = file.path(main, settings$subdirectories$app, settings$files$models_rmd), 
-                about_md                  = file.path(main, settings$subdirectories$app, settings$files$about_md), 
-                models_html               = file.path(main, settings$subdirectories$app, settings$files$models_html), 
-                rodents_profiles_html     = file.path(main, settings$subdirectories$app, settings$files$rodents_profiles_html), 
-                rodents_profiles_csv      = file.path(main, settings$subdirectories$app, "www", settings$files$rodents_profiles_csv))
+                models_rmd                = file.path(main, settings$subdirectories$www, settings$files$models_rmd), 
+                about_md                  = file.path(main, settings$subdirectories$www, settings$files$about_md), 
+                models_html               = file.path(main, settings$subdirectories$www, settings$files$models_html), 
+                rodents_profiles_html     = file.path(main, settings$subdirectories$www, settings$files$rodents_profiles_html), 
+                rodents_profiles_csv      = file.path(main, settings$subdirectories$www, settings$files$rodents_profiles_csv))
+
+  app <- list(folder = main, 
+              file   = file.path(main, settings$files$app))
 
   list(main           = main,
+       app            = app,
        subdirectories = subdirectories,
        files          = files)
  
@@ -632,6 +642,16 @@ rodents_dataset_path <- function (main    = ".",
 #'
 #' @export
 #'
+species_names_path <- function (main = ".") {
+
+  paths(main = main)$files$species_names
+
+}
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
 climate_forecasts_paths <- function (main = ".") {
 
   paths(main = main)$files$climate_forecasts
@@ -703,11 +723,22 @@ metadata_path <- function (main = ".") {
 #'
 #' @export
 #'
-app_path <- function (main = ".") {
+www_path <- function (main = ".") {
 
-  paths(main = main)$subdirectories$app
+  paths(main = main)$subdirectories$www
   
 }
+
+#' @rdname directory-paths
+#'
+#' @export
+#'
+app_paths <- function (main = ".") {
+
+  paths(main = main)$app
+  
+}
+
 
 #' @rdname directory-paths
 #'

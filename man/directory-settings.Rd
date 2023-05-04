@@ -37,6 +37,8 @@ time_settings(
 )
 
 directory_files(
+  directory_configuration = "directory_configuration.yaml",
+  app = "app.R",
   newmoons = "newmoons.csv",
   covariates = "covariates.csv",
   datasets_controls = "datasets_controls.yaml",
@@ -49,7 +51,8 @@ directory_files(
   models_html = "models.html",
   models_rmd = "models.Rmd",
   rodents_profiles_html = "rodents_profiles.html",
-  rodents_profiles_csv = "rodents_profiles.csv"
+  rodents_profiles_csv = "rodents_profiles.csv",
+  species_names = "species_names.csv"
 )
 
 directory_subdirectories(
@@ -58,7 +61,7 @@ directory_subdirectories(
   models = "models",
   resources = "resources",
   data = "data",
-  app = "app"
+  www = "www"
 )
 
 directory_resources(
@@ -114,6 +117,10 @@ Default value of \code{60} corresponds to two additional lunar months.}
 \item{lead_time_buffer}{\code{integer} (or integer \code{numeric}) additional number of calendar days forward in time to forecast. \cr
 Default value of \code{30} corresponds to one additional lunar month.}
 
+\item{directory_configuration}{\code{character} name for the directory configuration YAML.}
+
+\item{app}{\code{character} name for the application R file.}
+
 \item{newmoons}{\code{character} name for the lunar data csv.}
 
 \item{covariates}{\code{character} name for the combined historical and forecast covariates csv.}
@@ -140,6 +147,8 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{rodents_profiles_csv}{\code{character} name for the csv file containing content for the rodents profiles table for the app.}
 
+\item{species_names}{\code{character} name for the csv file containing the output from \code{\link[portalr:rodent_species]{portalr::rodent_species}}, with \code{set = "forecasting"}, \code{type = "table"}, and \code{total = TRUE}.}
+
 \item{forecasts}{\code{character} name for the forecasts subdirectory.}
 
 \item{fits}{\code{character} name for the fits subdirectory.}
@@ -148,7 +157,7 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{data}{\code{character} name for the data subdirectory.}
 
-\item{app}{\code{character} name for the app subdirectory.}
+\item{www}{\code{character} name for the application www helpers subdirectory.}
 
 \item{PortalData}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
 

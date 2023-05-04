@@ -36,7 +36,7 @@ NULL
 #'
 run_app <- function(main = ".") {
 
-  runApp(appDir = app_path(main = main))
+  runApp(appDir = app_paths(main = main)$folder)
 
 }
 
@@ -81,7 +81,8 @@ global_list <- function (main = ".") {
 
   messageq("Locating species and model names ... ", quiet = !settings$verbose)
 
-  species_names_table  <- rodent_species(path = file.path(main, settings$subdirectories$resources), set = "forecasting", type = "table", total = TRUE)
+  species_names_table  <- na_conformer(dfv     = read.csv(file = species_names_path(main = main)),
+                                       colname = "code")
   species_names        <- species_names_table$code
   names(species_names) <- species_names_table$Latin
 

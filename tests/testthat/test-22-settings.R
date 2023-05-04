@@ -32,7 +32,7 @@ test_that(desc = "directory_subdirectories produces a list", {
 
   expect_silent(ds <- directory_subdirectories())
   expect_is(ds, "list")
-  expect_equal(names(ds), c("forecasts", "fits", "models", "resources", "data", "app"))
+  expect_equal(sort(names(ds)), sort(c("forecasts", "fits", "models", "resources", "data", "www")))
 
 })
 

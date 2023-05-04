@@ -11,6 +11,7 @@
 \alias{rodents_datasets_controls_path}
 \alias{models_controls_path}
 \alias{rodents_dataset_path}
+\alias{species_names_path}
 \alias{climate_forecasts_paths}
 \alias{forecasts_metadata_path}
 \alias{forecasts_evaluations_path}
@@ -18,7 +19,8 @@
 \alias{newmoons_path}
 \alias{covariates_path}
 \alias{metadata_path}
-\alias{app_path}
+\alias{www_path}
+\alias{app_paths}
 \alias{data_path}
 \alias{forecasts_path}
 \alias{fits_path}
@@ -44,6 +46,8 @@ models_controls_path(main = ".")
 
 rodents_dataset_path(main = ".", dataset = "all")
 
+species_names_path(main = ".")
+
 climate_forecasts_paths(main = ".")
 
 forecasts_metadata_path(main = ".")
@@ -58,7 +62,9 @@ covariates_path(main = ".")
 
 metadata_path(main = ".")
 
-app_path(main = ".")
+www_path(main = ".")
+
+app_paths(main = ".")
 
 data_path(main = ".")
 
@@ -80,7 +86,8 @@ resources_path(main = ".")
 }
 \description{
 Upon creation (or updating) of the directory, all the standard file and subdirectory paths are set based on \code{\link{directory_settings}}. \cr
-\code{paths} produces the full path \code{list}, whose contents can then also be accessed with specialized functions, see \code{Details}.
+\code{paths} produces the full path \code{list}, whose contents can then also be accessed with specialized functions, see \code{Details}. \cr
+There is also a special function for the shiny application location, which could either be referencing the file or folder.
 }
 \details{
 Wrapper functions for specific subdirectories and files include:
@@ -88,6 +95,7 @@ Wrapper functions for specific subdirectories and files include:
 \item Files
 \itemize{
 \item \code{rodents_dataset_path}
+\item \code{species_names_path}
 \item \code{climate_forecasts_paths}
 \item \code{forecasts_metadata_path}
 \item \code{forecasts_evaluations_path}
@@ -102,12 +110,15 @@ Wrapper functions for specific subdirectories and files include:
 }
 \item Subdirectories
 \itemize{
-\item \code{app_path}
+\item \code{www_path}
 \item \code{data_path}
 \item \code{forecasts_path}
 \item \code{fits_path}
 \item \code{models_path}
-\item \code{resources_path}
+}
+\item Shiny Application
+\itemize{
+\item \code{app_paths}
 }
 }
 }
@@ -120,7 +131,7 @@ Wrapper functions for specific subdirectories and files include:
 
    newmoons_path(main = main1)
 
-   rodents_datasets_paths(main = main1)
+   species_names_path(main = main1)
    rodents_dataset_path(main = main1)
    rodents_datasets_paths(main = main1)
 
@@ -141,7 +152,9 @@ Wrapper functions for specific subdirectories and files include:
    rodents_profiles_html_path(main = main1)
    rodents_profiles_csv_path(main = main1)
 
-   app_path(main = main1)
+   app_paths(main = main1)
+
+   www_path(main = main1)
    data_path(main = main1)
    forecasts_path(main = main1)
    fits_path(main = main1)

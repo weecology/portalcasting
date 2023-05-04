@@ -2,8 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
-# portalcasting 0.54.0
-*In progress*
+# [portalcasting 0.55.0](https://github.com/weecology/portalcasting/releases/tag/v0.55.0)
+*5-4-2023*
+
+## Reorganizing the app pointing
+* Now having a single app.R file in the top level of the directory simplifies the issue around where the files are for the app
+* This replaces the global.R, ui.R, and server.R files 
+
+# [portalcasting 0.54.0](https://github.com/weecology/portalcasting/releases/tag/v0.54.0)
+*5-3-2023*
 
 ## Adding `sandbox` and `production` version of `update_` functions. 
 
