@@ -78,20 +78,79 @@ app_server <- function (input,
                            rv     = rv, 
                            output = output)
 
-  events  <- app_events( )
-  nevents <- length(events)
-  for (i in 1:nevents) {
+  observeEvent(eventExpr   = input$forecast_tab_species,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "forecast_tab_species", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$forecast_tab_dataset,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "forecast_tab_dataset", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$forecast_tab_model,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "forecast_tab_model", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$forecast_tab_historic_end_newmoonnumber,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "forecast_tab_historic_end_newmoonnumber", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
 
-    observeEvent(eventExpr   = input[[events[i]]],
-                 handlerExpr = event_reaction(main    = main, 
-                                              global  = global,
-                                              event   = events[i], 
-                                              rv      = rv, 
-                                              input   = input, 
-                                              output  = output, 
-                                              session = session))
-
-  }
+  observeEvent(eventExpr   = input$evaluation_tab_species,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "evaluation_tab_species", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$evaluation_tab_dataset,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "evaluation_tab_dataset", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$evaluation_tab_model,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "evaluation_tab_model", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$evaluation_tab_historic_end_newmoonnumber,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "evaluation_tab_historic_end_newmoonnumber", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
+  observeEvent(eventExpr   = input$evaluation_tab_newmoonnumber,
+               handlerExpr = event_reaction(main    = main, 
+                                            global  = global,
+                                            event   = "evaluation_tab_newmoonnumber", 
+                                            rv      = rv, 
+                                            input   = input, 
+                                            output  = output, 
+                                            session = session))
 
 }
 
