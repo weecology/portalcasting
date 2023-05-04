@@ -219,7 +219,7 @@ directory_subdirectories <- function (forecasts = "forecasts",
                                       models    = "models", 
                                       resources = "resources", 
                                       data      = "data", 
-                                      app       = "app") {
+                                      app       = "www") {
 
   list(forecasts = forecasts, 
        fits      = fits, 

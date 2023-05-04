@@ -1,15 +1,5 @@
-main_exists <- any(ls() == "main")
+main   <<- dynGet("main")
+global <<- global_list(main = main)
 
-old_main <- dynGet("main")
-
-main   <- "."
-
-onStop(function() {
-  rm(main, inherits = TRUE)
-  if (main_exists) main <<- old_main
-})
-
-global <- global_list(main = main)
-
-shiny::shinyApp(ui = app_ui(global = global),
-                server = app_server)
+shinyApp(ui     = app_ui(global = global),
+         server = app_server)

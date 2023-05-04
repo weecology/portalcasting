@@ -59,7 +59,7 @@ directory_subdirectories(
   models = "models",
   resources = "resources",
   data = "data",
-  app = "app"
+  app = "www"
 )
 
 directory_resources(
