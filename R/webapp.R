@@ -81,7 +81,8 @@ global_list <- function (main = ".") {
 
   messageq("Locating species and model names ... ", quiet = !settings$verbose)
 
-  species_names_table  <- read.csv(file = species_names_path(main = main))
+  species_names_table  <- na_conformer(dfv     = read.csv(file = species_names_path(main = main)),
+                                       colname = "code")
   species_names        <- species_names_table$code
   names(species_names) <- species_names_table$Latin
 

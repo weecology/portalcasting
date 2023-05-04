@@ -43,7 +43,7 @@ test_that(desc = "server functions work off of global list", {
   expect_is(uo2, "list")
 
 
-  global <<- global_list(main = main3)
+  global <- global_list(main = main3)
 
   rows_in <- global$forecasts_evaluations$newmoonnumber == global$initial_evaluation_tab_selected_newmoonnumber &
              global$forecasts_evaluations$species == global$initial_evaluation_tab_selected_species &
@@ -51,9 +51,12 @@ test_that(desc = "server functions work off of global list", {
              global$forecasts_evaluations$dataset == global$initial_evaluation_tab_selected_dataset 
 
 
-  global$initial_evaluation_tab_selected_historic_end_newmoonnumber <<- max(global$forecasts_evaluations$historic_end_newmoonnumber[rows_in])
+  global$initial_evaluation_tab_selected_historic_end_newmoonnumber <- max(global$forecasts_evaluations$historic_end_newmoonnumber[rows_in])
+  global <<- global
 
-  testServer(app_server, {
+  main <- main3
+
+  testServer(app_path(main = main3)$file, {
 
     session$setInputs(forecast_tab_species                       = global$initial_forecast_tab_selected_species,
                       forecast_tab_dataset                       = global$initial_forecast_tab_selected_dataset,
@@ -64,6 +67,7 @@ test_that(desc = "server functions work off of global list", {
                       evaluation_tab_model                       = global$initial_evaluation_tab_selected_model,
                       evaluation_tab_historic_end_newmoonnumber  = global$initial_evaluation_tab_selected_historic_end_newmoonnumber,
                       evaluation_tab_newmoonnumber               = global$initial_evaluation_tab_selected_newmoonnumber)
+
 
     output <- initial_output(main = main3, rv = rv, output = output)
 
@@ -91,6 +95,7 @@ test_that(desc = "server functions work off of global list", {
                             input  = input, 
                             output = output)
     expect_is(output, "shinyoutput")
+
 
     expect_equal(event_reaction(main = main3,
                                 global = global,
