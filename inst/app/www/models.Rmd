@@ -11,10 +11,10 @@ output:
                         comment  = "#>")
 
 
-  models_controls <- prefab_models_controls( )
+  models_controls <- portalcasting::prefab_models_controls( )
   models_names    <- unlist(lapply(lapply(models_controls, getElement, "metadata"), getElement, "print_name"))
   nmodels         <- length(models_names)
-  nmodels_text    <- as.character(english(nmodels))
+  nmodels_text    <- as.character(english::english(nmodels))
 
 
 ```
