@@ -45,6 +45,9 @@ jobs:
         with:
           pattern: ^[A-Za-z0-9\s$&+,:;=?@#|'`<>.^*()%!-]{15,72}$
           flags: 'gm'
+          excludeDescription: 'true' # optional: this excludes the description body of a pull request
+          excludeTitle: 'true' # optional: this excludes the title of a pull request
+          checkAllCommitMessages: 
           error: 'Length of commit messages should be between 15 to 72 chars long'
 
       - name: Test coverage
