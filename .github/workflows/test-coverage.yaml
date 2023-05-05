@@ -49,6 +49,7 @@ jobs:
           excludeTitle: 'true' # optional: this excludes the title of a pull request
           checkAllCommitMessages: 
           error: 'Length of commit messages should be between 15 to 72 chars long'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test coverage
         run: covr::codecov()
