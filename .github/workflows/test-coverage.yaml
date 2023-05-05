@@ -30,6 +30,14 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
+      - name: Check Commit message
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: ^[A-Za-z0-9\s$&+,:;=?@#|'`<>.^*()%!-]{15,72}$
+          flags: 'gm'
+          error: 'Length of commit messages should be between 15 to 72 chars long'
+
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
+
