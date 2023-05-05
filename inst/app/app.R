@@ -1,3 +1,5 @@
+library(portalcasting)
+
 # This file launches the shiny app. It *should* be called from within portalcasting::run_app, but is also (hopefully) operational regardless of calling function.
 
 # Check to see if there are objects named main and global that exist outside the current call and save each as a new object called env_<>. 
