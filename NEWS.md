@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
+*5-5-2023*
+
+## Tidying the app.R script
+* Facilitating the working across different calling styles.
+
 # [portalcasting 0.55.0](https://github.com/weecology/portalcasting/releases/tag/v0.55.0)
 *5-4-2023*
 
