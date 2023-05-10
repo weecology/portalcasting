@@ -23,7 +23,7 @@ RUN apt-get update \
 ARG event_sha "HEAD"
 RUN echo "Installing from github at ref $event_sha"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
-CMD ["R", "-e", "example(stan_model, package = "rstan", run.dontrun = TRUE)"]
+CMD ["R", "-e", "example(stan_model, package = 'rstan', run.dontrun = TRUE)"]
 
 FROM tidyverse AS base-branch
 
