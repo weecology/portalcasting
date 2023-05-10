@@ -52,6 +52,7 @@ Imports:
 Suggests:
   BH,
   pkgdown,
+  RcppEigen,
   testthat
 LinkingTo:
   rstan
