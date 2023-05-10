@@ -8,7 +8,7 @@ main3 <- file.path(tempdir(), "testing3")
 test_that(desc = "stan",
           code = {
 
-  expect_messages(x <- example(stan_model, package = "rstan", run.dontrun = TRUE))
+  expect_message(x <- example(stan_model, package = "rstan", run.dontrun = TRUE))
   expect_is(x, "list")
 })
 
