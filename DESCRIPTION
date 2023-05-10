@@ -1,6 +1,6 @@
 Package: portalcasting
-Title: Functions Used in Predicting Portal Rodent Dynamics
-Version: 0.56.0
+Title: Modeling and Forecasting Portal Rodent Dynamics
+Version: 0.57.0
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -21,7 +21,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0001-6728-7745")),
     person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
       comment = c(ORCID = "0000-0002-6026-8530")))
-Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project continuous integration system <https://github.com/weecology/portalpredictions> and website <https://portal.naturecast.org> as well as support for exploring and developing new models in sandbox environments.
+Description: Create a directory, populate it with data, build models, forecast populations, and visualize the results -- focused on the long-term study of rodent populations at the Portal Project <https://portal.weecology.org/> in Arizona, USA. 'portalcasting' underlies the Portal Predictions Project continuous integration system <https://github.com/weecology/portalpredictions> and website <https://portal.naturecast.org>, as well as providing support for exploring and developing new models in sandbox environments.
 URL: https://weecology.github.io/portalcasting/, https://github.com/weecology/portalcasting
 BugReports: https://github.com/weecology/portalcasting/issues
 Depends: 

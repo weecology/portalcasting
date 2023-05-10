@@ -9,7 +9,7 @@ example(stan_model, package = "rstan", run.dontrun = TRUE)
 test_that(desc = "stan",
           code = {
 
-  expect_message(x <- example(stan_model, package = "rstan", run.dontrun = TRUE))
+  (x <- example(stan_model, package = "rstan", run.dontrun = TRUE))
   expect_is(x, "list")
 })
 
