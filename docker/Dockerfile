@@ -28,3 +28,5 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 FROM tidyverse AS base-branch
 
 FROM ${image_name}-branch AS final
+
+CMD ["R", "-e", "example(stan_model, package = "rstan", run.dontrun = TRUE)"]
