@@ -53,6 +53,7 @@ Suggests:
   BH,
   pkgdown,
   RcppEigen,
+  StanHeaders,
   testthat
 SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.2.3
