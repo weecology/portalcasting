@@ -80,5 +80,7 @@ jobs:
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
 
-
+      - name: Test
+        run: |
+          docker run --rm weecology/portalcasting:latest
         
