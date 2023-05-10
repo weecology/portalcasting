@@ -52,6 +52,8 @@ Imports:
 Suggests:
   pkgdown,
   testthat
+LinkingTo:
+  rstan
 SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
