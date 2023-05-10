@@ -50,6 +50,7 @@ Imports:
   viridis,
   yaml
 Suggests:
+  BH,
   pkgdown,
   testthat
 LinkingTo:
