@@ -18,11 +18,6 @@ jobs:
 
     name: Check commit message style
     steps:
-      - name: Check PR commit message
-        uses: mristin/opinionated-commit-message@v3.0.0
-        with:
-          additional-verbs: '[WIP], [FIX]'
-
       - name: Check commit messages in PR
         uses: gsactions/commit-message-checker@v2
         with:
