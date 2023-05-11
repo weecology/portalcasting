@@ -13,7 +13,6 @@
 #' @importFrom markdown mark
 #' @importFrom portalr download_observations forecasting_species get_future_newmoons load_datafile na_conformer ndvi return_if_null rodent_species summarize_rodent_data weather
 #' @importFrom rmarkdown knitr_options output_format pandoc_options render
-#' @importFrom rstan stan
 #' @importFrom runjags combine.mcmc run.jags runjags.options
 #' @importFrom scoringRules crps crps_nbinom crps_norm crps_pois crps_sample logs logs_sample logs_nbinom logs_norm logs_pois 
 #' @importFrom shiny column fluidPage fluidRow getShinyOption mainPanel observeEvent onStop plotOutput reactiveValues renderPlot renderText runApp selectInput shinyApp shinyOptions tabPanel tabsetPanel textOutput titlePanel updateSelectInput

@@ -28,7 +28,6 @@ Depends:
   R (>= 4.2.0),
   forecast,  
   hypergeo,
-  StanHeaders,
   tscount
 License: MIT + file LICENSE
 Imports:
@@ -43,7 +42,6 @@ Imports:
   markdown,
   portalr  (>= 0.4.0),
   rmarkdown,
-  rstan,
   runjags,
   scoringRules,
   shiny,
