@@ -28,6 +28,7 @@ Depends:
   R (>= 4.2.0),
   forecast,  
   hypergeo,
+  StanHeaders,
   tscount
 License: MIT + file LICENSE
 Imports:
