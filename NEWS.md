@@ -8,6 +8,8 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 ## Editing documentation
 * Tightening and improving language in Title and Description fields in DESCRIPTION file
 
+## Preventing duplicate keys in control lists at the top level
+
 # [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
 *5-5-2023*
 

@@ -46,7 +46,7 @@ prepare_dataset(
 
 read_datasets_controls(main = ".")
 
-datasets_controls(main = ".", datasets = prefab_datasets())
+datasets_controls(main = ".", datasets = NULL)
 
 write_datasets_controls(
   main = ".",
