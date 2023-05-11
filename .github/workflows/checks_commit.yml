@@ -21,10 +21,10 @@ jobs:
       - name: Check commit messages in PR
         uses: gsactions/commit-message-checker@v2
         with:
-          pattern: ^[A-Za-z0-9\s$&+,:;=?@#|'`<>.^*()%!-]{15,50}$
+          pattern: ^[A-Za-z0-9\s$&+,:;=?@#|'`<>.^*()%!-]{15,120}$
           flags: 'gm'
           excludeDescription: 'true' # optional: this excludes the description body of a pull request
           excludeTitle: 'true' # optional: this excludes the title of a pull request
           checkAllCommitMessages: 'true'
-          error: 'Length of commit messages should be between 15 to 50 chars long'
+          error: 'Length of commit messages should be between 15 to 120 chars long'
           accessToken: ${{ secrets.GITHUB_TOKEN }}
