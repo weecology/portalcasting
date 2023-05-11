@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.57.0](https://github.com/weecology/portalcasting/releases/tag/v0.57.0)
+*5-11-2023*
+
+## Editing documentation
+* Tightening and improving language in Title and Description fields in DESCRIPTION file
+
 # [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
 *5-5-2023*
 
