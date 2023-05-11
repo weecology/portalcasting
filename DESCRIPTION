@@ -47,7 +47,6 @@ Imports:
   runjags,
   scoringRules,
   shiny,
-  StanHeaders,
   stats,
   viridis,
   yaml
