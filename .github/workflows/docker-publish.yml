@@ -21,7 +21,15 @@ jobs:
           - dockerfile: docker/Dockerfile
             image: weecology/portalcasting
             image_name: base
-            tag_prefix: ''     
+            tag_prefix: '' 
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: sandbox
+            tag_prefix: sandbox_
+          - dockerfile: docker/Dockerfile
+            image: weecology/portalcasting
+            image_name: production
+            tag_prefix: production_
           
     runs-on: ubuntu-latest
     
@@ -81,9 +89,8 @@ jobs:
             "image_name=${{ matrix.image_name }}"
 
       - name: Test ${{ matrix.image_name }} image
-        if: ${{ matrix.image_name == 'base'}} 
         run: |
-          docker run --rm weecology/portalcasting:${{ matrix.tag_prefix }} R -e "library(portalcasting)"
+          docker exec weecology/portalcasting:${{ matrix.tag_prefix }} R -e "library(portalcasting)"
 
 
       - name: Push ${{ matrix.image_name }} image
