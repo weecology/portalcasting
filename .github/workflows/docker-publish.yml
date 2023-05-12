@@ -81,7 +81,7 @@ jobs:
             "image_name=${{ matrix.image_name }}"
 
       - name: Test ${{ matrix.image_name }} image
-        if: ${{ matrix.image_name == "base"}} 
+        if: ${{ matrix.image_name == 'base'}} 
         run: |
           docker run --rm weecology/portalcasting:${{ matrix.tag_prefix }} ["R", "-e", "library(portalcasting)"]
 
