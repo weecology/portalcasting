@@ -10,6 +10,13 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 
 ## Preventing duplicate keys in control lists at the top level
 
+## Adding docker images with setup done
+* including a production and a sandbox image
+
+## Testing docker images prior to pushing them
+* A simple "can you run `library(portalcasting)`" to start, can use this entry point to expand the testing suite on the image in the future
+
+
 # [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
 *5-5-2023*
 
