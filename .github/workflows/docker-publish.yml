@@ -90,7 +90,7 @@ jobs:
 
       - name: Test ${{ matrix.image_name }} image
         run: |
-          docker exec weecology/portalcasting:${{ matrix.tag_prefix }} R -e "library(portalcasting)"
+          docker exec weecology/portalcasting:${{ matrix.tag_prefix }}latest R -e "library(portalcasting)"
 
 
       - name: Push ${{ matrix.image_name }} image
