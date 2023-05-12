@@ -68,6 +68,8 @@ test_that(desc = "add_new_dataset makes a list", {
   dc <- add_new_dataset(main = main2, models = "AutoArima", new_dataset_controls = new_dataset_controls(metadata = new_dataset_metadata(name = "newone")))
   expect_is(dc, "list")
 
+  expect_error(add_new_dataset(main = main2, models = "AutoArima", new_dataset_controls = new_dataset_controls(metadata = new_dataset_metadata(name = "newone"))))
+
 })
 
 

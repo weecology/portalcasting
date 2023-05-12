@@ -305,9 +305,11 @@ read_datasets_controls <- function (main = ".") {
 #' @export
 #'
 datasets_controls <- function (main     = ".",
-                               datasets = prefab_datasets( )) {
+                               datasets = NULL) {
 
-  read_datasets_controls(main = main)[datasets]
+  datasets_c <- read_datasets_controls(main = main)
+  datasets   <- ifnull(datasets, names(datasets_c))
+  datasets_c[datasets]
 
 }
 

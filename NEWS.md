@@ -3,10 +3,19 @@
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
 # [portalcasting 0.57.0](https://github.com/weecology/portalcasting/releases/tag/v0.57.0)
-*5-11-2023*
+*5-12-2023*
 
 ## Editing documentation
 * Tightening and improving language in Title and Description fields in DESCRIPTION file
+
+## Preventing duplicate keys in control lists at the top level
+
+## Adding docker images with setup done
+* including a production and a sandbox image
+
+## Testing docker images prior to pushing them
+* A simple "can you run `library(portalcasting)`" to start, can use this entry point to expand the testing suite on the image in the future
+
 
 # [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
 *5-5-2023*

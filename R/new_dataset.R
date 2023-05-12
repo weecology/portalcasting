@@ -83,6 +83,11 @@ add_new_dataset <- function (main                 = "." ,
 
   datasets_controls <- read_datasets_controls(main = main)
 
+  if (new_dataset_controls$metadata$name %in% names(datasets_controls)) {
+
+    stop("Dataset named `", new_dataset_controls$metadata$name, "` already exists")
+
+  }
 
   nexisting_datasets <- length(datasets_controls)
   datasets_controls[[nexisting_datasets + 1]] <- new_dataset_controls

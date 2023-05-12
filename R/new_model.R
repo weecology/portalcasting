@@ -80,6 +80,13 @@ add_new_model <- function (main               = "." ,
 
   model_controls <- read_models_controls(main = main)
 
+  if (new_model_controls$metadata$name %in% names(model_controls)) {
+
+    stop("Model named `", new_model_controls$metadata$name, "` already exists")
+
+  }
+
+
   if (!is.null(new_model_controls$fit$model_file)) {
 
     new_model_controls$fit$full_model_file <- paste0("'", file.path(main, settings$subdirectories$models, new_model_controls$fit$model_file), "'")

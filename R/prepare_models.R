@@ -133,8 +133,12 @@ read_models_controls <- function (main = ".") {
 #' @export
 #'
 models_controls <- function (main     = ".",
-                             models   = prefab_models( )) {
+                             models   = NULL) {
 
   read_models_controls(main = main)[models]
+
+  models_c <- read_models_controls(main = main)
+  models   <- ifnull(models, names(models_c))
+  models_c[models]
 
 }

@@ -21,7 +21,7 @@ write_models_scripts(main = ".", controls = prefab_models_controls())
 
 read_models_controls(main = ".")
 
-models_controls(main = ".", models = prefab_models())
+models_controls(main = ".", models = NULL)
 }
 \arguments{
 \item{main}{\code{character} value of the name of the main component of the directory tree.}

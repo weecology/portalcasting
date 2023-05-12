@@ -4,9 +4,9 @@
 \name{portalcasting-package}
 \alias{portalcasting}
 \alias{portalcasting-package}
-\title{portalcasting: Functions Used in Predicting Portal Rodent Dynamics}
+\title{portalcasting: Model and Forecast Portal Rodent Dynamics}
 \description{
-Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project continuous integration system \url{https://github.com/weecology/portalpredictions} and website \url{https://portal.naturecast.org} as well as support for exploring and developing new models in sandbox environments.
+Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. The user can spin-up a local lightweight sandbox or full-scale production environment from the same code underlying the continuously deployed Portal Predictions Project continuous integration system \url{https://github.com/weecology/portalpredictions} and website \url{https://portal.naturecast.org}.
 }
 \seealso{
 Useful links:
