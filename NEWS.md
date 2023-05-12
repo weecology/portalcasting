@@ -17,7 +17,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 * A simple "can you run `library(portalcasting)`" to start, can use this entry point to expand the testing suite on the image in the future
 
 
-# [portalcasting 0.56.0](https://github.com/weecology/portalcasting/releases/tag/v0.56.0)
+# portalcasting 0.56.0
 *5-5-2023*
 
 ## Tidying the app.R script
