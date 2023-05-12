@@ -96,5 +96,8 @@ jobs:
       - name: Push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
-           push: ${{ github.event_name == 'release' }}
+          context: .        
+          push: ${{ github.event_name == 'release' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          
         
