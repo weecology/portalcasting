@@ -90,7 +90,7 @@ jobs:
 
       - name: Test ${{ matrix.image_name }} image
         run: |
-          docker run weecology/portalcasting:${{ matrix.tag_prefix }}latest Rscript {0}
+          docker run weecology/portalcasting:${{ matrix.tag_prefix }}latest R -e library(portalcasting)
 
 
       - name: Push ${{ matrix.image_name }} image
