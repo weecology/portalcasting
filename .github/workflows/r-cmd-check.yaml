@@ -18,6 +18,7 @@ jobs:
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) 
 
     strategy:
+      max-parallel: 3
       fail-fast: false
       matrix:
         config:
