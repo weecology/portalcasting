@@ -27,4 +27,10 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 
 FROM tidyverse AS base-branch
 
+FROM tidyverse AS sandbox-branch
+RUN R -e "portalcasting::setup_sandbox( )"
+
+FROM tidyverse AS production-branch
+RUN R -e "portalcasting::setup_production( )"
+
 FROM ${image_name}-branch AS final
