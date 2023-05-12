@@ -24,13 +24,16 @@ ARG event_sha "HEAD"
 RUN echo "Installing from github at ref $event_sha"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
 
+# For branches with directories set up, set main as ~/portalPredictions, as . is in general use
+
+ARG main "~/portalPredictions"
 
 FROM tidyverse AS base-branch
 
 FROM tidyverse AS sandbox-branch
-RUN R -e "portalcasting::setup_sandbox( )"
+RUN R -e "portalcasting::setup_sandbox(main = '$main')"
 
 FROM tidyverse AS production-branch
-RUN R -e "portalcasting::setup_production( )"
+RUN R -e "portalcasting::setup_production(main = '$main')"
 
 FROM ${image_name}-branch AS final
