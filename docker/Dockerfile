@@ -11,7 +11,7 @@ ARG image_name="base"
 FROM rocker/tidyverse:latest AS tidyverse
 
 
-# Install `jags` and `build-essentials` c libraries
+# Install jags
 
 RUN apt-get update \
     && apt-get install -y \
@@ -29,9 +29,9 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # Install cmdstan using miniconda 
 
+RUN source ~/miniconda3/bin/activate
 RUN conda create -n stan -c conda-forge cmdstan
 RUN conda init bash
-RUN source ~/.bashrc
 RUN conda activate stan
 
 # Install portalcasting from github event that triggered the specific workflow
