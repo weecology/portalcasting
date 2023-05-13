@@ -11,11 +11,22 @@ ARG image_name="base"
 FROM rocker/tidyverse:latest AS tidyverse
 
 
-# Install `jags` c library, everything else we need is already in tidyverse
+# Install `jags` and `build-essentials` c libraries
 
 RUN apt-get update \
     && apt-get install -y \
        jags
+       build-essentials \
+
+# Install miniconda
+
+ENV CONDA_DIR /opt/conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+     /bin/bash ~/miniconda.sh -b -p /opt/conda
+
+# Put conda in path so we can use conda activate
+
+ENV PATH=$CONDA_DIR/bin:$PATH
 
 
 # Install portalcasting from github event that triggered the specific workflow
