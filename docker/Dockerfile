@@ -15,8 +15,7 @@ FROM rocker/tidyverse:latest AS tidyverse
 
 RUN apt-get update \
     && apt-get install -y \
-       jags \
-       build-essentials
+       jags 
 
 # Install miniconda
 
