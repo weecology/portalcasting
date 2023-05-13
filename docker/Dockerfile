@@ -29,7 +29,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # Install cmdstan using miniconda 
 
-RUN source ~/miniconda3/bin/activate
+RUN conda info | grep -i 'base environment'
 RUN conda create -n stan -c conda-forge cmdstan
 RUN conda init bash
 RUN conda activate stan
