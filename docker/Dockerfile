@@ -15,8 +15,8 @@ FROM rocker/tidyverse:latest AS tidyverse
 
 RUN apt-get update \
     && apt-get install -y \
-       jags
-       build-essentials \
+       jags \
+       build-essentials
 
 # Install miniconda
 
@@ -28,6 +28,10 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 
 ENV PATH=$CONDA_DIR/bin:$PATH
 
+# Install cmdstan using miniconda 
+
+RUN conda create -n stan -c conda-forge cmdstan
+RUN conda activate stan
 
 # Install portalcasting from github event that triggered the specific workflow
 
