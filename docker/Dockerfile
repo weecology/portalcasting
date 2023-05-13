@@ -11,6 +11,10 @@ ARG image_name="base"
 FROM rocker/tidyverse:latest AS tidyverse
 
 
+# Make RUN commands use `bash --login`
+
+SHELL ["/bin/bash", "--login", "-c"]
+
 # Install jags
 
 RUN apt-get update \
@@ -29,7 +33,6 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 # Install cmdstan using miniconda 
 
-RUN conda info | grep -i 'base environment'
 RUN conda create -n stan -c conda-forge cmdstan
 RUN conda init bash
 RUN conda activate stan
