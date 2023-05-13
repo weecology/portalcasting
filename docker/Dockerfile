@@ -31,6 +31,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 
 RUN conda create -n stan -c conda-forge cmdstan
 RUN conda init bash
+RUN source ~/.bashrc
 RUN conda activate stan
 
 # Install portalcasting from github event that triggered the specific workflow
