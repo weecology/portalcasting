@@ -31,28 +31,41 @@ Depends:
   tscount
 License: MIT + file LICENSE
 Imports:
-  arrow,
-  bslib,
-  coda,
-  english,
-  htmltools,
-  httr,
-  jsonlite,
-  knitr,
-  markdown,
-  portalr  (>= 0.4.0),
-  rmarkdown,
-  runjags,
-  scoringRules,
-  shiny,
-  stats,
-  viridis,
-  yaml
+    arrow,
+    bslib,
+    coda,
+    english,
+    htmltools,
+    httr,
+    jsonlite,
+    knitr,
+    markdown,
+    methods,
+    portalr (>= 0.4.0),
+    Rcpp (>= 0.12.0),
+    RcppParallel (>= 5.0.1),
+    rmarkdown,
+    rstan (>= 2.18.1),
+    rstantools (>= 2.3.1),
+    runjags,
+    scoringRules,
+    shiny,
+    stats,
+    viridis,
+    yaml
 Suggests:
   pkgdown,
   testthat
-SystemRequirements: JAGS 4.x.y; libcurl; gsl
+SystemRequirements: GNU make
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
+Biarch: true
+LinkingTo: 
+    BH (>= 1.66.0),
+    Rcpp (>= 0.12.0),
+    RcppEigen (>= 0.3.3.3.0),
+    RcppParallel (>= 5.0.1),
+    rstan (>= 2.18.1),
+    StanHeaders (>= 2.18.0)
