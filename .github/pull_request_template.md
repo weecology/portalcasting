@@ -6,15 +6,15 @@ Please include a summary of the change and which issue is fixed. Please also inc
 
 Fixes # (issue)
 
-## Type of change
 
-Please delete options that are not relevant.
+## Type of change
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Not backwards compatible new feature (breaking change which adds functionality)
 - [ ] New model
 - [ ] New dataset
+- [ ] Documentation edit
 
 
 ## How Has This Been Tested?
@@ -36,6 +36,7 @@ We conduct testing cross-platform. Please indicate if any platforms were added t
 - [ ] New and existing unit tests pass locally with my changes
 - [ ] Any dependent changes have been merged and published in downstream modules
 - [ ] I have checked my code and corrected any misspellings
+
 
 ## Review
 
