@@ -2,7 +2,7 @@
 name: Feature request
 about: Add functionality to the R package
 title: ''
-labels: ''
+labels: 'feature'
 assignees: ''
 
 ---

@@ -1,9 +1,9 @@
 ---
 name: Bug report
 about: Let us know about faulty behavior and help us improve
-title: ''
-labels: ''
-assignees: ''
+title: '[bug] '
+labels: 'bug'
+assignees: 'juniperlsimonis'
 
 ---
 
