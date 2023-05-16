@@ -8,5 +8,5 @@ assignees: 'juniperlsimonis'
 ---
 
 
-Please search existing issues to avoid creating duplicates.
+Please search [existing issues](https://github.com/weecology/portalcasting/issues) to avoid creating duplicates.
 
