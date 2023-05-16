@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: portalr
+    url: https://github.com/weecology/portalr
+    about: Take issues associated with accessing the data to the portalr repo.
+  - name: PortalData
+    url: https://github.com/weecology/PortalData
+    about: Direct issues associated with the raw data to the PortalData repo.
+  - name: portalPredictions
+    url: https://github.com/weecology/portalPredictions
+    about: Issues on the CI/CD system should be directed to the portalPredictions repo.
+  - name: portal-forecast-web
+    url: https://github.com/weecology/portal-forecast-web
+    about: Website issues belong in the website repo.
