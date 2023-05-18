@@ -6,9 +6,9 @@
 ARG image_name="base"
 
 
-# Our image is built upon rocker/verse, tagged as verse for downstream reference
+# Our image is built upon rocker/tidyverse, tagged as tidyverse for downstream reference
 
-FROM rocker/verse:latest AS verse
+FROM rocker/tidyverse:latest AS tidyverse
 
 RUN apt-get update \
     && apt-get install -y \
@@ -26,12 +26,12 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 
 ARG main="~/portalPredictions"
 
-FROM verse AS base-branch
+FROM tidyverse AS base-branch
 
-FROM verse AS sandbox-branch
+FROM tidyverse AS sandbox-branch
 RUN R -e "portalcasting::setup_sandbox(main = '$main')"
 
-FROM verse AS production-branch
+FROM tidyverse AS production-branch
 RUN R -e "portalcasting::setup_production(main = '$main')"
 
 FROM ${image_name}-branch AS final
