@@ -5,10 +5,10 @@ on:
   pull_request:
     branches: [ main ]
 
-name: blorp
+name: test-for-curl
 
 jobs:
-  xyzzzzzzzzzz:
+  container_check:
     runs-on: ubuntu-latest
     container: weecology/portalcasting:latest
 
@@ -17,4 +17,4 @@ jobs:
 
       - name: Test 
         run: |
-          curl
+          ls -a
