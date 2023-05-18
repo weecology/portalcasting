@@ -10,12 +10,11 @@ ARG image_name="base"
 
 FROM rocker/verse:latest AS verse
 
-
-# Install `jags` c library, everything else we need is already in verse
-
 RUN apt-get update \
     && apt-get install -y \
-       jags 
+       curl \
+       jags
+
 
 # Install portalcasting from github event that triggered the specific workflow
 

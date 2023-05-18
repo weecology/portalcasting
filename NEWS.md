@@ -2,6 +2,12 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.59.0](https://github.com/weecology/portalcasting/releases/tag/v0.59.0)
+*5-18-2023*
+
+## Inclduing curl in the Dockerfile
+* thought it was installed, but it isnt in tidyverse, just verse
+
 # [portalcasting 0.58.0](https://github.com/weecology/portalcasting/releases/tag/v0.58.0)
 *5-18-2023*
 
