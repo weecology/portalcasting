@@ -2,6 +2,15 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.58.0](https://github.com/weecology/portalcasting/releases/tag/v0.58.0)
+*5-18-2023*
+
+## Editing documentation
+* Auto templates for issues and prs 
+
+## Inclduing git2r in the package
+* Was removed accidentally from dockerfile causing breaks in main repo, seeing if it works to be in the package itself
+
 # [portalcasting 0.57.0](https://github.com/weecology/portalcasting/releases/tag/v0.57.0)
 *5-12-2023*
 
