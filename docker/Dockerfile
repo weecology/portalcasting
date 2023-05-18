@@ -15,7 +15,8 @@ FROM rocker/tidyverse:latest AS tidyverse
 
 RUN apt-get update \
     && apt-get install -y \
-       jags
+       jags \
+       curl
 
 # Install portalcasting from github event that triggered the specific workflow
 
