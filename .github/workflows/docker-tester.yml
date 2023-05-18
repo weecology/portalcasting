@@ -34,7 +34,7 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          file: docker/dockerfile
+          file: docker/Dockerfile
           build-args: |
             "event_sha=${{ github.sha }}"
 
