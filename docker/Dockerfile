@@ -6,17 +6,16 @@
 ARG image_name="base"
 
 
-# Our image is built upon rocker/tidyverse, tagged as tidyverse for downstream reference
+# Our image is built upon rocker/verse, tagged as verse for downstream reference
 
-FROM rocker/tidyverse:latest AS tidyverse
+FROM rocker/verse:latest AS verse
 
 
-# Install `jags` c library, everything else we need is already in tidyverse
+# Install `jags` c library, everything else we need is already in verse
 
 RUN apt-get update \
     && apt-get install -y \
-       jags \
-       curl
+       jags 
 
 # Install portalcasting from github event that triggered the specific workflow
 
@@ -28,12 +27,12 @@ RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')
 
 ARG main="~/portalPredictions"
 
-FROM tidyverse AS base-branch
+FROM verse AS base-branch
 
-FROM tidyverse AS sandbox-branch
+FROM verse AS sandbox-branch
 RUN R -e "portalcasting::setup_sandbox(main = '$main')"
 
-FROM tidyverse AS production-branch
+FROM verse AS production-branch
 RUN R -e "portalcasting::setup_production(main = '$main')"
 
 FROM ${image_name}-branch AS final
