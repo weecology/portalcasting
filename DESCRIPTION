@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Model and Forecast Portal Rodent Dynamics
-Version: 0.57.0
+Version: 0.58.0
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -35,6 +35,7 @@ Imports:
   bslib,
   coda,
   english,
+  git2r,
   htmltools,
   httr,
   jsonlite,
