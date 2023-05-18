@@ -17,7 +17,6 @@ RUN apt-get update \
     && apt-get install -y \
        jags
 
-
 # Install portalcasting from github event that triggered the specific workflow
 
 ARG event_sha="HEAD"

@@ -35,6 +35,7 @@ Imports:
   bslib,
   coda,
   english,
+  git2r,
   htmltools,
   httr,
   jsonlite,

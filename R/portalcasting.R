@@ -3,6 +3,7 @@
 #' @importFrom coda as.mcmc HPDinterval
 #' @importFrom english english
 #' @importFrom forecast Arima auto.arima ets forecast na.interp
+#' @importFrom git2r sha
 #' @importFrom graphics abline axis mtext par plot points polygon rect text
 #' @importFrom grDevices grey rgb
 #' @importFrom htmltools a br div h2 h3 h4 HTML includeHTML includeMarkdown p tags
