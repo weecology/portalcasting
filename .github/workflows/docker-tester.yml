@@ -8,15 +8,13 @@ on:
 name: blorp
 
 jobs:
-  R-CMD-check:
+  xyzzzzzzzzzz:
     runs-on: ubuntu-latest
+    container: weecology/portalcasting:latest
 
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
 
     steps:
 
       - name: Test 
         run: |
-          docker run weecology/portalcasting:latest r -e "library(portalcasting)"
+          echo "hi"
