@@ -1,0 +1,13 @@
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+name: Docker
+
+jobs:
+  - name: Test 
+    run: |
+      docker run weecology/portalcasting:latest r -e "library(portalcasting)"
