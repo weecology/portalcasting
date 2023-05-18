@@ -11,10 +11,11 @@ ARG image_name="base"
 FROM rocker/tidyverse:latest AS tidyverse
 
 
-# Install `jags` c library, everything else we need is already in tidyverse
+# Install `curl` and `jags` c libraries, everything else we need is already in tidyverse
 
 RUN apt-get update \
     && apt-get install -y \
+       curl \
        jags
 
 # Install portalcasting from github event that triggered the specific workflow
