@@ -10,11 +10,34 @@ name: test-for-curl
 jobs:
   container_check:
     runs-on: ubuntu-latest
-    container: weecology/portalcasting:latest
 
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
 
     steps:
 
-      - name: Test 
+      - uses: actions/checkout@v3
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: weecology/portalcasting
+          tags: |
+            type=raw,value=latest
+
+      - name: Build 
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: docker/dockerfile
+          build-args: |
+            "event_sha=${{ github.sha }}"
+
+      - name: Test image
         run: |
-          ls 
+          docker run weecology/portalcasting:latest r -e "library(portalcasting)"
