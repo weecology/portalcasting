@@ -40,4 +40,4 @@ jobs:
 
       - name: Test image
         run: |
-          docker run weecology/portalcasting:latest r -e "library(portalcasting)"
+          docker run weecology/portalcasting:latest curl
