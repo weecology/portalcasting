@@ -49,7 +49,6 @@ jobs:
             sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
 
       - name: Retry install system dependencies on MacOS if failed
-        id: retrysystemmac
         if: steps.systemmac.outcome == 'failure'
         run: |
             sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
@@ -59,12 +58,11 @@ jobs:
         id: systemwindows
         if: runner.os == 'Windows'
         run: |
-            curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
+            curl --location https://sourcforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
             C:\JAGS-latest.exe /S
         shell: cmd
 
       - name: Retry install system dependencies on Windows if failed
-        id: retrysystemwindows
         if: steps.systemwindows.outcome == 'failure'
         run: |
             curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
@@ -84,11 +82,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: find jags 
-        run: |
-          runjags::findjags()
-        shell: Rscript {0}
-
       - name: Check R package
         uses: r-lib/actions/check-r-package@v2
         id: check
@@ -98,7 +91,6 @@ jobs:
 
       - name: Retry check R package if failed
         uses: r-lib/actions/check-r-package@v2
-        id: retrycheck
         if: steps.check.outcome == 'failure'
         with:
           error-on: '"error"'
