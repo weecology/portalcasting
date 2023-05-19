@@ -74,7 +74,9 @@ jobs:
         with:
           error-on: '"error"'
           upload-snapshots: true
-          continue-on-error: true
+
+      - run: |
+          echo ${{ steps.check.outcome }}
 
       - name: Check R package if failed # (due to internet-based data retrieval errors)
         uses: r-lib/actions/check-r-package@v2
@@ -83,4 +85,3 @@ jobs:
         with:
           error-on: '"error"'
           upload-snapshots: true
-          continue-on-error: true
