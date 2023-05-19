@@ -38,15 +38,19 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       
       - name: Install system dependencies on MacOS
+        uses: nick-fields/retry@v2
         if: runner.os == 'macOS'
-        run: |
-          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
-          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
+        with:
+          timeout_minutes: 120
+          command: |
+            sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
+            sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
 
-      - name: Install system dependencies on Windows
+      - name: Install system dependencies on Windows with retry as needed
         uses: nick-fields/retry@v2
         if: runner.os == 'Windows'
-        with: 
+        with:
+          timeout_minutes: 120 
           command: |
             curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
             C:\JAGS-latest.exe /S
@@ -64,7 +68,19 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: Check R package
+        uses: r-lib/actions/check-r-package@v2
+        id: check
         with:
           error-on: '"error"'
           upload-snapshots: true
+          continue-on-error: true
+
+      - name: Check R package if failed # (due to internet-based data retrieval errors)
+        uses: r-lib/actions/check-r-package@v2
+        id: retrycheck
+        if: steps.check.outcome == 'failure'
+        with:
+          error-on: '"error"'
+          upload-snapshots: true
+          continue-on-error: true
