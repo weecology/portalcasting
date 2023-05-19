@@ -92,7 +92,6 @@ jobs:
         run: |
           docker run weecology/portalcasting:${{ matrix.tag_prefix }}latest r -e "library(portalcasting)"
 
-
       - name: Push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
@@ -111,4 +110,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: weecology/portalcasting
+          readme-filepath: ./docker/README.md
         
