@@ -46,10 +46,11 @@ jobs:
       - name: Install system dependencies on Windows
         uses: nick-fields/retry@v2
         if: runner.os == 'Windows'
-        command: |
-          curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
-          C:\JAGS-latest.exe /S
-        shell: cmd
+        with: 
+          command: |
+            curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
+            C:\JAGS-latest.exe /S
+          shell: cmd
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -64,7 +65,6 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
-        uses: nick-fields/retry@v2
         with:
           error-on: '"error"'
           upload-snapshots: true
