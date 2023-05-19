@@ -6,8 +6,12 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 *5-19-2023*
 
 ## Automating editing of dockerhub description
-* Using a [3rd party action](https://github.com/peter-evans/dockerhub-description) while docker gets this funcitonality integrated 
+* Using a [3rd party action](https://github.com/peter-evans/dockerhub-description) while docker gets this functionality integrated 
 * addresses #361
+
+## Including retry action to help with random failures 
+* Using a [3rd party action](https://github.com/marketplace/actions/retry-step)
+* Addresses # 363
 
 # [portalcasting 0.59.0](https://github.com/weecology/portalcasting/releases/tag/v0.59.0)
 *5-18-2023*
