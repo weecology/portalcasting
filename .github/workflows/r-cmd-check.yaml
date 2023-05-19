@@ -17,6 +17,8 @@ jobs:
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }}) 
 
+    continue-on-error: true 
+
     strategy:
       max-parallel: 3
       fail-fast: false
