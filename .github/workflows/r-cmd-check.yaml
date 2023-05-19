@@ -64,6 +64,7 @@ jobs:
 
       - run: |
           echo ${{ steps.systemwindows.outcome }}
+          echo ${{ jobs.R-CMD-check.continue-on-error }}
 
       - name: Retry install system dependencies on Windows if failed
         if: steps.systemwindows.outcome == 'failure'
