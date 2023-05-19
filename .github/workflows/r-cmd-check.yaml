@@ -58,7 +58,7 @@ jobs:
         id: systemwindows
         if: runner.os == 'Windows'
         run: |
-            curl --location https://sourcforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
+            curl --location https://sourceforge.net/projects/mcmc-jags/files/latest/download -o C:\JAGS-latest.exe
             C:\JAGS-latest.exe /S
         shell: cmd
 
