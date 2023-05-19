@@ -92,7 +92,6 @@ jobs:
         run: |
           docker run weecology/portalcasting:${{ matrix.tag_prefix }}latest r -e "library(portalcasting)"
 
-
       - name: Push ${{ matrix.image_name }} image
         uses: docker/build-push-action@v4
         with:
@@ -105,4 +104,13 @@ jobs:
             "event_sha=${{ github.sha }}"
             "image_name=${{ matrix.image_name }}"
           
+      - name: Update dockerhub descriptions upon release
+        if: ${{ github.event_name == 'release' }}
+        uses: peter-evans/dockerhub-description@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: weecology/portalcasting
+          readme-filepath: ./docker/README.md
+          short-description: ${{ github.event.repository.description }}
         
