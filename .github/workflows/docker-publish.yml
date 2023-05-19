@@ -105,7 +105,7 @@ jobs:
             "image_name=${{ matrix.image_name }}"
           
       - name: Update dockerhub descriptions upon release
-      #  if: ${{ github.event_name == 'release' }}
+        if: ${{ github.event_name == 'release' }}
         uses: peter-evans/dockerhub-description@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
