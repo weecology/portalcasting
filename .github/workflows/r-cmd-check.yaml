@@ -63,7 +63,7 @@ jobs:
         shell: cmd
 
       - run: |
-          echo steps.systemwindows.outcome
+          echo ${{ steps.systemwindows.outcome }}
 
       - name: Retry install system dependencies on Windows if failed
         if: steps.systemwindows.outcome == 'failure'
