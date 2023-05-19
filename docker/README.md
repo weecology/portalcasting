@@ -9,10 +9,11 @@
 [![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1929730)
 [![JOSS](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
 
-Supporting [automated forecasting](https://portal.naturecast.org/) of [rodent populations](https://portal.weecology.org/).
+Supporting [automated forecasting](https://portal.naturecast.org/) of [rodent populations](https://portal.weecology.org/) through a set of containerized images.
+
+## Image set structure
 
 The set of images is defined using a single [Dockerfile](https://github.com/weecology/portalcasting/blob/main/docker/Dockerfile) with [multi-stage build contexts](https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae) to generate different types of the image.
-
 
 There are currently three image types within the set:
 
