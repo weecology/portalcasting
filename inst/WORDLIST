@@ -39,6 +39,7 @@ NMME
 NaN
 NaiveArima
 ORCID
+PRs
 Plummer
 PortalData
 README
@@ -69,6 +70,7 @@ dataset's
 dev
 dir
 dockerfile
+dockerhub
 dontrun
 downscaled
 dplyr
@@ -131,6 +133,7 @@ se
 shinyapp
 subfolders
 summarization
+tidyverse
 timeseries
 tscount
 tsglm

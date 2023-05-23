@@ -2,6 +2,11 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.60.1](https://github.com/weecology/portalcasting/releases/tag/v0.60.1)
+*5-22-2023*
+
+## Minor doc edits
+
 # [portalcasting 0.60.0](https://github.com/weecology/portalcasting/releases/tag/v0.60.0)
 *5-19-2023*
 
@@ -12,16 +17,16 @@ Version numbers follow [Semantic Versioning](https://semver.org/).
 # [portalcasting 0.59.0](https://github.com/weecology/portalcasting/releases/tag/v0.59.0)
 *5-18-2023*
 
-## Inclduing curl in the Dockerfile
-* thought it was installed, but it isnt in tidyverse, just verse
+## Including curl in the Dockerfile
+* thought it was installed, but it isn't in tidyverse, just verse
 
 # [portalcasting 0.58.0](https://github.com/weecology/portalcasting/releases/tag/v0.58.0)
 *5-18-2023*
 
 ## Editing documentation
-* Auto templates for issues and prs 
+* Auto templates for issues and PRs 
 
-## Inclduing git2r in the package
+## Including git2r in the package
 * Was removed accidentally from dockerfile causing breaks in main repo, seeing if it works to be in the package itself
 
 # [portalcasting 0.57.0](https://github.com/weecology/portalcasting/releases/tag/v0.57.0)
@@ -1049,8 +1054,8 @@ the forecast date with a time stamp as well.
 * Developed this changelog as part of the package.
 
 ## Support documents
-* Added [code of conduct](https://github.com/weecology/portalcasting/blob/master/CODE_OF_CONDUCT.md) 
-and [contribution guidelines](https://github.com/weecology/portalcasting/blob/master/CONTRIBUTING.md)
+* Added [code of conduct](https://github.com/weecology/portalcasting/blob/main/.github/CODE_OF_CONDUCT.md) 
+and [contribution guidelines](https://github.com/weecology/portalcasting/blob/main/.github/CONTRIBUTING.md)
 to the repository.
 
 # [portalcasting 0.1.1](https://github.com/weecology/portalcasting/commit/05ed76f76a82f32a5a3120eb7c9ef0dc95bd8ae4)

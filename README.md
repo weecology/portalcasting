@@ -4,7 +4,7 @@
 
 [![R-CMD-check](https://github.com/weecology/portalcasting/actions/workflows/r-cmd-check.yaml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/r-cmd-check.yaml)
 [![Docker](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/weecology/portalcasting/actions/workflows/docker-publish.yml)
-[![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://codecov.io/github/weecology/portalcasting/branch/main)
+[![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://app.codecov.io/github/weecology/portalcasting/branch/main)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
@@ -34,8 +34,7 @@ We leverage a [software container](https://en.wikipedia.org/wiki/Operating-syste
 Presently, we use a [Docker](https://hub.docker.com/r/weecology/portalcasting) image of the software environment to create a container for running the code. 
 The image is automatically rebuilt when there is a new `portalcasting` release, tagged with both the `latest` and version-specific (`vX.X.X`) tags, and pushed to [DockerHub](https://hub.docker.com/r/weecology/portalcasting). 
 
-Because the `latest` image is updated with releases, the current master branch code in `portalcasting` is not necessarily always being executed within the [predictions repository](https://github.com/weecology/portalPredictions). 
-A development image (`dev`) is built from the master branch of `portalcasting` at every push to facilitate testing and should not be considered stable.
+Because the `latest` image is updated with releases, the current main branch code in `portalcasting` is typically, but not necessarily always, being executed within the [predictions repository](https://github.com/weecology/portalPredictions). 
 
 The API is moderately well defined at this point, but is still evolving.
 
@@ -62,14 +61,14 @@ from a shell on a computer with [Docker](https://www.docker.com/) installed.
 
 Get started with the ["how to set up a Portal Predictions directory" vignette](https://weecology.github.io/portalcasting/articles/getting_started.html).
 
-If you are interested in adding a model to the preloaded [set of models](https://weecology.github.io/portalcasting/articles/current_models.html), see the ["adding a model" vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). 
+If you are interested in adding a model to the preloaded [set of models](https://weecology.github.io/portalcasting/articles/current_models.html), see the ["adding a model and data" vignette](https://weecology.github.io/portalcasting/articles/adding_model_and_data.html). That document also details how to expand the datasets available to new and existing models.
 
 
 ## Developer and Contributor notes
 
 We welcome any contributions in form of models or pipeline changes.  
 
-For the workflow, please checkout the [contribution](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) pages. 
+For the workflow, please checkout the [contribution](.github/CONTRIBUTING.md) and [code of conduct](.github/CODE_OF_CONDUCT.md) pages. 
 
 
 ## Acknowledgements
