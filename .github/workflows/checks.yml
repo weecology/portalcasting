@@ -1,0 +1,33 @@
+name: 'Check commit message style'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+  push:
+    branches:
+      - main
+
+jobs:
+  check-commit-message-style:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    name: Check commit message style
+    steps:
+      - name: Check PR commit message
+        uses: mristin/opinionated-commit-message@v3.0.0
+
+      - name: Check commit messages in PR
+        uses: gsactions/commit-message-checker@v2
+        with:
+          pattern: ^[A-Za-z0-9\s$&+,:;=?@#|'`<>.^*()%!-]{15,50}$
+          flags: 'gm'
+          excludeDescription: 'true' # optional: this excludes the description body of a pull request
+          excludeTitle: 'true' # optional: this excludes the title of a pull request
+          checkAllCommitMessages: 'true'
+          error: 'Length of commit messages should be between 15 to 50 chars long'
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
