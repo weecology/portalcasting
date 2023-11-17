@@ -7,7 +7,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "evaluate_forecasts evaluates forecasts", {
 
-  forecasts_ids <- select_forecasts(main     = main3, 
+  forecasts_ids <- select_forecasts(main     = main3,
                                    species  = c("DM", "PP", "total"),
                                    models   = c("AutoArima", "ESSS", "pevGARCH", "nbGARCH", "jags_RW"),
                                    datasets = c("all", "controls"))$forecast_id

@@ -9,7 +9,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "read_directory_config works but errors out of directory", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   dc <- read_directory_configuration(main = main2)
   expect_is(dc, "list")
@@ -20,8 +20,8 @@ test_that(desc = "read_directory_config works but errors out of directory", {
 
 test_that(desc = "read_climate_forecasts reads them in right", {
 
-  skip_on_cran() 
-  
+  skip_on_cran()
+
   cc <- read_climate_forecasts(main = main2)
   expect_is(cc, "data.frame")
   expect_equal(colnames(cc), c("date", "mintemp", "meantemp", "maxtemp", "precipitation"))
@@ -31,36 +31,36 @@ test_that(desc = "read_climate_forecasts reads them in right", {
 
 test_that(desc = "write_data works if overwriting or not", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_silent(controls <- read_data(main = main2, "rodents_dataset", "controls"))
-  expect_message(write_data(controls, main = main2, save = TRUE, 
+  expect_message(write_data(controls, main = main2, save = TRUE,
                             filename = "rodents_controls.csv",
                             overwrite = FALSE))
-  expect_message(write_data(controls, main = main2, save = TRUE, 
+  expect_message(write_data(controls, main = main2, save = TRUE,
                             filename = "rodents_controls.csv",
                             overwrite = TRUE))
 
   jsontest <- list(test = 1312)
-  expect_message(write_data(jsontest, main = main2, save = TRUE, 
+  expect_message(write_data(jsontest, main = main2, save = TRUE,
                             filename = "jsontest.json"))
-  expect_message(write_data(jsontest, main = main2, save = TRUE, 
+  expect_message(write_data(jsontest, main = main2, save = TRUE,
                             filename = "jsontest.json", overwrite = FALSE))
 
-  expect_error(write_data(jsontest, main = main2, save = TRUE, 
+  expect_error(write_data(jsontest, main = main2, save = TRUE,
                             filename = "jsontest.failure", overwrite = FALSE))
 
-})  
+})
 
 
 
 test_that(desc = "read_data works when the data are present", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_silent(all <- read_data(main = main2, "rodents_dataset", "all"))
   expect_is(all, "data.frame")
-  expect_silent(controls <- read_data(main = main2, "rodents_dataset", 
+  expect_silent(controls <- read_data(main = main2, "rodents_dataset",
                                       "controls"))
   expect_is(controls, "data.frame")
   expect_silent(controls <- read_data(main = main2, "rodents", "controls"))

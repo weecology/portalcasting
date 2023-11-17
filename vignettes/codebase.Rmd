@@ -22,7 +22,7 @@ vers <- packageVersion("portalcasting")
 today <- Sys.Date()
 ```
 
-This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions production pipeline](https://github.com/weecology/portalPredictions). 
+This vignette outlines the codebase and functionality of the **portalcasting** package (v`r vers`), which underlies the automated iterative forecasting within the [Portal Predictions or forecasts production pipeline](https://github.com/weecology/portal-forecasts).
 **portalcasting** has utilities for setting up local versions of the pipeline for developing and testing new models, which are covered in detail in other vignettes.
 
 ## Installation

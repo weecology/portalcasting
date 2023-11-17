@@ -2,6 +2,13 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.60.2](https://github.com/weecology/portalcasting/releases/tag/v0.60.2)
+*11-16-2023*
+
+## Repository moved
+* Store forecasts by date using the zip format
+* Move from portalPredictions to portal-forecasts due to size limitations.
+
 # [portalcasting 0.60.1](https://github.com/weecology/portalcasting/releases/tag/v0.60.1)
 *5-22-2023*
 

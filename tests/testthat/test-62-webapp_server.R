@@ -6,7 +6,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "server functions work off of global list", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_silent(ae <- app_events())
   expect_is(ae, "character")
@@ -48,7 +48,7 @@ test_that(desc = "server functions work off of global list", {
   rows_in <- global$forecasts_evaluations$newmoonnumber == global$initial_evaluation_tab_selected_newmoonnumber &
              global$forecasts_evaluations$species == global$initial_evaluation_tab_selected_species &
              global$forecasts_evaluations$model == global$initial_evaluation_tab_selected_model &
-             global$forecasts_evaluations$dataset == global$initial_evaluation_tab_selected_dataset 
+             global$forecasts_evaluations$dataset == global$initial_evaluation_tab_selected_dataset
 
 
   global$initial_evaluation_tab_selected_historic_end_newmoonnumber <- max(global$forecasts_evaluations$historic_end_newmoonnumber[rows_in])
@@ -56,7 +56,7 @@ test_that(desc = "server functions work off of global list", {
 
   main <- main3
 
-  testServer(app_paths(main = main3)$file, {
+  shiny::testServer(app_paths(main = main3)$file, {
 
     session$setInputs(forecast_tab_species                       = global$initial_forecast_tab_selected_species,
                       forecast_tab_dataset                       = global$initial_forecast_tab_selected_dataset,
@@ -82,84 +82,84 @@ test_that(desc = "server functions work off of global list", {
     expect_equal(output$evaluation_tab_newmoonnumber, as.character(global$initial_evaluation_tab_selected_newmoonnumber))
 
 
-    output <- update_output(main   = main3, 
-                            event  = "forecast_tab", 
-                            rv     = rv, 
-                            input  = input, 
+    output <- update_output(main   = main3,
+                            event  = "forecast_tab",
+                            rv     = rv,
+                            input  = input,
                             output = output)
 
     expect_is(output, "shinyoutput")
-    output <- update_output(main   = main3, 
-                            event  = "evaluation_tab", 
-                            rv     = rv, 
-                            input  = input, 
+    output <- update_output(main   = main3,
+                            event  = "evaluation_tab",
+                            rv     = rv,
+                            input  = input,
                             output = output)
     expect_is(output, "shinyoutput")
 
 
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "forecast_tab_species", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "forecast_tab_species",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "forecast_tab_dataset", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "forecast_tab_dataset",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "forecast_tab_model", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "forecast_tab_model",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "forecast_tab_historic_end_newmoonnumber", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "forecast_tab_historic_end_newmoonnumber",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
 
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "evaluation_tab_species", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "evaluation_tab_species",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "evaluation_tab_dataset", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "evaluation_tab_dataset",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "evaluation_tab_model", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "evaluation_tab_model",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "evaluation_tab_historic_end_newmoonnumber", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "evaluation_tab_historic_end_newmoonnumber",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
     expect_equal(event_reaction(main = main3,
                                 global = global,
-                                event = "evaluation_tab_newmoonnumber", 
-                                rv = rv, 
-                                input = input, 
-                                output = output, 
+                                event = "evaluation_tab_newmoonnumber",
+                                rv = rv,
+                                input = input,
+                                output = output,
                                 session = session), NULL)
 
     expect_equal(names(output$forecast_tab_ts_plot), c("src", "width", "height", "alt", "coordmap"))

@@ -7,7 +7,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "meta_tsglm components work properly individually and together", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   abundance      <- prepare_abundance(main     = main2,
                                       dataset  = "controls",
@@ -40,7 +40,7 @@ test_that(desc = "meta_tsglm components work properly individually and together"
 
   expect_silent(mod <- tsglm(ts = abundance, model = model, distr = distr, link = link, xreg = xreg))
   expect_is(mod, "tsglm")
- 
+
   newxreg <- covariates[covariates$newmoonnumber %in% (metadata$time$forecast_newmoonnumbers - lag), "mintemp"]
   expect_silent(fc <- forecast(object = mod, h = 13, level = 0.95, newxreg = newxreg))
   expect_is(fc, "forecast")
@@ -48,7 +48,7 @@ test_that(desc = "meta_tsglm components work properly individually and together"
 
   expect_silent(mod <- tsglm(ts = abundance, model = model, distr = distr, link = link))
   expect_is(mod, "tsglm")
- 
+
   expect_silent(fc <- forecast(object = mod, h = 13, level = 0.95))
   expect_is(fc, "forecast")
 

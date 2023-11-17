@@ -6,7 +6,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "prepare_metadata", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   prepare_rodents(main = main2)
 

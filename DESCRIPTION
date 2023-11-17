@@ -1,6 +1,6 @@
 Package: portalcasting
 Title: Model and Forecast Portal Rodent Dynamics
-Version: 0.60.1
+Version: 0.60.2
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
       email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
@@ -21,7 +21,7 @@ Authors@R: c(
       comment = c(ORCID = "0000-0001-6728-7745")),
     person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
       comment = c(ORCID = "0000-0002-6026-8530")))
-Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. The user can spin-up a local lightweight sandbox or full-scale production environment from the same code underlying the continuously deployed Portal Predictions Project continuous integration system <https://github.com/weecology/portalpredictions> and website <https://portal.naturecast.org>.
+Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. The user can spin-up a local lightweight sandbox or full-scale production environment from the same code underlying the continuously deployed Portal Predictions Project continuous integration system <https://github.com/weecology/portal-forecasts> and website <https://portal.naturecast.org>.
 URL: https://weecology.github.io/portalcasting/, https://github.com/weecology/portalcasting
 BugReports: https://github.com/weecology/portalcasting/issues
 Depends: 
@@ -48,7 +48,8 @@ Imports:
   shiny,
   stats,
   viridis,
-  yaml
+  yaml,
+  utils
 Suggests:
   pkgdown,
   testthat

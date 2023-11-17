@@ -19,3 +19,4 @@ testing_dir/*
 /Meta/
 inst/app/models.knit.md
 *.DS_Store*
+.Rproj.user

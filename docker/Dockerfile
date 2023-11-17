@@ -24,9 +24,9 @@ ARG event_sha="HEAD"
 RUN echo "Installing from github at ref $event_sha"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
 
-# For branches with directories set up, set main as ~/portalPredictions, as . is in general use
+# For branches with directories set up, set main as ~/portal-forecasts, as . is in general use
 
-ARG main="~/portalPredictions"
+ARG main="~/portal-forecasts"
 
 FROM tidyverse AS base-branch
 

@@ -7,7 +7,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "read_models_controls does", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   mc <- read_models_controls(main = main2)
   expect_is(mc, "list")
@@ -18,7 +18,7 @@ test_that(desc = "read_models_controls does", {
 
 test_that(desc = "models_controls reads in a list", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   mc <- models_controls(main = main2)
   expect_is(mc, "list")
@@ -38,7 +38,7 @@ test_that(desc = "write_models_controls returns a list", {
 
 test_that(desc = "add_new_model makes a list", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   mc <- add_new_model(main = main2, new_model_controls = new_model_controls(metadata = new_model_metadata(name = "newone")))
   expect_is(mc, "list")
@@ -77,7 +77,7 @@ test_that(desc = "new_model_<> functions update the list", {
   expect_is(mc, "list")
   expect_equal(mc$fun, "lm")
   expect_equal(mc$args, list(y = "abundance"))
-  
+
   mc <- new_model_forecast(fun = "predict")
   expect_is(mc, "list")
   expect_equal(mc$fun, "predict")

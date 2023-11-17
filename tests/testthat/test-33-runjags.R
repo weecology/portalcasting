@@ -13,7 +13,7 @@ test_that(desc = "runjags_controls makes a list", {
 
 test_that(desc = "runjags_model components work properly individually and together", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   abundance      <- prepare_abundance(main     = main2,
                                       dataset  = "controls",
@@ -46,14 +46,14 @@ test_that(desc = "runjags_model components work properly individually and togeth
   expect_is(inits2(), "list")
 
   rjc <- runjags_controls(nchains = 2, adapt = 100, burnin = 100, sample = 100, thin = 1)
-  run <- fit_runjags(inits = model_controls$fit$args$inits, 
+  run <- fit_runjags(inits = model_controls$fit$args$inits,
                      data_names = model_controls$fit$args$data_names,
                      model = file.path(main2, settings$subdirectories$models, model_controls$fit$model_file),
                      monitors = model_controls$fit$args$monitors,
                      metadata = metadata, abundance = abundance, covariates = covariates, control_runjags = rjc)
   expect_is(run, "runjags")
- 
+
   expect_silent(fc <- forecast(object = run, h = 13, level = 0.95, nsamples = 1))
-  expect_is(fc, "forecast")  
+  expect_is(fc, "forecast")
 
 })
