@@ -46,7 +46,7 @@ messageq <- function (...,
                       quiet    = FALSE, 
                       domain   = NULL, 
                       appendLF = TRUE) {
-
+ 
   if (!quiet) {
 
     message(...,
