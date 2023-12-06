@@ -28,7 +28,7 @@ The `portalcasting` package integrates the [PortalData repository](https://githu
 
 The functionality of `portalcasting` extends beyond its deployment, as its functions are portable. This allows users to establish a fully-functional replica repository on either a local or remote machine, facilitating the development and testing of new models within a [sandbox](https://en.wikipedia.org/wiki/Sandbox_software_development) environment.
 
-## Current deployment:
+## Current Deployment:
 
 The [Portal-forecasts](https://github.com/weecology/portal-forecasts) houses tools that leverage the portalcasting pipeline to generate weekly forecasts.
 The forecasts are then showcased on the [Portal Forecasts website](https://portal.naturecast.org).
