@@ -4,7 +4,7 @@
 [![Codecov test coverage](https://img.shields.io/codecov/c/github/weecology/portalcasting/main.svg)](https://codecov.io/github/weecology/portalcasting/branch/main)
 [![Lifecycle:maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portalPredictions/master/LICENSE)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/weecology/portal-forecasts/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3332973.svg)](https://doi.org/10.5281/zenodo.3332973)
 [![NSF-1929730](https://img.shields.io/badge/NSF-1929730-blue.svg)](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1929730)
 [![JOSS](https://joss.theoj.org/papers/10.21105/joss.03220/status.svg)](https://doi.org/10.21105/joss.03220)
@@ -33,7 +33,7 @@ Two copies of each the image type are pushed to Docker Hub:
   - tagged with the release version 
   - tagged as "latest"
 
-The [production pipeline](https://github.com/weecology/portalPredictions/blob/main/portal_weekly_forecast.sh) uses the "latest" tag from the base image allowing for an update of the container used without requiring a code update.
+The [production pipeline](https://github.com/weecology/portal-forecasts/blob/main/portal_weekly_forecast.sh) uses the "latest" tag from the base image allowing for an update of the container used without requiring a code update.
 
 
 ## Acknowledgements

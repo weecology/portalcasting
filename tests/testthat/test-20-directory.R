@@ -7,7 +7,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "create_dir creates the folder structure",
           code = {
-  
+
   expect_message(create_dir(main = main1, verbose = TRUE))
   expect_silent(create_dir(main = main1, verbose = TRUE))
 
@@ -40,7 +40,7 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 test_that(desc = "setup_sandbox does",
           code = {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_message(out <- setup_sandbox(main = main2, verbose = TRUE))
   expect_is(out, "list")
@@ -50,7 +50,7 @@ test_that(desc = "setup_sandbox does",
 test_that(desc = "setup_production does",
           code = {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_message(out <- setup_production(main = main3, verbose = TRUE))
   expect_is(out, "list")
@@ -60,7 +60,7 @@ test_that(desc = "setup_production does",
 test_that(desc = "update_directory does",
           code = {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_message(out <- update_dir(main = main3, verbose = TRUE))
   expect_is(out, "list")

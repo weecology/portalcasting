@@ -168,11 +168,8 @@ fill_app <- function (main = ".") {
 #' @export
 #'
 fill_resources <- function (main = ".") {
-
   settings <- read_directory_settings(main = main)
-
   messageq("Downloading resources ... ", quiet = settings$quiet)
-
   download_observations(path      = resources_path(main = main),
                         version   = settings$resources$PortalData$version,
                         source    = settings$resources$PortalData$source,
@@ -182,7 +179,7 @@ fill_resources <- function (main = ".") {
                         quiet     = settings$quiet,
                         verbose   = settings$verbose)
 
-  download_archive(main          = main, 
+  download_archive(main          = main,
                    resources_sub = settings$subdirectories$resources,
                    version       = settings$resources$portalPredictions$version,
                    source        = settings$resources$portalPredictions$source,
@@ -246,6 +243,8 @@ fill_forecasts <- function (main = ".") {
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
+  # unzip the forecast zipped files
+  zip_unzip("unzip", forecast_path = forecasts_path(main = main))
   invisible( )
 
 }

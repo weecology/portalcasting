@@ -11,13 +11,13 @@ test_that(desc = "download_archive skips or errors", {
   expect_message(download_archive(main = main3))
   expect_error(download_archive(source = "errrrrr"))
   expect_error(download_archive(version = "000110000"))
-  expect_error(download_archive(source  = "zenodo", 
+  expect_error(download_archive(source  = "zenodo",
                                 version = "000110000"))
 })
 
 test_that(desc = "download_climate_forecasts retrieves files", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   dlcc <- download_climate_forecasts(main = main1)
   expect_equal((dlcc), NULL)

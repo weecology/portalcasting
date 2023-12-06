@@ -6,7 +6,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "global_list makes a list of globals and component functions operate on it", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   expect_silent(gl <- global_list(main = main3))
   expect_is(gl, "list")

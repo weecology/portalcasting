@@ -7,7 +7,7 @@ main3 <- file.path(tempdir(), "testing3")
 
 test_that(desc = "prepare_abundance preps a vector with interpolation if requested", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   r1 <- prepare_abundance(main = main2, dataset = "all", species = "DM", model = "AutoArima")
   r2 <- prepare_abundance(main = main2, dataset = "all", species = "DM", model = "ESSS")
@@ -15,8 +15,8 @@ test_that(desc = "prepare_abundance preps a vector with interpolation if request
   expect_is(r1, "integer")
   expect_is(r2, "numeric")
   expect_equal(length(r1), length(r2))
-  expect_equal(sum(is.na(r1)) > 0, TRUE)  
-  expect_equal(sum(is.na(r2)) > 0, FALSE)  
+  expect_equal(sum(is.na(r1)) > 0, TRUE)
+  expect_equal(sum(is.na(r2)) > 0, FALSE)
 
 })
 
@@ -24,7 +24,7 @@ test_that(desc = "prepare_abundance preps a vector with interpolation if request
 
 test_that(desc = "prepare_rodents preps all the rodents", {
 
-  skip_on_cran() 
+  skip_on_cran()
 
   r1 <- prepare_rodents(main = main2)
   r2 <- prepare_rodents(main = main2, datasets = "all")

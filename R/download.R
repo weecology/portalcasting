@@ -290,8 +290,8 @@ download_archive <- function(main          = ".",
   } else if (source == "github") {
 
     url <- ifelse(version == "latest", 
-                  "https://api.github.com/repos/weecology/portalPredictions/releases/latest",
-                  paste0("https://api.github.com/repos/weecology/portalPredictions/releases/tags/", version))
+                  "https://api.github.com/repos/weecology/portal-forecasts/releases/latest",
+                  paste0("https://api.github.com/repos/weecology/portal-forecasts/releases/tags/", version))
 
     got <- GET(url = url)
 
@@ -308,8 +308,8 @@ download_archive <- function(main          = ".",
 
   }  
 
-  temp         <- file.path(tempdir(), "portalPredictions.zip")
-  final        <- file.path(main, resources_sub, "portalPredictions")
+  temp         <- file.path(tempdir(), "portal-forecasts.zip")
+  final        <- file.path(main, resources_sub, "portal-forecasts")
   version_file <- file.path(final, "version.txt")
 
   if (!force & file.exists(version_file)) {

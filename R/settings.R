@@ -69,7 +69,7 @@
 #'
 #' @param force `logical` indicator of whether or not existing files or folders (such as the archive) should be over-written if an up-to-date copy exists (most users should leave as `FALSE`).
 #'
-#' @param unzip_pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay. 
+#' @param unzip_pause Positive `integer` or integer `numeric` seconds for pausing during steps around unzipping that require time delay.
 #'
 #' @param download_timeout Positive `integer` or integer `numeric` seconds for timeout on downloads. Temporarily overrides the `"timeout"` option in [`base::options`].
 #'
@@ -79,8 +79,8 @@
 #'
 #' @param timeseries_start `Date` after which historic samples are included in the timeseries fit. Default value is `1995-01-01`, corresponding to moon 217.
 #'
-#' @param lead_time `integer` (or integer `numeric`) value for the number of calendar days forward a forecast will cover. \cr 
-#'   As of version 0.51.0, default is now `365`, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year. 
+#' @param lead_time `integer` (or integer `numeric`) value for the number of calendar days forward a forecast will cover. \cr
+#'   As of version 0.51.0, default is now `365`, which when divided by 29.5 (duration of a lunar month), gives 13. The previous value was previously 12. We are now using 13 to align with the timestep being a lunar month, and 13 lunar months covers a full calendar year.
 #'
 #' @param max_lag `integer` (or integer `numeric`) maximum number of calendar days that any covariate is lagged for prediction in a model. \cr
 #'   Default is `365` for the logistic covariate models.
@@ -89,11 +89,11 @@
 #'   Default value of `60` corresponds to two additional lunar months. 
 #'
 #' @param lead_time_buffer `integer` (or integer `numeric`) additional number of calendar days forward in time to forecast. \cr
-#'   Default value of `30` corresponds to one additional lunar month. 
+#'   Default value of `30` corresponds to one additional lunar month.
 #'
 #' @param confidence_level `numeric` confidence level used in summarizing model output. Must be between `0` and `1`.
 #'
-#' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates. 
+#' @param nsamples `integer` (or integer `numeric`) number of samples used to summarizing model output of sample-based estimates.
 #'
 #' @return Named `list` of settings for the directory (for `directory_settings`) or `list` of settings components (for `directory_files`, `directory_subdirectories`, and `directory_resources`).
 #'
@@ -125,21 +125,21 @@ directory_settings <- function (files             = directory_files( ),
                                 confidence_level  = 0.95,
                                 nsamples          = 1e4,
                                 save              = TRUE,
-                                overwrite         = TRUE, 
-                                force             = FALSE, 
+                                overwrite         = TRUE,
+                                force             = FALSE,
                                 unzip_pause       = 30,
                                 download_timeout  = getOption("timeout")) {
 
   list(files            = files,
        subdirectories   = subdirectories,
        resources        = resources,
-       repository       = "portalPredictions", 
+       repository       = "portal-forecasts",
        confidence_level = confidence_level,
        nsamples         = nsamples,
        time             = time,
-       save             = save, 
-       force            = force, 
-       overwrite        = overwrite, 
+       save             = save,
+       force            = force,
+       overwrite        = overwrite,
        unzip_pause      = unzip_pause,
        download_timeout = download_timeout)
 
@@ -149,7 +149,7 @@ directory_settings <- function (files             = directory_files( ),
 #'
 #' @export
 #'
-time_settings <- function (timeseries_start = as.Date("1995-01-01"), 
+time_settings <- function (timeseries_start = as.Date("1995-01-01"),
                            origin           = Sys.Date( ),
                            forecast_date    = Sys.Date( ),
                            lead_time        = 365,
@@ -158,7 +158,7 @@ time_settings <- function (timeseries_start = as.Date("1995-01-01"),
                            lead_time_buffer = 30) {
 
 
-  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer 
+  timeseries_start_lagged <- timeseries_start - max_lag - lag_buffer
   forecast_start          <- origin + 1
   forecast_end            <- origin + lead_time
   forecast_end_buffered   <- origin + lead_time + lead_time_buffer
@@ -185,7 +185,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
                              app                     = "app.R",
                              newmoons                = "newmoons.csv",
                              covariates              = "covariates.csv",
-                             datasets_controls       = "datasets_controls.yaml", 
+                             datasets_controls       = "datasets_controls.yaml",
                              models_controls         = "models_controls.yaml",
                              forecasts_evaluations   = "forecasts_evaluations.csv",
                              forecasts_results       = "forecasts_results.csv",
@@ -202,7 +202,7 @@ directory_files <- function (directory_configuration = "directory_configuration.
        app                       = app,
        newmoons                  = newmoons,
        covariates                = covariates,
-       datasets_controls         = datasets_controls, 
+       datasets_controls         = datasets_controls,
        models_controls           = models_controls,
        forecasts_evaluations     = forecasts_evaluations,
        forecasts_results         = forecasts_results,
@@ -222,18 +222,18 @@ directory_files <- function (directory_configuration = "directory_configuration.
 #'
 #' @export
 #'
-directory_subdirectories <- function (forecasts = "forecasts", 
-                                      fits      = "fits", 
-                                      models    = "models", 
-                                      resources = "resources", 
-                                      data      = "data", 
+directory_subdirectories <- function (forecasts = "forecasts",
+                                      fits      = "fits",
+                                      models    = "models",
+                                      resources = "resources",
+                                      data      = "data",
                                       www       = "www") {
 
-  list(forecasts = forecasts, 
-       fits      = fits, 
-       models    = models, 
-       resources = resources, 
-       data      = data, 
+  list(forecasts = forecasts,
+       fits      = fits,
+       models    = models,
+       resources = resources,
+       data      = data,
        www       = www)
 
 }
@@ -242,15 +242,15 @@ directory_subdirectories <- function (forecasts = "forecasts",
 #'
 #' @export
 #'
-directory_resources <- function (PortalData         = list(source  = "github", 
+directory_resources <- function (PortalData         = list(source  = "github",
                                                            version = "latest"),
-                                 portalPredictions  = list(source  = "github", 
+                                 portalPredictions  = list(source  = "github",
                                                            version = NULL),
-                                 climate_forecasts  = list(source  = "NMME", 
-                                                           version = as.character(Sys.Date()), 
+                                 climate_forecasts  = list(source  = "NMME",
+                                                           version = as.character(Sys.Date()),
                                                            data    = list(mintemp       = "tasmin",
-                                                                          meantemp      = "tasmean", 
-                                                                          maxtemp       = "tasmax", 
+                                                                          meantemp      = "tasmean",
+                                                                          maxtemp       = "tasmax",
                                                                           precipitation = "pr"))) {
 
   list(PortalData         = PortalData,
@@ -266,7 +266,7 @@ directory_resources <- function (PortalData         = list(source  = "github",
 #'
 production_settings <- function (download_timeout  = max(getOption("timeout"), 600)) {
 
-  resources <- directory_resources(portalPredictions = list(source  = "github", 
+  resources <- directory_resources(portalPredictions = list(source  = "github",
                                                             version = "latest"))
 
   directory_settings(resources        = resources,
@@ -279,7 +279,7 @@ production_settings <- function (download_timeout  = max(getOption("timeout"), 6
 #'
 #' @export
 #'
-sandbox_settings <- function ( ) {
+sandbox_settings <- function () {
 
   directory_settings( )
 

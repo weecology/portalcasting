@@ -32,7 +32,7 @@ vignette: >
 ```
 
 
-This vignette shows how to set up and run your own [Portal Predictions](https://github.com/weecology/portalPredictions) directory.
+This vignette shows how to set up and run your own [Portal Predictions](https://github.com/weecology/portal-forecasts) directory.
 
 ## Installation
 
