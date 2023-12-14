@@ -203,6 +203,12 @@ fill_resources <- function (main = ".") {
   
   update_directory_configuration(main = main)
 
+  # unzip the resource forecast zipped files
+  resource_forecasts = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
+  resource_forecasts = normalizePath(resource_forecasts, mustWork = FALSE)
+  if (file.exists(resource_forecasts)) {
+    zip_unzip("unzip", forecast_path = resource_forecasts)
+  }
   invisible( )
 
 }
@@ -236,15 +242,12 @@ fill_forecasts <- function (main = ".") {
 
   messageq(paste0(" Located ", length(files), " forecast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
   messageq("  ... moving ... ", quiet = settings$quiet)
-
   copied <- file.copy(from      = files, 
                       to        = forecasts_path(main = main), 
                       recursive = TRUE)
 
   messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
 
-  # unzip the forecast zipped files
-  zip_unzip("unzip", forecast_path = forecasts_path(main = main))
   invisible( )
 
 }
@@ -310,3 +313,13 @@ fill_models <- function (main               = ".",
 }
 
 
+#' After portalcast and evaluate_forecast run post_process to zip files
+#'
+#' @param main location of main directory with a forecast dir
+#'
+#' @export
+#'
+post_process <- function(main= ".") {
+  settings <- read_directory_settings(main = main)
+  zip_unzip("zip", forecasts_path(main = main))
+}
