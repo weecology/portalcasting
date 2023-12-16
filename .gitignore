@@ -20,3 +20,4 @@ testing_dir/*
 inst/app/models.knit.md
 *.DS_Store*
 .Rproj.user
+*Rplots.pdf*
