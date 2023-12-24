@@ -322,4 +322,8 @@ fill_models <- function (main               = ".",
 post_process <- function(main= ".") {
   settings <- read_directory_settings(main = main)
   zip_unzip("zip", forecasts_path(main = main))
+  resource_forecasts = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
+  resource_forecasts = normalizePath(resource_forecasts, mustWork = FALSE)
+  zip_unzip("zip", forecast_path = resource_forecasts)
+  paste0("Zipping ", forecasts_path(main = main), " ", resource_forecasts)
 }
