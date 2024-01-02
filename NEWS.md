@@ -1,6 +1,17 @@
 # portalcasting (development version)
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
+# [portalcasting 0.60.4](https://github.com/weecology/portalcasting/releases/tag/v0.60.4)
+*01-01-2024*
+
+## Zip resources forecast
+* Zipping forecast folder in resources
+
+# [portalcasting 0.60.3](https://github.com/weecology/portalcasting/releases/tag/v0.60.3)
+*12-16-2023*
+
+## Add tests
+* Tests for zip and unszip functions
 
 # [portalcasting 0.60.2](https://github.com/weecology/portalcasting/releases/tag/v0.60.2)
 *11-16-2023*

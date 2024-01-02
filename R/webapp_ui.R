@@ -161,6 +161,7 @@ subtitle_panel <- function ( ) {
 about_tab <- function (global = global_list( )) {
 
   tabPanel(title = "About",
+           tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
            includeMarkdown(global$about_md_path)) 
 
 }
@@ -172,6 +173,7 @@ about_tab <- function (global = global_list( )) {
 models_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Models",
+           tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
            includeHTML(global$models_html_path)) 
 
 }
@@ -183,6 +185,7 @@ models_tab <- function (global = global_list( )) {
 rodents_profiles_tab <- function (global = global_list( )) {
 
   tabPanel(title = "Rodent Profiles",
+           tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
            includeHTML(global$rodents_profiles_html_path)) 
 
 }
@@ -202,9 +205,10 @@ forecast_tab <- function (global = global_list( )) {
   } else {  
 
     tabPanel(title = "Forecast", 
+             tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
              br( ), 
              forecast_tab_input_selection_row(global = global), 
-        #    forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
+             #forecast_tab_input_selection_checks_row( ), # used for checking reactive inputs in dev
              plotOutput("forecast_tab_ts_plot", height = "300px"), 
              br( ),
              plotOutput("forecast_tab_ss_plot"),
@@ -319,9 +323,12 @@ evaluation_tab <- function (global = global_list( )) {
   } else {  
 
     tabPanel(title = "Evaluation", 
+           tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
+           br( ),
+           HTML('<script defer data-domain="portal.naturecast.org" src="https://plausible.io/js/script.js"></script>'),
            br( ), 
            evaluation_tab_input_selection_row(global = global), 
-       #   evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
+           #evaluation_tab_input_selection_checks_row( ),   # used for checking reactive inputs in dev
            plotOutput("evaluation_tab_sp_plot"),
            br( ),
            plotOutput("evaluation_tab_RMSE_plot", height = "300px"),
@@ -453,7 +460,10 @@ covariates_tab <- function (global = global_list( )) {
              br( ))
   } else {  
 
-    tabPanel(title = "Covariates", 
+    tabPanel(title = "Covariates",
+             tags$head(tags$script(defer = "defer", data_domain = "portal.naturecast.org", src = "https://plausible.io/js/script.js")),
+             br( ),
+             HTML('<script defer data-domain="portal.naturecast.org" src="https://plausible.io/js/script.js"></script>'),
              br( ), 
              p("These are the covariates (without lags imposed) used in forecasting models. Solid lines are historic data, dashed lines are forecasts."),
              br( ), 
@@ -576,6 +586,7 @@ write_rodents_profiles_tab_html <- function (main = ".") {
        padding: 15px;
      }
      </style>
+     <script defer data-domain="portal.naturecast.org" src="https://plausible.io/js/script.js"></script>
      </head>
      <body>
      <br>
