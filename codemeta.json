@@ -2,7 +2,7 @@
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
   "identifier": "portalcasting",
-  "description": "Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions Project <https://github.com/weecology/portalpredictions> as well as support for exploring and developing new models in sandbox environments.",
+  "description": "Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. This package provides the functionality underlying the Portal Predictions forecasts Project <https://github.com/weecology/portal-forecasts> as well as support for exploring and developing new models in sandbox environments.",
   "name": "portalcasting: Functions Used in Predicting Portal Rodent Dynamics",
   "relatedLink": "https://weecology.github.io/portalcasting/",
   "codeRepository": "https://github.com/weecology/portalcasting",
