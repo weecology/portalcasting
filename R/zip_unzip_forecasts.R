@@ -17,7 +17,7 @@ zip_unzip <- function(type = NULL,
       unlink(zipfile)
     }
     # Zip all files in the list
-    utils::zip(zipfile, files)
+    utils::zip(zipfile, files, flags = "-j")
     unlink(files)
   }
   
