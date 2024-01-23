@@ -1,6 +1,12 @@
 # portalcasting (development version)
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
+
+# [portalcasting 0.60.4](https://github.com/weecology/portalcasting/releases/tag/v0.60.5)
+*01-01-2024*
+## Fix Zipping function.
+* Avoid creating extra folders from relative paths
+
 # [portalcasting 0.60.4](https://github.com/weecology/portalcasting/releases/tag/v0.60.4)
 *01-01-2024*
 
