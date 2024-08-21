@@ -1,13 +1,12 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   adding_model_and_data: adding_model_and_data.html
   codebase: codebase.html
   current_models: current_models.html
   getting_started: getting_started.html
-last_built: 2024-01-23T22:46Z
+last_built: 2024-08-21T13:53Z
 urls:
   reference: https://weecology.github.io/portalcasting/reference
   article: https://weecology.github.io/portalcasting/articles
-

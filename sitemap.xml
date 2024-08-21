@@ -1,165 +1,56 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://weecology.github.io/portalcasting/404.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/adding_model_and_data.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/codebase.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/current_models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/getting_started.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/index.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/pull_request_template.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-configuration-file.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-creation.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-filling.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-paths.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/directory-settings.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download-archive.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/download-climate-forecasts.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/ensemble.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/evaluate-forecasts.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/file_ext.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/foy.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/ifnull.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/messages.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/named_null_list.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/new-datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/new-models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/package_version_finder.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/plots.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcast.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-selection-helpers.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-server.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-ui.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcasting-app.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/portalcasting-package.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/post_process.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefabricated-models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prefabricated-rodents-datasets.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare-covariates.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare-metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare-models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare-newmoons.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/prepare-rodents.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/process-forecast-output.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/read-write-data.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/round_na.interp.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/runjags-models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/tsglm-models.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/update_list.html</loc>
-  </url>
-  <url>
-    <loc>https://weecology.github.io/portalcasting/reference/zip_unzip.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://weecology.github.io/portalcasting/404.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/CONTRIBUTING.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/LICENSE-text.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/LICENSE.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/articles/adding_model_and_data.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/articles/codebase.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/articles/current_models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/articles/getting_started.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/articles/index.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/authors.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/index.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/news/index.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/directory-configuration-file.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/directory-creation.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/directory-filling.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/directory-paths.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/directory-settings.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/download-archive.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/download-climate-forecasts.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/ensemble.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/evaluate-forecasts.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/file_ext.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/foy.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/ifnull.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/index.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/messages.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/named_null_list.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/new-datasets.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/new-models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/package_version_finder.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/plots.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcast.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-selection-helpers.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-server.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcasting-app-ui.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcasting-app.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/portalcasting-package.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/post_process.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prefabricated-models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prefabricated-rodents-datasets.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prepare-covariates.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prepare-metadata.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prepare-models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prepare-newmoons.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/prepare-rodents.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/process-forecast-output.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/read-write-data.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/round_na.interp.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/runjags-models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/tsglm-models.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/update_list.html</loc></url>
+<url><loc>https://weecology.github.io/portalcasting/reference/zip_unzip.html</loc></url>
 </urlset>
+
