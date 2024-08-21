@@ -80,8 +80,8 @@ Generate the Server Code for the Web App
 }
 \seealso{
 Other shinyapp: 
+\code{\link{portalcasting app}},
 \code{\link{portalcasting app selection helpers}},
-\code{\link{portalcasting app ui}},
-\code{\link{portalcasting app}}
+\code{\link{portalcasting app ui}}
 }
 \concept{shinyapp}

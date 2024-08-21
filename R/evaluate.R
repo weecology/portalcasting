@@ -109,23 +109,45 @@ evaluate_forecasts <- function (main         = ".",
 
     messageq(paste0("  -", selected_forecasts_ids[i]), quiet = !settings$verbose)
 
-    out[[i]] <- tryCatch(evaluate_forecast(main        = main,
-                                           forecast_id = selected_forecasts_ids[i]),
-                         error = function(x) {NA})
-
+    out[[i]] <- evaluate_forecast(main        = main,
+                                           forecast_id = selected_forecasts_ids[i])
   }
 
   nrows_out <- sapply(out, NROW)
   row_1     <- cumsum(c(1, nrows_out[1:(nselected_forecasts_ids - 1)]))
   row_2     <- cumsum(nrows_out) 
 
-  out_flat  <- data.frame(matrix(NA, nrow = row_2[length(row_2)], ncol = ncol(out[[1]])) )
+  # Check the type and value of row_2[length(row_2)]
+  if (length(row_2) > 0) {
+    last_row_value <- row_2[length(row_2)]
+  } else {
+    stop("Error: 'row_2' is empty or not defined.")
+  }
+
+  # Check if the last value of row_2 is numeric
+  if (!is.numeric(last_row_value)) {
+    stop("Error: The last value of 'row_2' is not numeric.")
+  }
+
+  # Check the structure of out[[1]]
+  if (length(out) > 0) {
+    first_out_element <- out[[1]]
+
+    # Check if ncol(first_out_element) returns a numeric value
+    num_cols <- ncol(first_out_element)
+    if (!is.numeric(num_cols)) {
+      stop("Error: The number of columns in 'out[[1]]' is not numeric.")
+    }
+  } else {
+    stop("Error: 'out' is empty or not defined.")
+  }
+
+  # If all checks pass, proceed to create the matrix and data frame
+  out_flat <- data.frame(matrix(NA, nrow = last_row_value, ncol = num_cols))
   colnames(out_flat) <- colnames(out[[1]])
 
   for (i in 1:nselected_forecasts_ids) { 
-
     out_flat[row_1[i]:row_2[i], ] <- out[[i]]
-
   }
 
   out_flat <- rbind(existing_evaluations, out_flat)
@@ -149,7 +171,6 @@ evaluate_forecasts <- function (main         = ".",
 #'
 evaluate_forecast <- function (main        = ".", 
                                forecast_id = NULL) {
-
   settings <- read_directory_settings(main = main)
 
   return_if_null(x = forecast_id)
@@ -170,6 +191,8 @@ evaluate_forecast <- function (main        = ".",
   forecast_table$complete <- FALSE
 
   scoring_family <- switch(forecast_meta$model,
+                           "sNaiveArima"                          = "normal",
+                           "sAutoArima"                           = "normal",
                            "AutoArima"                            = "normal",
                            "NaiveArima"                           = "normal",
                            "ESSS"                                 = "normal",
@@ -209,7 +232,6 @@ evaluate_forecast <- function (main        = ".",
   }
 
   if (scoring_family == "normal") {
-
     forecast_mean <- forecast_table$estimate[can_score]
     forecast_sd   <- pmax(1e-5, (forecast_table$upper_pi[can_score] - forecast_table$estimate[can_score]) / 1.96, na.rm = TRUE)
 
