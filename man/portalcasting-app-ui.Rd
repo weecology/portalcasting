@@ -214,8 +214,8 @@ The UI is hierarchical built as:
 }
 \seealso{
 Other shinyapp: 
+\code{\link{portalcasting app}},
 \code{\link{portalcasting app selection helpers}},
-\code{\link{portalcasting app server}},
-\code{\link{portalcasting app}}
+\code{\link{portalcasting app server}}
 }
 \concept{shinyapp}
