@@ -79,7 +79,7 @@ zip_unzip <- function(type = NULL,
     }
     
     # Zip forecasts_evaluations.csv
-    eval_file <- paste0(proj_path, "/forecasts_evaluations.csv")
+    eval_file <- paste0(proj_path, "/forecasts_evaluations.parquet")
     zipfile <- paste0(proj_path, "/forecasts_evaluations.zip")
     zip_files(zipfile, eval_file)
   }

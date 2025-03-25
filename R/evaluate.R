@@ -351,7 +351,7 @@ read_forecasts_evaluations <- function (main = "."){
 
   } else {
 
-    out <- as.data.frame(read_csv_arrow(file = eval_path))
+    out <- as.data.frame(read_parquet(file = eval_path))
 
     if ("species" %in% colnames(out)) {
       out <- na_conformer(out)

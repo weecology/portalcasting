@@ -1,4 +1,4 @@
-#' @importFrom arrow read_csv_arrow write_csv_arrow
+#' @importFrom arrow read_csv_arrow write_csv_arrow read_parquet write_parquet
 #' @importFrom bslib bs_theme
 #' @importFrom coda as.mcmc HPDinterval
 #' @importFrom english english
