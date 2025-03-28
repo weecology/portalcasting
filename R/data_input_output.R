@@ -101,6 +101,10 @@ write_data <- function (x            = NULL,
 
       write_yaml(x, file = full_path)
 
+    } else if (file_ext(filename) == "parquet"){
+      
+      write_parquet(x, sink = paste(full_path,".parquet",sep=""))
+      
     } else if (file_ext(filename) == "json"){
 
       x2 <- serializeJSON(x = x)
