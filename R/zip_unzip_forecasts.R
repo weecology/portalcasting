@@ -31,6 +31,9 @@ zip_unzip <- function(type = NULL,
   metadata <- read.csv(forecasts_metadata)
   unique_dates <- sort(unique(metadata$"forecast_date"))
   
+  eval_parquet <- paste0(proj_path, "/forecasts_evaluations.parquet")
+  eval_file <- paste0(proj_path, "/forecasts_evaluations.csv")
+  
   if (type == "zip") {
     csv_file <- "_forecast_table.csv"
     yaml_file <- "_metadata.yaml"
@@ -79,9 +82,12 @@ zip_unzip <- function(type = NULL,
     }
     
     # Zip forecasts_evaluations.csv
-    eval_file <- paste0(proj_path, "/forecasts_evaluations.csv")
+
+    if (file.exists(eval_file)) {
+      convert_file(eval_file, eval_parquet) # CSV to Parquet
+    }
     zipfile <- paste0(proj_path, "/forecasts_evaluations.zip")
-    zip_files(zipfile, eval_file)
+    zip_files(zipfile, eval_parquet)
   }
   
   if (type == "unzip") {
@@ -102,7 +108,28 @@ zip_unzip <- function(type = NULL,
     eval_zip <- normalizePath(eval_zip, mustWork = FALSE)
     if (file.exists(eval_zip)) {
       unzip(eval_zip, exdir = proj_path, junkpaths = TRUE)
+      if (file.exists(eval_parquet)) {
+        convert_file(eval_parquet, eval_file) # Parquet to CSV
+      }
       unlink(eval_zip)
     }
+  }
+}
+
+convert_file <- function(input_file, output_file) {
+  file_ext <- tools::file_ext(input_file)
+  if (file_ext == "csv") {
+    # CSV to Parquet
+    message("Converting CSV to Parquet...")
+    data <- read.csv(input_file)
+    arrow::write_parquet(data, sink = output_file)
+    message("Done! Saved to: ", output_file)
+
+  } else if (file_ext == "parquet") {
+    # Parquet to CSV
+    message("Converting Parquet to CSV...")
+    data <- arrow::read_parquet(input_file)
+    write.csv(data, output_file, row.names = FALSE)
+    message("Done! Saved to: ", output_file)
   }
 }
