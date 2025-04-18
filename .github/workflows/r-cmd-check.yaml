@@ -41,7 +41,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
-          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
+          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /
+          sudo ln -s /usr/local/bin/jags /opt/homebrew/bin/jags  || true
 
       - name: Install system dependencies on Windows
         if: runner.os == 'Windows'
