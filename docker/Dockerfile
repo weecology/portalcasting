@@ -11,12 +11,14 @@ ARG image_name="base"
 FROM rocker/tidyverse:latest AS tidyverse
 
 
-# Install `curl` and `jags` c libraries, everything else we need is already in tidyverse
-
+# Install system deps + Python + requests
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
        curl \
-       jags
+       jags \
+       python3 \
+       python3-requests \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install portalcasting from github event that triggered the specific workflow
 
