@@ -238,7 +238,7 @@ plot_forecasts_error_lead <- function (main                        = ".",
 
           matches <- which(pevals_in$forecast_id == uforecast_ids[k])
 
-          x <- pevals_in$lead[matches]
+          x <- pevals_in$lead_time_newmoons[matches]
           y <- pevals_in$error[matches]
           x <- x[!is.na(y)]
           y <- y[!is.na(y)]
@@ -253,8 +253,8 @@ plot_forecasts_error_lead <- function (main                        = ".",
         }
 
         xaxl <- ifelse(j == 1, TRUE, FALSE)
-        xat1 <- seq(0, max(pevals_in$lead), 2)
-        xat2 <- seq(0, max(pevals_in$lead), 1)
+        xat1 <- seq(0, max(pevals_in$lead_time_newmoons), 2)
+        xat2 <- seq(0, max(pevals_in$lead_time_newmoons), 1)
         yaxl <- ifelse(i == 1, TRUE, FALSE)
 
         axis(side     = 1, 
