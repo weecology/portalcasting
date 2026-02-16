@@ -7,7 +7,7 @@
 #' @export
 #'
 zip_unzip <- function(type = NULL,
-                      forecast_path = "forecasts/",
+                      forecast_path = DEFAULT_FORECAST_PATH,
                       date = NULL) {
   # Function to zip a list of files
   zip_files <- function(zipfile, files) {
@@ -34,10 +34,10 @@ zip_unzip <- function(type = NULL,
   eval_parquet <- paste0(proj_path, "/forecasts_evaluations.parquet")
   eval_file <- paste0(proj_path, "/forecasts_evaluations.csv")
   
-  if (type == "zip") {
-    csv_file <- "_forecast_table.csv"
-    yaml_file <- "_metadata.yaml"
-    json_file <- "_model_forecast.json"
+  if (type == ZIP_OPERATION_ZIP) {
+    csv_file <- FORECAST_FILE_CSV
+    yaml_file <- FORECAST_FILE_YAML
+    json_file <- FORECAST_FILE_JSON
     
     if (!is.null(date)) {
       unique_dates <- c(date)
@@ -90,7 +90,7 @@ zip_unzip <- function(type = NULL,
     zip_files(zipfile, eval_parquet)
   }
   
-  if (type == "unzip") {
+  if (type == ZIP_OPERATION_UNZIP) {
     messageq("Unzipping forecasts files")
     
     # Unzip files based on unique_dates
