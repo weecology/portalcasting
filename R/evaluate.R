@@ -58,39 +58,43 @@ evaluate_forecasts <- function (main         = ".",
 
   settings <- read_directory_settings(main = main)
 
-  forecasts_to_evaluate <- select_forecasts(main          = main, 
-                                            forecasts_ids = forecasts_ids)
-
-  forecasts_ids <- forecasts_to_evaluate$forecast_id
-  nforecast_ids <- length(forecasts_ids)
-
-  if (NROW(forecasts_to_evaluate) == 0) {
-
-    stop("no forecasts available for request")
-
-  }
+  # Ensure forecast tables are extracted (Zenodo stores them in forecast_id_YYYY-MM-DD.zip)
+  forecast_path <- file.path(main, settings$subdirectories$forecasts)
+  zip_unzip(type = "unzip", forecast_path = forecast_path)
 
   existing_evaluations      <- read_forecasts_evaluations(main = main)
   forecasts_metadata        <- read_forecasts_metadata(main = main)
   rodents_table             <- read_rodents_dataset(main = main, dataset = "all")                          
   last_census_newmoonnumber <- max(rodents_table$newmoonnumber[rodents_table$newmoonnumber %in% rodents_table$newmoonnumber[!is.na(rodents_table[ , "total"])]])
 
+  past_forecasts_ids <- forecasts_metadata$forecast_id[forecasts_metadata$forecast_start_newmoonnumber <= last_census_newmoonnumber]
+
   if (!is.null(existing_evaluations)) {
 
-    all_forecasts_ids           <- forecasts_metadata$forecast_id
-    past_forecasts_ids          <- forecasts_metadata$forecast_id[forecasts_metadata$forecast_start_newmoonnumber <= last_census_newmoonnumber]
-    complete_evaluation_ids     <- unique(existing_evaluations$forecast_id[existing_evaluations$complete])
-
+    if ("complete" %in% colnames(existing_evaluations)) {
+      complete_evaluation_ids   <- unique(existing_evaluations$forecast_id[existing_evaluations$complete %in% c(TRUE, 1)])
+    } else {
+      complete_evaluation_ids   <- integer(0)
+      messageq("  Evaluations file has no 'complete' column; treating all as needing evaluation.", quiet = settings$quiet)
+    }
     forecasts_left_to_evaluate  <- past_forecasts_ids[!(past_forecasts_ids %in% complete_evaluation_ids)]
 
- 
   } else {
 
-    forecasts_left_to_evaluate  <- forecasts_ids
+    forecasts_left_to_evaluate  <- past_forecasts_ids
 
   }
 
-  selected_forecasts_ids <- forecasts_ids[forecasts_ids %in% forecasts_left_to_evaluate]
+  # When user specifies forecasts_ids, restrict to those that need evaluation.
+  # When NULL, evaluate all forecasts_left_to_evaluate (not limited by select_forecasts QAQC filter).
+  if (!is.null(forecasts_ids)) {
+    forecasts_to_evaluate <- select_forecasts(main = main, forecasts_ids = forecasts_ids)
+    if (NROW(forecasts_to_evaluate) == 0) stop("no forecasts available for request")
+    requested_ids        <- forecasts_to_evaluate$forecast_id
+    selected_forecasts_ids <- requested_ids[requested_ids %in% forecasts_left_to_evaluate]
+  } else {
+    selected_forecasts_ids <- forecasts_left_to_evaluate
+  }
 
   if (length(selected_forecasts_ids) == 0) {
 
@@ -99,69 +103,117 @@ evaluate_forecasts <- function (main         = ".",
 
   }
 
+  # Require forecast_table files to exist; stop if any are missing for analysis
+  forecast_path <- file.path(main, settings$subdirectories$forecasts)
+  expected_file <- function(id) file.path(forecast_path, paste0("forecast_id_", id, "_forecast_table.csv"))
+  has_table <- vapply(selected_forecasts_ids, function(id) file.exists(expected_file(id)), logical(1))
+  n_skipped <- sum(!has_table)
+  if (n_skipped > 0) {
+    missing_ids   <- selected_forecasts_ids[!has_table]
+    first_missing <- missing_ids[1]
+    tbl_full      <- normalizePath(expected_file(first_missing), mustWork = FALSE)
+    stop("Forecast table file does not exist for forecast_id ", first_missing, ". Path: ", tbl_full,
+         " (", n_skipped, " forecast(s) total missing) -- analyze why the file(s) are missing.")
+  }
+
+  if (length(selected_forecasts_ids) == 0) {
+
+    message(" No forecasts need evaluation (none had forecast_table files).", quiet = settings$quiet)
+    return(existing_evaluations)
+
+  }
+
   nselected_forecasts_ids <- length(selected_forecasts_ids)
 
-  out <- named_null_list(element_names = selected_forecasts_ids)
+  eval_csv     <- file.path(forecast_path, settings$files$forecasts_evaluations)
+  eval_parquet <- file.path(forecast_path, "forecasts_evaluations.parquet")
+  incremental  <- settings$save
 
-  messageq("Evaluating forecasts ...\n", quiet = settings$quiet)
+  # Ensure we have a CSV file to append to when saving (parquet cannot be appended easily)
+  if (incremental && !file.exists(eval_csv) && !is.null(existing_evaluations) && NROW(existing_evaluations) > 0) {
+    if (file.exists(eval_parquet)) unlink(eval_parquet)
+    # Drop rows that are all NA before writing
+    not_empty <- !apply(is.na(existing_evaluations), 1, all)
+    write_csv_arrow(x = existing_evaluations[not_empty, , drop = FALSE], file = eval_csv)
+    messageq("  Initialized evaluations CSV from existing data.", quiet = settings$quiet)
+  }
+
+  messageq(if (incremental) "Evaluating forecasts (writing each to file) ...\n" else "Evaluating forecasts ...\n", quiet = settings$quiet)
+
+  out_list <- if (!incremental) vector("list", nselected_forecasts_ids) else NULL
 
   for (i in 1:nselected_forecasts_ids) {
 
-    messageq(paste0("  -", selected_forecasts_ids[i]), quiet = !settings$verbose)
+    fid      <- selected_forecasts_ids[i]
+    tbl_path <- expected_file(fid)
+    tbl_full <- normalizePath(tbl_path, mustWork = FALSE)
 
-    out[[i]] <- evaluate_forecast(main        = main,
-                                           forecast_id = selected_forecasts_ids[i])
-  }
+    messageq(paste0("  -", fid), quiet = !settings$verbose)
 
-  nrows_out <- sapply(out, NROW)
-  row_1     <- cumsum(c(1, nrows_out[1:(nselected_forecasts_ids - 1)]))
-  row_2     <- cumsum(nrows_out) 
-
-  # Check the type and value of row_2[length(row_2)]
-  if (length(row_2) > 0) {
-    last_row_value <- row_2[length(row_2)]
-  } else {
-    stop("Error: 'row_2' is empty or not defined.")
-  }
-
-  # Check if the last value of row_2 is numeric
-  if (!is.numeric(last_row_value)) {
-    stop("Error: The last value of 'row_2' is not numeric.")
-  }
-
-  # Check the structure of out[[1]]
-  if (length(out) > 0) {
-    first_out_element <- out[[1]]
-
-    # Check if ncol(first_out_element) returns a numeric value
-    num_cols <- ncol(first_out_element)
-    if (!is.numeric(num_cols)) {
-      stop("Error: The number of columns in 'out[[1]]' is not numeric.")
+    if (!file.exists(tbl_path)) {
+      stop("Forecast table file does not exist at forecast_id ", fid, ". Path: ", tbl_full, " -- analyze why the file is missing.")
     }
-  } else {
-    stop("Error: 'out' is empty or not defined.")
+
+    new_rows <- evaluate_forecast(main = main, forecast_id = fid)
+
+    # Drop rows that are all NA (empty rows) - do not write them
+    if (NROW(new_rows) > 0) {
+      not_empty <- !apply(is.na(new_rows), 1, all)
+      new_rows  <- new_rows[not_empty, , drop = FALSE]
+    }
+
+    if (incremental && NROW(new_rows) > 0) {
+      write_header <- !file.exists(eval_csv)
+      utils::write.table(new_rows,
+                        file      = eval_csv,
+                        append    = !write_header,
+                        sep       = ",",
+                        col.names = write_header,
+                        row.names = FALSE,
+                        qmethod   = "double")
+      rm(new_rows)
+      gc(verbose = FALSE)
+    } else if (!incremental) {
+      out_list[[i]] <- new_rows
+    }
   }
 
-  # If all checks pass, proceed to create the matrix and data frame
-  out_flat <- data.frame(matrix(NA, nrow = last_row_value, ncol = num_cols))
-  colnames(out_flat) <- colnames(out[[1]])
-
-  for (i in 1:nselected_forecasts_ids) { 
-    out_flat[row_1[i]:row_2[i], ] <- out[[i]]
+  if (incremental) {
+    # Convert CSV to parquet (archive format); read prefers parquet over CSV
+    if (file.exists(eval_csv)) {
+      eval_data <- as.data.frame(read_csv_arrow(file = eval_csv))
+      # Drop rows that are all NA before writing parquet
+      if (NROW(eval_data) > 0) {
+        not_empty <- !apply(is.na(eval_data), 1, all)
+        eval_data <- eval_data[not_empty, , drop = FALSE]
+      }
+      arrow::write_parquet(eval_data, sink = eval_parquet)
+      rm(eval_data)
+      gc(verbose = FALSE)
+    }
+    messageq("... done.\n", quiet = settings$quiet)
+    return(invisible(read_forecasts_evaluations(main = main)))
   }
 
+  # save=FALSE: flatten in memory and return (no file write)
+  nrows_out   <- sapply(out_list, NROW)
+  row_1       <- cumsum(c(1, nrows_out[1:(nselected_forecasts_ids - 1)]))
+  row_2       <- cumsum(nrows_out)
+  last_row    <- if (length(row_2) > 0) row_2[length(row_2)] else 0L
+  num_cols    <- ncol(out_list[[1]])
+  out_flat    <- data.frame(matrix(NA, nrow = last_row, ncol = num_cols))
+  colnames(out_flat) <- colnames(out_list[[1]])
+  for (i in seq_len(nselected_forecasts_ids)) {
+    out_flat[row_1[i]:row_2[i], ] <- out_list[[i]]
+  }
   out_flat <- rbind(existing_evaluations, out_flat)
-
+  # Drop rows that are all NA (empty rows)
+  if (NROW(out_flat) > 0) {
+    not_empty <- !apply(is.na(out_flat), 1, all)
+    out_flat  <- out_flat[not_empty, , drop = FALSE]
+  }
   messageq("... done.\n", quiet = settings$quiet)
-
-  write_data(x            = out_flat,
-             main         = main,
-             subdirectory = settings$subdirectories$forecasts,
-             save         = settings$save,
-             overwrite    = settings$overwrite, 
-             filename     = settings$files$forecasts_evaluations,
-             quiet        = settings$quiet)
-
+  invisible(out_flat)
 }
 
 #'
@@ -340,23 +392,56 @@ evaluate_forecast <- function (main        = ".",
 #'
 read_forecasts_evaluations <- function (main = "."){
   
-  settings  <- read_directory_settings(main = main)
-  eval_path <- forecasts_evaluations_path(main = main)
+  settings     <- read_directory_settings(main = main)
+  forecast_path <- file.path(main, settings$subdirectories$forecasts)
+  eval_zip     <- file.path(forecast_path, "forecasts_evaluations.zip")
+  eval_csv     <- file.path(forecast_path, "forecasts_evaluations.csv")
+  eval_parquet <- file.path(forecast_path, "forecasts_evaluations.parquet")
 
-  if (!file.exists(eval_path)) {
+  # Unzip evaluations if they are stored in a zip file (e.g. from Zenodo archive)
+  if (file.exists(eval_zip)) {
+    utils::unzip(eval_zip, exdir = forecast_path, junkpaths = TRUE)
+    unlink(eval_zip)
+  }
+
+  # Read from parquet (preferred, smaller) or csv, whichever exists
+  eval_path <- NULL
+  if (file.exists(eval_parquet)) {
+    eval_path <- eval_parquet
+  } else if (file.exists(eval_csv)) {
+    eval_path <- eval_csv
+  }
+
+  if (is.null(eval_path)) {
 
     messageq("  Forecast evaluations not available.", quiet = settings$quiet)
-
     out <- NULL
+
+  } else if (tools::file_ext(eval_path) == "parquet") {
+
+    out <- as.data.frame(arrow::read_parquet(eval_path))
+    if ("species" %in% colnames(out)) {
+      out <- na_conformer(out)
+    }
 
   } else {
 
     out <- as.data.frame(read_csv_arrow(file = eval_path))
-
     if ("species" %in% colnames(out)) {
       out <- na_conformer(out)
-    } 
+    }
 
+  }
+
+  # Drop rows that are all NA (empty rows)
+  if (!is.null(out) && NROW(out) > 0) {
+    n_before  <- NROW(out)
+    not_empty <- !apply(is.na(out), 1, all)
+    out       <- out[not_empty, , drop = FALSE]
+    n_dropped <- n_before - NROW(out)
+    if (n_dropped > 0) {
+      messageq("  Dropped ", n_dropped, " empty row(s) (all NA) from forecasts evaluations.", quiet = settings$quiet)
+    }
   }
 
   invisible(out)
