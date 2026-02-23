@@ -1,0 +1,181 @@
+# Getting Started
+
+This vignette shows how to set up and run your own [Portal
+Predictions](https://github.com/weecology/portal-forecasts) directory.
+
+## Installation
+
+First things first, make sure you have the current version of
+**portalcasting** installed from GitHub:
+
+``` r
+install.packages("remotes")
+remotes::install_github("weecology/portalcasting")
+library(portalcasting)
+```
+
+## Create a Portal Predictions directory
+
+The
+[`setup_dir()`](https://weecology.github.io/portalcasting/reference/directory-creation.md)
+function creates and populates a standard Portal Predictions directory
+that includes `resources`, `data`, `models`, `fits`, and `forecasts`
+subdirectories. By default,
+[`setup_dir()`](https://weecology.github.io/portalcasting/reference/directory-creation.md)
+downloads the most up-to-date version of the [Portal
+Data](https://doi.org/10.5281/zenodo.1215988) archive from GitHub and
+the NMME downscaled weather forecasts into the `resources` subdirectory;
+unpacks relevant components; prepares the newmoons, rodents, covariates,
+covariate forecast, and metadata data files (and places them in the
+`data` subdirectory); and populates the `models` subdirectory with
+scripts for the fifteen existing models (AutoARIMA, Seasonal AutoARIMA,
+ESSS, NaiveARIMA, Seasonal NaiveARIMA, nbGARCH, nbsGARCH, pGARCH,
+psGARCH, pevGARCH, Random Walk, Logistic, Logistic Covariates, Logistic
+Competition, Logistic Competition Covariates).
+
+Specialized versions of `setup_dir` are tailored for local model
+exploration, development, and testing (“`setup_sandbox`”) and for use in
+the real-deal pipeline (“`setup_production`”). The settings are fairly
+similar, although `setup_sandbox` has extra rigid argument checking
+turned off and extra verbose messaging turned on. In addition, it does
+not download the repository archive resource (only the Portal Data and
+NMME resources). `setup_production` provides a robust starting point for
+a user interested in seeing the range of what the package can do, with
+specific error checking and verbose messaging. `setup_production` does
+download the entire [Portal
+Predictions](https://doi.org/10.5281/zenodo.833438) archive from GitHub.
+Note that downloading the full directory does take a few minutes.
+
+There are many arguments available for the user to tailor the setup of
+the directory, which can be found on the help pages
+([`?setup_dir`](https://weecology.github.io/portalcasting/reference/directory-creation.md)
+and
+[`?directory_settings`](https://weecology.github.io/portalcasting/reference/directory-settings.md)).
+Perhaps the most important argument is `main` which allows the user to
+point the directory to any particular location. The default is
+`main = "."`, which is basically “the present directory”. A common
+implementation would be to create a directory in the home directory of a
+computer (indicated by `"~"`) and within a named folder, say
+“portalcast_directory”, which would be done with
+`main = "~/portalcast_directory"`, or by setting
+`main <- "~/portalcast_directory"` and then using `main = main`
+throughout the code:
+
+``` r
+main <- "~/portalcast_directory"
+setup_dir(main = main)
+```
+
+The `models` and `datasets` arguments to `setup_<>` functions allow for
+control over which models and rodent data sets are included in the
+directory, and new models and datasets can be added as long as they are
+given controls in the `new_dataset_controls` or `new_model_controls`
+arguments. Many additional arguments for altering directory set up are
+available indirectly via the `settings` argument and wrapped into the
+`directory_settings` functions.
+
+## Run a forecast
+
+The
+[`portalcast()`](https://weecology.github.io/portalcasting/reference/portalcast.md)
+function controls the running of potentially multiple models across
+various species in different data sets for a given time setup (defined
+in `directory_settings` and `time_settings` specifically). This can
+involve what we have classically called “forecasts” (from the present
+time step) and “hindcasts” (from a time step before the current one),
+although the data must be set accordingly (using `time_settings`) for
+each time point prior to invoking
+[`portalcast()`](https://weecology.github.io/portalcasting/reference/portalcast.md).
+
+Presently, the preloaded model set includes fifteen models: AutoARIMA,
+Seasonal AutoARIMA, ESSS, NaiveARIMA, Seasonal NaiveARIMA, nbGARCH,
+nbsGARCH, pGARCH, psGARCH, pevGARCH, Random Walk, Logistic, Logistic
+Covariates, Logistic Competition, Logistic Competition Covariates. The
+jags and GARCH models all take a bit longer to run, so for the purposes
+of illustration, we will only run ESSS, AutoArima, and NaiveArima
+models, which we indicate through input to the `models` argument:
+
+``` r
+portalcast(main = main, models = c("ESSS", "AutoArima", "NaiveArima"))
+```
+
+If the user does not specify the models, all of the prefab models are
+run. Note that we need to point `portalcast` to the directory of
+interest via the `main` argument. This allows us to go between different
+directories from the same R session with relative ease, but it does mean
+that `main` is a key argument in nearly all functions. Indeed, `main` is
+the *only* argument for many **portalcasting** functions.
+
+## Plot the results
+
+Presently two plotting types are available for visualizing the data and
+model results: time series and point-in-time plots for forecasts. The
+functions for both of these figure types point directly to the forecast
+metadata file that allows for flexible selection of which specific
+model, data set, and end moon (forecast origin) to use, as well as
+selection via specific identifiers (when multiple versions of a model
+are run).
+
+Time series plots are constructed using `plot_forecast_ts`:
+
+``` r
+plot_forecast_ts(main = main, dataset = "controls")
+```
+
+Point-in-time prediction plots are constructed using
+`plot_forecast_point`, and default to the next step ahead in time:
+
+``` r
+plot_forecast_point(main = main, dataset = "controls")
+```
+
+## Reading in data to the R console from the directory
+
+A series of `read_<name>` functions are available for simple loading of
+the data sets into R from the directory. A generalized `read_data`
+function includes an argument for which data set to load (“rodents”
+\[and then which specific data set\], “covariates”, “climate_forecasts”,
+“newmoons”, or “metadata”), and each of those data sets also has a
+specific function, such as `read_moons`. `read_forecasts_metadata` has a
+function itself, but is not called via `read_data` currently.
+
+``` r
+read_data(main = main, data_name = "rodents")
+read_data(main = main, data_name = "rodents_dataset", dataset = "all")
+read_data(main = main, data_name = "rodents_dataset", dataset = "controls")
+read_data(main = main, data_name = "covariates")
+read_data(main = main, data_name = "climate_forecasts")
+read_data(main = main, data_name = "newmoons")
+read_data(main = main, data_name = "metadata")
+
+read_rodents(main = main)
+read_rodents_dataset(main = main)
+read_covariates(main = main)
+read_climate_forecasts(main = main)
+read_newmoons(main = main)
+read_metadata(main = main)
+read_forecasts_metadata(main = main)
+```
+
+## Reading in forecast output to the R console from the directory
+
+Presently, four functions are available for interfacing with saved
+forecast output.
+
+`select_forecasts` provides a simple interface to the forecast metadata
+file with quick filtering:
+
+``` r
+select_forecasts(main = main, models = "AutoArima")
+```
+
+And `read_forecast_tab`, `read_model_forecast`, and
+`read_forecasts_metadata` each read in the associated output from a
+given forecast, as indicated by its forecast_id, which is displayed in
+the output from `select_forecasts`:
+
+``` r
+read_forecast_table(main = main)
+read_model_forecast(main = main)
+read_forecast_metadata(main = main)
+```
