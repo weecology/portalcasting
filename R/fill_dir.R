@@ -217,36 +217,22 @@ fill_resources <- function (main = ".") {
 #'
 #' @export
 #'
-fill_forecasts <- function (main = ".") { 
+fill_forecasts <- function (main = ".") {
 
   settings <- read_directory_settings(main = main)
+  forecast_path <- forecasts_path(main = main)
 
-  files <- list.files(path       = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts),
-                      full.names = TRUE)
+  messageq(" Fetching forecasts from Zenodo production archive ...", quiet = settings$quiet)
+  download_zenodo_forecasts(
+    outdir = forecast_path,
+    force  = TRUE,
+    quiet  = settings$quiet
+  )
 
-  if (!settings$force) {
-
-    existing_files <- list.files(path = forecasts_path(main = main))
-    files_short    <- list.files(path = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts))
-    short_meta     <- files_short == settings$files$forecast_metadata
-    files          <- unique(c(files[!(files_short %in% existing_files)],
-                               files[short_meta]))
-    
-  }
-
-  if (length(files) == 0) {
-
-    return(invisible( ))
-
-  }
-
-  messageq(paste0(" Located ", length(files), " forecast file(s) in resources to be moved to directory ..."), quiet = settings$quiet)
-  messageq("  ... moving ... ", quiet = settings$quiet)
-  copied <- file.copy(from      = files, 
-                      to        = forecasts_path(main = main), 
-                      recursive = TRUE)
-
-  messageq(paste0("  ... ", sum(copied), " files moved. "), quiet = settings$quiet)
+  # Zenodo archive stores forecast tables zipped by date (forecast_id_2019-11-15.zip etc).
+  # Unzip to extract forecast_id_1.01_forecast_table.csv, forecast_id_1.02_forecast_table.csv, etc.
+  messageq(" Unzipping forecast files (by date) and evaluations ...", quiet = settings$quiet)
+  zip_unzip(type = "unzip", forecast_path = forecast_path)
 
   invisible( )
 

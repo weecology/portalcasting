@@ -248,7 +248,6 @@ read_forecast_table <- function (main        = ".",
   cpath <- file.path(main, settings$subdirectories$forecasts, lpath)
 
   if (!file.exists(cpath)) {
-
     stop("forecast_id does not have a forecast_table")
 
   }
