@@ -54,7 +54,6 @@ fill_models(main = ".", models = prefab_models(), new_models_controls = NULL)
 Fill the directory with components including:
 * Resources (\code{\link{fill_resources}})
 * raw data (\code{\link[portalr:download_observations]{download_observations}})
-* directory archive (\code{\link{download_archive}})
 * climate forecasts (\code{\link{download_climate_forecasts}})
 * Output
 * forecasts (\code{\link{fill_forecasts}})
