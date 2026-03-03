@@ -39,7 +39,8 @@ download_zenodo_forecasts <- function(
     return(latest_record_id)
   }
 
-  if (!force && dir.exists(outdir) && length(list.files(outdir)) > 0) {
+  latest_recid <- get_latest_published_version(recid)
+  if (!force && dir.exists(outdir) && length(list.files(outdir)) > 0 && file.exists(file.path(outdir, "version.txt")) && identical(readLines(file.path(outdir, "version.txt"), n = 1, warn = FALSE), as.character(latest_recid))) {
     messageq("Forecasts directory already populated; use force = TRUE to re-download.", quiet = quiet)
     return(invisible(outdir))
   }
@@ -53,7 +54,6 @@ download_zenodo_forecasts <- function(
   dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
 
   messageq("Downloading latest version from Zenodo (concept record: ", recid, ") ...", quiet = quiet)
-  latest_recid <- get_latest_published_version(recid)
 
   ua <- httr::user_agent("weecology/portal-forecasts")
   latest <- httr::RETRY(
@@ -111,6 +111,7 @@ download_zenodo_forecasts <- function(
     recursive = TRUE,
     overwrite = TRUE
   )
+  writeLines(as.character(latest_recid), file.path(outdir, "version.txt"))
 
   if (!is.null(main)) {
     resource_base <- file.path(main, "resources", "portal-forecasts")

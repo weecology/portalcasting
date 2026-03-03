@@ -209,7 +209,7 @@ fill_forecasts <- function (main = ".") {
   download_zenodo_forecasts(
     outdir = forecast_path,
     main   = main,
-    force  = TRUE,
+    force  = settings$force,
     quiet  = settings$quiet
   )
 
