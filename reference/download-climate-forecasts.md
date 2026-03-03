@@ -122,8 +122,7 @@ Multi-Model Ensemble](http://www.cpc.ncep.noaa.gov/products/NMME/)
 
 ## See also
 
-Other downloads:
-[`download archive`](https://weecology.github.io/portalcasting/reference/download-archive.md)
+Other downloads: `download archive`
 
 ## Examples
 

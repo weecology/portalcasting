@@ -57,8 +57,6 @@
   [`production_settings()`](https://weecology.github.io/portalcasting/reference/directory-settings.md)
   [`sandbox_settings()`](https://weecology.github.io/portalcasting/reference/directory-settings.md)
   : Create a Directory Settings List
-- [`download_archive()`](https://weecology.github.io/portalcasting/reference/download-archive.md)
-  : Download the Portal Predictions Repository Archive
 - [`download_climate_forecasts()`](https://weecology.github.io/portalcasting/reference/download-climate-forecasts.md)
   [`NMME_urls()`](https://weecology.github.io/portalcasting/reference/download-climate-forecasts.md)
   : Download Climate Forecasts

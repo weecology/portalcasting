@@ -3,8 +3,6 @@
 Fill the directory with components including: \* Resources
 (`fill_resources`) \* raw data
 ([`download_observations`](https://weecology.github.io/portalr/reference/download_observations.html))
-\* directory archive
-([`download_archive`](https://weecology.github.io/portalcasting/reference/download-archive.md))
 \* climate forecasts
 ([`download_climate_forecasts`](https://weecology.github.io/portalcasting/reference/download-climate-forecasts.md))
 \* Output \* forecasts (`fill_forecasts`) \* model fits (`fill_fits`) \*

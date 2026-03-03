@@ -43,7 +43,7 @@ NMME resources). `setup_production` provides a robust starting point for
 a user interested in seeing the range of what the package can do, with
 specific error checking and verbose messaging. `setup_production` does
 download the entire [Portal
-Predictions](https://doi.org/10.5281/zenodo.833438) archive from GitHub.
+Predictions](https://doi.org/10.5281/zenodo.833438) archive from Zenodo.
 Note that downloading the full directory does take a few minutes.
 
 There are many arguments available for the user to tailor the setup of
