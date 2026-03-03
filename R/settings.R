@@ -59,7 +59,7 @@
 #'
 #' @param PortalData `list` of `source` and `version` elements of `character` values for the Portal Data download. Default values retrieve the latest data from github
 #'
-#' @param portalPredictions `list` of `source` and `version` elements of `character` values for the archive download. Default values point to github, but `verison = NULL` indicates no download.
+#' @param portalPredictions `list` of `source` and `version` elements of `character` values for the archive download. Default values point to zenodo, but `version = NULL` indicates no download.
 #'
 #' @param climate_forecasts `list` of `source`, `version`, and `data` elements of `character` values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.
 #'
@@ -244,7 +244,7 @@ directory_subdirectories <- function (forecasts = "forecasts",
 #'
 directory_resources <- function (PortalData         = list(source  = "github",
                                                            version = "latest"),
-                                 portalPredictions  = list(source  = "github",
+                                 portalPredictions  = list(source  = "zenodo",
                                                            version = NULL),
                                  climate_forecasts  = list(source  = "NMME",
                                                            version = as.character(Sys.Date()),
@@ -266,7 +266,7 @@ directory_resources <- function (PortalData         = list(source  = "github",
 #'
 production_settings <- function (download_timeout  = max(getOption("timeout"), 600)) {
 
-  resources <- directory_resources(portalPredictions = list(source  = "github",
+  resources <- directory_resources(portalPredictions = list(source  = "zenodo",
                                                             version = "latest"))
 
   directory_settings(resources        = resources,

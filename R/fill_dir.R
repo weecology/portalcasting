@@ -3,7 +3,7 @@
 #' @description Fill the directory with components including: 
 #'              * Resources ([`fill_resources`]) 
 #'                * raw data ([`download_observations`][portalr::download_observations])
-#'                * directory archive ([`download_archive`])
+#'                * directory archive from Zenodo ([`download_archive`])
 #'                * climate forecasts ([`download_climate_forecasts`])
 #'              * Output 
 #'                * forecasts ([`fill_forecasts`])
@@ -301,15 +301,22 @@ fill_models <- function (main               = ".",
 
 #' After portalcast and evaluate_forecast run post_process to zip files
 #'
+#' Zips both main/forecasts and resources/portal-forecasts/forecasts (if it exists).
+#' All computation (portalcast, evaluate_forecasts) writes to main/forecasts.
+#'
 #' @param main location of main directory with a forecast dir
 #'
 #' @export
 #'
-post_process <- function(main= ".") {
-  settings <- read_directory_settings(main = main)
-  zip_unzip("zip", forecasts_path(main = main))
-  resource_forecasts = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
-  resource_forecasts = normalizePath(resource_forecasts, mustWork = FALSE)
-  zip_unzip("zip", forecast_path = resource_forecasts)
-  paste0("Zipping ", forecasts_path(main = main), " ", resource_forecasts)
+post_process <- function(main = ".") {
+  settings          <- read_directory_settings(main = main)
+  main_forecasts    <- forecasts_path(main = main)
+  resource_forecasts <- file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
+  resource_forecasts <- normalizePath(resource_forecasts, mustWork = FALSE)
+
+  zip_unzip("zip", forecast_path = main_forecasts)
+  if (dir.exists(resource_forecasts)) {
+    zip_unzip("zip", forecast_path = resource_forecasts)
+  }
+  invisible(NULL)
 }

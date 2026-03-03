@@ -81,13 +81,14 @@ zip_unzip <- function(type = NULL,
       }
     }
     
-    # Zip forecasts_evaluations.csv
-
+    # Zip forecasts_evaluations only if the file exists (e.g. resource folder may not have evaluations)
+    eval_zipfile <- paste0(proj_path, "/forecasts_evaluations.zip")
     if (file.exists(eval_file)) {
       convert_file(eval_file, eval_parquet) # CSV to Parquet
+      zip_files(eval_zipfile, eval_parquet)
+    } else if (file.exists(eval_parquet)) {
+      zip_files(eval_zipfile, eval_parquet)
     }
-    zipfile <- paste0(proj_path, "/forecasts_evaluations.zip")
-    zip_files(zipfile, eval_parquet)
   }
   
   if (type == "unzip") {
