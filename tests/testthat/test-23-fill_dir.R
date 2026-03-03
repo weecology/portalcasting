@@ -117,7 +117,7 @@ test_that("Unzip All Forecast Files", {
   skip_on_cran()
   zip_unzip(type = "unzip", forecast_path = monk_forecast)
   file_existence <- sapply(expected, function(file_name) {
-    full_path <- file.path(resources_forecast, file_name)
+    full_path <- file.path(monk_forecast, file_name)
     file.exists(full_path)
   })
   expect_true(all(file_existence), info = "Not all expected files exist in the directory.")

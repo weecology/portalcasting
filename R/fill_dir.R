@@ -3,7 +3,6 @@
 #' @description Fill the directory with components including: 
 #'              * Resources ([`fill_resources`]) 
 #'                * raw data ([`download_observations`][portalr::download_observations])
-#'                * directory archive ([`download_archive`])
 #'                * climate forecasts ([`download_climate_forecasts`])
 #'              * Output 
 #'                * forecasts ([`fill_forecasts`])
@@ -179,16 +178,6 @@ fill_resources <- function (main = ".") {
                         quiet     = settings$quiet,
                         verbose   = settings$verbose)
 
-  download_archive(main          = main,
-                   resources_sub = settings$subdirectories$resources,
-                   version       = settings$resources$portalPredictions$version,
-                   source        = settings$resources$portalPredictions$source,
-                   pause         = settings$unzip_pause,
-                   timeout       = settings$download_timeout,
-                   force         = settings$force,
-                   quiet         = settings$quiet,
-                   verbose       = settings$verbose)
-
   download_climate_forecasts(main          = main, 
                              resources_sub = settings$subdirectories$resources,
                              source        = settings$resources$climate_forecast$source,  
@@ -203,12 +192,6 @@ fill_resources <- function (main = ".") {
   
   update_directory_configuration(main = main)
 
-  # unzip the resource forecast zipped files
-  resource_forecasts = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
-  resource_forecasts = normalizePath(resource_forecasts, mustWork = FALSE)
-  if (file.exists(resource_forecasts)) {
-    zip_unzip("unzip", forecast_path = resource_forecasts)
-  }
   invisible( )
 
 }
@@ -225,7 +208,8 @@ fill_forecasts <- function (main = ".") {
   messageq(" Fetching forecasts from Zenodo production archive ...", quiet = settings$quiet)
   download_zenodo_forecasts(
     outdir = forecast_path,
-    force  = TRUE,
+    main   = main,
+    force  = settings$force,
     quiet  = settings$quiet
   )
 
@@ -233,6 +217,11 @@ fill_forecasts <- function (main = ".") {
   # Unzip to extract forecast_id_1.01_forecast_table.csv, forecast_id_1.02_forecast_table.csv, etc.
   messageq(" Unzipping forecast files (by date) and evaluations ...", quiet = settings$quiet)
   zip_unzip(type = "unzip", forecast_path = forecast_path)
+
+  resource_forecasts <- file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
+  if (dir.exists(resource_forecasts)) {
+    zip_unzip(type = "unzip", forecast_path = resource_forecasts)
+  }
 
   invisible( )
 
@@ -301,15 +290,22 @@ fill_models <- function (main               = ".",
 
 #' After portalcast and evaluate_forecast run post_process to zip files
 #'
+#' Zips both main/forecasts and resources/portal-forecasts/forecasts (if it exists).
+#' All computation (portalcast, evaluate_forecasts) writes to main/forecasts.
+#'
 #' @param main location of main directory with a forecast dir
 #'
 #' @export
 #'
-post_process <- function(main= ".") {
-  settings <- read_directory_settings(main = main)
-  zip_unzip("zip", forecasts_path(main = main))
-  resource_forecasts = file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
-  resource_forecasts = normalizePath(resource_forecasts, mustWork = FALSE)
-  zip_unzip("zip", forecast_path = resource_forecasts)
-  paste0("Zipping ", forecasts_path(main = main), " ", resource_forecasts)
+post_process <- function(main = ".") {
+  settings          <- read_directory_settings(main = main)
+  main_forecasts    <- forecasts_path(main = main)
+  resource_forecasts <- file.path(main, settings$subdirectories$resources, settings$repository, settings$subdirectories$forecasts)
+  resource_forecasts <- normalizePath(resource_forecasts, mustWork = FALSE)
+
+  zip_unzip("zip", forecast_path = main_forecasts)
+  if (dir.exists(resource_forecasts)) {
+    zip_unzip("zip", forecast_path = resource_forecasts)
+  }
+  invisible(NULL)
 }

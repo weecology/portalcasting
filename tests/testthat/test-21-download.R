@@ -3,17 +3,7 @@ context(desc = "resource downloading functions")
 
 main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
 
-
-test_that(desc = "download_archive skips or errors", {
-
-  expect_message(download_archive(main = main3))
-  expect_error(download_archive(source = "errrrrr"))
-  expect_error(download_archive(version = "000110000"))
-  expect_error(download_archive(source  = "zenodo",
-                                version = "000110000"))
-})
 
 test_that(desc = "download_climate_forecasts retrieves files", {
 
