@@ -66,7 +66,7 @@ directory_subdirectories(
 
 directory_resources(
   PortalData = list(source = "github", version = "latest"),
-  portalPredictions = list(source = "github", version = NULL),
+  portalPredictions = list(source = "zenodo", version = NULL),
   climate_forecasts = list(source = "NMME", version = as.character(Sys.Date()), data =
     list(mintemp = "tasmin", meantemp = "tasmean", maxtemp = "tasmax", precipitation =
     "pr"))
@@ -161,7 +161,7 @@ Default value of \code{30} corresponds to one additional lunar month.}
 
 \item{PortalData}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the Portal Data download. Default values retrieve the latest data from github}
 
-\item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to github, but \code{verison = NULL} indicates no download.}
+\item{portalPredictions}{\code{list} of \code{source} and \code{version} elements of \code{character} values for the archive download. Default values point to zenodo, but \code{version = NULL} indicates no download.}
 
 \item{climate_forecasts}{\code{list} of \code{source}, \code{version}, and \code{data} elements of \code{character} values for the climate forecasts download. Default values retrieve the current day's forecast of min, mean, and max temperature and precipitation from the Northwest Knowledge Network's North American Multi-Model Ensemble (NMME) climate forecasts.}
 }

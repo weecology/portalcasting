@@ -10,5 +10,6 @@ post_process(main = ".")
 \item{main}{location of main directory with a forecast dir}
 }
 \description{
-After portalcast and evaluate_forecast run post_process to zip files
+Zips both main/forecasts and resources/portal-forecasts/forecasts (if it exists).
+All computation (portalcast, evaluate_forecasts) writes to main/forecasts.
 }

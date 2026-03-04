@@ -80,6 +80,6 @@ The \href{https://www.northwestknowledge.net/home/}{Northwest Knowledge Network}
 }
 \seealso{
 Other downloads: 
-\code{\link{download archive}}
+\code{\link{download_zenodo_forecasts}()}
 }
 \concept{downloads}

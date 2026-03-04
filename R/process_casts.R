@@ -30,7 +30,7 @@
 #'
 #' @details Four model-specific output components are saved and returned:
 #'          * `forecast_metadata`: saved out with [`write_yaml`][yaml::write_yaml].
-#'          * `forecast_tab`: saved using [`write_csv_arrow`].
+#'          * `forecast_tab`: saved using [`write_csv_arrow`][arrow::write_csv_arrow].
 #'          * `model_fit`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
 #'          * `model_forecast`: saved out as a serialized `JSON` file via [`serializeJSON`][jsonlite::serializeJSON] and [`read_json`][jsonlite::read_json], so quite flexible with respect to specific object structure.
 #'

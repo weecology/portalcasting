@@ -54,7 +54,7 @@ Suggests:
   pkgdown,
   testthat
 SystemRequirements: JAGS 4.x.y; libcurl; gsl
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

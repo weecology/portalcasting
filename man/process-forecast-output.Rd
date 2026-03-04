@@ -92,7 +92,7 @@ The forecast metadata file is updated accordingly to track the saved output. \cr
 \details{
 Four model-specific output components are saved and returned:
 * \code{forecast_metadata}: saved out with \code{\link[yaml:write_yaml]{write_yaml}}.
-* \code{forecast_tab}: saved using \code{\link{write_csv_arrow}}.
+* \code{forecast_tab}: saved using \code{\link[arrow:write_csv_arrow]{write_csv_arrow}}.
 * \code{model_fit}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite:serializeJSON]{serializeJSON}} and \code{\link[jsonlite:read_json]{read_json}}, so quite flexible with respect to specific object structure.
 * \code{model_forecast}: saved out as a serialized \code{JSON} file via \code{\link[jsonlite:serializeJSON]{serializeJSON}} and \code{\link[jsonlite:read_json]{read_json}}, so quite flexible with respect to specific object structure.
 }
