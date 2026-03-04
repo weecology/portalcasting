@@ -1,10 +1,5 @@
 context(desc = "directory filling functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
-
 test_that(desc = "fill_resources fills the resources folder",
           code = {
 
@@ -55,6 +50,8 @@ test_that(desc = "fill_forecasts fills the forecasts folder",
 test_that(desc = "write_models_controls writes out the controls file",
           code = {
 
+  skip_on_cran()
+
   expect_is(write_models_controls(main = main2), "list")
 
 })
@@ -62,6 +59,8 @@ test_that(desc = "write_models_controls writes out the controls file",
 
 test_that(desc = "fill_models adds the models control list and any model scripts to the models folder",
           code = {
+
+  skip_on_cran()
 
   expect_message(fill_models(main = main2))
   model_controls_list <- models_controls(main2)
@@ -79,7 +78,7 @@ test_that(desc = "fill_models adds the models control list and any model scripts
 
 zip_name <- c("forecast_id_2019-11-15.zip")
 eval_zip <- c("forecasts_evaluations.zip")
-resources_forecast <- file.path(main3, "resources/portal-forecasts/forecasts")
+resources_forecast <- file.path(main2, "resources/portal-forecasts/forecasts")
 expected <- c(
   "forecast_id_1.01_forecast_table.csv",
   "forecast_id_1.01_metadata.yaml",

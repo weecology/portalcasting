@@ -1,10 +1,5 @@
 context(desc = "rodent prep functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
-
 test_that(desc = "prepare_abundance preps a vector with interpolation if requested", {
 
   skip_on_cran()
@@ -51,6 +46,8 @@ test_that(desc = "prefab_datasets names the proper sets", {
 
 test_that(desc = "prefab_rodents names the proper species", {
 
+  skip_on_cran()
+
   ps1 <- prefab_species(main = main2)
 
   expect_is(ps1, "character")
@@ -64,6 +61,8 @@ test_that(desc = "prefab_rodents names the proper species", {
 
 
 test_that(desc = "add_new_dataset makes a list", {
+
+  skip_on_cran()
 
   dc <- add_new_dataset(main = main2, models = "AutoArima", new_dataset_controls = new_dataset_controls(metadata = new_dataset_metadata(name = "newone")))
   expect_is(dc, "list")

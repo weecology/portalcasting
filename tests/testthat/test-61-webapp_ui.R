@@ -1,9 +1,5 @@
 context(desc = "webapp ui functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "ui functions can build a functioning ui off the global list", {
 
   skip_on_cran()

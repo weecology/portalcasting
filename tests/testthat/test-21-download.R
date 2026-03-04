@@ -1,19 +1,14 @@
 context(desc = "resource downloading functions")
 
-
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-
-
 test_that(desc = "download_climate_forecasts retrieves files", {
 
   skip_on_cran()
 
-  dlcc <- download_climate_forecasts(main = main1)
+  dlcc <- download_climate_forecasts(main = main2)
   expect_equal((dlcc), NULL)
-  expect_message(download_climate_forecasts(main1))
+  expect_message(download_climate_forecasts(main2))
 
-  expect_error(download_climate_forecasts(main = main1, source = "xxx"))
+  expect_error(download_climate_forecasts(main = main2, source = "xxx"))
 
 
 })

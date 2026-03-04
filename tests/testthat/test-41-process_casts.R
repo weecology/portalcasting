@@ -1,9 +1,5 @@
 context(desc = "cast processing functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "read_forecast_table reads in a forecast tab", {
 
 

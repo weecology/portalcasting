@@ -1,58 +1,77 @@
 Package: portalcasting
 Title: Model and Forecast Portal Rodent Dynamics
 Version: 0.60.6
+Author: Juniper L. Simonis [aut, cre], Glenda M. Yenni [aut], Ellen K. Bledsoe [aut], Erica M. Christensen [aut], Patricia K. T. Dumandan [aut], Henry Senyondo [aut], Hao Ye [aut], Ethan P. White [aut], S. K. Morgan Ernest [aut]
+Maintainer: Juniper L. Simonis <juniper.simonis@weecology.org>
 Authors@R: c(
     person(c("Juniper", "L."), "Simonis",
-      email = "juniper.simonis@weecology.org", role = c("aut", "cre"),
+      email = "juniper.simonis@weecology.org",
+      role = c("aut", "cre"),
       comment = c(ORCID = "0000-0001-9798-0460")),
-    person(c("Glenda", "M."), "Yenni", role = c("aut"), 
-      comment = c(ORCID = "0000-0001-6969-1848")), 
-    person(c("Ellen", "K."), "Bledsoe", role = c("aut"), 
-      comment = c(ORCID = "0000-0002-3629-7235")), 
+    person(c("Glenda", "M."), "Yenni",
+      role = "aut",
+      comment = c(ORCID = "0000-0001-6969-1848")),
+    person(c("Ellen", "K."), "Bledsoe",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-3629-7235")),
     person(c("Erica", "M."), "Christensen",
-      role = c("aut"), comment = c(ORCID = "0000-0002-5635-2502")),
-    person(c("Patricia", "K. T."), "Dumandan", role = c("aut"),
+      role = "aut",
+      comment = c(ORCID = "0000-0002-5635-2502")),
+    person(c("Patricia", "K. T."), "Dumandan",
+      role = "aut",
       comment = c(ORCID = "0000-0003-3360-1534")),
-    person("Henry", "Senyondo", role = c("aut"),
+    person("Henry", "Senyondo",
+      role = "aut",
       comment = c(ORCID = "0000-0001-7105-5808")),
-    person("Hao", "Ye", role = c("aut"),
+    person("Hao", "Ye",
+      role = "aut",
       comment = c(ORCID = "0000-0002-8630-1458")),
-	person(c("Ethan", "P."), "White", role = c("aut"),
+    person(c("Ethan", "P."), "White",
+      role = "aut",
       comment = c(ORCID = "0000-0001-6728-7745")),
-    person(c("S. K.", "Morgan"), "Ernest", role = c("aut"),
-      comment = c(ORCID = "0000-0002-6026-8530")))
-Description: Create a directory, populate it with data, build models, forecast rodent populations, and visualize the results. The user can spin-up a local lightweight sandbox or full-scale production environment from the same code underlying the continuously deployed Portal Predictions Project continuous integration system <https://github.com/weecology/portal-forecasts> and website <https://portal.naturecast.org>.
-URL: https://weecology.github.io/portalcasting/, https://github.com/weecology/portalcasting
+    person(c("S. K.", "Morgan"), "Ernest",
+      role = "aut",
+      comment = c(ORCID = "0000-0002-6026-8530"))
+ )
+Description: Create a directory, populate it with data, build models,
+    forecast rodent populations, and visualize the results. The user can
+    spin up a local lightweight sandbox or full scale production environment
+    from the same code underlying the continuously deployed Portal Predictions
+    Project continuous integration system
+    <https://github.com/weecology/portal-forecasts> and website
+    <https://portal.naturecast.org>.
+URL: https://weecology.github.io/portalcasting/,
+    https://github.com/weecology/portalcasting
 BugReports: https://github.com/weecology/portalcasting/issues
-Depends: 
-  R (>= 4.2.0),
-  forecast,  
-  hypergeo,
-  tscount
+Depends:
+    R (>= 4.2.0),
+    forecast,
+    hypergeo,
+    tscount
 License: MIT + file LICENSE
 Imports:
-  arrow,
-  bslib,
-  coda,
-  english,
-  git2r,
-  htmltools,
-  httr,
-  jsonlite,
-  knitr,
-  markdown,
-  portalr  (>= 0.4.0),
-  rmarkdown,
-  runjags,
-  scoringRules,
-  shiny,
-  stats,
-  viridis,
-  yaml,
-  utils
+    arrow,
+    bslib,
+    coda,
+    english,
+    git2r,
+    htmltools,
+    httr,
+    jsonlite,
+    knitr,
+    markdown,
+    portalr (>= 0.4.0),
+    rmarkdown,
+    runjags,
+    scoringRules,
+    shiny,
+    stats,
+    viridis,
+    yaml,
+    utils
 Suggests:
-  pkgdown,
-  testthat
+    pkgdown,
+    testthat
 SystemRequirements: JAGS 4.x.y; libcurl; gsl
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr

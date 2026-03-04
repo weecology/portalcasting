@@ -1,9 +1,5 @@
 context(desc = "settings functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "directory_settings produces a list", {
 
   expect_silent(ds <- directory_settings())

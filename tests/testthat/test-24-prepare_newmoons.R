@@ -1,9 +1,5 @@
 context(desc = "moons prepping functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "prep_moons pulls in moons or throws error", {
 
   skip_on_cran()

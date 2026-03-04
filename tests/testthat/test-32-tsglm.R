@@ -1,10 +1,5 @@
 context(desc = "tsglm functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
-
 test_that(desc = "meta_tsglm components work properly individually and together", {
 
   skip_on_cran()

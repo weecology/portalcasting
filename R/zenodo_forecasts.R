@@ -11,6 +11,7 @@
 #' @return `character` path to the forecasts directory, invisibly.
 #'
 #' @family downloads
+#' @seealso [download_climate_forecasts()] for NMME climate forecasts.
 #'
 #' @export
 #'

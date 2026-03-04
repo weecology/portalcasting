@@ -1,11 +1,8 @@
 context(desc = "evaluate functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
-
 test_that(desc = "evaluate_forecasts evaluates forecasts", {
+
+  skip_on_cran()
 
   forecasts_ids <- select_forecasts(main     = main3,
                                    species  = c("DM", "PP", "total"),
@@ -24,6 +21,8 @@ test_that(desc = "evaluate_forecasts evaluates forecasts", {
 
 
 test_that(desc = "evaluate_forecast evaluates forecast", {
+
+  skip_on_cran()
 
   forecasts_ids <- select_forecasts(main = main3)$forecast_id
   forecast_id <- forecasts_ids[length(forecasts_ids)]

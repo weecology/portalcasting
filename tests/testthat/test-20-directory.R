@@ -1,10 +1,5 @@
 context(desc = "directory creating functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
-
 test_that(desc = "create_dir creates the folder structure",
           code = {
 
@@ -37,6 +32,16 @@ test_that(desc = "read_directory_config catches if its missing and throws error"
 })
 
 
+test_that(desc = "setup_production does",
+          code = {
+
+  skip_on_cran()
+
+  expect_message(out <- setup_production(main = main2, verbose = TRUE))
+  expect_is(out, "list")
+
+})
+
 test_that(desc = "setup_sandbox does",
           code = {
 
@@ -47,22 +52,12 @@ test_that(desc = "setup_sandbox does",
 
 })
 
-test_that(desc = "setup_production does",
-          code = {
-
-  skip_on_cran()
-
-  expect_message(out <- setup_production(main = main3, verbose = TRUE))
-  expect_is(out, "list")
-
-})
-
 test_that(desc = "update_directory does",
           code = {
 
   skip_on_cran()
 
-  expect_message(out <- update_dir(main = main3, verbose = TRUE))
+  expect_message(out <- update_dir(main = main2, verbose = TRUE))
   expect_is(out, "list")
 
 })

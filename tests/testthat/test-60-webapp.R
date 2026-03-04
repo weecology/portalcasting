@@ -1,9 +1,5 @@
 context(desc = "webapp functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "global_list makes a list of globals and component functions operate on it", {
 
   skip_on_cran()

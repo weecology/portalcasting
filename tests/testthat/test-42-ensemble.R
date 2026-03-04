@@ -1,9 +1,5 @@
 context(desc = "ensembling functions")
 
-main1 <- file.path(tempdir(), "testing1")
-main2 <- file.path(tempdir(), "testing2")
-main3 <- file.path(tempdir(), "testing3")
-
 test_that(desc = "ensemble_forecasts ensembles accordingly", {
 
   skip_on_cran()
