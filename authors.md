@@ -37,7 +37,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/weecology/portalcasting/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/weecology/portalcasting/blob/v0.60.9/inst/CITATION)
 
 Juniper L. Simonis, Glenda M. Yenni, Ellen K. Bledsoe, Erica M.
 Christensen, Henry Senyondo, Shawn D. Taylor, Hao Ye, Ethan P. White,
