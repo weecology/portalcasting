@@ -1,56 +1,3 @@
-#' @title Find an Object's Host Package and Version Information
-#'
-#' @description Locate basic package information of an R object. If nothing is input, it operates on itself. \cr
-#'              If the object is sourced through multiple packages, each package and its version are included.
-#'
-#' @param what An R object.
-#'
-#' @return `list` of the object, its class, the packages it is sourced from / through, and the versions of those packages.
-#'
-#' @name package_version_finder
-#'
-#' @family utilities
-#'
-#' @examples
-#'    package_version_finder( )
-#'
-NULL
-
-#' @rdname package_version_finder
-#'
-#' @export
-#'
-package_version_finder <- function (what) {
-
-  if (missing(what)) {
-
-    what <- "package_version_finder"
-
-  }
-
-  object_expr       <- parse(text          = what)
-  object_eval       <- eval(expr           = object_expr)
-  object_class      <- class(x             = object_eval)
-
-  helps             <- help.search(pattern = what, 
-                                   agrep   = FALSE)
-
-  packages_names    <- helps$matches$Package
-
-  packages_versions <- sapply(X           = packages_names,
-                              FUN         = packageDescription,
-                              fields      = "Version")
-  
-  names(packages_versions) <- packages_names
-
-  list(object   = what,
-       class    = object_class,
-       package  = packages_names,
-       version  = packages_versions)
-
-}
-
-
 #' @title Round an Interpolated Series
 #'
 #' @description Wraps [`round`] around [`forecast::na.interp`] to provide a rounded interpolated series, which is then enforced to be greater than or equal to a minimum value (default `min_val = 0`) via [`pmax`].
@@ -96,42 +43,6 @@ round_na.interp <- function (x,
 
   pmax(... = min_val,
        ... = xr)
-
-}
-
-
-#' @title Determine a File's Extension 
-#'
-#' @description Based on the separating character, determine the file extension.
-#'
-#' @param path `character` value of the file path possibly with an extension.
-#'
-#' @param sep_char `character` value of the separator that delineates the extension from the file path. \cr 
-#'        Generally, this will be `."`, but for some API URLs, the extension is actually a query component, so the separator may sometimes need to be `"="`.
-#'
-#' @return `character` value of the extension (`file_ext`).
-#'
-#' @name file_ext
-#' 
-#' @family utilities
-#'
-#' @examples
-#'    file_ext("home/folders.with.dots/stuff/ok.csv")
-#'    file_ext(NMME_urls()[[1]])
-#'    file_ext(NMME_urls()[[1]], "=")
-#'
-NULL
-
-#' @rdname file_ext
-#'
-#' @export
-#'
-file_ext <- function (path, sep_char = ".") {
-  
-  for_regexpr <- paste0("\\", sep_char, "([[:alnum:]]+)$")
-  pos         <- regexpr(for_regexpr, path)
-
-  ifelse(pos > -1L, substring(path, pos + 1L), "")
 
 }
 
@@ -282,7 +193,6 @@ foy <- function (dates = NULL) {
 }
 
 
-
 #' @title Replace a Value with an Alternative if it is NULL 
 #'
 #' @description Replaces the focal input with the alternative value if it is `NULL`. 
@@ -317,6 +227,3 @@ ifnull <- function (x = NULL, alt = NULL) {
   }
 
 }
-
-
-
