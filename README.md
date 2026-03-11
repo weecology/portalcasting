@@ -48,7 +48,7 @@ The API is actively developed and welcomes any contributors.
 
 ## Installation
 
-You can install the package from github:
+You can install the package from GitHub: 
 
 ```r
 install.packages("remotes")
