@@ -13,6 +13,7 @@ detail in other vignettes.
 To install the most recent version of **portalcasting** from GitHub:
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("weecology/portalcasting")
 ```

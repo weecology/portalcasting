@@ -61,6 +61,7 @@ function to make and fill our directory, which we house at
 `"~/sandbox"`:
 
 ``` r
+
 library(portalcasting)
 main <- "~/sandbox"
 setup_sandbox(main = main)
@@ -84,6 +85,7 @@ accessible via
 [`model_controls_template()`](https://weecology.github.io/portalcasting/reference/new-models.md):
 
 ``` r
+
 model_controls_template()
 #> $metadata
 #> $metadata$name
@@ -172,6 +174,7 @@ functions, each of which wraps a call to a specific component of the
 call:
 
 ``` r
+
 new_model_controls()
 #> $metadata
 #> $metadata$name
@@ -363,6 +366,7 @@ can be provided using the
 with elements for the function and arguments:
 
 ``` r
+
 new_model_fit(fun = "arima", args = list(x = "abundance"))
 #> $fun
 #> [1] "arima"
@@ -458,6 +462,7 @@ do not need to update the `cast` element of the model controls, as it is
 already pre-loaded:
 
 ``` r
+
 new_model_forecast()
 #> $fun
 #> [1] "forecast"
@@ -480,6 +485,7 @@ By default, any new model is set to run for the three prefab datasets
 including the kangaroo rats in the exclosures):
 
 ``` r
+
 new_model_datasets()
 #> $all
 #> $all$species
@@ -508,6 +514,7 @@ simple example that is used for the prefab models is
 which would be implemented as:
 
 ``` r
+
 new_model_interpolate(needed = TRUE, fun = "round_na.interp")
 #> $needed
 #> [1] TRUE
@@ -522,6 +529,7 @@ which would just be added as the `interpolate` element in
 The default, however, is `needed = FALSE`:
 
 ``` r
+
 new_model_interpolate()
 #> $needed
 #> [1] FALSE
@@ -534,6 +542,7 @@ properly. We store information about the response in the list for
 evaluation purposes:
 
 ``` r
+
 new_model_controls()$response
 #> $link
 #> NULL
@@ -551,6 +560,7 @@ The options for each component are as follows:
 empirical `scoring_family`: normal, nbinom, poisson, sample
 
 ``` r
+
 new_model_response(link = "normal", type = "distribution", scoring_family = "normal")
 #> $link
 #> [1] "normal"
@@ -568,6 +578,7 @@ The specific updates can be called together to generate the model
 controls list for newmod:
 
 ``` r
+
 new_controls <- new_model_controls(metadata = new_model_metadata(name = "newmod", print_name = "New Model"),
                                    fit      = new_model_fit(fun = "arima", args = list(x = "abundance")),
                                    response = new_model_response(link = "normal", type = "distribution", scoring_family = "normal"))
@@ -579,6 +590,7 @@ function to add the model to the directory at main, via the controls
 list:
 
 ``` r
+
 new_controls <- new_model_controls(metadata = new_model_metadata(name = "newmod", print_name = "New Model"),
                                    fit      = new_model_fit(fun = "arima", args = list(x = "abundance")),
                                    response = new_model_response(link = "normal", type = "distribution", scoring_family = "normal"))
@@ -600,6 +612,7 @@ names(read_models_controls(main = main))
 And the model is directly ready to be `portalcast`ed:
 
 ``` r
+
 portalcast(main     = main, 
            models   = "newmod", 
            datasets = "all", 
@@ -628,6 +641,7 @@ Incorporating the model in the establishment of the directory requires
 adding the controls list to the initial `setup_<>` call:
 
 ``` r
+
 main2 <- "~/sandbox2"
 setup_sandbox(main                = main2, 
               new_models_controls = list(newmod = new_controls), 
@@ -641,6 +655,7 @@ model, but with only a single generating function and fewer elements in
 the controls list:
 
 ``` r
+
 dataset_controls_template()
 #> $metadata
 #> $metadata$name
@@ -722,6 +737,7 @@ each of which wraps a call to a specific component of the
 call:
 
 ``` r
+
 new_dataset_controls()
 #> $metadata
 #> $metadata$name
@@ -894,6 +910,7 @@ which is quite flexible and ports arguments directly to the generalized
 include this function as the default in new dataset controls:
 
 ``` r
+
 new_dataset_fun()
 #> [1] "prepare_dataset"
 ```
@@ -906,6 +923,7 @@ The arguments to the function can be updated via the
 function:
 
 ``` r
+
 new_dataset_args(name = "newdata")
 #> $name
 #> [1] "newdata"
@@ -971,6 +989,7 @@ to create the controls list that is then passed into
 [`add_new_dataset()`](https://weecology.github.io/portalcasting/reference/new-datasets.md):
 
 ``` r
+
 new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
                                      args     = new_dataset_args(name     = "newdata", 
                                                                  filename = "rodents_newdata.csv"))
@@ -983,6 +1002,7 @@ controls list, noting which existing models should have the new dataset
 added to their controls list:
 
 ``` r
+
 new_controls <- new_dataset_controls(metadata = new_dataset_metadata(name = "newdata"),
                                      args     = new_dataset_args(name     = "newdata", 
                                                                  filename = "rodents_newdata.csv"))
@@ -1000,6 +1020,7 @@ names(read_datasets_controls(main = main))
 And the dataset can then be forecast with:
 
 ``` r
+
 portalcast(main     = main, 
            models   = "AutoArima", 
            datasets = "newdata", 
@@ -1028,6 +1049,7 @@ Incorporating the dataset in the establishment of the directory requires
 adding the controls list to the initial `setup_<>` call:
 
 ``` r
+
 main3 <- "~/sandbox3"
 setup_sandbox(main                  = main3, 
               new_datasets_controls = list(newdata = new_controls), 

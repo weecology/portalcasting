@@ -84,6 +84,7 @@ The API is actively developed and welcomes any contributors.
 You can install the package from github:
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("weecology/portalcasting")
 ```
@@ -96,6 +97,7 @@ forum thread for help under the [MacOS installation of
 JAGS](https://sourceforge.net/p/mcmc-jags/discussion/search/?q=MacOS+installation&project=0).
 
 ``` r
+
 install.packages("rjags", configure.args="--enable-rpath")
 ```
 

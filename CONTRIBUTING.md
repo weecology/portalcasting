@@ -33,6 +33,7 @@ We use the R package `devtools` to install, build, and test the changes
 in the repository:
 
 ``` r
+
 install.packages("devtools")
 install.packages(".", repos = NULL, type="source", quiet = FALSE, verbose = TRUE)
 library(portalcasting)

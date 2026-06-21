@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Current Models">
 </head>
@@ -76,9 +76,9 @@
                         <h4 data-toc-skip class="author">Juniper L.
 Simonis, Hao Ye, Ethan P. White, and S. K. Morgan Ernest</h4>
             
-            <h4 data-toc-skip class="date">04 March, 2026</h4>
+            <h4 data-toc-skip class="date">21 June, 2026</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/v0.60.9/vignettes/current_models.Rmd" class="external-link"><code>vignettes/current_models.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/weecology/portalcasting/blob/main/vignettes/current_models.Rmd" class="external-link"><code>vignettes/current_models.Rmd</code></a></small>
       <div class="d-none name"><code>current_models.Rmd</code></div>
     </div>
 
@@ -210,21 +210,23 @@ Heteroskedasticity) is a generalized autoregressive conditional
 heteroskedasticity (GARCH) model with overdispersion (<em>i.e.</em>, a
 negative binomial response). The model is fit to the interpolated data
 using the <code>tsglm</code> function in the <strong>tscount</strong>
-package <span class="citation">(Liboschik et al. 2017)</span>. GARCH
-models are generalized ARMA models and are defined according to their
-link function, response distribution, and two model structure parameters
-– the number of autoregressive terms (p) and the order of the moving
-average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The nbGARCH model is
-fit using the log link and a negative binomial response (modeled as an
-over-dispersed Poisson), as well as with p = 1 (first-order
-autoregression) and q = 13 (approximately yearly moving average). The
-<code>tsglm</code> function in the <strong>tscount</strong> package
-<span class="citation">(Liboschik et al. 2017)</span> uses a
-(conditional) quasi-likelihood based approach to inference and models
-the overdispersion as an additional parameter in a two-step approach.
-This two-stage approach has only been minimally evaluated, although
-preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>. Forecasts
-are made using the <strong>portalcasting</strong> method function
+package <span class="citation">(Liboschik, Fried, et al. 2017)</span>.
+GARCH models are generalized ARMA models and are defined according to
+their link function, response distribution, and two model structure
+parameters – the number of autoregressive terms (p) and the order of the
+moving average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik, Fried, et al. 2017)</span>. The nbGARCH
+model is fit using the log link and a negative binomial response
+(modeled as an over-dispersed Poisson), as well as with p = 1
+(first-order autoregression) and q = 13 (approximately yearly moving
+average). The <code>tsglm</code> function in the
+<strong>tscount</strong> package <span class="citation">(Liboschik,
+Fried, et al. 2017)</span> uses a (conditional) quasi-likelihood based
+approach to inference and models the overdispersion as an additional
+parameter in a two-step approach. This two-stage approach has only been
+minimally evaluated, although preliminary simulation-based studies are
+promising <span class="citation">(Liboschik, Fokianos, et al.
+2017)</span>. Forecasts are made using the
+<strong>portalcasting</strong> method function
 <code>forecast.tsglm</code> as <code>forecast</code>.</p>
 </div>
 <div class="section level3">
@@ -236,21 +238,23 @@ heteroskedasticity (GARCH) model with overdispersion (<em>i.e.</em>, a
 negative binomial response) and seasonal predictors modeled using two
 Fourier series terms (sin and cos of the fraction of the year) fit to
 the interpolated data. The model is fit using the <code>tsglm</code>
-function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span>. GARCH models are
-generalized ARMA models and are defined according to their link
+function in the <strong>tscount</strong> package <span class="citation">(Liboschik, Fried, et al. 2017)</span>. GARCH models
+are generalized ARMA models and are defined according to their link
 function, response distribution, and two model structure parameters –
 the number of autoregressive terms (p) and the order of the moving
-average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The nbsGARCH model is
-fit using the log link and a negative binomial response (modeled as an
-over-dispersed Poisson), as well as with p = 1 (first-order
-autoregression) and q = 13 (approximately yearly moving average). The
-<code>tsglm</code> function in the <strong>tscount</strong> package
-<span class="citation">(Liboschik et al. 2017)</span> uses a
-(conditional) quasi-likelihood based approach to inference and models
-the overdispersion as an additional parameter in a two-step approach.
-This two-stage approach has only been minimally evaluated, although
-preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>. Forecasts
-are made using the <strong>portalcasting</strong> method function
+average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik, Fried, et al. 2017)</span>. The nbsGARCH
+model is fit using the log link and a negative binomial response
+(modeled as an over-dispersed Poisson), as well as with p = 1
+(first-order autoregression) and q = 13 (approximately yearly moving
+average). The <code>tsglm</code> function in the
+<strong>tscount</strong> package <span class="citation">(Liboschik,
+Fried, et al. 2017)</span> uses a (conditional) quasi-likelihood based
+approach to inference and models the overdispersion as an additional
+parameter in a two-step approach. This two-stage approach has only been
+minimally evaluated, although preliminary simulation-based studies are
+promising <span class="citation">(Liboschik, Fokianos, et al.
+2017)</span>. Forecasts are made using the
+<strong>portalcasting</strong> method function
 <code>forecast.tsglm</code> as <code>forecast</code>.</p>
 </div>
 <div class="section level3">
@@ -259,17 +263,17 @@ are made using the <strong>portalcasting</strong> method function
 <p>pGARCH (Poisson Auto-Regressive Conditional Heteroskedasticity) is a
 generalized autoregressive conditional heteroskedasticity (GARCH) model.
 The model is fit using the <code>tsglm</code> function in the
-<strong>tscount</strong> package <span class="citation">(Liboschik et
-al. 2017)</span>. GARCH models are generalized ARMA models and are
-defined according to their link function, response distribution, and two
-model structure parameters – the number of autoregressive terms (p) and
-the order of the moving average (q), and are represented as GARCH(p, q)
-<span class="citation">(Liboschik et al. 2017)</span>. The pGARCH model
-is fit using the log link and a Poisson response, as well as with p = 1
-(first-order autoregression) and q = 13 (approximately yearly moving
-average). Forecasts are made using the <strong>portalcasting</strong>
-method function <code>forecast.tsglm</code> as
-<code>forecast</code>.</p>
+<strong>tscount</strong> package <span class="citation">(Liboschik,
+Fried, et al. 2017)</span>. GARCH models are generalized ARMA models and
+are defined according to their link function, response distribution, and
+two model structure parameters – the number of autoregressive terms (p)
+and the order of the moving average (q), and are represented as GARCH(p,
+q) <span class="citation">(Liboschik, Fried, et al. 2017)</span>. The
+pGARCH model is fit using the log link and a Poisson response, as well
+as with p = 1 (first-order autoregression) and q = 13 (approximately
+yearly moving average). Forecasts are made using the
+<strong>portalcasting</strong> method function
+<code>forecast.tsglm</code> as <code>forecast</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="psgarch">psGARCH<a class="anchor" aria-label="anchor" href="#psgarch"></a>
@@ -279,16 +283,16 @@ Heteroskedasticity) is a generalized autoregressive conditional
 heteroskedasticity (GARCH) model with seasonal predictors modeled using
 two Fourier series terms (sin and cos of the fraction of the year) fit
 to the interpolated data. The model is fit using the <code>tsglm</code>
-function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span>. GARCH models are
-generalized ARMA models and are defined according to their link
+function in the <strong>tscount</strong> package <span class="citation">(Liboschik, Fried, et al. 2017)</span>. GARCH models
+are generalized ARMA models and are defined according to their link
 function, response distribution, and two model structure parameters –
 the number of autoregressive terms (p) and the order of the moving
-average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The pGARCH model is fit
-using the log link and a Poisson response, as well as with p = 1
-(first-order autoregression) and q = 13 (approximately yearly moving
-average). Forecasts are made using the <strong>portalcasting</strong>
-method function <code>forecast.tsglm</code> as
-<code>forecast</code>.</p>
+average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik, Fried, et al. 2017)</span>. The pGARCH
+model is fit using the log link and a Poisson response, as well as with
+p = 1 (first-order autoregression) and q = 13 (approximately yearly
+moving average). Forecasts are made using the
+<strong>portalcasting</strong> method function
+<code>forecast.tsglm</code> as <code>forecast</code>.</p>
 </div>
 <div class="section level3">
 <h3 id="pevgarch">pevGARCH<a class="anchor" aria-label="anchor" href="#pevgarch"></a>
@@ -300,27 +304,28 @@ a variety of environmental variables are considered as covariates. The
 overall model is fit using the <strong>portalcasting</strong> function
 <code>meta_tsglm</code> that iterates over the submodels, which are fit
 using the <code>tsglm</code> function in the <strong>tscount</strong>
-package <span class="citation">(Liboschik et al. 2017)</span>. GARCH
-models are generalized ARMA models and are defined according to their
-link function, response distribution, and two model structure parameters
-– the number of autoregressive terms (p) and the order of the moving
-average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik et al. 2017)</span>. The pevGARCH model is
-fit using the log link and a Poisson response, as well as with p = 1
-(first-order autoregression) and q = 13 (yearly moving average). The
-environmental variables potentially included in the model are min, mean,
-and max temperatures, precipitation, and NDVI. The <code>tsglm</code>
-function in the <strong>tscount</strong> package <span class="citation">(Liboschik et al. 2017)</span> uses a (conditional)
-quasi-likelihood based approach to inference. This approach has only
-been minimally evaluated for models with covariates, although
-preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, and Fried 2017)</span>. The
-overall model is composed of 11 submodels from a (nonexhaustive)
-combination of the environmental covariates – [1] max temp, mean temp,
-precipitation, NDVI; [2] max temp, min temp, precipitation, NDVI; [3]
-max temp, mean temp, min temp, precipitation; [4] precipitation, NDVI;
-[5] min temp, NDVI; [6] min temp; [7] max temp; [8] mean temp; [9]
-precipitation; [10] NDVI; and [11] -none- (intercept-only). The single
-best model of the 11 is selected based on AIC. Forecasts are made using
-the <strong>portalcasting</strong> method function
+package <span class="citation">(Liboschik, Fried, et al. 2017)</span>.
+GARCH models are generalized ARMA models and are defined according to
+their link function, response distribution, and two model structure
+parameters – the number of autoregressive terms (p) and the order of the
+moving average (q), and are represented as GARCH(p, q) <span class="citation">(Liboschik, Fried, et al. 2017)</span>. The pevGARCH
+model is fit using the log link and a Poisson response, as well as with
+p = 1 (first-order autoregression) and q = 13 (yearly moving average).
+The environmental variables potentially included in the model are min,
+mean, and max temperatures, precipitation, and NDVI. The
+<code>tsglm</code> function in the <strong>tscount</strong> package
+<span class="citation">(Liboschik, Fried, et al. 2017)</span> uses a
+(conditional) quasi-likelihood based approach to inference. This
+approach has only been minimally evaluated for models with covariates,
+although preliminary simulation-based studies are promising <span class="citation">(Liboschik, Fokianos, et al. 2017)</span>. The overall
+model is composed of 11 submodels from a (nonexhaustive) combination of
+the environmental covariates – [1] max temp, mean temp, precipitation,
+NDVI; [2] max temp, min temp, precipitation, NDVI; [3] max temp, mean
+temp, min temp, precipitation; [4] precipitation, NDVI; [5] min temp,
+NDVI; [6] min temp; [7] max temp; [8] mean temp; [9] precipitation; [10]
+NDVI; and [11] -none- (intercept-only). The single best model of the 11
+is selected based on AIC. Forecasts are made using the
+<strong>portalcasting</strong> method function
 <code>forecast.tsglm</code> as <code>forecast</code>.</p>
 </div>
 <div class="section level3">
@@ -474,14 +479,14 @@ currently consider it the best model for forecasting.</p>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Box1970" class="csl-entry">
 Box, G., and G. Jenkins. 1970. <em>Time Series Analysis: Forecasting and
 Control</em>. Holden-Day.
 </div>
 <div id="ref-Hyndman2017" class="csl-entry">
 Hyndman, R. J. 2017. <span>“<strong><span class="nocase">f</span>orecast</strong>: Forecasting Functions for Time
-Series and Linear Models.”</span> 2017. <a href="http://pkg.robjhyndman.com/forecast" class="external-link">http://pkg.robjhyndman.com/forecast</a>.
+Series and Linear Models.”</span> Version 8.2. <a href="http://pkg.robjhyndman.com/forecast" class="external-link">http://pkg.robjhyndman.com/forecast</a>.
 </div>
 <div id="ref-Hyndman2013" class="csl-entry">
 Hyndman, R. J., and G. Athanasopoulos. 2013. <em>Forecasting: Principles
@@ -500,7 +505,7 @@ Count Time Series Following Generalized Linear Models.”</span>
 <div id="ref-Liboschik2017a" class="csl-entry">
 Liboschik, T., R. Fried, K. Fokianos, and P. Probst. 2017.
 <span>“<strong><span class="nocase">t</span>scount</strong>: Analysis of
-Count Time Series.”</span> 2017. <a href="https://CRAN.R-project.org/package=tscount" class="external-link">https://CRAN.R-project.org/package=tscount</a>.
+Count Time Series.”</span> Version 1.4.0. <a href="https://CRAN.R-project.org/package=tscount" class="external-link">https://CRAN.R-project.org/package=tscount</a>.
 </div>
 <div id="ref-Plummer2003" class="csl-entry">
 Plummer, M. 2003. <span>“A Program for Analysis of Bayesian Graphical
@@ -508,7 +513,7 @@ Models Using Gibbs Sampling.”</span> <em>Proceedings of the 3rd
 International Workshop on Distributed Statistical Computing</em>. <a href="http://www.ci.tuwien.ac.at/Conferences/DSC-2003/Proceedings/Plummer.pdf" class="external-link">http://www.ci.tuwien.ac.at/Conferences/DSC-2003/Proceedings/Plummer.pdf</a>.
 </div>
 <div id="ref-PortalPredictions" class="csl-entry">
-WeecologyLab. 2019. <span>“Portal Forecasting.”</span> 2019. <a href="https://github.com/weecology/portalPredictions/" class="external-link">https://github.com/weecology/portalPredictions/</a>.
+WeecologyLab. 2019. <span>“Portal Forecasting.”</span> <a href="https://github.com/weecology/portalPredictions/" class="external-link">https://github.com/weecology/portalPredictions/</a>.
 </div>
 </div>
 </div>

@@ -9,6 +9,7 @@ First things first, make sure you have the current version of
 **portalcasting** installed from GitHub:
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("weecology/portalcasting")
 library(portalcasting)
@@ -62,6 +63,7 @@ computer (indicated by `"~"`) and within a named folder, say
 throughout the code:
 
 ``` r
+
 main <- "~/portalcast_directory"
 setup_dir(main = main)
 ```
@@ -96,6 +98,7 @@ of illustration, we will only run ESSS, AutoArima, and NaiveArima
 models, which we indicate through input to the `models` argument:
 
 ``` r
+
 portalcast(main = main, models = c("ESSS", "AutoArima", "NaiveArima"))
 ```
 
@@ -119,6 +122,7 @@ are run).
 Time series plots are constructed using `plot_forecast_ts`:
 
 ``` r
+
 plot_forecast_ts(main = main, dataset = "controls")
 ```
 
@@ -126,6 +130,7 @@ Point-in-time prediction plots are constructed using
 `plot_forecast_point`, and default to the next step ahead in time:
 
 ``` r
+
 plot_forecast_point(main = main, dataset = "controls")
 ```
 
@@ -140,6 +145,7 @@ specific function, such as `read_moons`. `read_forecasts_metadata` has a
 function itself, but is not called via `read_data` currently.
 
 ``` r
+
 read_data(main = main, data_name = "rodents")
 read_data(main = main, data_name = "rodents_dataset", dataset = "all")
 read_data(main = main, data_name = "rodents_dataset", dataset = "controls")
@@ -166,6 +172,7 @@ forecast output.
 file with quick filtering:
 
 ``` r
+
 select_forecasts(main = main, models = "AutoArima")
 ```
 
@@ -175,6 +182,7 @@ given forecast, as indicated by its forecast_id, which is displayed in
 the output from `select_forecasts`:
 
 ``` r
+
 read_forecast_table(main = main)
 read_model_forecast(main = main)
 read_forecast_metadata(main = main)
