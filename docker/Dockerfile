@@ -24,6 +24,7 @@ RUN apt-get update \
 
 ARG event_sha="HEAD"
 RUN echo "Installing from github at ref $event_sha"
+RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org')"
 RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
 
 # For branches with directories set up, set main as ~/portal-forecasts, as . is in general use
