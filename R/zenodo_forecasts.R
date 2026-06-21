@@ -66,7 +66,10 @@ download_zenodo_forecasts <- function(
   httr::stop_for_status(latest)
   latest_parsed <- httr::content(latest, as = "parsed", type = "application/json")
 
-  archive_url <- latest_parsed$links$archive
+  archive_url <- latest_parsed$files$links$self[1]
+  if (is.null(archive_url)) {
+    archive_url <- latest_parsed$links$archive
+  }
   if (is.null(archive_url)) {
     stop("No archive link found for record ", latest_recid)
   }
