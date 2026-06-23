@@ -22,20 +22,21 @@ RUN apt-get update \
 
 # Install portalcasting from github event that triggered the specific workflow
 
-ARG event_sha="HEAD"
-RUN echo "Installing from github at ref $event_sha"
-RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
+ARG event_sha=main
+RUN echo "Installing from github at ref ${event_sha}"
+RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org')"
+RUN R -e "remotes::install_github('weecology/portalcasting', ref = '${event_sha}', upgrade = 'always')"
 
 # For branches with directories set up, set main as ~/portal-forecasts, as . is in general use
-
-ARG main="~/portal-forecasts"
 
 FROM tidyverse AS base-branch
 
 FROM tidyverse AS sandbox-branch
-RUN R -e "portalcasting::setup_sandbox(main = '$main')"
+ARG main="~/portal-forecasts"
+RUN R -e "portalcasting::setup_sandbox(main = '${main}')"
 
 FROM tidyverse AS production-branch
-RUN R -e "portalcasting::setup_production(main = '$main')"
+ARG main="~/portal-forecasts"
+RUN R -e "portalcasting::setup_production(main = '${main}')"
 
 FROM ${image_name}-branch AS final
