@@ -1,6 +1,6 @@
 #' @title Download Forecasts from Zenodo Production Archive
 #'
-#' @description Downloads the forecasts directory from the Portal Predictions production Zenodo archive (concept record 10553210). This provides the canonical, complete forecasts including metadata and forecast tables.
+#' @description Downloads the forecasts directory from the Portal Predictions production Zenodo archive (concept record 10553210). This provides the canonical, complete forecasts including metadata and forecast tables. Downloads the record's `portal-forecasts-*.zip` file directly (Zenodo's bundled archive API is limited to 300 MB).
 #'
 #' @param recid `character` or `numeric` Zenodo concept record ID. Default is the production record.
 #' @param outdir `character` path to the forecasts output directory. Typically `forecasts_path(main)`.
@@ -11,6 +11,7 @@
 #' @return `character` path to the forecasts directory, invisibly.
 #'
 #' @family downloads
+#' @seealso [download_climate_forecasts()] for NMME climate forecasts.
 #'
 #' @export
 #'
@@ -66,19 +67,32 @@ download_zenodo_forecasts <- function(
   httr::stop_for_status(latest)
   latest_parsed <- httr::content(latest, as = "parsed", type = "application/json")
 
-  archive_url <- latest_parsed$files$links$self[1]
-  if (is.null(archive_url)) {
-    archive_url <- latest_parsed$links$archive
-  }
-  if (is.null(archive_url)) {
-    stop("No archive link found for record ", latest_recid)
+  files <- latest_parsed$files
+  if (is.null(files) || length(files) == 0) {
+    stop("No files found for record ", latest_recid)
   }
 
-  archive_path <- file.path(temp_dir, "portal-forecasts.zip")
-  messageq("Downloading archive ...", quiet = quiet)
+  zip_files <- Filter(function(f) grepl("\\.zip$", f$key, ignore.case = TRUE), files)
+  if (length(zip_files) == 0) {
+    stop("No zip file found for record ", latest_recid)
+  }
+
+  zip_keys <- vapply(zip_files, function(f) f$key, character(1))
+  pf_idx <- grep("^portal-forecasts-.*\\.zip$", zip_keys)
+  file_info <- zip_files[[if (length(pf_idx)) pf_idx[1] else 1]]
+  download_url <- file_info$links$self
+  if (is.null(download_url) || !nzchar(download_url)) {
+    download_url <- file_info$links$content
+  }
+  if (is.null(download_url) || !nzchar(download_url)) {
+    stop("No download link found for file ", file_info$key, " in record ", latest_recid)
+  }
+
+  archive_path <- file.path(temp_dir, basename(file_info$key))
+  messageq("Downloading ", file_info$key, " (", format(file_info$size, big.mark = ","), " bytes) ...", quiet = quiet)
   resp <- httr::RETRY(
     "GET",
-    archive_url,
+    download_url,
     ua,
     httr::write_disk(archive_path, overwrite = TRUE),
     httr::progress(type = "down"),
@@ -87,19 +101,21 @@ download_zenodo_forecasts <- function(
   )
   httr::stop_for_status(resp)
 
-  messageq("Extracting outer archive ...", quiet = quiet)
+  messageq("Extracting archive ...", quiet = quiet)
   utils::unzip(archive_path, exdir = temp_dir, overwrite = TRUE)
 
-  inner_zip_files <- list.files(temp_dir, pattern = "portal-forecasts-.*\\.zip$", full.names = TRUE)
-  if (length(inner_zip_files) == 0) {
-    unlink(temp_dir, recursive = TRUE, force = TRUE)
-    stop("Inner portal-forecasts archive not found after extraction")
+  temp_forecasts_path <- file.path(temp_dir, "forecasts")
+  if (!dir.exists(temp_forecasts_path)) {
+    inner_zip_files <- list.files(temp_dir, pattern = "portal-forecasts-.*\\.zip$", full.names = TRUE)
+    if (length(inner_zip_files) == 0) {
+      unlink(temp_dir, recursive = TRUE, force = TRUE)
+      stop("Forecasts directory not found after extraction")
+    }
+    messageq("Extracting inner archive ...", quiet = quiet)
+    utils::unzip(inner_zip_files[1], exdir = temp_dir, overwrite = TRUE)
+    temp_forecasts_path <- file.path(temp_dir, "forecasts")
   }
 
-  messageq("Extracting inner archive ...", quiet = quiet)
-  utils::unzip(inner_zip_files[1], exdir = temp_dir, overwrite = TRUE)
-
-  temp_forecasts_path <- file.path(temp_dir, "forecasts")
   if (!dir.exists(temp_forecasts_path)) {
     unlink(temp_dir, recursive = TRUE, force = TRUE)
     stop("Forecasts directory not found in archive at: ", temp_forecasts_path)
