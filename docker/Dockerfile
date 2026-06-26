@@ -20,22 +20,22 @@ RUN apt-get update \
        python3-requests \
     && rm -rf /var/lib/apt/lists/*
 
-# Install portalcasting from github event that triggered the specific workflow
+# Install portalcasting from local source
 
-ARG event_sha="HEAD"
-RUN echo "Installing from github at ref $event_sha"
-RUN R -e "remotes::install_github('weecology/portalcasting', ref = '$event_sha')"
+COPY . /portalcasting
+RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org')"
+RUN R -e "remotes::install_local('/portalcasting', upgrade = 'always')"
 
 # For branches with directories set up, set main as ~/portal-forecasts, as . is in general use
-
-ARG main="~/portal-forecasts"
 
 FROM tidyverse AS base-branch
 
 FROM tidyverse AS sandbox-branch
-RUN R -e "portalcasting::setup_sandbox(main = '$main')"
+ARG main="~/portal-forecasts"
+RUN R -e "portalcasting::setup_sandbox(main = '${main}')"
 
 FROM tidyverse AS production-branch
-RUN R -e "portalcasting::setup_production(main = '$main')"
+ARG main="~/portal-forecasts"
+RUN R -e "portalcasting::setup_production(main = '${main}')"
 
 FROM ${image_name}-branch AS final
