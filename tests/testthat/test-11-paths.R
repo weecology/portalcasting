@@ -1,4 +1,3 @@
-context(desc = "path generating and manipulating functions")
 
 
 test_that(desc = "file_ext extracts the file extension",

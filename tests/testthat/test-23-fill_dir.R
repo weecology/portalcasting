@@ -1,4 +1,3 @@
-context(desc = "directory filling functions")
 
 main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")

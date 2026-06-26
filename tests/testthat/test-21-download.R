@@ -1,4 +1,3 @@
-context(desc = "resource downloading functions")
 
 
 main1 <- file.path(tempdir(), "testing1")

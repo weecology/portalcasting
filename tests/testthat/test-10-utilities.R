@@ -1,4 +1,3 @@
-context(desc = "general utilities")
 
 
 test_that(desc = "round_na.interp does its job",
