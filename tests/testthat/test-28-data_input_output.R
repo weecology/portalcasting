@@ -1,4 +1,3 @@
-context(desc = "data input and output functions")
 
 main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")

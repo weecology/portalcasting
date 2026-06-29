@@ -1,4 +1,3 @@
-context(desc = "messaging functions")
 
 # need to add in the unit components, but i think they are getting coverage
 # elsewhere

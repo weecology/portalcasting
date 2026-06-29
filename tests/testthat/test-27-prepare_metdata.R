@@ -1,4 +1,3 @@
-context(desc = "metadata prepping functions")
 
 main1 <- file.path(tempdir(), "testing1")
 main2 <- file.path(tempdir(), "testing2")
