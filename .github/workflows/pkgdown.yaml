@@ -42,18 +42,8 @@ jobs:
           needs: website
 
       - name: Build site
-        shell: bash
-        run: |
-          for attempt in 1 2 3; do
-            Rscript -e 'pkgdown::build_site_github_pages(
-              new_process = FALSE,
-              examples = FALSE
-            )' && break
-            if [ "${attempt}" -eq 3 ]; then
-              exit 1
-            fi
-            sleep 5
-          done
+        run: pkgdown::build_site_github_pages(new_process = FALSE, examples = FALSE)
+        shell: Rscript {0}
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
