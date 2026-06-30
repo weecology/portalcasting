@@ -51,6 +51,59 @@
 <p>Version numbers follow <a href="https://semver.org/" class="external-link">Semantic Versioning</a>.</p>
 </div>
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.61.0" id="portalcasting-0610"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.61.0" class="external-link">portalcasting 0.61.0</a><a class="anchor" aria-label="anchor" href="#portalcasting-0610"></a></h2>
+<p><em>06-29-2026</em> ## Continuous integration and testing</p>
+<ul><li>Remove deprecated <code><a href="https://testthat.r-lib.org/reference/context.html" class="external-link">testthat::context()</a></code> calls to restore test discovery.</li>
+<li>Add CI logging to make debugging failed test runs easier.</li>
+</ul><div class="section level3">
+<h3 id="docker-0-61-0">Docker<a class="anchor" aria-label="anchor" href="#docker-0-61-0"></a></h3>
+<ul><li>Fix Docker installation to build <code>portalcasting</code> from the local source.</li>
+<li>Correct Docker build argument (<code>ARG</code>) scoping.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="zenodo-0-61-0">Zenodo<a class="anchor" aria-label="anchor" href="#zenodo-0-61-0"></a></h3>
+<ul><li>Update archive URL retrieval to support changes in the Zenodo API.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.60.9" id="portalcasting-0609"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.60.9" class="external-link">portalcasting 0.60.9</a><a class="anchor" aria-label="anchor" href="#portalcasting-0609"></a></h2>
+<p><em>04-03-2026</em></p>
+<div class="section level3">
+<h3 id="zenodo-archive-integration-0-60-9">Zenodo archive integration<a class="anchor" aria-label="anchor" href="#zenodo-archive-integration-0-60-9"></a></h3>
+<ul><li>Use Zenodo as the primary source for archived forecasts.</li>
+<li>Download forecast archives only when a newer version is available or when explicitly requested.</li>
+<li>Fill forecast resources from Zenodo archives.</li>
+<li>Improve archive post-processing and zip/unzip evaluation workflow.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="evaluation-improvements-0-60-9">Evaluation improvements<a class="anchor" aria-label="anchor" href="#evaluation-improvements-0-60-9"></a></h3>
+<ul><li>Write forecast evaluations incrementally during processing.</li>
+<li>Store evaluation archives in Parquet format.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="continuous-integration-0-60-9">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-0-60-9"></a></h3>
+<ul><li>Install additional dependencies required for the workflow.</li>
+<li>Add CI cleanup steps to reduce disk usage.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.60.8" id="portalcasting-0608"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.60.8" class="external-link">portalcasting 0.60.8</a><a class="anchor" aria-label="anchor" href="#portalcasting-0608"></a></h2>
+<p><em>10-15-2025</em></p>
+<div class="section level3">
+<h3 id="docker-0-60-8">Docker<a class="anchor" aria-label="anchor" href="#docker-0-60-8"></a></h3>
+<ul><li>Add Python and the <code>requests</code> package to the Docker image to support Zenodo integration.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.60.7" id="portalcasting-0607"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.60.7" class="external-link">portalcasting 0.60.7</a><a class="anchor" aria-label="anchor" href="#portalcasting-0607"></a></h2>
+<p><em>04-21-2025</em></p>
+<div class="section level3">
+<h3 id="continuous-integration-0-60-7">Continuous integration<a class="anchor" aria-label="anchor" href="#continuous-integration-0-60-7"></a></h3>
+<ul><li>Update the R CMD check workflow.</li>
+<li>Temporarily disable macOS testing while compatibility issues are investigated.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.60.6" id="portalcasting-0606"><a href="https://github.com/weecology/portalcasting/releases/tag/v0.60.6" class="external-link">portalcasting 0.60.6</a><a class="anchor" aria-label="anchor" href="#portalcasting-0606"></a></h2>
 <p><em>08-21-2024</em> ## Bug fix on evaluation. * Add sNaiveArima, sAutoArima models. The models were skipped.</p>
 </div>
