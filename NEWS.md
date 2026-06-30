@@ -2,6 +2,59 @@
 
 Version numbers follow [Semantic Versioning](https://semver.org/).
 
+# [portalcasting 0.61.0](https://github.com/weecology/portalcasting/releases/tag/v0.61.0)
+*06-29-2026*
+## Continuous integration and testing
+
+* Remove deprecated `testthat::context()` calls to restore test discovery.
+* Add CI logging to make debugging failed test runs easier.
+
+## Docker
+
+* Fix Docker installation to build `portalcasting` from the local source.
+* Correct Docker build argument (`ARG`) scoping.
+
+## Zenodo
+
+* Update archive URL retrieval to support changes in the Zenodo API.
+
+# [portalcasting 0.60.9](https://github.com/weecology/portalcasting/releases/tag/v0.60.9)
+
+*04-03-2026*
+
+## Zenodo archive integration
+
+* Use Zenodo as the primary source for archived forecasts.
+* Download forecast archives only when a newer version is available or when explicitly requested.
+* Fill forecast resources from Zenodo archives.
+* Improve archive post-processing and zip/unzip evaluation workflow.
+
+## Evaluation improvements
+
+* Write forecast evaluations incrementally during processing.
+* Store evaluation archives in Parquet format.
+
+## Continuous integration
+
+* Install additional dependencies required for the workflow.
+* Add CI cleanup steps to reduce disk usage.
+
+# [portalcasting 0.60.8](https://github.com/weecology/portalcasting/releases/tag/v0.60.8)
+
+*10-15-2025*
+
+## Docker
+
+* Add Python and the `requests` package to the Docker image to support Zenodo integration.
+
+# [portalcasting 0.60.7](https://github.com/weecology/portalcasting/releases/tag/v0.60.7)
+
+*04-21-2025*
+
+## Continuous integration
+
+* Update the R CMD check workflow.
+* Temporarily disable macOS testing while compatibility issues are investigated.
 
 # [portalcasting 0.60.6](https://github.com/weecology/portalcasting/releases/tag/v0.60.6)
 *08-21-2024*
